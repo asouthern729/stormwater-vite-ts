@@ -1,0 +1,31 @@
+.container {
+  flex: 1;
+  display: flex;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  color: var(--neutralContent);
+  font-family: 'Shrikhand', sans-serif;
+  font-size: 3rem;
+  font-weight: 500;;
+  margin: auto;
+  width: fit-content;
+  transform: translateY(10px);
+  text-shadow: 4px 4px 0 var(--neutral);
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    font-size: 4rem;
+    text-shadow: 6px 6px 0 var(--neutral);
+  }
+}
+
+.icon {
+  width: 40px;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    width: 60px;
+  }
+}

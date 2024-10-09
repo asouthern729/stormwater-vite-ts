@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  gap: 24px;
+  font-family: 'Play', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 18px;
+  background-color: var(--neutral);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  width: fit-content;
+}
+
+.container div {
+  padding: 2px 8px;
+  text-align: center;
+  width: 120px;
+  border-radius: 2px;
+}
+
+.inspection {
+  color: #FFFFFF;
+  background-color: #157EE8;
+}
+
+.violation {
+  background-color: #F55D34;
+}
+
+.complaint {
+  background-color: #ED5197;
+}
+
+.illicit {
+  background-color: #C4EB3B;
+}
+
+.followUp {
+  background-color: #FFFF00;
+}
+
+.penalty {
+  background-color: #DB4EFC;
+}
+
+.swo {
+  background-color: #FFFFFF;
+}

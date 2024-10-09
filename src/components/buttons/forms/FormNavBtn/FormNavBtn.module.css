@@ -1,0 +1,32 @@
+.btn {
+  flex: 1;
+  color: var(--neutralContent);
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  border: 2px solid var(--neutralContent);
+  box-shadow: 4px 4px 0 var(--neutralContent);
+}
+
+.btn:hover {
+  border-color: var(--warning);
+  box-shadow: 4px 4px 0 var(--warning);
+}
+
+.activeBtn {
+  flex: 1;
+  color: var(--neutralContent);
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  border: 2px solid var(--warning);
+  box-shadow: 4px 4px 0 var(--warning);
+}

@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  gap: 24px;
+  color: var(--neutralContent);
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  background: rgba(28, 78, 128, 0.33);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(28, 78, 128, 0.3);
+  width: fit-content;
+  border-radius: 6px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}

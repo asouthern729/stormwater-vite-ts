@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 4px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.label {
+  color: var(--neutralContent);
+  font-family: "VT323", monospace;
+  font-size: 1.35rem;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translateY(4px);
+}
+
+.option {
+  color: var(--neutralContent);
+  background-color: var(--neutral);
+}

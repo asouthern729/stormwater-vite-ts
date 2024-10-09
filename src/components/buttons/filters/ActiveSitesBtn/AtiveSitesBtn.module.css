@@ -1,0 +1,15 @@
+.btn {
+  color: var(--info);
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  width: fit-content;
+  border: 2px solid var(--info);
+  border-radius: 4px;
+}
+
+.btn:hover {
+  background-color: var(--neutral);
+  border-color: var(--neutral);
+}

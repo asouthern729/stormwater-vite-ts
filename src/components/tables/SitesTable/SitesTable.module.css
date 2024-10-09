@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Play', sans-serif;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.header {
+  color: var(--neutralContent);
+  text-transform: uppercase;
+  background-color: var(--primary);
+  text-shadow: 3px 3px 0 var(--neutral);
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    font-size: 1.5rem;
+  }
+}
+
+.table {
+  background-color: var(--neutralContent);
+}
+
+.evenRow {
+  background-color: #FFFFFF;
+}
+
+.openViolationRow {
+  background-color: rgba(234, 105, 71, .2);
+}
+
+tbody tr:hover {
+  cursor: pointer;
+  color: var(--neutralContent);
+  background-color: var(--neutral);
+}
+
+.name {
+  color: var(--primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 0;
+  margin: auto;
+  width: fit-content;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    font-size: 1.25rem;
+    white-space: nowrap;
+  }
+}
+
+tbody tr:hover .name {
+  color: var(--neutralContent);
+}

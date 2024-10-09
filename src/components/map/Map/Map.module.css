@@ -1,0 +1,13 @@
+@import "https://js.arcgis.com/4.4/esri/css/view.css";
+
+.container {
+  background-color: var(--neutral);
+  width: 100%;
+  height: 100%;
+}
+
+.mapView {
+  background-color: initial;
+  width: 100%;
+  height: 100%;
+}
