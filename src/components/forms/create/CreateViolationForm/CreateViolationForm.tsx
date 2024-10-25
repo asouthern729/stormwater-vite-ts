@@ -1,7 +1,7 @@
 import { FormProvider } from "react-hook-form"
 import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
-import { useCreateViolationForm, handleCreateViolationFormSubmit } from "."
+import { useCreateViolationForm, handleCreateViolationFormSubmit, handleRequiredFieldValidation } from "."
 import styles from '../../Forms.module.css'
 
 // Types
@@ -23,9 +23,11 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
 
   return (
     <div className={styles.container}>
+
       <div className={styles.title}>Create Construction Violation</div>
+      
       <FormProvider { ...methods }>
-        <form onSubmit={methods.handleSubmit(formData => handleCreateViolationFormSubmit(formData, { invalidateQuery: queryClient.invalidateQueries(['getSite', site.uuid]), resetState, navigate }))} className={styles.body}>
+        <form onSubmit={methods.handleSubmit(formData => handleCreateViolationFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(['getSite', site.uuid]), resetState, navigate }))} className={styles.body}>
 
           <div className={styles.inputSection}>
             <div className="flex">
@@ -37,11 +39,8 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
                 type="date"
                 className={styles.input}
                 { ...methods.register('date', {
-                  required: {
-                    value: true,
-                    message: 'Violation date is required'
-                  },
-                  onBlur: () => methods.trigger('date')
+                  required: 'Violation date is required',
+                  onBlur: () => handleRequiredFieldValidation('date', { watch: methods.watch, trigger: methods.trigger })
                 }) } />
             </div>
             <FormError field={'date'} />
@@ -57,16 +56,12 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
                 className={styles.input}
                 rows={4}
                 { ...methods.register('details', {
-                required: {
-                  value: true,
-                  message: 'Violation details is required'
-                },
+                required: 'Violation details is required',
                 maxLength: {
                   value: 2000,
                   message: 'Violation details must be 2000 characters or less'
                 },
-                onBlur: () => methods.trigger('details'),
-                onChange: () => methods.trigger('details')
+                onBlur: () => handleRequiredFieldValidation('details', { watch: methods.watch, trigger: methods.trigger })
               }) } />
             </div>
             <FormError field={'details'} />
@@ -86,8 +81,7 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
                     maxLength: {
                       value: 2000,
                       message: 'Enforcement action must be 2000 characters or less'
-                    },
-                    onChange: () => methods.trigger('enforcementAction')
+                    }
                   }) } />
               </div>
               <FormError field={'enforcementAction'} />
@@ -141,10 +135,8 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
                       type="number"
                       className={styles.input}
                       { ...methods.register('penaltyAmount', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty amount is required'
-                        }
+                        required: methods.watch('penaltyDate') ? 'Penalty amount is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyAmount', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyAmount'} />
@@ -163,11 +155,8 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
                       type="date"
                       className={styles.input}
                       { ...methods.register('penaltyDueDate', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty due date is required'
-                        },
-                        onBlur: () => methods.trigger('penaltyDate')
+                        required: methods.watch('penaltyDate') ? 'Penalty due date is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyDueDate', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyDate'} />

@@ -6,7 +6,8 @@ import { PrevPageBtnProps } from './types'
 
 function PrevPageBtn({ handleClick, disabled }: PrevPageBtnProps) {
   return (
-    <button 
+    <button
+      data-testid="prev-page-btn" 
       type="button"
       onClick={handleClick}
       className={styles.btn}

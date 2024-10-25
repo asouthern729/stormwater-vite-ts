@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSetSitesData } from '.'
 import styles from './SitesContainer.module.css'
@@ -21,10 +22,11 @@ function SitesContainer({ sites }: SitesContainerProps) {
   const navigate = useNavigate()
 
   return (
-    <div className={styles.container}>
+    <div data-testid="sites-container" className={styles.container}>
 
       <section className={styles.topDiv}>
         <SitesHeader />
+
         <div className="absolute flex gap-4 right-0">
           <ActiveSitesBtn />
           <OpenIssuesBtn />
@@ -33,8 +35,9 @@ function SitesContainer({ sites }: SitesContainerProps) {
 
       <section className={styles.mapDiv}>
         <div className="absolute bottom-4 left-4 z-10">
-          <MapLegend />
+          <MapLegend sites={sites} />
         </div>
+
         <MapContainer sites={sitesArray} />
         <SitesTable sites={sitesArray} />
       </section>
@@ -52,4 +55,4 @@ function SitesContainer({ sites }: SitesContainerProps) {
   )
 }
 
-export default SitesContainer
+export default memo(SitesContainer)

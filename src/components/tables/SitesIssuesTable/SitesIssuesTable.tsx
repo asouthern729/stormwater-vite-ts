@@ -1,10 +1,12 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, Fragment, memo } from 'react'
 import { useLocation } from 'react-router-dom'
 import AppContext from '../../../context/App/AppContext'
-import { useHandlePageData, setSitesIssuesTableData, handleNextPageBtnClick, handlePrevPageBtnClick, setTableHeaders, setTableBody } from '.'
+import { useHandlePageData } from '../../../helpers'
+import { useSetSitesIssuesTableData, handleNextPageBtnClick, handlePrevPageBtnClick, setTableHeaders, setTableBody } from '.'
 import styles from './SitesIssuesTable.module.css'
 
 // Types
+import { Issue } from '../SiteIssuesTable/types'
 import { SitesIssuesTableProps, SitesIssuesTableState } from "./types"
 
 // Components
@@ -18,14 +20,14 @@ function SitesIssuesTable({ sites, issues, handleRowClick }: SitesIssuesTablePro
 
   const location = useLocation()
 
-  const tableData = setSitesIssuesTableData(sites, issues)
+  const tableData = useSetSitesIssuesTableData(sites, issues)
 
   const totalPages = Math.ceil(tableData.length / 20) // 20 results per page
 
-  const pageData = useHandlePageData(tableData, state.currentPage)
+  const pageData = useHandlePageData(tableData, state.currentPage) as Issue[]
 
   return (
-    <div className={styles.container}>
+    <div data-testid="sites-issues-table" className={styles.container}>
 
       <div className="flex justify-between items-end w-full">
         <div className="flex gap-2 text-neutral-content w-fit">
@@ -43,7 +45,7 @@ function SitesIssuesTable({ sites, issues, handleRowClick }: SitesIssuesTablePro
             disabled={state.currentPage === 1} />
           <NextPageBtn 
             handleClick={() => handleNextPageBtnClick(setState)}
-            disabled={state.currentPage === totalPages} />
+            disabled={!totalPages || state.currentPage === totalPages} />
         </div>
       </div>    
 
@@ -53,11 +55,11 @@ function SitesIssuesTable({ sites, issues, handleRowClick }: SitesIssuesTablePro
         </thead>
         <tbody>
 
-          {pageData.map(issue => {
+          {pageData.map((issue, index) => {
             return (
-              <>
-                {setTableBody(location, issue, { handleRowClick })}
-              </>
+              <Fragment key={`table-row-${ index }`}>
+                {setTableBody(location, issue as Issue, { handleRowClick })}
+              </Fragment>
             )
           })}
 
@@ -68,4 +70,4 @@ function SitesIssuesTable({ sites, issues, handleRowClick }: SitesIssuesTablePro
   )
 }
 
-export default SitesIssuesTable
+export default memo(SitesIssuesTable)

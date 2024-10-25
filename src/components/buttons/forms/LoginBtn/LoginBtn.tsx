@@ -8,9 +8,8 @@ function LoginBtn({ disabled }: LoginBtnProps) {
     <button 
       type="submit"
       className={styles.btn}
-      disabled={disabled}
-      >
-      Login
+      disabled={disabled}>
+        Login
     </button>
   )
 }

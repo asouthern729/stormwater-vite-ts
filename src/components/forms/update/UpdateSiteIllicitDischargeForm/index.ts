@@ -6,7 +6,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 // Types
 import { IllicitDischarge, IllicitObj, FollowUpObj } from "../../../../context/App/types"
 import { StreamWatershed } from "../../create/CreateSiteIllicitDischargeForm/types"
-import { UpdateSiteIllicitDischargeFormUseForm, UseUpdateSiteIllicitDischargeFormProps, HandleUpdateSiteIllicitDischargeFormSubmitProps } from './types'
+import { UpdateSiteIllicitDischargeFormUseForm, UseUpdateSiteIllicitDischargeFormProps, HandleUpdateSiteIllicitDischargeFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const useUpdateSiteIllicitDischargeForm = (illicitDischarge: UseUpdateSiteIllicitDischargeFormProps['illicitDischarge']): UseFormReturn<UpdateSiteIllicitDischargeFormUseForm> => { // UpdateSiteIllicitDischargeForm useForm
   return useForm<UpdateSiteIllicitDischargeFormUseForm>({
@@ -73,6 +73,14 @@ export const handleUpdateSiteIllicitDischargeFormSubmit = async (formData: Handl
 
     handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }
 
 const setStreamWatershed = (illicitDischarge: IllicitDischarge): string => { // Set streamWatershed

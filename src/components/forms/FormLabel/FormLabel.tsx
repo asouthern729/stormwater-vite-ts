@@ -8,7 +8,7 @@ import RequiredIcon from '../RequiredIcon/RequiredIcon'
 
 function FormLabel({ label, name, required }: FormLabelProps) {
   return (
-    <label htmlFor={name} className={styles.label}>{label}{required && <RequiredIcon width="w-3" />}</label>
+    <label data-testid="form-label" htmlFor={name} className={styles.label}>{label}{required && <RequiredIcon width="w-3" />}</label>
   )
 }
 

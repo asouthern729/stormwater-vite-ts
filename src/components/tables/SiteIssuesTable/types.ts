@@ -12,7 +12,7 @@ export interface SiteIssuesTableState { // SiteIssuesTable state obj
   showAll: boolean
 }
 
-export interface SetSiteIssuesTableDataProps { // setSiteIssuesTableData fn props
+export interface UseSetSiteIssuesTableDataProps { // useSetSiteIssuesTableData hook props
   site: Site
   showAll: boolean
 }
@@ -27,6 +27,9 @@ export interface SetCivilPenaltyTableDataProps { // setCivilPenaltyTableDataProp
 
 export interface Issue { // For SiteIssues and SitesIssues components
   date: string
+  site?: string | undefined
+  siteUUID?: string | undefined
+  responsibleParty?: string | null | undefined
   civilPenalty: {
     issued: boolean | null
     received: boolean | null
@@ -38,7 +41,22 @@ export interface Issue { // For SiteIssues and SitesIssues components
   closed: boolean
   form: SiteForm
   details: string
-  site?: string
-  siteUUID?: string
-  uuid?: string
+  concern: string | null | undefined
+  otherConcern: string | null | undefined
+  uuid: string
+}
+
+export interface Combined {
+  date: string, 
+  siteId?: string | null, 
+  responsibleParty?: string | null, 
+  penaltyDate?: string, 
+  paymentReceived?: string, 
+  swoDate?: string, 
+  swoLiftedDate?: string, 
+  closed: boolean, 
+  concern?: string, 
+  otherConcern?: string | null, 
+  details: string, 
+  uuid: string 
 }

@@ -1,4 +1,4 @@
-import { useHandlePageLoad } from '../../../helpers'
+import { useLocation } from 'react-router-dom'
 import styles from './Layout.module.css'
 
 // Components
@@ -9,13 +9,13 @@ import Footer from '../Footer/Footer'
 import { ReactNode } from 'react'
 
 function Layout({ children }: { children: ReactNode }) {
-  useHandlePageLoad()
+  const pathname = useLocation().pathname
 
   return (
     <div className={styles.layout}>
       <Header />
       <main>
-        <div className={styles.container}>
+        <div className={pathname !== '/login' ? styles.container : 'mt-20'}>
           {children}
         </div>
       </main>

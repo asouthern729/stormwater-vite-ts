@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom"
 import AppContext from "../../../../context/App/AppContext"
 import MapContext from "../../../../context/Map/MapContext"
 import { useHandleMapChange } from "../../../../helpers"
-import { useCreateSiteForm, handleCreateSiteFormSubmit } from "."
+import { useCreateSiteForm, handleCreateSiteFormSubmit, handleRequiredFieldValidation } from "."
 import styles from '../../Forms.module.css'
 
-// Component
+// Components
 import MapContainer from "../../../map/MapContainer/MapContainer"
 import FormLabel from "../../FormLabel/FormLabel"
+import FormError from "../../FormError/FormError"
 import UpdateSiteContactsForm from "../../update/UpdateSiteContactsForm/UpdateSiteContactsForm"
 import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
 import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
@@ -25,17 +26,15 @@ function CreateSiteForm() {
 
   const methods = useCreateSiteForm()
 
-  const { formState: { errors } } = methods
-
   useHandleMapChange(newSite, { setValue: methods.setValue })
 
   return (
-    <div className={styles.container}>
+    <div data-testid="create-site-form" className={styles.container}>
 
       <div className={styles.title}>Create Site</div>
 
         <FormProvider { ...methods }>
-          <form onSubmit={methods.handleSubmit(formData => handleCreateSiteFormSubmit(formData, { invalidateQuery: queryClient.invalidateQueries('getSites'), navigate: navigate('/') }))} className={styles.body}>
+          <form onSubmit={methods.handleSubmit(formData => handleCreateSiteFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries('getSites'), navigate: () => navigate('/') }))} className={styles.body}>
 
           <div className={styles.mapDiv}>
             <MapContainer
@@ -54,19 +53,15 @@ function CreateSiteForm() {
                 type="text"
                 className={styles.input}
                 { ...methods.register('name', {
-                  required: {
-                    value: true,
-                    message: 'Site name is required'
-                  },
+                  required: 'Site name is required',
                   maxLength: {
                     value: 100,
                     message: 'Site name must be 100 characters or less'
-                  }
+                  },
+                  onBlur: () => handleRequiredFieldValidation('name', { watch: methods.watch, trigger: methods.trigger })
                 }) } />
             </div>
-            {errors.name && (
-              <div className={styles.error}>{errors.name.message}</div>
-            )}
+            <FormError field={'name'} />
           </div>
 
           <div className={styles.inputSection}>
@@ -79,19 +74,15 @@ function CreateSiteForm() {
                 type="text"
                 className={styles.input}
                 { ...methods.register('location', {
-                  required: {
-                    value: true,
-                    message: 'Site location is required'
-                  },
+                  required: 'Site location is required',
                   maxLength: {
                     value: 100,
                     message: 'Site location must be 100 characters or less'
-                  }
+                  },
+                  onBlur: () => handleRequiredFieldValidation('location', { watch: methods.watch, trigger: methods.trigger })
                 }) } />
             </div>
-            {errors.location && (
-              <div className={styles.error}>{errors.location.message}</div>
-            )}
+            <FormError field={'location'} />
           </div>
 
           <section className="flex gap-2 w-full">
@@ -105,16 +96,13 @@ function CreateSiteForm() {
                   type="date"
                   className={styles.input}
                   { ...methods.register('preconDate', {
-                    required: {
-                      value: true,
-                      message: 'Precon date is required'
-                    }
+                    required: 'Precon date is required',
+                    onBlur: () => handleRequiredFieldValidation('preconDate', { watch: methods.watch, trigger: methods.trigger })
                   }) } />
               </div>
-              {errors.preconDate && (
-                <div className={styles.error}>{errors.preconDate.message}</div>
-              )}
+              <FormError field={'preconDate'} />
             </div>
+
             <div className={styles.inputSection}>
               <div className="flex">
                 <FormLabel
@@ -147,9 +135,7 @@ function CreateSiteForm() {
                     }
                   }) } />
               </div>
-              {errors.permit && (
-                <div className={styles.error}>{errors.permit.message}</div>
-              )}
+              <FormError field={'permit'} />
             </div>
 
             <div className={styles.inputSection}>
@@ -167,9 +153,7 @@ function CreateSiteForm() {
                     }
                   }) } />
               </div>
-              {errors.cof && (
-                <div className={styles.error}>{errors.cof.message}</div>
-              )}
+              <FormError field={'cof'} />
             </div>
 
             <div className={styles.inputSection}>
@@ -187,9 +171,7 @@ function CreateSiteForm() {
                     }
                   }) } />
               </div>
-              {errors.tnq && (
-                <div className={styles.error}>{errors.tnq.message}</div>
-              )}
+              <FormError field={'tnq'} />
             </div>
           </section>
 
@@ -211,7 +193,9 @@ function CreateSiteForm() {
             </div>
           </div>
 
-          <UpdateSiteContactsForm />
+          <div className="py-10">
+            <UpdateSiteContactsForm />
+          </div>
 
           <div className={styles.buttonsContainer}>
             <SaveBtn disabled={!methods.formState.isValid} />

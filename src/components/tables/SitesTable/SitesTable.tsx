@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppContext from '../../../context/App/AppContext'
 import { setTableData, setTableDataStyle } from '.'
@@ -13,12 +13,12 @@ function SitesTable({ sites }: SitesTableProps) {
   const navigate = useNavigate()
 
   return (
-    <div className={styles.container}>
+    <div data-testid="sites-table" className={styles.container}>
       <table className="bg-neutral-content">
         <tbody>
           {sites.map((site, index) => {
             return (
-              <tr key={`table-row-${ index }`} className={setTableDataStyle(index, site.hasOpenViolation)} onClick={() => navigate(`/site/${ site.uuid }`)}>
+              <tr key={`table-row-${ index }`} className={setTableDataStyle(index, site)} onClick={() => navigate(`/site/${ site.uuid }`)}>
                 <td className="p-2">{setTableData(site, { dispatch })}</td>
               </tr>
             )
@@ -29,4 +29,4 @@ function SitesTable({ sites }: SitesTableProps) {
   )
 }
 
-export default SitesTable
+export default memo(SitesTable)

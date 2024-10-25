@@ -1,10 +1,10 @@
 // Types
 import { NavigateFunction } from "react-router-dom"
-import { UseFormSetValue } from "react-hook-form"
+import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { Site } from "../../../../context/App/types"
 
 export interface CreateSiteComplaintFormProps { // CreateSiteComplaintForm props
-  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string } | undefined
+  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
   resetState?: () => void
 }
@@ -30,7 +30,7 @@ export interface CreateSiteComplaintFormUseForm { // CreateSiteComplaintForm use
 }
 
 export interface UseCreateSiteComplaintFormProps { // useCreateSiteComplaintForm hook props
-  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string } | undefined
+  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
 }
 
@@ -45,7 +45,7 @@ export interface HandleCreateSiteComplaintFormSubmitProps { // handleCreateSiteC
   formData: CreateSiteComplaintFormUseForm
   siteUUID: string
   options: {
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
     resetState?: () => void
   }
@@ -66,4 +66,12 @@ export enum Concern {
   PostConstructionStormwaterPTP = "Post-construction Stormwater / PTP",
   WaterLineBreak = "Water Line Break",
   Other = "Other"
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof CreateSiteComplaintFormUseForm
+  options: {
+    watch: UseFormWatch<CreateSiteComplaintFormUseForm>
+    trigger: UseFormTrigger<CreateSiteComplaintFormUseForm>
+  }
 }

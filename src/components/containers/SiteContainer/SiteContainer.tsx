@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef, useContext, memo } from 'react'
 import AppContext from '../../../context/App/AppContext'
 import { useScrollToFormRef, useSetIssuesObj, handleSiteIssuesTableRowClick } from '.'
 import styles from './SiteContainer.module.css'
@@ -12,9 +12,9 @@ import SiteHeader from '../../site/SiteHeader/SiteHeader'
 import MapContainer from "../../map/MapContainer/MapContainer"
 import SiteDetails from '../../site/SiteDetails/SiteDetails'
 import SitesActivityCalendar from '../../calendars/SitesActivityCalendar/SitesActivityCalendar'
-import SiteViolationsBtn from '../../buttons/filters/SiteViolationsBtn/SiteViolationsBtn'
-import SiteComplaintsBtn from '../../buttons/filters/SiteComplaintsBtn/SiteComplaintsBtn'
-import SiteIllicitDischargeBtn from '../../buttons/filters/SiteIllicitDischargeBtn/SiteIllicitDischargeBtn'
+import SiteViolationsBtn from '../../indicators/SiteViolationsIndicator/SiteViolationsIndicator'
+import SiteComplaintsBtn from '../../indicators/SiteComplaintsIndicator/SiteComplaintsIndicator'
+import SiteIllicitDischargeBtn from '../../indicators/SiteIllicitDischargeIndicator/SiteIllicitDischargeIndicator'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
 import SiteIssuesTable from '../../tables/SiteIssuesTable/SiteIssuesTable'
 import SiteContactsTable from '../../tables/SiteContactsTable/SiteContactsTable'
@@ -34,7 +34,7 @@ function SiteContainer({ site }: SiteContainerProps) {
   const issuesObj = useSetIssuesObj(site)
 
   return (
-    <div className="flex flex-col gap-10">
+    <div data-testid="site-container" className="flex flex-col gap-10">
       <SiteHeader site={site} />
       <div className={styles.container}>
 
@@ -64,6 +64,7 @@ function SiteContainer({ site }: SiteContainerProps) {
         
 
         <section className={styles.endDiv}>
+
           <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
             <div className={styles.header}>Site Activity</div>
             <SitesActivityCalendar 
@@ -71,6 +72,7 @@ function SiteContainer({ site }: SiteContainerProps) {
               handleEventClick={(event: MbscCalendarEvent) => setState(prevState => ({ ...prevState, activeForm: event.event.form, formUUID: event.event.formUUID }))}
               handleCellClick={(event: MbscCalendarEvent) => setState(prevState => ({ ...prevState, activeForm: 'createSiteLog', formDate: event.date?.toString() }))} />
           </div>
+
           <div className={styles.violationsDiv}>
             <div className={styles.header}>Site Issues</div>
 
@@ -95,10 +97,9 @@ function SiteContainer({ site }: SiteContainerProps) {
               <SiteIssuesTable 
                 site={site}
                 handleRowClick={handleSiteIssuesTableRowClick(setState)} />
-
             </div>
-
           </div>
+
         </section>
         
       </div>
@@ -116,4 +117,4 @@ function SiteContainer({ site }: SiteContainerProps) {
   )
 }
 
-export default SiteContainer
+export default memo(SiteContainer)

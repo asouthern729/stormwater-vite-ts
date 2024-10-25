@@ -1,3 +1,4 @@
 export interface UseGetInspectorProps { // useGetInspectorProps
-  slug: string | undefined
+  inspectorId: string | undefined
+  validated: boolean
 }

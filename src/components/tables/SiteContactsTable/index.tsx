@@ -9,7 +9,7 @@ export const setSiteContactsTableData = (siteContacts: SetSiteContactsTableDataP
   const siteContactsArray: SiteContactObj[] = []
 
   siteContacts.forEach(contact => {
-    let obj: SiteContactObj = {
+    const obj: SiteContactObj = {
       name: contact.Contact.name,
       company: contact.Contact.company,
       role: undefined,
@@ -28,14 +28,14 @@ export const setSiteContactsTableData = (siteContacts: SetSiteContactsTableDataP
 
 export const setAllSiteContacts = (siteContacts: SetAllSiteContactsProps['siteContacts']): string[] => { // Return array with all site contact emails
   const emailArray: string[] = siteContacts.map(contact => {
-    return contact.Contact.email
+    return contact.Contact?.email as string
   })
 
   return emailArray
 }
 
 export const setContactTableDataCell = (contact: SiteContactObj): ReactElement => { // Set contact table data cell
-  const phone = formatPhone(contact.phone)
+  const phone = formatPhone(contact.phone as string)
   
   return (
     <td className="flex flex-col">

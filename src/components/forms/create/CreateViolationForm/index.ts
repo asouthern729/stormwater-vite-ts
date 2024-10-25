@@ -6,7 +6,7 @@ import { errorPopup } from '../../../../utils/Toast/Toast'
 // Types
 import { UseFormReturn } from 'react-hook-form'
 import { ViolationObj, FollowUpObj } from '../../../../context/App/types'
-import { CreateViolationFormUseForm, UseCreateViolationFormProps, HandleCreateViolationFormSubmitProps } from './types'
+import { CreateViolationFormUseForm, UseCreateViolationFormProps, HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const useCreateViolationForm = (site: UseCreateViolationFormProps['site'], date: UseCreateViolationFormProps['date']): UseFormReturn<CreateViolationFormUseForm> => { // CreateViolationForm useForm
   const violationDate = new Date(date).toISOString().split('T')[0]
@@ -64,6 +64,14 @@ export const handleCreateViolationFormSubmit = async (formData: HandleCreateViol
       }
     }
     
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? navigate('/') : undefined })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

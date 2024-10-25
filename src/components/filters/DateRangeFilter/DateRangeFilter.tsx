@@ -14,7 +14,7 @@ function DateRangeFilter() {
   useHandleDateRangeChange(state)
 
   return (
-    <div className={styles.container}>
+    <div data-testid="date-range-filter" className={styles.container}>
       <div className={styles.header}>Date Range Filter</div>
       <div className="flex gap-10">
         <div className="flex flex-col items-center">
@@ -36,6 +36,7 @@ function DateRangeFilter() {
             onChange={(event) => handleDateChange(event, { setState })} />  
         </div>
       </div>
+      
       {(state.start && state.end) && (
         <ClearFilterBtn
           label={'Remove Date Range Filter'}

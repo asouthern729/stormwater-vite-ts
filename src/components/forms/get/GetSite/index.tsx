@@ -13,8 +13,8 @@ import CreateViolationForm from "../../create/CreateViolationForm/CreateViolatio
 import CreateSiteComplaintForm from "../../create/CreateSiteComplaintForm/CreateSiteComplaintForm"
 import CreateSiteIllicitDischargeForm from "../../create/CreateSiteIllicitDischargeForm/CreateSiteIllicitDischargeForm"
 
-export const useGetActiveSiteNames = (): UseQueryResult<GetActiveSiteNamesResponse> => { // Get active site names
-  return useQuery('getActiveSiteName', () => getActiveSiteNames())
+export const useGetActiveSiteNames = (validated: boolean): UseQueryResult<GetActiveSiteNamesResponse> => { // Get active site names
+  return useQuery('getActiveSiteName', () => getActiveSiteNames(), { enabled: validated })
 }
 
 export const setCreateForm = (form: SetCreateFormProps['form'], site: SetCreateFormProps['site'], options: SetCreateFormProps['options']): ReactElement | undefined => { // Set form
@@ -30,7 +30,7 @@ export const setCreateForm = (form: SetCreateFormProps['form'], site: SetCreateF
         <CreateViolationForm 
           key={`create-violation-${ site?.siteId }`}
           date={today as string}
-          site={site as { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string }}
+          site={site as { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string }}
           navigate={navigate} />
       ) as ReactElement
     case 'createComplaint':
@@ -38,16 +38,14 @@ export const setCreateForm = (form: SetCreateFormProps['form'], site: SetCreateF
         <CreateSiteComplaintForm
           key={`create-complaints-${ site?.siteId }`}
           date={today as string}
-          site={site}
-          navigate={navigate} />
+          site={site} />
       )
     case 'createDischarge':
       return component = (
         <CreateSiteIllicitDischargeForm
           key={`create-discharge-${ site?.siteId }`}
           date={today as string}
-          site={site}
-          navigate={navigate} />
+          site={site} />
       )
   }
 

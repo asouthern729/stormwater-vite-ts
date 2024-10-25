@@ -5,6 +5,6 @@ import { getFollowUp } from "../../../../context/App/AppActions"
 import { UseQueryResult } from "react-query"
 import { GetFollowUpResponse } from "../../../../context/App/types"
 
-export const useGetFollowUp = (uuid: string | undefined): UseQueryResult<GetFollowUpResponse> => { // Get follow up
-  return useQuery(['getFollowUp', uuid], () => getFollowUp(uuid as string), { enabled: !!uuid })
+export const useGetFollowUp = (uuid: string | undefined, validated: boolean): UseQueryResult<GetFollowUpResponse> => { // Get follow up
+  return useQuery(['getFollowUp', uuid], () => getFollowUp(uuid as string), { enabled: !!uuid && validated })
 }

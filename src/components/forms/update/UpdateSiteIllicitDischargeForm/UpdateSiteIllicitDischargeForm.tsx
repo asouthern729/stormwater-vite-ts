@@ -1,8 +1,10 @@
+import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
 import { useQueryClient } from "react-query"
+import AppContext from "../../../../context/App/AppContext"
 import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
 import { deleteFollowUp } from "../../../../context/App/AppActions"
-import { useUpdateSiteIllicitDischargeForm, handleUpdateSiteIllicitDischargeFormSubmit } from '.'
+import { useUpdateSiteIllicitDischargeForm, handleUpdateSiteIllicitDischargeFormSubmit, handleRequiredFieldValidation } from '.'
 import styles from '../../Forms.module.css'
 
 // Types
@@ -19,6 +21,8 @@ import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
 function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: UpdateSiteIllicitDischargeFormProps) {
+  const { inspectorOptions } = useContext(AppContext)
+
   const methods = useUpdateSiteIllicitDischargeForm(illicitDischarge)
 
   const siteUUID = useGetSiteUUID()
@@ -26,29 +30,50 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
   const queryClient = useQueryClient()
 
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>Update Illicit Discharge</div>
-      <FormProvider { ...methods }>
-        <form onSubmit={methods.handleSubmit(formData => handleUpdateSiteIllicitDischargeFormSubmit(formData, { invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]), resetState }))} className={styles.body}>
+    <div data-testid="update-site-illicit-discharge-form" className={styles.container}>
 
-          <div className={styles.inputSection}>
-            <div className="flex">
-              <FormLabel
-                label={'Illicit Discharge Date:'}
-                name={'date'}
-                required={true} />
-              <input 
-                type="date"
-                className={styles.input}
-                { ...methods.register('date', {
-                  required: {
-                    value: true,
-                    message: 'Violation date is required'
-                  },
-                  onBlur: () => methods.trigger('date')
-                }) } />
+      <div className={styles.title}>Update Illicit Discharge</div>
+
+      <FormProvider { ...methods }>
+        <form onSubmit={methods.handleSubmit(formData => handleUpdateSiteIllicitDischargeFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'), resetState }))} className={styles.body}>
+
+          <div className="flex gap-3 w-full">
+            <div className="flex-1 flex flex-col">
+              <div className="flex">
+                <FormLabel
+                  label={'Illicit Discharge Date:'}
+                  name={'date'}
+                  required={true} />
+                <input 
+                  type="date"
+                  className={styles.input}
+                  { ...methods.register('date', {
+                    required: 'Violation date is required',
+                    onBlur: () => handleRequiredFieldValidation('date', { watch: methods.watch, trigger: methods.trigger })
+                  }) } />
+              </div>
+              <FormError field={'date'} />
             </div>
-            <FormError field={'date'} />
+
+            {!illicitDischarge.siteId && ( // No associated site - show inspector question
+              <div className="flex-1 flex flex-col">
+                <div className="flex">
+                  <FormLabel
+                    label={'Inspector:'}
+                    name={'inspectorId'} />
+                  <select 
+                    className={styles.input}
+                    { ...methods.register('inspectorId') }>
+                      <option value={''}></option>
+                      {inspectorOptions.map((inspector) => (
+                        <option key={inspector.value} value={inspector.value}>
+                          {inspector.text}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={styles.inputSection}>
@@ -61,16 +86,12 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                 className={styles.input}
                 rows={4}
                 { ...methods.register('details', {
-                required: {
-                  value: true,
-                  message: 'Violation details is required'
-                },
+                required: 'Violation details is required',
                 maxLength: {
                   value: 2000,
                   message: 'Violation details must be 2000 characters or less'
                 },
-                onBlur: () => methods.trigger('details'),
-                onChange: () => methods.trigger('details')
+                onBlur: () => handleRequiredFieldValidation('details', { watch: methods.watch, trigger: methods.trigger })
               }) } />
             </div>
             <FormError field={'details'} />
@@ -86,11 +107,8 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                 <select 
                   className={styles.input}
                   { ...methods.register('streamWatershed', {
-                    required: {
-                      value: true,
-                      message: 'Stream / watershed is required'
-                    },
-                    onBlur: () => methods.trigger('streamWatershed')
+                    required: 'Stream / watershed is required',
+                    onBlur: () => handleRequiredFieldValidation('streamWatershed', { watch: methods.watch, trigger: methods.trigger })
                   }) }>
                   <option value={''}></option>
                   {Object.values(StreamWatershed).map((streamWatershed) => (
@@ -112,14 +130,12 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                     type="text" 
                     className={styles.input}
                     { ...methods.register('otherStreamWatershed', {
-                      required: {
-                        value: methods.watch('streamWatershed') === 'Other' ? true : false,
-                        message: 'Stream / Watershed is required'
-                      },
+                      required: methods.watch('streamWatershed') === 'Other' ? 'Stream / Watershed is required' : false,
                       maxLength: {
                         value: 50,
                         message: 'Stream / Watershed must be 50 characters or less'
-                      }
+                      },
+                      onBlur: () => handleRequiredFieldValidation('otherStreamWatershed', { watch: methods.watch, trigger: methods.trigger })
                     }) } />
                 </div>
                 <FormError field={'otherStreamWatershed'} />
@@ -130,6 +146,7 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
 
           <section className="flex flex-col gap-3 py-10 w-full">
             <div className={styles.subtitle}>Enforcement</div>
+
             <div className={styles.inputSection}>
               <div className="flex">
                 <FormLabel
@@ -142,8 +159,7 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                     maxLength: {
                       value: 2000,
                       message: 'Enforcement action must be 2000 characters or less'
-                    },
-                    onChange: () => methods.trigger('enforcementAction')
+                    }
                   }) } />
               </div>
               <FormError field={'enforcementAction'} />
@@ -175,10 +191,8 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                       type="number"
                       className={styles.input}
                       { ...methods.register('penaltyAmount', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty amount is required'
-                        }
+                        required: methods.watch('penaltyDate') ? 'Penalty amount is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyDate', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyAmount'} />
@@ -197,11 +211,8 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                       type="date"
                       className={styles.input}
                       { ...methods.register('penaltyDueDate', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty due date is required'
-                        },
-                        onBlur: () => methods.trigger('penaltyDate')
+                        required: methods.watch('penaltyDate') ? 'Penalty due date is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyDueDate', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyDate'} />
@@ -231,7 +242,7 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
                       <UpdateFollowUpForm followUp={followUp} />
                       <DeleteBtn
                         label={'Delete Follow Up'}
-                        handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]), resetState })} />
+                        handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]), resetState })} />
                     </div>
                   )
                 })

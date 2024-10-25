@@ -12,7 +12,7 @@ export interface GetSiteState { // GetSite state object
 
 export interface SetCreateFormProps { // setCreateForm fn props
   form: CreateForm
-  site: { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string } | undefined
+  site: { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   options: {
     navigate: () => void
   }

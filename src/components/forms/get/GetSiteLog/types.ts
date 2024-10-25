@@ -5,4 +5,5 @@ export interface GetSiteLogProps { // GetSiteLog props
 
 export interface GetSiteLogState { // GetSiteLog state obj
   deleteBtnActive: boolean
+  formUUID?: string | undefined
 }

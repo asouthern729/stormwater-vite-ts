@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { Eventcalendar } from '@mobiscroll/react'
 import { useFormatCalendarData, useCalendarProps } from '.'
 import styles from './SitesActivityCalendar.module.css'
@@ -18,7 +18,7 @@ function SitesActivityCalendar({ sites, handleCellClick, handleEventClick }: Sit
   const calendarProps = useCalendarProps(state.type, data, { handleCellClick, handleEventClick })
 
   return (
-    <div className={styles.container}>
+    <div data-testid="sites-acitivity-calendar" className={styles.container}>
       <CalendarTypeBtn
         handleClick={() => setState(prevState => ({ ...prevState, type: prevState.type === 'week' ? 'month' : 'week' }))}
         label={`Show ${ state.type === 'week' ? 'Month' : 'Week' } View`} />
@@ -35,4 +35,4 @@ function SitesActivityCalendar({ sites, handleCellClick, handleEventClick }: Sit
   )
 }
 
-export default SitesActivityCalendar
+export default memo(SitesActivityCalendar)

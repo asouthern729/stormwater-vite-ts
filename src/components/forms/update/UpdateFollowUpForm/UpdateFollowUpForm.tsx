@@ -9,7 +9,7 @@ import FormLabel from "../../FormLabel/FormLabel"
 
 function UpdateFollowUpForm({ followUp }: UpdateFollowUpFormProps) {
   return (
-    <div className="flex w-full">
+    <div data-testid="update-follow-up-form" className="flex w-full">
       <FormLabel
         label={'Existing Follow Up Date:'}
         name={'followUpDate'} />

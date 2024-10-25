@@ -1,10 +1,10 @@
 // Types
-import { UseFormSetValue } from "react-hook-form"
+import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { NavigateFunction } from "react-router-dom"
 import { Site } from "../../../../context/App/types"
 
 export interface CreateSiteIllicitDischargeFormProps { // CreateSiteIllicitDischargeForm props
-  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string } | undefined
+  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
   resetState?: () => void
 }
@@ -30,7 +30,7 @@ export interface CreateSiteIllicitDischargeFormUseForm { // CreateSiteIllicitDis
 }
 
 export interface UseCreateSiteIllicitDischargeFormProps { // useCreateSiteIllicitDischargeForm hook props
-  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string } | undefined
+  site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
 }
 
@@ -45,9 +45,17 @@ export interface HandleCreateSiteIllicitDischargeFormSubmitProps { // handleCrea
   formData: CreateSiteIllicitDischargeFormUseForm
   siteUUID: string
   options: {
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
     resetState?: () => void
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof CreateSiteIllicitDischargeFormUseForm
+  options: {
+    watch: UseFormWatch<CreateSiteIllicitDischargeFormUseForm>
+    trigger: UseFormTrigger<CreateSiteIllicitDischargeFormUseForm>
   }
 }
 

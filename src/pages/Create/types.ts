@@ -7,3 +7,6 @@ export type CreateForm =
   | "createViolation"
   | "createComplaint"
   | "createDischarge"
+  | "createInspector"
+  | "createContact"
+  | "createGreen"

@@ -5,4 +5,5 @@ export interface GetViolationProps { // GetViolation props
 
 export interface GetViolationState { // GetViolation state obj
   deleteBtnActive: boolean
+  formUUID?: string | undefined
 }

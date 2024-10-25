@@ -1,4 +1,5 @@
 // Types
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { ConstructionViolation } from "../../../../context/App/types"
 
 export interface UpdateViolationFormProps { // UpdateViolationForm props
@@ -33,6 +34,14 @@ export interface HandleUpdateViolationFormSubmitProps { // handleUpdateViolation
   formData: UpdateViolationFormUseForm
   options: {
     resetState: () => void
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof UpdateViolationFormUseForm
+  options: {
+    watch: UseFormWatch<UpdateViolationFormUseForm>
+    trigger: UseFormTrigger<UpdateViolationFormUseForm>
   }
 }

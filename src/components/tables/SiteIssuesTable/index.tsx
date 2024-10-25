@@ -9,14 +9,14 @@ import dischargeIcon from '../../../assets/icons/discharge/discharge.svg'
 
 // Types
 import { ReactNode } from 'react'
-import { SetSiteIssuesTableDataProps, SetTypeIconProps, Issue } from "./types"
+import { UseSetSiteIssuesTableDataProps, SetTypeIconProps, Issue, Combined } from "./types"
 
-export const setSiteIssuesTableData = (site: SetSiteIssuesTableDataProps['site'], showAll: SetSiteIssuesTableDataProps['showAll']): Issue[] => {
+export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['site'], showAll: UseSetSiteIssuesTableDataProps['showAll']): Issue[] => {
   const { dateRangeFilter, showSiteComplaints, showSiteViolations, showSiteIllicitDischarges, showClosedSiteIssues } = useContext(AppContext)
 
   const { ConstructionViolations, Complaints, IllicitDischarges } = site
 
-  let combined: any[] = []
+  let combined: Combined[] = []
 
   if(showSiteComplaints) { // Handle complaints
     combined.push(...Complaints.filter(complaint => !showClosedSiteIssues ? !complaint.closed : complaint ))
@@ -42,7 +42,7 @@ export const setSiteIssuesTableData = (site: SetSiteIssuesTableDataProps['site']
     })
   }
 
-  let combinedArray: Issue[] = []
+  const combinedArray: Issue[] = []
 
   combined.forEach(issue => {
     const obj: Issue = {
@@ -56,6 +56,8 @@ export const setSiteIssuesTableData = (site: SetSiteIssuesTableDataProps['site']
         lifted: issue?.swoLiftedDate ? true : false
       },
       closed: issue.closed,
+      concern: issue?.concern,
+      otherConcern: issue?.otherConcern,
       form: setFormType(issue as { complaintId?: string, violationId?: string, illicitId?: string }),
       details: issue.details,
       uuid: issue.uuid

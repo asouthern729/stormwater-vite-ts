@@ -13,7 +13,7 @@ export const useHandleError = () => { // Handle error
     if(state.countdown === 0) {
       navigate('/')
     }
-  }, [state.countdown])
+  }, [state.countdown, navigate])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,7 +23,7 @@ export const useHandleError = () => { // Handle error
     redirect()
 
     return () => clearInterval(interval)
-  }, [redirect])
+  }, [redirect, navigate])
 
   return { countdown: state.countdown }
 }

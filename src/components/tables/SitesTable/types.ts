@@ -16,5 +16,5 @@ export interface SetTableDataProps { // setTableData fn props
 
 export interface SetTableDataStyleProps { // setTableDataStyle fn props
   index: number
-  hasOpenViolation: boolean
+  site: Site
 }

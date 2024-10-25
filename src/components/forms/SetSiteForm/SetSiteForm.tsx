@@ -11,7 +11,7 @@ function SetSiteForm({ state, site, setState }: SetSiteFormProps) {
   const queryClient = useQueryClient()
 
   return (
-    <div>
+    <div data-testid="set-site-form">
       {setForm(state, site, { setState, navigate, queryClient })}
     </div>
   )

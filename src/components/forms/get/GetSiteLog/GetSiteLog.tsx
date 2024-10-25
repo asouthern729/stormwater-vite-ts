@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useQueryClient } from "react-query"
-import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
+import { useValidateUser, useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
 import { deleteSiteLog } from "../../../../context/App/AppActions"
 import { useGetSiteLog } from "."
 
@@ -12,24 +12,26 @@ import UpdateSiteLogForm from "../../update/UpdateSiteLogForm/UpdateSiteLogForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
 function GetSiteLog({ uuid, resetState }: GetSiteLogProps) {
-  const [state, setState] = useState<GetSiteLogState>({ deleteBtnActive: false })
+  const [state, setState] = useState<GetSiteLogState>({ deleteBtnActive: false, formUUID: uuid })
 
-  const { data } = useGetSiteLog(uuid)
+  const validated = useValidateUser()
+
+  const { data } = useGetSiteLog(uuid, validated)
 
   const siteUUID = useGetSiteUUID()
 
   const queryClient = useQueryClient()
 
   return (
-    <div>
-      {data && (
+    <div data-testid="get-site-log">
+      {data?.data && (
         <div className="flex flex-col items-center">
           <UpdateSiteLogForm
             siteLog={data.data}
             resetState={resetState} />
           <DeleteBtn
             label={!state.deleteBtnActive ? 'Delete Site Log' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteSiteLog, { setState, resetState, invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]) })} />
+            handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteSiteLog, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]) })} />
         </div>
       )}
     </div>

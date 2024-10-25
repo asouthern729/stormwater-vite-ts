@@ -1,4 +1,4 @@
-import { useHandlePageLoad, useGetInspectorsForForms, useGetContactsForForms } from "../../helpers"
+import { useValidateUser, useHandlePageLoad } from "../../helpers"
 import { useGetSite } from "."
 
 // Types
@@ -8,19 +8,23 @@ import { Site as SiteType } from "../../context/App/types"
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
 import SiteContainer from "../../components/containers/SiteContainer/SiteContainer"
+import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Site() {
-  const { data } = useGetSite()
+  const validated = useValidateUser()
 
-  useHandlePageLoad()
-  useGetInspectorsForForms()
-  useGetContactsForForms()
+  useHandlePageLoad(validated)
 
+  const { data, isSuccess } = useGetSite(validated)
+  
   return (
     <Layout>
       <HandleLoading
-        children={<SiteContainer site={data?.data as SiteType} />}
-        data={data} />
+        isSuccess={isSuccess}>
+          <ErrorBoundary>
+            <SiteContainer site={data?.data as SiteType} />
+          </ErrorBoundary>
+      </HandleLoading>
     </Layout>
   )
 }

@@ -1,6 +1,5 @@
 // Types
-import { QueryClient } from "react-query"
-import { NavigateFunction } from "react-router-dom"
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { SiteContactObj } from "../../../../context/App/types"
 
 export interface CreateSiteFormUseForm {
@@ -25,8 +24,8 @@ export interface CreateSiteFormUseForm {
 export interface HandleCreateSiteFormSubmitProps { // handleCreateSiteFormSubmit fn props
   formData: CreateSiteFormUseForm
   options: {
-    invalidateQuery: Promise<void>
-    navigate: void
+    invalidateQuery: () => Promise<void>
+    navigate: () => void
   }
 }
 
@@ -38,5 +37,13 @@ export interface AddContactProps { // addContact helper fn props
     isPrimary: boolean | null
     isContractor: boolean | null
     isInspector: boolean | null
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof CreateSiteFormUseForm
+  options: {
+    watch: UseFormWatch<CreateSiteFormUseForm>
+    trigger: UseFormTrigger<CreateSiteFormUseForm>
   }
 }

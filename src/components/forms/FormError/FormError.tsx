@@ -9,7 +9,7 @@ function FormError({ field }: FormErrorProps) {
 
   return (
     errors[field] ? (
-      <div className={styles.error}>{errors[field].message?.toString()}</div>
+      <div data-testid="form-error" className={styles.error}>{errors[field].message?.toString()}</div>
     ) : null
   )
 }

@@ -1,4 +1,5 @@
 // Types
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { Site } from "../../../../context/App/types"
 
 export interface UpdateSiteFormProps { // UpdateSiteForm props
@@ -28,7 +29,15 @@ export interface UpdateSiteFormUseForm {
 export interface HandleUpdateSiteFormSubmitProps { // handleUpdateSiteFormSubmit fn props
   formData: UpdateSiteFormUseForm
   options: {
-    navigate: void
-    invalidateQuery: Promise<void>
+    navigate: () => void
+    invalidateQuery: () => Promise<void>
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof UpdateSiteFormUseForm
+  options: {
+    watch: UseFormWatch<UpdateSiteFormUseForm>
+    trigger: UseFormTrigger<UpdateSiteFormUseForm>
   }
 }

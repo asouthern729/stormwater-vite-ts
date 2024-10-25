@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { setSiteContactsTableData, setAllSiteContacts , setContactTableDataCell} from '.'
 import styles from './SiteContactsTable.module.css'
 
@@ -10,7 +11,7 @@ function SiteContactsTable({ siteContacts }: SiteContactsTableProps) {
   const allContacts = setAllSiteContacts(siteContacts)
 
   return (
-    <div className={styles.container}>
+    <div data-testid="site-contacts-table" className={styles.container}>
 
       <div className={styles.header}>Site Contacts</div>
 
@@ -25,7 +26,7 @@ function SiteContactsTable({ siteContacts }: SiteContactsTableProps) {
           {tableData.map((obj, index) => {
             return (
               <tr key={`site-contacts-table-row-${ index }`} className="hover:cursor-default">
-                <td>{setContactTableDataCell(obj)}</td>
+                {setContactTableDataCell(obj)}
                 <td>{obj.role}</td>
               </tr>
             )
@@ -39,4 +40,4 @@ function SiteContactsTable({ siteContacts }: SiteContactsTableProps) {
   )
 }
 
-export default SiteContactsTable
+export default memo(SiteContactsTable)

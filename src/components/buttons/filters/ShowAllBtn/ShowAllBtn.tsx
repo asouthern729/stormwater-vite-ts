@@ -5,7 +5,8 @@ import { ShowAllBtnProps } from './types'
 
 function ShowAllBtn({ label, handleClick }: ShowAllBtnProps) {
   return (
-    <button 
+    <button
+      data-testid="show-all-btn" 
       type="button"
       className={styles.btn}
       onClick={handleClick}>

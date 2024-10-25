@@ -1,4 +1,5 @@
 // Types
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { Complaint } from "../../../../context/App/types"
 import { Concern } from "../../create/CreateSiteComplaintForm/types"
 
@@ -38,6 +39,14 @@ export interface HandleUpdateSiteComplaintFormSubmitProps { // handleUpdateSiteC
   formData: UpdateSiteComplaintFormUseForm
   options: {
     resetState: () => void
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof UpdateSiteComplaintFormUseForm
+  options: {
+    watch: UseFormWatch<UpdateSiteComplaintFormUseForm>
+    trigger: UseFormTrigger<UpdateSiteComplaintFormUseForm>
   }
 }

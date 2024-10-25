@@ -14,10 +14,10 @@ export interface SetAllSiteContactsProps { // setAllSiteContacts fn props
 
 export interface SiteContactObj {
   name: string
-  company: string
+  company: string | null
   role: SiteContactRole | undefined
-  phone: string
-  email: string
+  phone: string | null
+  email: string | null
   order: number
 }
 

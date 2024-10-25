@@ -26,14 +26,10 @@ export interface MapState {
 
 export interface MapReducerProps {
   state: MapState
-  action: ReducerAction
+  action: MapAction
 }
 
 export type MapAction =
   | { type: 'SET_NEW_SITE_MAP_COORDINATES', payload: { xCoordinate: number, yCoordinate: number } }
   | { type: 'SET_UPDATE_SITE_MAP_COORDINATES', payload: { xCoordinate: number, yCoordinate: number } }
   | { type: 'RESET_CTX', payload: undefined }
-
-interface ReducerAction {
-  type: string, payload: any
-}

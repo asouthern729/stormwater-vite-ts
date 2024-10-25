@@ -16,6 +16,7 @@ export interface AppContextObj { // App ctx
   searchValue: string
   showActiveSitesOnly: boolean
   showClosedSiteIssues: boolean
+  showMenu: boolean
   showOpenIssuesOnly: boolean
   showSiteComplaints: boolean
   showSiteIllicitDischarges: boolean
@@ -34,6 +35,7 @@ export interface AppState {
   searchValue: string
   showActiveSitesOnly: boolean
   showClosedSiteIssues: boolean
+  showMenu: boolean
   showOpenIssuesOnly: boolean
   showSiteComplaints: boolean
   showSiteIllicitDischarges: boolean
@@ -42,7 +44,7 @@ export interface AppState {
 
 export interface AppReducerProps { // AppReducer props
   state: AppState
-  action: ReducerAction
+  action: AppAction
 }
 
 export interface ServerResponse { // Server response object
@@ -59,7 +61,7 @@ export interface GetSiteResponse extends ServerResponse {
 }
 
 export interface GetActiveSiteNamesResponse extends ServerResponse {
-  data: { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string }[]
+  data: { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string }[]
 }
 
 export interface CreateSiteResponse extends ServerResponse {
@@ -71,12 +73,7 @@ export interface UpdateSiteResponse extends ServerResponse {
 }
 
 export interface GetContactsResponse extends ServerResponse {
-  data: {
-    totalItems: number
-    records: Contact[]
-    totalPages: number
-    currentPage: number
-  }
+  data: Contact[]
 }
 
 export interface GetContactResponse extends ServerResponse {
@@ -143,8 +140,28 @@ export interface GetIllicitDischargeResponse extends ServerResponse {
   data: IllicitDischarge
 }
 
+export interface GetIllicitDischargesResponse extends ServerResponse {
+  data: IllicitDischarge[]
+}
+
 export interface GetInspectorResponse extends ServerResponse {
+  data: { sites: Site[], inspector: Inspector }
+}
+
+export interface CreateInspectorResponse extends ServerResponse {
   data: Inspector
+}
+
+export interface CreateGreenViolationResponse extends ServerResponse {
+  data: GreenInfrastructure
+}
+
+export interface GetGreenViolationsResponse extends ServerResponse {
+  data: GreenInfrastructure[]
+}
+
+export interface GetGreenViolationResponse extends ServerResponse {
+  data: GreenInfrastructure
 }
 
 export interface Site extends BaseObj {
@@ -163,14 +180,14 @@ export interface Site extends BaseObj {
   hasOpenViolation: boolean
   hasOpenComplaint: boolean
   hasOpenIllicitDischarge: boolean
-  Inspector: Inspector
+  Inspector: Inspector | null
   SiteContacts: SiteContact[]
   Logs: SiteLog[]
   ConstructionViolations: ConstructionViolation[]
   Complaints: Complaint[]
   IllicitDischarges: IllicitDischarge[]
   Attachments: Attachment[]
-  [key: string]: any
+  [key: string]: string | number | boolean | null | Inspector | SiteContact[] | SiteLog[] | ConstructionViolation[] | Complaint[] | IllicitDischarge[] | Attachment[]
 }
 
 export interface Inspector extends BaseObj {
@@ -187,16 +204,19 @@ export interface SiteContact extends BaseObj {
   isPrimary: boolean
   isContractor: boolean
   isInspector: boolean
+  Site: Site
   Contact: Contact
 }
 
 export interface Contact extends BaseObj {
   contactId: string
   name: string
-  phone: string
-  company: string
-  email: string
+  phone: string | null
+  company: string | null
+  email: string | null
   inactive: boolean
+  SiteContacts: SiteContact[]
+  [key: string]: string | boolean | SiteContact[] | undefined | null
 }
 
 export interface SiteLog extends BaseObj {
@@ -219,7 +239,7 @@ export interface FollowUp extends BaseObj {
   illicitId: string | null
   greenId: string | null
   followUpDate: string
-  [key: string]: any
+  [key: string]: string | null
 }
 
 export interface ConstructionViolation extends BaseObj {
@@ -244,6 +264,7 @@ export interface Complaint extends BaseObj {
   date: string
   complaintId: string
   siteId: string | null
+  inspectorId: string | null
   name: string | null
   address: string | null
   phone: string | null
@@ -281,6 +302,26 @@ export interface IllicitDischarge extends BaseObj {
   FollowUpDates: FollowUp[]
 }
 
+export interface GreenInfrastructure extends BaseObj {
+  greenId: string
+  date: string
+  xCoordinate: number | undefined
+  yCoordinate: number | undefined
+  inspectorId: string | null
+  details: string
+  responsibleParty: string | null
+  comments: string | null
+  enforcementAction: string | null
+  penaltyDate: string | undefined
+  penaltyAmount: number | null
+  penaltyDueDate: string | undefined
+  paymentReceived: string | undefined
+  bondReleased: boolean
+  compliance: boolean
+  closed: boolean
+  FollowUpDates: FollowUp[]
+}
+
 export interface Attachment {
   uuid: string
 }
@@ -305,6 +346,7 @@ export interface ContactObj { // ContactObj for forms
   phone: string | null
   company: string | null
   email: string | null
+  inactive: boolean | string | null
   uuid?: string
 }
 
@@ -385,6 +427,31 @@ export interface FollowUpObj { // FollowUp obj for forms
   parentId: string
 }
 
+export interface InspectorObj { // Inspector obj for forms
+  name: string
+  email: string
+  uuid?: string
+}
+
+export interface GreenObj { // Green infrastructure violation obj for forms
+  date: string | undefined
+  xCoordinate: number | undefined
+  yCoordinate: number | undefined
+  inspectorId: string | null
+  details: string
+  responsibleParty: string | null
+  comments: string | null
+  enforcementAction: string | null
+  penaltyDate: string | null
+  penaltyAmount: number | null
+  penaltyDueDate: string | null
+  paymentReceived: string | null
+  bondReleased: boolean | string | null
+  compliance: boolean | string | null
+  closed: boolean | string | null
+  uuid?: string
+}
+
 export interface BaseObj { 
   uuid: string
   createdBy: string
@@ -403,6 +470,7 @@ export type AppAction =
   | { type: 'TOGGLE_SHOW_SITE_VIOLATIONS', payload: undefined }
   | { type: 'TOGGLE_SHOW_SITE_ILLICIT_DISCHARGES', payload: undefined }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES', payload: undefined }
+  | { type: 'TOGGLE_SHOW_MENU', payload: undefined }
   | { type: 'SET_INSPECTOR_OPTIONS', payload: { text: string, value: string }[] }
   | { type: 'SET_CONTACT_OPTIONS', payload: { text: string, value: string }[] }
   | { type: 'SET_DATE_RANGE_FILTER', payload: { start: string | undefined, end: string | undefined } }
@@ -415,7 +483,4 @@ export type Page =
   | "Enforcement"
   | "Create"
   | "Login"
-
-interface ReducerAction {
-  type: string, payload: any
-}
+  | "Site"

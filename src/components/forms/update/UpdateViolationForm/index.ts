@@ -6,7 +6,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 // Types
 import { UseFormReturn } from "react-hook-form"
 import { ViolationObj, FollowUpObj } from "../../../../context/App/types"
-import { UseUpdateViolationFormProps, UpdateViolationFormUseForm, HandleUpdateViolationFormSubmitProps } from './types'
+import { UseUpdateViolationFormProps, UpdateViolationFormUseForm, HandleUpdateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const useUpdateViolationForm = (violation: UseUpdateViolationFormProps['violation']): UseFormReturn<UpdateViolationFormUseForm> => { // UpdateViolationForm useForm
   return useForm<UpdateViolationFormUseForm>({
@@ -71,4 +71,12 @@ export const handleUpdateViolationFormSubmit = async (formData: HandleUpdateViol
 
     handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

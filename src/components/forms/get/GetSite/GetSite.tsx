@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useValidateUser } from "../../../../helpers"
 import { useGetActiveSiteNames, setCreateForm, handleSiteSelect } from "."
 import styles from './GetSite.module.css'
 
@@ -14,19 +15,22 @@ function GetSite({ form }: GetSiteProps) {
 
   const navigate = useNavigate()
 
-  const { data } = useGetActiveSiteNames()
+  const validated = useValidateUser()
+
+  const { data } = useGetActiveSiteNames(validated)
 
   const selectedSite = data?.data.find(site => site.siteId === state.siteId)
 
   return (
-    <div className={styles.container}>
+    <div data-testid="get-site" className={styles.container}>
       <div className="flex flex-col gap-1 items-center">
 
         <div className="text-xl">Select Site</div>
 
         <select 
           className="text-info select select-bordered"
-          onChange={(event) => handleSiteSelect(event, { setState })}>
+          onChange={(event) => handleSiteSelect(event, { setState })}
+          value={state.siteId as string}>
             <option value=""></option>
             {data ? data?.data.map(site => {
               return (

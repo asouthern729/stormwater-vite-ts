@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import { useContext } from "react"
 import { useLocation, Link } from "react-router-dom"
 import AppContext from "../../../context/App/AppContext"
 
@@ -6,22 +6,15 @@ import AppContext from "../../../context/App/AppContext"
 import { ReactNode } from "react"
 import { SiteForm } from "../../containers/SiteContainer/types"
 import { Issue } from "../SiteIssuesTable/types"
-import { UseHandlePageData,  SetTableProps, SetSitesIssuesTableDataProps, SetCivilPenaltyTableDataProps, SetSWOTableDataProps, HandlePageBtnClickProps } from "./types"
+import { Combined } from "../SiteIssuesTable/types"
+import { SetTableProps, UseSetSitesIssuesTableDataProps, SetCivilPenaltyTableDataProps, SetSWOTableDataProps, HandlePageBtnClickProps } from "./types"
 
-export const useHandlePageData = (tableData: UseHandlePageData['tableData'], currentPage: UseHandlePageData['currentPage']): Issue[] => {
-  const pageData = useMemo(() => {
-    return tableData.slice((currentPage * 20) - 20, currentPage * 20)
-  }, [tableData, currentPage])
-
-  return pageData
-}
-
-export const setSitesIssuesTableData = (sites: SetSitesIssuesTableDataProps['sites'], issues: SetSitesIssuesTableDataProps['issues']): Issue[] => { // Set table data for SitesIssuesTable
+export const useSetSitesIssuesTableData = (sites: UseSetSitesIssuesTableDataProps['sites'], issues: UseSetSitesIssuesTableDataProps['issues']): Issue[] => { // Set table data for SitesIssuesTable
   const { dateRangeFilter, showSiteComplaints, showSiteViolations, showSiteIllicitDischarges, showClosedSiteIssues } = useContext(AppContext)
 
   const location = useLocation().pathname
 
-  let combined: any[] = showClosedSiteIssues ? [ ...issues.complaints, ...issues.discharges ] : [ ...issues.complaints.filter(complaint => !complaint.closed), ...issues.discharges.filter(discharge => !discharge.closed) ]
+  let combined: Combined[] = showClosedSiteIssues ? [ ...issues.complaints, ...issues.discharges, ...issues.green ] : [ ...issues.complaints.filter(complaint => !complaint.closed), ...issues.discharges.filter(discharge => !discharge.closed), ...issues.green.filter(violation => !violation.closed) ]
 
   if(showSiteComplaints && !['/violations', '/discharges'].includes(location)) { // Handle complaints
     sites.forEach(site => {
@@ -59,7 +52,7 @@ export const setSitesIssuesTableData = (sites: SetSitesIssuesTableDataProps['sit
     })
   }
 
-  let combinedArray: Issue[] = []
+  const combinedArray: Issue[] = []
 
   combined.forEach((issue) => {
 
@@ -69,6 +62,7 @@ export const setSitesIssuesTableData = (sites: SetSitesIssuesTableDataProps['sit
       date: issue.date,
       site: site?.name,
       siteUUID: site?.uuid,
+      responsibleParty: issue.responsibleParty,
       civilPenalty: {
         issued: issue?.penaltyDate ? true : false,
         received: issue?.paymentReceived ? true : false
@@ -80,6 +74,8 @@ export const setSitesIssuesTableData = (sites: SetSitesIssuesTableDataProps['sit
       closed: issue.closed,
       form: setFormType(issue as { violationId?: string, complaintId?: string, illicitId?: string }),
       details: issue.details,
+      concern: issue.concern,
+      otherConcern: issue.otherConcern,
       uuid: issue.uuid
     }
 
@@ -119,6 +115,19 @@ export const setTableHeaders = (location: SetTableProps['location']): ReactNode 
       <tr>
         <th>Date</th>
         <th>Site</th>
+        <th>Responsible Party</th>
+        <th>Concern</th>
+        <th className="text-center">Status</th>
+      </tr>
+    )
+  }
+
+  if(page === 'green') { // Green infrastructure violations
+    return (
+      <tr>
+        <th>Date</th>
+        <th>Responsible Party</th>
+        <th className="text-center">Civil Penalty</th>
         <th className="text-center">Status</th>
       </tr>
     )
@@ -127,7 +136,7 @@ export const setTableHeaders = (location: SetTableProps['location']): ReactNode 
   return ( // Construction violations and illicit discharges
     <tr>
       <th>Date</th>
-      <th>Type</th>
+      <th>Site</th>
       <th className="text-center">Civil Penalty</th>
       <th className="text-center">SWO</th>
       <th className="text-center">Status</th>
@@ -145,13 +154,26 @@ export const setTableBody = (location: SetTableProps['location'], issue: SetTabl
       <tr key={`sites-issues-table-row-${ issue?.uuid }`} data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
         <td>{issue?.date}</td>
         <td className={issue?.siteUUID ? "whitespace-nowrap hover:text-warning" : "whitespace-nowrap"}>{issue?.siteUUID ? <Link to={`/site/${ issue.siteUUID }`}>{issue.site}</Link> : null}</td>
+        <td>{issue?.responsibleParty}</td>
+        <td>{issue?.concern}</td>
         {setStatusTableData(issue?.closed || false)}
       </tr>
     )
   }
 
+  if(page === 'green') { // Green violations
+    return (
+      <tr key={`sites-issues-table-row-${ issue?.uuid }`} data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
+        <td>{issue?.date}</td>
+        <td>{issue?.responsibleParty}</td>
+        {setCivilPenaltyTableData(issue?.civilPenalty)}
+        {setStatusTableData(issue?.closed)}
+      </tr>
+    )
+  }
+
   return (
-    <tr key={`sites-issues-table-row-${ issue?.uuid }`} title={issue?.details}>
+    <tr key={`sites-issues-table-row-${ issue?.uuid }`} data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
       <td>{issue?.date}</td>
       <td className={issue?.siteUUID ? "whitespace-nowrap hover:text-warning" : "whitespace-nowrap"}>{issue?.siteUUID ? <Link to={`/site/${ issue.siteUUID }`}>{issue.site}</Link> : null}</td>
       {setCivilPenaltyTableData(issue?.civilPenalty)}

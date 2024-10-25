@@ -14,11 +14,11 @@ export const useCreateSiteIllicitDischargeForm = (site: UseCreateSiteIllicitDisc
 
   return useForm<CreateSiteIllicitDischargeFormUseForm>({
     defaultValues: {
-      siteId: site?.siteId,
+      siteId: site?.siteId || undefined,
       date: illicitDate,
-      xCoordinate: site?.xCoordinate,
-      yCoordinate: site?.yCoordinate,
-      inspectorId: null,
+      xCoordinate: site?.xCoordinate || undefined,
+      yCoordinate: site?.yCoordinate || undefined,
+      inspectorId: site?.inspectorId || null,
       details: '',
       volumeLost: null,
       streamWatershed: null,
@@ -42,11 +42,11 @@ export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordin
       setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
       setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
     }
-  }, [coordinates])
+  }, [coordinates, setValue])
 
   useEffect(() => {
     cb()
-  }, [coordinates])
+  }, [cb])
 }
 
 export const handleCreateSiteIllicitDischargeFormSubmit = async (formData: HandleCreateSiteIllicitDischargeFormSubmitProps['formData'], siteUUID: HandleCreateSiteIllicitDischargeFormSubmitProps['siteUUID'], options: HandleCreateSiteIllicitDischargeFormSubmitProps['options']): Promise<void> => { // Handle form submit
@@ -113,7 +113,7 @@ export const handleCreateSiteIllicitDischargeFormSubmit = async (formData: Handl
         }
       }
       
-      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: navigate('/') })
+      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
     } else errorPopup(result.msg) // Handle error
   } else errorPopup('Something Went Wrong')
 }

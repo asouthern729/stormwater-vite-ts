@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form"
 import { useQueryClient } from "react-query"
 import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
 import { deleteFollowUp } from "../../../../context/App/AppActions"
-import { useUpdateViolationForm, handleUpdateViolationFormSubmit } from "."
+import { useUpdateViolationForm, handleUpdateViolationFormSubmit, handleRequiredFieldValidation } from "."
 import styles from '../../Forms.module.css'
 
 // Types
@@ -25,12 +25,12 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
   const queryClient = useQueryClient()
 
   return (
-    <div className={styles.container}>
+    <div data-testid="update-violation-form" className={styles.container}>
 
       <div className={styles.title}>Update Construction Violation</div>
       
       <FormProvider { ...methods }>
-        <form onSubmit={methods.handleSubmit(formData => handleUpdateViolationFormSubmit(formData, { invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]), resetState }))} className={styles.body}>
+        <form onSubmit={methods.handleSubmit(formData => handleUpdateViolationFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'), resetState }))} className={styles.body}>
 
           <div className={styles.inputSection}>
             <div className="flex">
@@ -42,11 +42,8 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                 type="date"
                 className={styles.input}
                 { ...methods.register('date', {
-                  required: {
-                    value: true,
-                    message: 'Violation date is required'
-                  },
-                  onBlur: () => methods.trigger('date')
+                  required: 'Violation date is required',
+                  onBlur: () => handleRequiredFieldValidation('date', { watch: methods.watch, trigger: methods.trigger })
                 }) } />
             </div>
             <FormError field={'date'} />
@@ -62,16 +59,12 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                 className={styles.input}
                 rows={4}
                 { ...methods.register('details', {
-                required: {
-                  value: true,
-                  message: 'Violation details is required'
-                },
+                required: 'Violation details is required',
                 maxLength: {
                   value: 2000,
                   message: 'Violation details must be 2000 characters or less'
                 },
-                onBlur: () => methods.trigger('details'),
-                onChange: () => methods.trigger('details')
+                onBlur: () => handleRequiredFieldValidation('details', { watch: methods.watch, trigger: methods.trigger })
               }) } />
             </div>
             <FormError field={'details'} />
@@ -91,8 +84,7 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                     maxLength: {
                       value: 2000,
                       message: 'Enforcement action must be 2000 characters or less'
-                    },
-                    onChange: () => methods.trigger('enforcementAction')
+                    }
                   }) } />
               </div>
               <FormError field={'enforcementAction'} />
@@ -146,10 +138,8 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                       type="number"
                       className={styles.input}
                       { ...methods.register('penaltyAmount', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty amount is required'
-                        }
+                        required: methods.watch('penaltyDate') ? 'Penalty amount is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyAmount', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyAmount'} />
@@ -168,11 +158,8 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                       type="date"
                       className={styles.input}
                       { ...methods.register('penaltyDueDate', {
-                        required: {
-                          value: methods.watch('penaltyDate') ? true : false,
-                          message: 'Penalty due date is required'
-                        },
-                        onBlur: () => methods.trigger('penaltyDate')
+                        required: methods.watch('penaltyDate') ? 'Penalty due date is required' : false,
+                        onBlur: () => handleRequiredFieldValidation('penaltyDate', { watch: methods.watch, trigger: methods.trigger })
                       }) } />
                   </div>
                   <FormError field={'penaltyDate'} />
@@ -202,7 +189,7 @@ function UpdateViolationForm({ violation, resetState }: UpdateViolationFormProps
                     <UpdateFollowUpForm followUp={followUp} />
                     <DeleteBtn
                       label={'Delete Follow Up'}
-                      handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]), resetState })} />
+                      handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]), resetState })} />
                   </div>
                 )
               })

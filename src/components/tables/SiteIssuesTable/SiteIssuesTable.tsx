@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import { setCivilPenaltyTableData, setSWOTableData, setStatusTableData } from "../SitesIssuesTable"
-import { setSiteIssuesTableData, setTypeIcon } from "."
+import { useSetSiteIssuesTableData, setTypeIcon } from "."
 import styles from './SiteIssuesTable.module.css'
 
 // Types
@@ -12,7 +12,7 @@ import ShowAllBtn from "../../buttons/filters/ShowAllBtn/ShowAllBtn"
 function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
   const [state, setState] = useState<SiteIssuesTableState>({ showAll: false })
 
-  const tableData = setSiteIssuesTableData(site, state.showAll)
+  const tableData = useSetSiteIssuesTableData(site, state.showAll)
 
   return (
     <div className={styles.container}>
@@ -59,4 +59,4 @@ function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
   )
 }
 
-export default SiteIssuesTable
+export default memo(SiteIssuesTable)

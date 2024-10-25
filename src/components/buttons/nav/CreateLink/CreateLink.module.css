@@ -1,0 +1,16 @@
+.createLink {
+  color: var(--info);
+  font-family: 'Play', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-right: 1px solid var(--info);
+  border-bottom: 1px solid var(--info);
+  box-shadow: 6px 6px 0 var(--info);
+}
+
+.createLink:hover {
+  color: var(--neutralContent);
+  border-color: var(--neutral);
+  box-shadow: 6px 6px 0 var(--neutral);
+}

@@ -24,7 +24,9 @@ const Map = ({ sites, basemap, type, zoom }: MapProps) => {
     setViewType(type || 'default', mapRef.current, mapProperties)
 
     return () => {
-      state.view && state.view.destroy()
+      if(state.view) {
+        state.view.destroy()
+      }
     }
   }, [sites, basemap, hoveredSite, newSite, updateSite])
 

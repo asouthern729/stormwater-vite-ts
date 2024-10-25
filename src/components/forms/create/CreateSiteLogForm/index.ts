@@ -6,7 +6,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 // Types
 import { UseFormReturn } from "react-hook-form"
 import { SiteLogObj } from "../../../../context/App/types"
-import { CreateSiteLogFormUseForm, UseCreateSiteLogFormProps, HandleCreateSiteLogFormSubmitProps } from "./types"
+import { CreateSiteLogFormUseForm, UseCreateSiteLogFormProps, HandleCreateSiteLogFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const useCreateSiteLogForm = (siteId: UseCreateSiteLogFormProps['siteId'], date: UseCreateSiteLogFormProps['date']): UseFormReturn<CreateSiteLogFormUseForm> => { // CreateSiteLogForm useForm
   const logDate = new Date(date).toISOString().split('T')[0]
@@ -32,4 +32,12 @@ export const handleCreateSiteLogFormSubmit = async (formData: HandleCreateSiteLo
   if(result.success) {
     handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

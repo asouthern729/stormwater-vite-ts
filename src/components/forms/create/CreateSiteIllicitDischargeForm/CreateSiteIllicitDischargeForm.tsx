@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
 import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
+import AppContext from "../../../../context/App/AppContext"
 import MapContext from "../../../../context/Map/MapContext"
 import { useCreateSiteIllicitDischargeForm, useHandleMapChange, handleCreateSiteIllicitDischargeFormSubmit } from "."
 import styles from '../../Forms.module.css'
@@ -18,6 +19,7 @@ import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
 import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
 
 function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIllicitDischargeFormProps) {
+  const { inspectorOptions } = useContext(AppContext)
   const { newSite } = useContext(MapContext)
 
   const methods = useCreateSiteIllicitDischargeForm(site, date)
@@ -30,9 +32,11 @@ function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIl
 
   return (
     <div className={styles.container}>
+
       <div className={styles.title}>Create Illicit Discharge</div>
+      
       <FormProvider { ...methods }>
-        <form onSubmit={methods.handleSubmit(formData => handleCreateSiteIllicitDischargeFormSubmit(formData, site?.uuid || '', { invalidateQuery: queryClient.invalidateQueries(['getSite', site?.uuid]), resetState, navigate }))} className={styles.body}>
+        <form onSubmit={methods.handleSubmit(formData => handleCreateSiteIllicitDischargeFormSubmit(formData, site?.uuid || '', { invalidateQuery: () => queryClient.invalidateQueries(['getSite', site?.uuid]), resetState, navigate }))} className={styles.body}>
 
           {!site && ( // No associated site - show map
             <div className={styles.mapDiv}>
@@ -43,24 +47,46 @@ function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIl
             </div>
           )}
 
-          <div className={styles.inputSection}>
-            <div className="flex">
-              <FormLabel
-                label={'Illicit Discharge Date:'}
-                name={'date'}
-                required={true} />
-              <input 
-                type="date"
-                className={styles.input}
-                { ...methods.register('date', {
-                  required: {
-                    value: true,
-                    message: 'Violation date is required'
-                  },
-                  onBlur: () => methods.trigger('date')
-                }) } />
+          <div className="flex gap-3 w-full">
+            <div className="flex-1 flex flex-col">
+              <div className="flex">
+                <FormLabel
+                  label={'Illicit Discharge Date:'}
+                  name={'date'}
+                  required={true} />
+                <input 
+                  type="date"
+                  className={styles.input}
+                  { ...methods.register('date', {
+                    required: {
+                      value: true,
+                      message: 'Violation date is required'
+                    },
+                    onBlur: () => methods.trigger('date')
+                  }) } />
+              </div>
+              <FormError field={'date'} />
             </div>
-            <FormError field={'date'} />
+
+            {!site && ( // No associated site - show inspector question
+              <div className="flex-1 flex flex-col">
+                <div className="flex">
+                  <FormLabel
+                    label={'Inspector:'}
+                    name={'inspectorId'} />
+                  <select 
+                    className={styles.input}
+                    { ...methods.register('inspectorId') }>
+                      <option value={''}></option>
+                      {inspectorOptions.map((inspector) => (
+                        <option key={inspector.value} value={inspector.value}>
+                          {inspector.text}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={styles.inputSection}>
@@ -81,8 +107,7 @@ function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIl
                   value: 2000,
                   message: 'Violation details must be 2000 characters or less'
                 },
-                onBlur: () => methods.trigger('details'),
-                onChange: () => methods.trigger('details')
+                onBlur: () => methods.trigger('details')
               }) } />
             </div>
             <FormError field={'details'} />
@@ -154,8 +179,7 @@ function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIl
                     maxLength: {
                       value: 2000,
                       message: 'Enforcement action must be 2000 characters or less'
-                    },
-                    onChange: () => methods.trigger('enforcementAction')
+                    }
                   }) } />
               </div>
               <FormError field={'enforcementAction'} />

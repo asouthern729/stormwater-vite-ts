@@ -6,7 +6,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 // Types
 import { UseFormReturn } from "react-hook-form"
 import { SiteObj, SiteContactObj } from "../../../../context/App/types"
-import { CreateSiteFormUseForm, HandleCreateSiteFormSubmitProps, AddContactProps } from "./types"
+import { CreateSiteFormUseForm, HandleCreateSiteFormSubmitProps, AddContactProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const useCreateSiteForm = (): UseFormReturn<CreateSiteFormUseForm> => { // CreateSiteForm useForm state
   return useForm<CreateSiteFormUseForm>({
@@ -78,9 +78,7 @@ export const handleCreateSiteFormSubmit = async (formData: HandleCreateSiteFormS
     )
 
     handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery, navigate })
-  } else {
-    errorPopup(result.msg)
-  }
+  } else errorPopup(result.msg)
 }
 
 export const addContact = (contactsArray: AddContactProps['contactsArray'], contactId: AddContactProps['contactId'], siteId: AddContactProps['siteId'], options: AddContactProps['options']): void => { // Add contact to contactsArray helper fn
@@ -91,4 +89,12 @@ export const addContact = (contactsArray: AddContactProps['contactsArray'], cont
   }
 
   contactsArray.push(contactObj)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

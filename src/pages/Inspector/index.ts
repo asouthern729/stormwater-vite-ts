@@ -6,6 +6,6 @@ import { UseQueryResult } from "react-query"
 import { GetInspectorResponse } from "../../context/App/types"
 import { UseGetInspectorProps } from "./types"
 
-export const useGetInspector = (slug: UseGetInspectorProps['slug']): UseQueryResult<GetInspectorResponse> => { // Get inspector by slug
-  return useQuery(['getInspector', slug], () => getInspector(slug || ''), { enabled: !!slug })
+export const useGetInspector = (inspectorId: UseGetInspectorProps['inspectorId'], validated: UseGetInspectorProps['validated']): UseQueryResult<GetInspectorResponse> => { // Get inspector by inspectorId
+  return useQuery(['getInspector', inspectorId], () => getInspector(inspectorId || ''), { enabled: !!inspectorId && validated })
 }

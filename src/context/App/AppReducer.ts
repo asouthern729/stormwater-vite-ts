@@ -48,6 +48,11 @@ const appReducer = (state: AppReducerProps['state'], action: AppReducerProps['ac
         ...state,
         showClosedSiteIssues: !state.showClosedSiteIssues
       }
+    case 'TOGGLE_SHOW_MENU':
+      return {
+        ...state,
+        showMenu: !state.showMenu
+      }
     case 'SET_INSPECTOR_OPTIONS':
       return {
         ...state,
@@ -76,6 +81,7 @@ const appReducer = (state: AppReducerProps['state'], action: AppReducerProps['ac
         showClosedSiteIssues: false,
         showOpenIssuesOnly: false,
         showSiteComplaints: true,
+        showSiteIllicitDischarges: true,
         showSiteViolations: true
       }
     default:

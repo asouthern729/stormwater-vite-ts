@@ -127,7 +127,7 @@ const handleDeleteSiteBtnClick = async (uuid: HandleDeleteSiteBtnClickProps['uui
     const result = await deleteSite(uuid)
 
     if(result.success) {
-      handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery: queryClient.invalidateQueries('getSites'), navigate: navigate('/') })
+      handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery: () => queryClient.invalidateQueries('getSites'), navigate: () => navigate('/') })
     } else errorPopup(result.msg)
   }
 }

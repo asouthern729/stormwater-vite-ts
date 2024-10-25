@@ -26,6 +26,7 @@ export const setViewType = (type: SetViewTypeProps['type'], mapRef: SetViewTypeP
       return defaultView(mapRef, mapProperties)
   }
 }
+
 export const defaultView = (mapRef: ViewProps['mapRef'], mapProperties: ViewProps['mapProperties']): void => { // Default view for Home page
   const { setState, basemap, sites, navigate, hoveredSite, zoom } = mapProperties
   

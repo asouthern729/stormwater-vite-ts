@@ -1,10 +1,6 @@
 // Types
 import { NavigateFunction } from "react-router-dom"
-import { UseFormSetValue } from "react-hook-form"
-
-export interface CreateGreenViolationFormProps { // CreateGreenViolationForm props
-  date: string
-}
+import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
 
 export interface CreateGreenViolationFormUseForm { // CreateGreenViolation useForm state
   date: string | undefined
@@ -12,20 +8,17 @@ export interface CreateGreenViolationFormUseForm { // CreateGreenViolation useFo
   yCoordinate: number | undefined
   inspectorId: string | null
   details: string
+  comments: string | null
   responsibleParty: string | null
   enforcementAction: string | null
-  penaltyDate: string | undefined
+  penaltyDate: string | null
   penaltyAmount: number | null
-  penaltyDueDate: string | undefined
-  paymentReceived: string | undefined
+  penaltyDueDate: string | null
+  paymentReceived: string | null
   bondReleased: boolean | string | null
   compliance: boolean | string | null
   closed: boolean | string | null
   followUpDate: string | undefined
-}
-
-export interface UseCreateGreenViolationFormProps { // useCreateGreenViolationForm hook props
-  date: string
 }
 
 export interface UseHandleMapChangeProps { // useHandleMapChange hook props
@@ -38,6 +31,16 @@ export interface UseHandleMapChangeProps { // useHandleMapChange hook props
 export interface HandleCreateGreenViolationFormSubmitProps { // handleCreateGreenViolationFormSubmit fn props
   formData: CreateGreenViolationFormUseForm
   options: {
+    invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
+    resetState?: () => void
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof CreateGreenViolationFormUseForm
+  options: {
+    watch: UseFormWatch<CreateGreenViolationFormUseForm>
+    trigger: UseFormTrigger<CreateGreenViolationFormUseForm>
   }
 }

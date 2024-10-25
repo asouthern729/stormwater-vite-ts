@@ -2,13 +2,14 @@
 import { Dispatch, SetStateAction, MouseEvent } from "react"
 import { Location } from "react-router-dom"
 import { Issue } from "../SiteIssuesTable/types"
-import { Site, Complaint, IllicitDischarge } from "../../../context/App/types"
+import { Site, Complaint, IllicitDischarge, GreenInfrastructure } from "../../../context/App/types"
 
 export interface SitesIssuesTableProps { // SitesIssuesTable props
   sites: Site[]
   issues: {
     complaints: Complaint[]
     discharges: IllicitDischarge[]
+    green: GreenInfrastructure[]
   }
   handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void
 }
@@ -17,22 +18,18 @@ export interface SitesIssuesTableState { // SitesIssuesTable state object
   currentPage: number
 }
 
-export interface UseHandlePageData { // useHandlePageData hook props
-  tableData: Issue[]
-  currentPage: number
-}
-
-export interface SetSitesIssuesTableDataProps { // setSitesIssuesTableData fn props
+export interface UseSetSitesIssuesTableDataProps { // useSetSitesIssuesTableData hook props
   sites: Site[]
   issues: {
     complaints: Complaint[]
     discharges: IllicitDischarge[]
+    green: GreenInfrastructure[]
   }
   currentPage: number
 }
 
 export interface SetTableProps { // setTableHeaders and setTableBody fn props
-  location: Location<any>
+  location: Location<SitesIssuesTableState>
   issue?: Issue
   options: {
     handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void

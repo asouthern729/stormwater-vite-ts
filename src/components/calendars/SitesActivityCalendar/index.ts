@@ -56,6 +56,10 @@ export const useFormatCalendarData = (sites: UseFormatCalendarDataProps['sites']
 
       site.IllicitDischarges.forEach(illicit => { // Illicit discharges
         addCalendarObj({ start: new Date(illicit.date), end: new Date(illicit.date), allDay: true, title: `Illicit Discharge - ${ site.name }`, color: '#C4EB3B', uuid: site.uuid, formUUID: illicit.uuid, form: 'updateIllicitDischarge'}, dates.illicitArray)
+
+        illicit.FollowUpDates.forEach(followUp => { // Complaint follow ups
+          addCalendarObj({ start: new Date(followUp.followUpDate), end: new Date(followUp.followUpDate), allDay: true, title: `Follow Up - ${ site.name }`, color: '#FFFF00', uuid: site.uuid, formUUID: illicit.uuid, form: "updateIllicitDischarge" }, dates.followUpsArray)
+        })
       })
     })
 
@@ -99,7 +103,7 @@ export const useCalendarProps = (type: UseCalendarPropsProps['type'], data: UseC
     }
 
     return props
-  }, [data])
+  }, [data, handleCellClick, handleEventClick, type])
 
   return calendarProps
 }

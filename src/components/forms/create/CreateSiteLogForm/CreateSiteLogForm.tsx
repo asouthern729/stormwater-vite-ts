@@ -1,7 +1,7 @@
 import { FormProvider } from "react-hook-form"
 import { useQueryClient } from "react-query"
 import { useGetSiteUUID } from "../../../../helpers"
-import { useCreateSiteLogForm, handleCreateSiteLogFormSubmit } from "."
+import { useCreateSiteLogForm, handleCreateSiteLogFormSubmit, handleRequiredFieldValidation } from "."
 import styles from '../../Forms.module.css'
 
 // Types
@@ -21,12 +21,12 @@ function CreateSiteLogForm({ siteId, date, resetState }: CreateSiteLogFormProps)
   const queryClient = useQueryClient()
 
   return (
-    <div className={styles.container}>
+    <div data-testid="create-site-log-form" className={styles.container}>
 
       <div className={styles.title}>Create Site Log</div>
 
         <FormProvider { ...methods }>
-          <form onSubmit={methods.handleSubmit(formData => handleCreateSiteLogFormSubmit(formData, { invalidateQuery: queryClient.invalidateQueries(['getSite', siteUUID]), resetState }))} className={styles.body}>
+          <form onSubmit={methods.handleSubmit(formData => handleCreateSiteLogFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]), resetState }))} className={styles.body}>
 
             <div className={styles.inputSection}>
               <div className="flex">
@@ -38,10 +38,8 @@ function CreateSiteLogForm({ siteId, date, resetState }: CreateSiteLogFormProps)
                   type="date"
                   className={styles.input}
                   { ...methods.register('inspectionDate', {
-                    required: {
-                      value: true,
-                      message: 'Inspection date is required'
-                    }
+                    required: 'Inspection date is required',
+                    onBlur: () => handleRequiredFieldValidation('inspectionDate', { watch: methods.watch, trigger: methods.trigger })
                   }) } />
               </div>
               <FormError field={'inspectionDate'} />

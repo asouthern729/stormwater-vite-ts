@@ -15,14 +15,14 @@ export const useSetSitesData = (sites: UseSetSitesDataProps['sites']): Site[] =>
 
     sitesArray = sites.filter(obj => {
       for(const prop in obj) {
-        if(['name', 'cof', 'permit'].includes(prop) && regex.test(obj[prop])) {
+        if(['name', 'cof', 'permit'].includes(prop) && regex.test(obj[prop] as string)) {
           return true
         }
       }
     })
   } else sitesArray = sites
 
-  sitesArray = !showOpenIssuesOnly ? sitesArray : sitesArray.filter(site => site.hasOpenViolation) // Handle open violations filter
+  sitesArray = !showOpenIssuesOnly ? sitesArray : sitesArray.filter(site => site.hasOpenViolation || site.hasOpenComplaint || site.hasOpenIllicitDischarge) // Handle open violations filter
 
   return showActiveSitesOnly ? sitesArray.filter(site => !site.inactive) : sitesArray.filter(site => site.inactive) // Handle active sites only filter
 }

@@ -6,7 +6,7 @@ import { BasemapSelectorProps } from './types'
 
 function BasemapSelector({ basemap, setState }: BasemapSelectorProps) {
   return (
-    <div className="flex flex-col">
+    <div data-testid="basemap-selector" className="flex flex-col">
       <label htmlFor="basemap selector" className={styles.label}>Basemap</label>
       <div className={styles.container}>
         <select 

@@ -7,6 +7,7 @@ import { NextPageBtnProps } from './types'
 function NextPageBtn({ handleClick, disabled }: NextPageBtnProps) {
   return (
     <button 
+      data-testid="next-page-btn"
       type="button"
       onClick={handleClick}
       className={styles.btn}

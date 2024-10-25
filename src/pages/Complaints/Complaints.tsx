@@ -1,3 +1,4 @@
+import { useValidateUser, useHandlePageLoad } from "../../helpers"
 import { useGetSites } from "../Sites"
 import { useGetComplaints } from '.'
 
@@ -8,18 +9,27 @@ import { Site, Complaint } from "../../context/App/types"
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
 import ComplaintsContainer from "../../components/containers/ComplaintsContainer/ComplaintsContainer"
+import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Complaints() {
-  const { data: sitesData } = useGetSites()
-  const { data: complaintsData } = useGetComplaints()
+  const validated = useValidateUser()
+
+  useHandlePageLoad(validated)
+
+  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites(validated)
+  const { data: complaintsData, isSuccess: complaintsSuccess } = useGetComplaints(validated)
+
+  const isSuccess = sitesSuccess && complaintsSuccess
 
   return (
     <Layout>
       <HandleLoading
-        data={sitesData}>
-          <ComplaintsContainer 
-            sites={sitesData?.data as Site[] || []}
-            complaints={complaintsData?.data as Complaint[] || []} />
+        isSuccess={isSuccess}>
+          <ErrorBoundary>
+            <ComplaintsContainer 
+              sites={sitesData?.data as Site[] || []}
+              complaints={complaintsData?.data as Complaint[] || []} />
+          </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )

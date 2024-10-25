@@ -21,8 +21,10 @@ export const setTableData = (site: SetTableDataProps['site'], options: SetTableD
   )
 }
 
-export const setTableDataStyle = (index: SetTableDataStyleProps['index'], hasOpenViolation: SetTableDataStyleProps['hasOpenViolation']): string | undefined => { // Set row style by index and whether the site has any open violations
-  if(hasOpenViolation) {
+export const setTableDataStyle = (index: SetTableDataStyleProps['index'], site: SetTableDataStyleProps['site']): string | undefined => { // Set row style by index and whether the site has any open violations
+  const hasOpenIssue = site.hasOpenViolation || site.hasOpenComplaint || site.hasOpenIllicitDischarge
+
+  if(hasOpenIssue) {
     return styles.openViolationRow
   }
 

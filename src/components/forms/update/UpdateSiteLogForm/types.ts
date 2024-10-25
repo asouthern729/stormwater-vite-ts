@@ -1,4 +1,5 @@
 // Types
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { SiteLog } from "../../../../context/App/types"
 
 export interface UpdateSiteLogFormProps { // UpdateSiteLog props
@@ -20,6 +21,14 @@ export interface HandleUpdateSiteLogFormSubmitProps { // handleUpdateSiteLogForm
   formData: UpdateSiteLogUseForm
   options: {
     resetState: () => void
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof UpdateSiteLogUseForm
+  options: {
+    watch: UseFormWatch<UpdateSiteLogUseForm>
+    trigger: UseFormTrigger<UpdateSiteLogUseForm>
   }
 }

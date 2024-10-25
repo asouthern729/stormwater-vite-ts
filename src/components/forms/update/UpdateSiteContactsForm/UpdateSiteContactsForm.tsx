@@ -22,7 +22,7 @@ function UpdateSiteContactsForm() {
             render={({ field }) => (
               <Select
                 { ...field }
-                data={contactOptions}
+                data={[ { text: '', value: '' }, ...contactOptions ]}
                 onChange={(event) => field.onChange(event.value)} />
             )} />
         </div>

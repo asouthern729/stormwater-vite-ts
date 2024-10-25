@@ -1,16 +1,36 @@
 import { useParams } from 'react-router-dom'
+import { useValidateUser, useHandlePageLoad } from '../../helpers'
 import { useGetInspector } from '.'
+
+// Types
+import { Inspector as InspectorType } from '../../context/App/types'
 
 // Components
 import Layout from '../../components/layout/Layout/Layout'
+import HandleLoading from '../../utils/HandleLoading/HandleLoading'
+import InspectorContainer from '../../components/containers/InspectorContainer/InspectorContainer'
+import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Inspector() {
-  const { slug } = useParams()
+  const validated = useValidateUser()
 
-  const { data } = useGetInspector(slug)
+  useHandlePageLoad(validated)
+
+  const { inspectorId } = useParams()
+
+  const { data, isSuccess } = useGetInspector(inspectorId, validated)
 
   return (
-    <Layout>Inspector</Layout>
+    <Layout>
+      <HandleLoading
+        isSuccess={isSuccess}>
+          <ErrorBoundary>
+            <InspectorContainer 
+              sites={data?.data.sites || []}
+              inspector={data?.data.inspector as InspectorType} />
+          </ErrorBoundary>
+      </HandleLoading>
+    </Layout>
   )
 }
 

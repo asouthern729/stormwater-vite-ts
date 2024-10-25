@@ -34,7 +34,6 @@ export interface DatesObj {
   followUpsArray: CalendarObj[]
   penaltyArray: CalendarObj[]
   illicitArray: CalendarObj[]
-  [key: string]: any
 }
 
 export type CalendarColors =

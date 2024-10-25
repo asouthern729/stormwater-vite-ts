@@ -1,0 +1,62 @@
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
+import { instance, when } from 'ts-mockito'
+import { mockGreen } from '../../../../test/mocks'
+
+// Components
+import GetGreen from './GetGreen'
+import UpdateGreenViolationForm from '../../update/UpdateGreenViolationForm/UpdateGreenViolationForm'
+
+describe('GetGreen', () => {
+  const queryClient = new QueryClient()
+  const resetStateMock = vi.fn()
+
+  const green = mockGreen()
+  when(green.date).thenReturn('2024-10-21')
+  when(green.penaltyDate).thenReturn(undefined)
+  when(green.penaltyDueDate).thenReturn(undefined)
+  when(green.paymentReceived).thenReturn(undefined)
+
+  it('Renders correctly', () => {
+      render(
+        <QueryClientProvider client={queryClient}>
+          <GetGreen
+            uuid={'123'}
+            resetState={resetStateMock} />
+        </QueryClientProvider>
+      )
+      
+      const element = screen.getByTestId('get-green')
+      expect(element).toBeInTheDocument()
+  })
+
+  it('Conditionally renders', () => {
+    const TestComponent = () => {
+      const data = {
+        data: instance(green)
+      }
+
+      return (
+        <>
+          {data?.data && (
+            <div className="flex flex-col items-center">
+              <UpdateGreenViolationForm
+                green={data.data}
+                resetState={resetStateMock} />
+            </div>
+          )}
+        </>
+      )
+    }
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <TestComponent />
+      </QueryClientProvider>
+    )
+
+    const element = screen.getByTestId('update-green-violation-form')
+    expect(element).toBeInTheDocument()
+  })
+})

@@ -8,61 +8,58 @@ import { getInspectors, getContacts } from "../context/App/AppActions"
 import { savedPopup, errorPopup } from "../utils/Toast/Toast"
 
 // Types
-import { Page } from "../context/App/types"
+import { MouseEvent } from "react"
+import { UseQueryResult } from "react-query"
+import { Page, Contact } from "../context/App/types"
 import { ValidateTokenResponse } from "../context/User/types"
-import { UseHandleMapChangeProps, UseScrollToFormRefProps, HandleSuccessfulFormSubmitProps, HandleDeleteBtnClickProps } from "./types"
+import { Issue } from "../components/tables/SiteIssuesTable/types"
+import { UseHandleMapChangeProps, UseScrollToFormRefProps, HandleSuccessfulFormSubmitProps, HandleDeleteBtnClickProps, HandleIssuesTableRowClickProps, UseHandlePageData } from "./types"
 
-export const useValidateUser = (): void => { // Validate user
+export const useValidateUser = (): boolean => { // Validate user
   const { dispatch } = useContext(UserContext)
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    let isMounted = true
+  const { data } = useValidateToken()
 
-    validateUser()
-      .then(response => {
-        if(isMounted) {
-          if(response.success) {
-            dispatch({ type: 'SET_USER', payload: response.data })
-          } else {
-            refreshToken()
-              .then(data => {
-                if(isMounted) {
-                  const payload = data.success ? data.data : undefined
-                  dispatch({ type: 'SET_USER', payload })
+  const { data: refreshData } = useRefreshToken(data?.success ? false : true)
 
-                  if(!payload) { // If refreshToken call fails - redirect to login
-                    navigate('/login')
-                  }
-                }
-              })
-              .catch(_ => {
-                errorPopup()
-                navigate('/login')
-              })
-          }
-        }
-      })
-    .catch(_ => {
-      errorPopup()
-      navigate('/login')
-    })
-
-    return () => {
-      isMounted = false
+  const onSuccess = useCallback(() => {
+    if(data && data?.success) {
+      dispatch({ type: 'SET_USER', payload: data.data })
     }
-  }, [dispatch, navigate])
+    
+    if(refreshData && refreshData?.success) {
+      dispatch({ type: 'SET_USER', payload: refreshData.data })
+    } 
+  }, [data, refreshData, dispatch])
+
+  const onFail = useCallback(() => {
+    if(refreshData && !refreshData?.success) {
+      dispatch({ type: 'SET_USER', payload: undefined })
+      navigate('/login')
+    }
+  }, [refreshData, navigate, dispatch])
+
+  useEffect(() => {
+    onSuccess()
+    onFail()
+  }, [onSuccess, onFail])
+
+  return data?.success || refreshData?.success ? true : false
 }
 
-export const useHandlePageLoad = (): void => { // Set current page and reset ctx on page change
+export const useHandlePageLoad = (validated: boolean): void => { // Set current page and reset ctx on page change
   const { dispatch } = useContext(AppContext)
 
   const location = useLocation()
 
-  let page: Page = 'Sites'
+  useGetInspectorsForForms(validated) // Set inspectors to ctx
+  useGetContactsForForms(validated) // Set contacts to ctx
 
   const cb = useCallback(() => {
+    let page: Page = 'Sites'
+
     switch(location.pathname.split('/')[1]) {
       case 'violations':
         page = 'Enforcement'
@@ -82,6 +79,12 @@ export const useHandlePageLoad = (): void => { // Set current page and reset ctx
       case 'contacts':
         page = 'Contacts'
         break
+      case 'inspectors':
+        page = 'Inspectors'
+        break
+      case 'site':
+        page = 'Site'
+        break
       default:
         page = 'Sites'
         break
@@ -89,11 +92,11 @@ export const useHandlePageLoad = (): void => { // Set current page and reset ctx
 
     dispatch({ type: 'RESET_CTX', payload: undefined })
     dispatch({ type: 'SET_ACTIVE_PAGE', payload: page })
-  }, [location])
+  }, [location, dispatch])
 
   useEffect(() => { // Reset ctx and update current page in ctx on page change
     cb()
-  }, [location])
+  }, [cb])
 }
 
 export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update form on site location change
@@ -104,24 +107,24 @@ export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordin
       setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
       setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
     }
-  }, [coordinates])
+  }, [coordinates, setValue])
 
   useEffect(() => {
     cb()
-  }, [coordinates])
+  }, [cb])
 }
 
-export const useGetInspectorsForForms = (): void => { // Set inspector options to ctx
+export const useGetInspectorsForForms = (validated: boolean): void => { // Set inspector options to ctx
   const { dispatch } = useContext(AppContext)
 
-  const { data } = useQuery('getInspectors', () => getInspectors(), { staleTime: Infinity })
+  const { data } = useQuery('getInspectors', () => getInspectors(), { enabled: validated })
 
   const inspectorsArray = useMemo(() => {
-    if(!data) {
-      return[]
+    if(!data?.data) {
+      return []
     }
 
-    return data.data.map(inspector => ({ value: inspector.inspectorId, text: inspector.name }))
+    return data.data.map(inspector => ({ value: inspector.inspectorId, text: inspector.name, uuid: inspector.uuid }))
   }, [data?.data])
 
   const sorted = useMemo(() => {
@@ -130,20 +133,20 @@ export const useGetInspectorsForForms = (): void => { // Set inspector options t
 
   useEffect(() => {
     dispatch({ type: 'SET_INSPECTOR_OPTIONS', payload: sorted })
-  }, [sorted])
+  }, [sorted, dispatch])
 }
 
-export const useGetContactsForForms = (): void => { // Set contact options to ctx
+export const useGetContactsForForms = (validated: boolean): void => { // Set contact options to ctx
   const { dispatch } = useContext(AppContext)
 
-  const { data } = useQuery('getContacts', () => getContacts(), { staleTime: Infinity })
+  const { data } = useQuery('getContacts', () => getContacts(), { enabled: validated })
 
   const contactsArray = useMemo(() => {
-    if(!data) {
+    if(!data?.data) {
       return []
     }
 
-    return data.data.records.map(contact => ({ text: contact.name, value: contact.contactId }))
+    return data.data.map(contact => ({ text: contact.name, value: contact.contactId }))
   }, [data?.data])
 
   const sorted = useMemo(() => {
@@ -152,7 +155,7 @@ export const useGetContactsForForms = (): void => { // Set contact options to ct
 
   useEffect(() => {
     dispatch({ type: 'SET_CONTACT_OPTIONS', payload: sorted })
-  }, [sorted])
+  }, [sorted, dispatch])
 }
 
 export const useGetSiteUUID = (): string | undefined => { // REturn site uuid
@@ -164,17 +167,29 @@ export const useGetSiteUUID = (): string | undefined => { // REturn site uuid
 export const useScrollToFormRef = (state: UseScrollToFormRefProps['state'], formRef: UseScrollToFormRefProps['formRef']): void => {
   useEffect(() => { // Scroll to form if active
     if(state.formUUID && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [state.formUUID, formRef])
 }
 
-export const setDateForForm = (date: string | undefined): string | undefined => { // Format date from server for react hook form
+export const useHandlePageData = (tableData: UseHandlePageData['tableData'], currentPage: UseHandlePageData['currentPage']): Issue[] | Contact[] => {
+  const pageData = useMemo(() => {
+    return tableData.slice((currentPage * 20) - 20, currentPage * 20)
+  }, [tableData, currentPage])
+
+  return pageData
+}
+
+export const setDateForForm = (date: Date | string | undefined): string | undefined => { // Format date from server for react hook form
   if(date === null || date === undefined) {
     return undefined
   }
 
-  const [month, day, year] = date.split('-')
+  const dateObj = typeof date === 'string' || typeof date === 'function' ? new Date(date) : date
+
+  const year = dateObj.getFullYear()
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+  const day = String(dateObj.getDate()).padStart(2, '0')
 
   return `${ year }-${ month }-${ day }`
 }
@@ -185,21 +200,19 @@ export const formatPhone = (phone: string): string | undefined => { // Format ph
   }
 }
 
-export const handleSuccessfulFormSubmit = (msg: HandleSuccessfulFormSubmitProps['msg'], options: HandleSuccessfulFormSubmitProps['options']): void => { // Handle successful form submit
+export const handleSuccessfulFormSubmit = async (msg: HandleSuccessfulFormSubmitProps['msg'], options: HandleSuccessfulFormSubmitProps['options']): Promise<void> => { // Handle successful form submit
   const { invalidateQuery, navigate, resetState } = options
 
   savedPopup(msg)
-  invalidateQuery
-  
+  await invalidateQuery()
+
   if(resetState) { // Reset component state
     resetState()
-  } else navigate // Navigate home
-}
+  } 
 
-const validateUser = async (): Promise<ValidateTokenResponse> => {
-  const result = await validateToken()
-
-  return result
+  if(navigate) { // Navigate
+    navigate()
+  }
 }
 
 export const handleDeleteBtnClick = async (uuid: HandleDeleteBtnClickProps['uuid'], deleteBtnActive: HandleDeleteBtnClickProps['deleteBtnActive'], deleteFn: HandleDeleteBtnClickProps['deleteFn'], options: HandleDeleteBtnClickProps['options']): Promise<void> => { // Handle delete button click
@@ -214,4 +227,29 @@ export const handleDeleteBtnClick = async (uuid: HandleDeleteBtnClickProps['uuid
       handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
     } else errorPopup(result.msg)
   }
+}
+
+export const handleIssuesTableRowClick = (setState: HandleIssuesTableRowClickProps['setState']) => (event: MouseEvent<HTMLTableRowElement>): void => { // Handle row click - open form
+  const { uuid } = event.currentTarget.dataset
+
+  setState(prevState => ({ ...prevState, formUUID: uuid }))
+}
+
+export const useSetDataForViolationsIndicators = (data: { date: string }[]): { date: string }[] => {
+  const { dateRangeFilter } = useContext(AppContext)
+
+  if(dateRangeFilter.start && dateRangeFilter.end) { // Filter data by date range if active
+    const start = new Date(dateRangeFilter.start)
+    const end = new Date(dateRangeFilter.end)
+
+    return data.filter(obj => new Date(obj.date) >= start && new Date(obj.date) <= end)
+  } else return data // Else return all data
+}
+
+const useValidateToken = (): UseQueryResult<ValidateTokenResponse> => { // Handle token validation
+  return useQuery('validateToken', () => validateToken(), { suspense: true })
+}
+
+const useRefreshToken = (refresh: boolean | undefined): UseQueryResult<ValidateTokenResponse> => { // Handle token refresh
+  return useQuery('refreshToken', () => refreshToken(), { enabled: refresh })
 }

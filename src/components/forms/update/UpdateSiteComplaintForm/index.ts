@@ -7,7 +7,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 import { UseFormReturn } from "react-hook-form"
 import { ComplaintObj, FollowUpObj } from "../../../../context/App/types"
 import { Concern } from "../../create/CreateSiteComplaintForm/types"
-import { UseUpdateSiteComplaintFormProps, UpdateSiteComplaintFormUseForm, HandleUpdateSiteComplaintFormSubmitProps } from './types'
+import { UseUpdateSiteComplaintFormProps, UpdateSiteComplaintFormUseForm, HandleUpdateSiteComplaintFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const useUpdateSiteComplaintForm = (complaint: UseUpdateSiteComplaintFormProps['complaint']): UseFormReturn<UpdateSiteComplaintFormUseForm> => { // UpdateComplaintForm useForm
   return useForm<UpdateSiteComplaintFormUseForm>({
@@ -80,4 +80,12 @@ export const handleUpdateSiteComplaintFormSubmit = async (formData: HandleUpdate
 
     handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    gap: 48px;
+  }
+}
+
+.header {
+  color: var(--neutralContent);
+  font-family: 'Shrikhand', serif;
+  font-size: 2rem;
+  padding: 24px 0;
+  text-align: center;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    font-size: 2.5rem;
+    padding: 32px 0;
+  }
+}
+
+.topDiv {
+  position: relative;
+  display: flex;
+  justify-content: justify-around;
+  align-items: end;
+  width: 100%;
+}
+
+.sitesTable {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.mapDiv {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: var(--neutralContent);
+  box-shadow: 8px 8px 4px rgba(0, 0, 0, .1);
+  touch-action: none;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    height: 80vh;
+  }
+}
+
+.bottomDiv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+  height: fit-content;
+}

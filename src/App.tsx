@@ -16,6 +16,8 @@ import Inspector from "./pages/Inspector/Inspector"
 import Violations from "./pages/Violations/Violations"
 import Complaints from "./pages/Complaints/Complaints"
 import Discharges from "./pages/Discharges/Discharges"
+import Green from "./pages/Green/Green"
+import Contacts from "./pages/Contacts/Contacts"
 import NotFound from "./pages/NotFound/NotFound"
 
 const queryClient = new QueryClient()
@@ -31,10 +33,12 @@ function App() {
               <Route path="/" element={<Sites />} />
               <Route path="/site/:uuid" element={<Site />} />
               <Route path="/create" element={<Create />} />
-              <Route path="/inspector/:slug" element={<Inspector />} />
+              <Route path="/inspectors/:inspectorId" element={<Inspector />} />
               <Route path="/violations" element={<Violations />} />
               <Route path="/complaints" element={<Complaints />} />
               <Route path="/discharges" element={<Discharges />} />
+              <Route path="/green" element={<Green />} />
+              <Route path="/contacts" element={<Contacts />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </Router>

@@ -1,21 +1,35 @@
+import { useValidateUser, useHandlePageLoad } from "../../helpers"
 import { useGetSites } from "../Sites"
+import { useGetDischarges } from "."
 
 // Types
-import { Site } from "../../context/App/types"
+import { Site, IllicitDischarge } from "../../context/App/types"
 
 // Components
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
 import DischargesContainer from "../../components/containers/DischargesContainer/DischargesContainer"
+import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Discharges() {
-  const { data } = useGetSites()
+  const validated = useValidateUser()
+
+  useHandlePageLoad(validated)
+
+  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites(validated)
+  const { data: dischargesData, isSuccess: dischargesSuccess } = useGetDischarges(validated)
+
+  const isSuccess = sitesSuccess && dischargesSuccess
 
   return (
     <Layout>
       <HandleLoading
-        data={data}>
-          <DischargesContainer sites={data?.data as Site[]} />
+        isSuccess={isSuccess}>
+          <ErrorBoundary>
+            <DischargesContainer 
+              sites={sitesData?.data as Site[] || []}
+              discharges={dischargesData?.data as IllicitDischarge[] || []} />
+          </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )

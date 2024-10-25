@@ -29,7 +29,9 @@ export const logoutUser = async (): Promise<ServerResponse> => {
 // Validate token
 // GET /api/v1/ldap/validate
 export const validateToken = async (): Promise<ValidateTokenResponse> => {
-  const res = await fetch(`${ ldapUrl }/validate`)
+  const res = await fetch(`${ ldapUrl }/validate`, {
+    credentials: 'include'
+  })
 
   return await res.json()
 }
@@ -37,7 +39,9 @@ export const validateToken = async (): Promise<ValidateTokenResponse> => {
 // Refresh token
 // GET /api/v1/ldap/refresh
 export const refreshToken = async (): Promise<ValidateTokenResponse> => {
-  const res = await fetch(`${ ldapUrl }/refresh`)
+  const res = await fetch(`${ ldapUrl }/refresh`, {
+    credentials: 'include'
+  })
 
   return await res.json()
 }

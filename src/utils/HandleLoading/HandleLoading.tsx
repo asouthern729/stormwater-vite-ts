@@ -4,10 +4,10 @@ import { HandleLoadingProps } from './types'
 // Components
 import Loading from '../../components/loading/Loading/Loading'
 
-function HandleLoading({ children, data }: HandleLoadingProps) {
+function HandleLoading({ children, isSuccess }: HandleLoadingProps) {
   return (
     <>
-      {data ? (
+      {isSuccess ? (
         children
       ) : <Loading />}
     </>

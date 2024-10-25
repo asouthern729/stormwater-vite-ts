@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom'
+import { useContext } from 'react'
+import AppContext from '../../../context/App/AppContext'
 
 // Types
 import { SiteDetailsProps } from './types'
@@ -10,10 +11,10 @@ import LastInspected from '../LastInspected/LastInspected'
 import GreenInfrastructure from '../GreenInfrastructure/GreenInfrastructure'
 
 function SiteDetails({ site }: SiteDetailsProps) {
-  const location = useLocation()
+  const { activePage } = useContext(AppContext)
 
   return (
-    <div className={`flex gap-8 justify-around m-auto w-fit ${ location.pathname !== '/' ? 'text-neutral-content' : null }`}>
+    <div data-testid="site-details" className={`flex gap-8 justify-around m-auto w-fit ${ ['Sites', 'Inspectors'].includes(activePage) ? 'text-neutral' : 'text-neutral-content' }`}>
     
       <PermitNumber site={site} />
       <ProjectNumber site={site} />

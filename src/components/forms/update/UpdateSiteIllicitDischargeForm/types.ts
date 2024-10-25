@@ -1,4 +1,5 @@
 // Types
+import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { StreamWatershed } from "../../create/CreateSiteIllicitDischargeForm/types"
 import { IllicitDischarge } from "../../../../context/App/types"
 
@@ -37,6 +38,14 @@ export interface HandleUpdateSiteIllicitDischargeFormSubmitProps { // handleUpda
   formData: UpdateSiteIllicitDischargeFormUseForm
   options: {
     resetState: () => void
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof UpdateSiteIllicitDischargeFormUseForm
+  options: {
+    watch: UseFormWatch<UpdateSiteIllicitDischargeFormUseForm>
+    trigger: UseFormTrigger<UpdateSiteIllicitDischargeFormUseForm>
   }
 }

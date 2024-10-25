@@ -6,9 +6,8 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
 import { UseFormReturn } from "react-hook-form"
-import { ServerResponse } from "../../../../context/App/types"
 import { Site, SiteContact, SiteObj, SiteContactObj } from "../../../../context/App/types"
-import { UpdateSiteFormUseForm, HandleUpdateSiteFormSubmitProps } from "./types"
+import { UpdateSiteFormUseForm, HandleUpdateSiteFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const useUpdateSiteForm = (site: Site): UseFormReturn<UpdateSiteFormUseForm> => { // UpdateSiteForm useForm state
   return useForm<UpdateSiteFormUseForm>({
@@ -81,6 +80,14 @@ export const handleUpdateSiteFormSubmit = async (formData: HandleUpdateSiteFormS
 
     handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery, navigate })
   } else errorPopup(result.msg)
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }
 
 const setContacts = (contacts: SiteContact[]): { primary: string, contractors: string[], siteInspectors: string[], otherContacts: string[] } => {

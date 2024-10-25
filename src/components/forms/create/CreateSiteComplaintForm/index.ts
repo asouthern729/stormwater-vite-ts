@@ -1,13 +1,12 @@
 import { useCallback, useEffect } from "react"
 import { useForm, UseFormReturn } from "react-hook-form"
-import { getSite } from "../../../../context/App/AppActions"
 import { handleSuccessfulFormSubmit } from "../../../../helpers"
-import { createComplaint, createFollowUp } from "../../../../context/App/AppActions"
+import { createComplaint, createFollowUp, getSite } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
 import { ComplaintObj, FollowUpObj } from "../../../../context/App/types"
-import { UseCreateSiteComplaintFormProps, UseHandleMapChangeProps, CreateSiteComplaintFormUseForm, HandleCreateSiteComplaintFormSubmitProps } from "./types"
+import { UseCreateSiteComplaintFormProps, UseHandleMapChangeProps, CreateSiteComplaintFormUseForm, HandleCreateSiteComplaintFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 import { Concern } from "./types"
 
 export const useCreateSiteComplaintForm = (site: UseCreateSiteComplaintFormProps['site'], date: UseCreateSiteComplaintFormProps['date']): UseFormReturn<CreateSiteComplaintFormUseForm> => { // CreateSiteComplaintForm useForm
@@ -15,16 +14,16 @@ export const useCreateSiteComplaintForm = (site: UseCreateSiteComplaintFormProps
 
   return useForm<CreateSiteComplaintFormUseForm>({
     defaultValues: {
-      siteId: site?.siteId,
+      siteId: site?.siteId || undefined,
       date: complaintDate,
       details: '',
-      inspectorId: null,
+      inspectorId: site?.inspectorId || null,
       name: null,
       address: null,
       phone: null,
       email: null,
-      xCoordinate: site?.xCoordinate,
-      yCoordinate: site?.yCoordinate,
+      xCoordinate: site?.xCoordinate || undefined,
+      yCoordinate: site?.yCoordinate || undefined,
       concern: null,
       otherConcern: null,
       responsibleParty: null,
@@ -44,11 +43,11 @@ export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordin
       setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
       setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
     }
-  }, [coordinates])
+  }, [coordinates, setValue])
 
   useEffect(() => {
     cb()
-  }, [coordinates])
+  }, [cb])
 }
 
 export const handleCreateSiteComplaintFormSubmit = async (formData: HandleCreateSiteComplaintFormSubmitProps['formData'], siteUUID: HandleCreateSiteComplaintFormSubmitProps['siteUUID'], options: HandleCreateSiteComplaintFormSubmitProps['options']): Promise<void> => {
@@ -116,7 +115,15 @@ export const handleCreateSiteComplaintFormSubmit = async (formData: HandleCreate
         }
       } 
 
-      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: navigate('/') })
+      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
     } else errorPopup(result.msg) // Handle error
   } else errorPopup('Something Went Wrong')
+}
+
+export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
+  const { watch, trigger } = options
+
+  if(!watch(field)) {
+    trigger(field)
+  }
 }

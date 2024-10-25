@@ -1,6 +1,7 @@
 // Types
 import { NavigateFunction } from "react-router-dom"
 import { Site } from "../../../../context/App/types"
+import { UseFormTrigger, UseFormWatch } from "react-hook-form"
 
 export interface CreateViolationFormProps { // CreateViolationForm props
   site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string }
@@ -33,8 +34,16 @@ export interface UseCreateViolationFormProps { // useCreateViolationForm hook pr
 export interface HandleCreateViolationFormSubmitProps { // handleCreateViolationFormSubmit fn props
   formData: CreateViolationFormUseForm
   options: {
-    invalidateQuery: Promise<void>
+    invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
     resetState?: () => void
+  }
+}
+
+export interface HandleRequiredFieldValidationProps {
+  field: keyof CreateViolationFormUseForm
+  options: {
+    watch: UseFormWatch<CreateViolationFormUseForm>
+    trigger: UseFormTrigger<CreateViolationFormUseForm>
   }
 }
