@@ -8,7 +8,7 @@ import styles from './InspectorContainer.module.css'
 
 // Types
 import { MbscCalendarEvent } from '@mobiscroll/react'
-import { InspectorContainerProps, InspectorContainerState } from "./types"
+import { InspectorContainerProps, InspectorContainerState, SiteActivityCalendarViewState } from "./types"
 
 // Components
 import SitesHeader from "../../layout/SitesHeader/SitesHeader"
@@ -19,12 +19,14 @@ import MapLegend from '../../map/MapLegend/MapLegend'
 import MapContainer from '../../map/MapContainer/MapContainer'
 import SitesTable from "../../tables/SitesTable/SitesTable"
 import SitesActivityCalendar from '../../calendars/SitesActivityCalendar/SitesActivityCalendar'
+import InspectorTable from "../../tables/InspectorTable/InspectorTable"
 import FormContainer from "../../forms/FormContainer/FormContainer"
 import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
 import DeleteBtn from "../../buttons/forms/DeleteBtn/DeleteBtn"
 
 function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
   const [state, setState] = useState<InspectorContainerState>({ deleteBtnActive: false, formUUID: undefined })
+  const [siteActivityView, setSiteActivityView] = useState<SiteActivityCalendarViewState>({ activeView: 'calendar' })
 
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -62,10 +64,22 @@ function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
 
       <section className={styles.bottomDiv}>
         <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
-          <div className={styles.header}>Sites Activity</div>
-          <SitesActivityCalendar 
-            sites={sitesArray}
-            handleEventClick={(event: MbscCalendarEvent) => navigate(`/site/${ event.event.uuid }`)} />
+          <div className={styles.header}>
+            Sites Activity
+            <button 
+              type="button"
+              onClick={() => setSiteActivityView(prevState => ({ activeView: prevState.activeView === 'calendar' ? 'table' : 'calendar' }))}
+              className="font-sans text-lg uppercase hover:text-warning">
+                Switch To { siteActivityView.activeView === 'calendar' ? 'Table' : 'Calendar' } View
+            </button>
+          </div>
+          {siteActivityView.activeView === 'calendar' ? (
+            <SitesActivityCalendar 
+              sites={sitesArray}
+              handleEventClick={(event: MbscCalendarEvent) => navigate(`/site/${ event.event.uuid }`)} />
+          ):(
+            <InspectorTable sites={sitesArray} />
+          )}
         </div>
       </section>
 

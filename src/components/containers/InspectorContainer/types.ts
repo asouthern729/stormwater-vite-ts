@@ -10,3 +10,7 @@ export interface InspectorContainerState { // InspectorContainer state obj
   deleteBtnActive: boolean
   formUUID?: string | undefined
 }
+
+export interface SiteActivityCalendarViewState {
+  activeView: 'calendar' | 'table'
+}
