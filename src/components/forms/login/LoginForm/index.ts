@@ -21,7 +21,7 @@ export const onSubmit = async (formData: OnSubmitProps['formData'], navigate: On
   if(result.success) { // On success
     setTimeout(() => {
       navigate('/')
-    }, 500)
+    }, 1000)
 
     return authPopup()
   } else errorPopup(result.msg)

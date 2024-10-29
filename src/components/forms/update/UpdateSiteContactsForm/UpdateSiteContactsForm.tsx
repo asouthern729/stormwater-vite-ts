@@ -23,7 +23,8 @@ function UpdateSiteContactsForm() {
               <Select
                 { ...field }
                 data={[ { text: '', value: '' }, ...contactOptions ]}
-                onChange={(event) => field.onChange(event.value)} />
+                onChange={(event) => field.onChange(event.value)}
+                filter={true} />
             )} />
         </div>
 
@@ -37,7 +38,8 @@ function UpdateSiteContactsForm() {
                 { ...field }
                 data={contactOptions}
                 selectMultiple={true}
-                onChange={(event) => field.onChange(event.value)} />
+                onChange={(event) => field.onChange(event.value)}
+                filter={true} />
             )} />
         </div>
 
@@ -51,7 +53,8 @@ function UpdateSiteContactsForm() {
                 { ...field }
                 data={contactOptions}
                 selectMultiple={true}
-                onChange={(event) => field.onChange(event.value)} />
+                onChange={(event) => field.onChange(event.value)}
+                filter={true} />
             )} />
         </div>
 
@@ -65,7 +68,8 @@ function UpdateSiteContactsForm() {
                 { ...field }
                 data={contactOptions}
                 selectMultiple={true}
-                onChange={(event) => field.onChange(event.value)} />
+                onChange={(event) => field.onChange(event.value)}
+                filter={true} />
             )} />
         </div>
 

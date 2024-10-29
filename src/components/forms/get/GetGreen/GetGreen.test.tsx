@@ -1,7 +1,9 @@
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import { instance, when } from 'ts-mockito'
+import { useValidateUser } from '../../../../helpers'
 import { mockGreen } from '../../../../test/mocks'
 
 // Components
@@ -12,6 +14,16 @@ describe('GetGreen', () => {
   const queryClient = new QueryClient()
   const resetStateMock = vi.fn()
 
+  vi.mock('../../../../helpers', () => ({
+    useValidateUser: vi.fn(),
+    setDateForForm: vi.fn(),
+    useGetSiteUUID: vi.fn()
+  }))
+
+  beforeEach(() => {
+    (useValidateUser as ReturnType<typeof vi.fn>).mockReturnValue(true)
+  })
+
   const green = mockGreen()
   when(green.date).thenReturn('2024-10-21')
   when(green.penaltyDate).thenReturn(undefined)
@@ -20,11 +32,13 @@ describe('GetGreen', () => {
 
   it('Renders correctly', () => {
       render(
-        <QueryClientProvider client={queryClient}>
-          <GetGreen
-            uuid={'123'}
-            resetState={resetStateMock} />
-        </QueryClientProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <GetGreen
+              uuid={'123'}
+              resetState={resetStateMock} />
+          </QueryClientProvider>
+        </BrowserRouter>
       )
       
       const element = screen.getByTestId('get-green')

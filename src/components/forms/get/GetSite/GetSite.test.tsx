@@ -3,7 +3,9 @@ import { BrowserRouter, useNavigate} from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { mockSite } from '../../../../test/mocks'
+import { vi } from 'vitest'
 import { instance } from 'ts-mockito'
+import { useValidateUser } from '../../../../helpers'
 import { setCreateForm } from '.'
 
 // Types
@@ -17,6 +19,16 @@ import FormContainer from '../../FormContainer/FormContainer'
 describe('GetSite', () => {
   const site = mockSite()
   const queryClient = new QueryClient()
+
+  vi.mock('../../../../helpers', () => ({
+    useValidateUser: vi.fn(),
+    setDateForForm: vi.fn(),
+    useGetSiteUUID: vi.fn()
+  }))
+
+  beforeEach(() => {
+    (useValidateUser as ReturnType<typeof vi.fn>).mockReturnValue(true)
+  })
 
   it('Renders correctly', () => {
       render(
@@ -67,7 +79,6 @@ describe('GetSite', () => {
           <button type="button" onClick={() => setState({ siteId: '123' })}></button>
           {state.siteId !== null && (
             <FormContainer>
-              SetCreateForm
               {setCreateForm(form, instance(site), { navigate: () => navigate('/') })}
             </FormContainer>
           )}

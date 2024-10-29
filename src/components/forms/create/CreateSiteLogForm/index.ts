@@ -9,7 +9,7 @@ import { SiteLogObj } from "../../../../context/App/types"
 import { CreateSiteLogFormUseForm, UseCreateSiteLogFormProps, HandleCreateSiteLogFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const useCreateSiteLogForm = (siteId: UseCreateSiteLogFormProps['siteId'], date: UseCreateSiteLogFormProps['date']): UseFormReturn<CreateSiteLogFormUseForm> => { // CreateSiteLogForm useForm
-  const logDate = new Date(date).toISOString().split('T')[0]
+  const logDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
   return useForm<CreateSiteLogFormUseForm>({
     defaultValues: {

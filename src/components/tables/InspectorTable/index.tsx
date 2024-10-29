@@ -1,8 +1,9 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
+import { Link } from "react-router-dom"
 
 // Types
 import { ReactElement } from 'react'
-import { UseSetInspectorTableDataProps, InspectorTableData } from "./types"
+import { UseSetInspectorTableDataProps, UseScrollToFormRefProps, InspectorTableData, SetInspectorTableRowProps } from "./types"
 
 export const useSetInspectorTableData = (sites: UseSetInspectorTableDataProps['sites'], year: UseSetInspectorTableDataProps['year']): InspectorTableData[] => {
   const data = useMemo(() => {
@@ -11,7 +12,9 @@ export const useSetInspectorTableData = (sites: UseSetInspectorTableDataProps['s
 
       return {
         site: site.name,
-        dates: inspections.map(inspection => inspection.inspectionDate)
+        dates: inspections.map(inspection => inspection.inspectionDate),
+        uuid: site.uuid,
+        siteId: site.siteId
       }
     })
 
@@ -21,11 +24,31 @@ export const useSetInspectorTableData = (sites: UseSetInspectorTableDataProps['s
   return data
 }
 
-export const setInspectorTableRow = (row: InspectorTableData): ReactElement => {
+export const useScrollToFormRef = (showForm: UseScrollToFormRefProps['showForm'], formRef: UseScrollToFormRefProps['formRef'], tableRef: UseScrollToFormRefProps['tableRef']): void => {
+  useEffect(() => { // Scroll to form if active
+    if(showForm && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else if(!showForm && tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } 
+  }, [showForm, formRef, tableRef])
+}
+
+export const setInspectorTableRow = (row: SetInspectorTableRowProps['row'], selection: SetInspectorTableRowProps['selection'], options: SetInspectorTableRowProps['options']): ReactElement => {
+  const { setState } = options
+
+  const selected = selection.some(siteId => siteId === row.siteId)
 
   return (
-    <tr>
-      <td>{row.site}</td>
+    <tr key={`inspector-table-row-${ row.siteId }`}>
+      <td className="flex flex-col items-center">
+        <input 
+          type="checkbox" 
+          className="checkbox checkbox-secondary"
+          checked={selected}
+          onChange={() => setState(prevState => selected ? { ...prevState, selection: selection.filter(siteId => siteId !== row.siteId) } : { ...prevState, selection: [...prevState.selection, row.siteId] })} />
+      </td>
+      <td className="w-fit hover:text-warning"><Link to={`/site/${ row.uuid }`}>{row.site}</Link></td>
       {Array.from({ length: 12 }).map((_, index) => {
         return (
           <td>

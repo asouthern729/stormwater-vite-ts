@@ -1,3 +1,5 @@
+@import '../../../animations.css';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -31,6 +33,7 @@
   justify-content: justify-around;
   align-items: end;
   width: 100%;
+  animation: fade-in-top 250ms linear;
 }
 
 .sitesTable {
@@ -48,6 +51,7 @@
   background-color: var(--neutralContent);
   box-shadow: 8px 8px 4px rgba(0, 0, 0, .1);
   touch-action: none;
+  animation: fade-in-right 250ms linear;
 
   @media (min-width: 1920px) { /* Desktop */ 
     height: 80vh;
@@ -61,4 +65,5 @@
   gap: 60px;
   width: 100%;
   height: fit-content;
+  animation: fade-in-bottom 250ms linear;
 }

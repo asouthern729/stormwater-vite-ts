@@ -12,3 +12,8 @@
   color: var(--warning);
   font-family: 'Play', sans-serif;
 }
+
+.container th:first-of-type {
+  color: var(--neutralContent);
+  text-align: center;
+}

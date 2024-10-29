@@ -1,7 +1,9 @@
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import { instance } from 'ts-mockito'
+import { useValidateUser } from '../../../../helpers'
 import { mockSiteLog } from '../../../../test/mocks'
 
 // Types
@@ -14,13 +16,25 @@ describe('GetSiteLog', () => {
   const queryClient = new QueryClient()
   const resetStateMock = vi.fn()
 
+  vi.mock('../../../../helpers', () => ({
+    useValidateUser: vi.fn(),
+    setDateForForm: vi.fn(),
+    useGetSiteUUID: vi.fn()
+  }))
+
+  beforeEach(() => {
+    (useValidateUser as ReturnType<typeof vi.fn>).mockReturnValue(true)
+  })
+
   it('Renders correctly', () => {
       render(
-        <QueryClientProvider client={queryClient}>
-          <GetSiteLog
-            uuid={'123'}
-            resetState={resetStateMock} />
-        </QueryClientProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <GetSiteLog
+              uuid={'123'}
+              resetState={resetStateMock} />
+          </QueryClientProvider>
+        </BrowserRouter>
       )
 
       const element = screen.getByTestId('get-site-log')

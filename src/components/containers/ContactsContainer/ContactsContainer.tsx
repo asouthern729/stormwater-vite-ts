@@ -34,7 +34,7 @@ function ContactsContainer({ contacts }: ContactsContainerProps) {
 
         <div className={styles.header}>Site Contacts</div>
 
-        <div className="ml-10">
+        <div className={styles.search}>
           <Search placeholder={'by contact name or company..'} />
         </div>
 

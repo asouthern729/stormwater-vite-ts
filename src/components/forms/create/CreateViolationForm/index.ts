@@ -9,7 +9,7 @@ import { ViolationObj, FollowUpObj } from '../../../../context/App/types'
 import { CreateViolationFormUseForm, UseCreateViolationFormProps, HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const useCreateViolationForm = (site: UseCreateViolationFormProps['site'], date: UseCreateViolationFormProps['date']): UseFormReturn<CreateViolationFormUseForm> => { // CreateViolationForm useForm
-  const violationDate = new Date(date).toISOString().split('T')[0]
+  const violationDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
   return useForm<CreateViolationFormUseForm>({
     defaultValues: {

@@ -10,7 +10,7 @@ import { UseCreateSiteComplaintFormProps, UseHandleMapChangeProps, CreateSiteCom
 import { Concern } from "./types"
 
 export const useCreateSiteComplaintForm = (site: UseCreateSiteComplaintFormProps['site'], date: UseCreateSiteComplaintFormProps['date']): UseFormReturn<CreateSiteComplaintFormUseForm> => { // CreateSiteComplaintForm useForm
-  const complaintDate: string = new Date(date).toISOString().split('T')[0]
+  const complaintDate: string = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
   return useForm<CreateSiteComplaintFormUseForm>({
     defaultValues: {

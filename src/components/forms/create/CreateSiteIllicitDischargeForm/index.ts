@@ -10,7 +10,7 @@ import { IllicitObj, FollowUpObj } from "../../../../context/App/types"
 import { CreateSiteIllicitDischargeFormUseForm, UseCreateSiteIllicitDischargeFormProps, UseHandleMapChangeProps, HandleCreateSiteIllicitDischargeFormSubmitProps } from "./types"
 
 export const useCreateSiteIllicitDischargeForm = (site: UseCreateSiteIllicitDischargeFormProps['site'], date: UseCreateSiteIllicitDischargeFormProps['date']): UseFormReturn<CreateSiteIllicitDischargeFormUseForm> => { // CreateSiteIllicitDischargeForm useForm
-  const illicitDate = new Date(date).toISOString().split('T')[0]
+  const illicitDate = new Date(date || '').toISOString().split('T')[0]
 
   return useForm<CreateSiteIllicitDischargeFormUseForm>({
     defaultValues: {

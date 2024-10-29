@@ -1,7 +1,9 @@
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import { instance, when } from 'ts-mockito'
+import { useValidateUser } from '../../../../helpers'
 import { mockFollowUp } from '../../../../test/mocks'
 
 // Components
@@ -12,16 +14,28 @@ describe('GetFollowUp', () => {
   const resetStateMock = vi.fn()
   const queryClient = new QueryClient()
 
+  vi.mock('../../../../helpers', () => ({
+    useValidateUser: vi.fn(),
+    setDateForForm: vi.fn(),
+    useGetSiteUUID: vi.fn()
+  }))
+
+  beforeEach(() => {
+    (useValidateUser as ReturnType<typeof vi.fn>).mockReturnValue(true)
+  })
+
   const followUp = mockFollowUp()
   when(followUp.followUpDate).thenReturn('2024-10-21')
 
   it('Renders correctly', () => {
       render(
-        <QueryClientProvider client={queryClient}>
-          <GetFollowUp
-            uuid={'123'}
-            resetState={resetStateMock} />
-        </QueryClientProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <GetFollowUp
+              uuid={'123'}
+              resetState={resetStateMock} />
+          </QueryClientProvider>
+        </BrowserRouter>
       )
 
       const element = screen.getByTestId('get-follow-up')

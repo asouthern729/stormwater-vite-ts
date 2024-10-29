@@ -1,7 +1,9 @@
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import { instance, when } from 'ts-mockito'
+import { useValidateUser } from '../../../../helpers'
 import { mockComplaint } from '../../../../test/mocks'
 
 // Components
@@ -10,6 +12,17 @@ import UpdateSiteComplaintForm from '../../update/UpdateSiteComplaintForm/Update
 
 describe('GetComplaint', () => {
   const resetStateMock = vi.fn()
+
+  vi.mock('../../../../helpers', () => ({
+    useValidateUser: vi.fn(),
+    setDateForForm: vi.fn(),
+    useGetSiteUUID: vi.fn()
+  }))
+
+  beforeEach(() => {
+    (useValidateUser as ReturnType<typeof vi.fn>).mockReturnValue(true)
+  })
+
   const complaint = mockComplaint()
   when(complaint.date).thenReturn('2024-10-21')
 
@@ -17,11 +30,13 @@ describe('GetComplaint', () => {
     const queryClient = new QueryClient()
 
     render(
-      <QueryClientProvider client={queryClient}>
-        <GetComplaint
-          uuid={'123'}
-          resetState={resetStateMock} />
-      </QueryClientProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <GetComplaint
+            uuid={'123'}
+            resetState={resetStateMock} />
+        </QueryClientProvider>
+      </BrowserRouter>
     )
 
     const element = screen.getByTestId('get-complaint')

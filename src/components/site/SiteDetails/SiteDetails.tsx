@@ -14,7 +14,7 @@ function SiteDetails({ site }: SiteDetailsProps) {
   const { activePage } = useContext(AppContext)
 
   return (
-    <div data-testid="site-details" className={`flex gap-8 justify-around m-auto w-fit ${ ['Sites', 'Inspectors'].includes(activePage) ? 'text-neutral' : 'text-neutral-content' }`}>
+    <div data-testid="site-details" className={`flex gap-8 justify-around m-auto w-fit ${ !['Sites', 'Inspectors'].includes(activePage) ? 'text-neutral-content' : undefined }`}>
     
       <PermitNumber site={site} />
       <ProjectNumber site={site} />
