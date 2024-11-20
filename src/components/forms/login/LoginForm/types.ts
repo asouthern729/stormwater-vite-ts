@@ -1,5 +1,7 @@
 // Types
+import { Dispatch } from 'react'
 import { NavigateFunction } from 'react-router-dom'
+import { UserAction } from '../../../../context/User/types'
 
 export interface LoginFormUseFormState { // LoginForm useForm state object
   email: string,
@@ -8,14 +10,8 @@ export interface LoginFormUseFormState { // LoginForm useForm state object
 
 export interface OnSubmitProps { // onSubmit fn props
   formData: LoginFormUseFormState
-  navigate: NavigateFunction
-  cookies: {
-    userPreferences?: {
-      showExpired: boolean
-      showAchieved: {
-        firstMilestone: boolean
-        secondMilestone: boolean
-      }
-    }
+  options: {
+    navigate: NavigateFunction
+    dispatch: Dispatch<UserAction>
   }
 }

@@ -14,8 +14,10 @@ export interface CreateSiteIllicitDischargeFormUseForm { // CreateSiteIllicitDis
   date: string | undefined
   readonly xCoordinate: number | undefined
   readonly yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
+  responsibleParty: string | null
   volumeLost: string | null
   streamWatershed: StreamWatershed | string | null
   otherStreamWatershed: string | null

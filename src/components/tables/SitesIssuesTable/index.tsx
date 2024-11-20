@@ -137,6 +137,7 @@ export const setTableHeaders = (location: SetTableProps['location']): ReactNode 
     <tr>
       <th>Date</th>
       <th>Site</th>
+      <th>Responsible Party</th>
       <th className="text-center">Civil Penalty</th>
       <th className="text-center">SWO</th>
       <th className="text-center">Status</th>
@@ -172,10 +173,11 @@ export const setTableBody = (location: SetTableProps['location'], issue: SetTabl
     )
   }
 
-  return (
+  return ( // Construction violations and illicit discharges
     <tr key={`sites-issues-table-row-${ issue?.uuid }`} data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
       <td>{issue?.date}</td>
       <td className={issue?.siteUUID ? "whitespace-nowrap hover:text-warning" : "whitespace-nowrap"}>{issue?.siteUUID ? <Link to={`/site/${ issue.siteUUID }`}>{issue.site}</Link> : null}</td>
+      <td>{issue?.responsibleParty}</td>
       {setCivilPenaltyTableData(issue?.civilPenalty)}
       {setSWOTableData(issue?.swo)}
       {setStatusTableData(issue?.closed)}

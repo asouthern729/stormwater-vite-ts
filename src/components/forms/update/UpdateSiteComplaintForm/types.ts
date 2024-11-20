@@ -20,6 +20,7 @@ export interface UpdateSiteComplaintFormUseForm { // UpdateSiteComplaintForm use
   email: string | null
   readonly xCoordinate: number
   readonly yCoordinate: number
+  locationDescription: string | null
   concern: Concern | null
   otherConcern: string | null
   responsibleParty: string | null

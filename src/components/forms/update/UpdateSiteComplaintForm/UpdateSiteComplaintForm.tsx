@@ -32,7 +32,7 @@ function UpdateSiteComplaintForm({ complaint, resetState }: UpdateSiteComplaintF
   return (
     <div data-testid="update-site-complaint-form" className={styles.container}>
 
-      <div className={styles.title}>Update Site Complaint</div>
+      <div className={styles.title}>Update Complaint</div>
 
         <FormProvider { ...methods }>
           <form onSubmit={methods.handleSubmit(formData => handleUpdateSiteComplaintFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'), resetState }))} className={styles.body}>
@@ -74,6 +74,44 @@ function UpdateSiteComplaintForm({ complaint, resetState }: UpdateSiteComplaintF
                   </div>
                 </div>
               )}
+            </div>
+
+            <div className="flex gap-3 w-full">
+              <div className="flex-1 flex flex-col">
+                <div className="flex">
+                  <FormLabel
+                    label={'Location Description:'}
+                    name={'locationDescription'} />
+                  <input 
+                    type="text"
+                    className={styles.input}
+                    { ...methods.register('locationDescription', {
+                      maxLength: {
+                        value: 50,
+                        message: 'Location description must be 50 characters or less'
+                      }
+                    }) } />
+                </div>
+                <FormError field={'locationDescription'} />
+              </div>
+
+              <div className="flex-1 flex flex-col">
+                <div className="flex">
+                  <FormLabel
+                    label={'Responsible Party:'}
+                    name={'responsibleParty'} />
+                  <input 
+                    type="text"
+                    className={styles.input}
+                    { ...methods.register('responsibleParty', {
+                      maxLength: {
+                        value: 50,
+                        message: 'Responsible party must be 50 characters or less'
+                      }
+                    }) } />
+                </div>
+                <FormError field={'responsibleParty'} />
+              </div>
             </div>
 
             <div className="flex gap-3 w-full flex-wrap">
@@ -122,24 +160,6 @@ function UpdateSiteComplaintForm({ complaint, resetState }: UpdateSiteComplaintF
                   <FormError field={'otherConcern'} />
                 </div>
               )}
-
-              <div className="flex-1 flex flex-col">
-                <div className="flex">
-                  <FormLabel
-                    label={'Responsible Party:'}
-                    name={'responsibleParty'} />
-                  <input 
-                    type="text"
-                    className={styles.input}
-                    { ...methods.register('responsibleParty', {
-                      maxLength: {
-                        value: 50,
-                        message: 'Responsible party must be 50 characters or less'
-                      }
-                    }) } />
-                </div>
-                <FormError field={'responsibleParty'} />
-              </div>
             </div>
 
             <div className={styles.inputSection}>

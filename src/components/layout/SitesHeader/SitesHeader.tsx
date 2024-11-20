@@ -1,5 +1,5 @@
 import{  useSetSitesHeaderLabel } from '.'
-import icon from '../../../assets/icons/pin/warning-pin.svg'
+import icon from '../../../assets/icons/pin/warning-pin.png'
 import styles from './SitesHeader.module.css'
 
 function SitesHeader() {

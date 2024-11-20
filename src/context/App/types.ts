@@ -271,6 +271,7 @@ export interface Complaint extends BaseObj {
   email: string | null
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   concern: Concern
   otherConcern: string | null
   details: string
@@ -288,8 +289,10 @@ export interface IllicitDischarge extends BaseObj {
   date: string
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
+  responsibleParty: string | null
   volumeLost: string | null
   streamWatershed: StreamWatershed | null
   enforcementAction: string | null
@@ -307,6 +310,7 @@ export interface GreenInfrastructure extends BaseObj {
   date: string
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
   responsibleParty: string | null
@@ -391,6 +395,7 @@ export interface ComplaintObj { // SiteComplaint obj for forms
   email: string | null
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   concern: Concern
   otherConcern: string | null
@@ -408,8 +413,10 @@ export interface IllicitObj { // IllicitDischarge obj for forms
   date: string | undefined
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
+  responsibleParty: string | null
   volumeLost: string | null
   streamWatershed: StreamWatershed | string | null
   enforcementAction: string | null
@@ -437,6 +444,7 @@ export interface GreenObj { // Green infrastructure violation obj for forms
   date: string | undefined
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
   responsibleParty: string | null

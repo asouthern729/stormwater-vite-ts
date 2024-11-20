@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
+import UserContext from "../../../../context/User/UserContext"
 import image from '../../../../assets/icons/cof/cof.jpeg'
 import { useLoginForm, onSubmit } from '.'
 import styles from './LoginForm.module.css'
@@ -7,6 +9,8 @@ import styles from './LoginForm.module.css'
 import LoginBtn from "../../../buttons/forms/LoginBtn/LoginBtn"
 
 function LoginForm() {
+  const { dispatch } = useContext(UserContext)
+
   const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { isValid } } = useLoginForm()
@@ -14,7 +18,7 @@ function LoginForm() {
   return (
     <div className={styles.container}>
 
-      <form onSubmit={handleSubmit(formData => onSubmit(formData, navigate))}>
+      <form onSubmit={handleSubmit(formData => onSubmit(formData, { navigate, dispatch }))}>
 
         <img src={image} alt="cof logo" className="w-fit hidden md:block" />
 

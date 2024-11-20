@@ -1,5 +1,5 @@
-import warningPinIcon from '../../../../assets/icons/pin/warning-pin.svg'
-import errorPinIcon from '../../../../assets/icons/pin/error-pin.svg'
+import warningPinIcon from '../../../../assets/icons/pin/warning-pin.png'
+import errorPinIcon from '../../../../assets/icons/pin/error-pin.png'
 
 // Types
 import { SetLabelProps } from './types'

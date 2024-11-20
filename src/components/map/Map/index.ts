@@ -11,10 +11,10 @@ import { Site } from '../../../context/App/types'
 import { SetViewTypeProps, ViewProps, DetermineCenterProps, SetLabelProps, SetMarkerProps, MapHit } from "./types"
 
 // Icons
-import warningPin from '../../../assets/icons/pin/warning-pin.svg'
-import errorPin from '../../../assets/icons/pin/error-pin.svg'
-import infoPin from '../../../assets/icons/pin/info-pin.svg'
-import neutralContentPin from '../../../assets/icons/pin/neutral-content-pin.svg'
+import warningPin from '../../../assets/icons/pin/warning-pin.png'
+import errorPin from '../../../assets/icons/pin/error-pin.png'
+import infoPin from '../../../assets/icons/pin/info-pin.png'
+import neutralContentPin from '../../../assets/icons/pin/neutral-content-pin.png'
 
 export const setViewType = (type: SetViewTypeProps['type'], mapRef: SetViewTypeProps['mapRef'], mapProperties: SetViewTypeProps['mapProperties']): void => {
   switch(type) {
@@ -278,7 +278,7 @@ const determineCenter = (data: DetermineCenterProps['data']): [number, number] =
 }
 
 const setMarker = (hasOpenIssue?: SetMarkerProps['hasOpenIssue'], hovered?: SetMarkerProps['hovered'], inactive?: SetMarkerProps['inactive']): PictureMarkerSymbol => { // Set map marker
-  let url
+  let url = warningPin
 
   if(hovered) { // Hovered
     url = infoPin
@@ -290,10 +290,6 @@ const setMarker = (hasOpenIssue?: SetMarkerProps['hasOpenIssue'], hovered?: SetM
 
   if(inactive) { // Inactive
     url = neutralContentPin
-  }
-
-  if(!url) { // Site
-    url = warningPin
   }
 
   return (

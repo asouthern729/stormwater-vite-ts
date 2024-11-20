@@ -4,9 +4,9 @@ import styles from './MapLegend.module.css'
 import { MapLegendProps } from './types'
 
 // Icons
-import warningPinIcon from '../../../assets/icons/pin/warning-pin.svg'
-import errorPinIcon from '../../../assets/icons/pin/error-pin.svg'
-import neutralContentPinIcon from '../../../assets/icons/pin/neutral-content-pin.svg'
+import warningPinIcon from '../../../assets/icons/pin/warning-pin.png'
+import errorPinIcon from '../../../assets/icons/pin/error-pin.png'
+import neutralContentPinIcon from '../../../assets/icons/pin/neutral-content-pin.png'
 
 function MapLegend({ sites }: MapLegendProps) {
   return (

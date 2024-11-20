@@ -20,6 +20,7 @@ export interface CreateSiteComplaintFormUseForm { // CreateSiteComplaintForm use
   email: string | null
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   concern: Concern | null
   otherConcern: string | null
   responsibleParty: string | null

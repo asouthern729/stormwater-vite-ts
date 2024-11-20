@@ -6,6 +6,7 @@ export interface CreateGreenViolationFormUseForm { // CreateGreenViolation useFo
   date: string | undefined
   xCoordinate: number | undefined
   yCoordinate: number | undefined
+  locationDescription: string | null
   inspectorId: string | null
   details: string
   comments: string | null

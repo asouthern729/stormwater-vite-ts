@@ -33,49 +33,49 @@ function Header() {
         <div className="flex gap-4">
         {showMenu && (
           <>
-          <HeaderBtn
-            label={'Sites'}
-            handleClick={() => navigate('/')} />
+            <HeaderBtn
+              label={'Sites'}
+              handleClick={() => navigate('/')} />
 
-          <HeaderBtn
-            label={'Contacts'}
-            handleClick={() => navigate('/contacts')} />
+            <HeaderBtn
+              label={'Contacts'}
+              handleClick={() => navigate('/contacts')} />
 
-          <NavDropdown label={'Inspectors'}>
-            <>
-              {inspectorOptions.map(inspector => {
-                return (
-                  <li><Link key={`inspector-${ inspector.value }`} to={`/inspectors/${ inspector.value }`}>{inspector.text}</Link></li>
-                )
-              })}
-            </>
-          </NavDropdown>
+            <NavDropdown label={'Inspectors'}>
+              <>
+                {inspectorOptions.map(inspector => {
+                  return (
+                    <li key={`inspector-${ inspector.value }`}><Link to={`/inspectors/${ inspector.value }`}>{inspector.text}</Link></li>
+                  )
+                })}
+              </>
+            </NavDropdown>
 
-          <NavDropdown label={'Enforcement'}>
-            <>
-              <li><Link to={'/violations'}>Construction Violations</Link></li>
-              <li><Link to={'/complaints'}>Complaints</Link></li>
-              <li><Link to={'/discharges'}>Illicit Discharges</Link></li>
-              <li><Link to={'/green'}>Green Infrastructure Violations</Link></li>
-            </>
-          </NavDropdown>
+            <NavDropdown label={'Enforcement'}>
+              <>
+                <li><Link to={'/violations'}>Construction Violations</Link></li>
+                <li><Link to={'/complaints'}>Complaints</Link></li>
+                <li><Link to={'/discharges'}>Illicit Discharges</Link></li>
+                <li><Link to={'/green'}>Green Infrastructure Violations</Link></li>
+              </>
+            </NavDropdown>
 
-          <NavDropdown label={'Create'}>
-            <>
-              <li><Link to={'/create?formType=createSite'}>Site</Link></li>
-              <li><Link to={'/create?formType=createViolation'}>Construction Violation</Link></li>
-              <li><Link to={'/create?formType=createComplaint'}>Complaint</Link></li>
-              <li><Link to={'/create?formType=createDischarge'}>Illicit Discharge</Link></li>
-              <li><Link to={'/create?formType=createGreen'}>Green Infrastructure Violation</Link></li>
-              <li><Link to={'/create?formType=createContact'}>Contact</Link></li>
-              <li><Link to={'/create?formType=createInspector'}>Inspector</Link></li>
-            </>
-          </NavDropdown>
+            <NavDropdown label={'Create'}>
+              <>
+                <li><Link to={'/create?formType=createSite'}>Site</Link></li>
+                <li><Link to={'/create?formType=createViolation'}>Construction Violation</Link></li>
+                <li><Link to={'/create?formType=createComplaint'}>Complaint</Link></li>
+                <li><Link to={'/create?formType=createDischarge'}>Illicit Discharge</Link></li>
+                <li><Link to={'/create?formType=createGreen'}>Green Infrastructure Violation</Link></li>
+                <li><Link to={'/create?formType=createContact'}>Contact</Link></li>
+                <li><Link to={'/create?formType=createInspector'}>Inspector</Link></li>
+              </>
+            </NavDropdown>
 
-          <HeaderBtn
-            label={'Logout'}
-            handleClick={() => handleLogoutClick(navigate, userDispatch)} />
-        </>
+            <HeaderBtn
+              label={'Logout'}
+              handleClick={() => handleLogoutClick(navigate, userDispatch)} />
+          </>
         )}
 
         <MenuBtn
