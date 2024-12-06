@@ -40,6 +40,11 @@ function CreateContactForm() {
                     value: 50,
                     message: 'Contact name must be 50 characters or less'
                   },
+                  pattern: {
+                    value: /^[A-Za-z\s]+$/,
+                    message: 'No special characters or numbers'
+                  },
+                  onChange: () => methods.trigger('name'),
                   onBlur: () => handleRequiredFieldValidation('name', { watch: methods.watch, trigger: methods.trigger })
                 }) } />
             </div>
@@ -58,7 +63,12 @@ function CreateContactForm() {
                   maxLength: {
                     value: 50,
                     message: 'Company must be 50 characters or less'
-                  }
+                  },
+                  pattern: {
+                    value: /^[A-Za-z\s]+$/,
+                    message: 'No special characters or numbers'
+                  },
+                  onChange: () => methods.trigger('company')
                 }) } />
             </div>
             <FormError field={'company'} />
@@ -85,7 +95,8 @@ function CreateContactForm() {
                     pattern: {
                       value: /^[0-9]{10}$/,
                       message: 'Required format ex: 6155506691'
-                    }
+                    },
+                    onChange: () => methods.trigger('phone')
                   }) } />
               </div>
               <FormError field={'phone'} />
@@ -107,7 +118,8 @@ function CreateContactForm() {
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: 'Required format ex: bin.franklin@franklintn.gov'
-                    }
+                    },
+                    onChange: () => methods.trigger('email')
                   }) } />
               </div>
               <FormError field={'email'} />
