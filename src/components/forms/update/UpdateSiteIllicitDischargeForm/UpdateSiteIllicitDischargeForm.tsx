@@ -286,6 +286,24 @@ function UpdateSiteIllicitDischargeForm({ illicitDischarge, resetState }: Update
               )}
           </div>
 
+          <section className="flex justify-between gap-20 pb-10 m-auto w-fit">
+            <div className="flex flex-col gap-1 items-center">
+              <label htmlFor="compliance" className={styles.checkboxLabel}>Compliance:</label>
+              <input
+                type="checkbox"
+                className="checkbox checkbox-warning"
+                { ...methods.register('compliance') } />
+            </div>
+
+            <div className="flex flex-col gap-1 items-center">
+              <label htmlFor="closed" className={styles.checkboxLabel}>Closed:</label>
+              <input
+                type="checkbox"
+                className="checkbox checkbox-warning"
+                { ...methods.register('closed') } />
+            </div>
+          </section>
+
           <div className={styles.buttonsContainer}>
             <SaveBtn disabled={!methods.formState.isValid} />
             <CancelBtn handleClick={resetState} />

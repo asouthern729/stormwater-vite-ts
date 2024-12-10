@@ -237,21 +237,39 @@ function UpdateGreenViolationForm({ green, resetState }: UpdateGreenViolationFor
           </section>
 
           <div className="flex flex-col gap-3 pb-10 w-full">
-              <div className={styles.subtitle}>Follow Up</div>
-              <CreateFollowUpForm />
-                {green.FollowUpDates.length > 0 && (
-                  green.FollowUpDates.map(followUp => {
-                    return (
-                      <div key={`follow-up-${ followUp.uuid }`} className="flex flex-col gap-4 items-center p-10 pb-6 bg-error/10">
-                        <UpdateFollowUpForm followUp={followUp} />
-                        <DeleteBtn
-                          label={'Delete Follow Up'}
-                          handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: () => queryClient.invalidateQueries('getGreenViolations'), resetState })} />
-                      </div>
-                    )
-                  })
-                )}
+            <div className={styles.subtitle}>Follow Up</div>
+            <CreateFollowUpForm />
+              {green.FollowUpDates.length > 0 && (
+                green.FollowUpDates.map(followUp => {
+                  return (
+                    <div key={`follow-up-${ followUp.uuid }`} className="flex flex-col gap-4 items-center p-10 pb-6 bg-error/10">
+                      <UpdateFollowUpForm followUp={followUp} />
+                      <DeleteBtn
+                        label={'Delete Follow Up'}
+                        handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: () => queryClient.invalidateQueries('getGreenViolations'), resetState })} />
+                    </div>
+                  )
+                })
+              )}
+          </div>
+
+          <section className="flex justify-between gap-20 pb-10 m-auto w-fit">
+            <div className="flex flex-col gap-1 items-center">
+              <label htmlFor="compliance" className={styles.checkboxLabel}>Compliance:</label>
+              <input
+                type="checkbox"
+                className="checkbox checkbox-warning"
+                { ...methods.register('compliance') } />
             </div>
+
+            <div className="flex flex-col gap-1 items-center">
+              <label htmlFor="closed" className={styles.checkboxLabel}>Closed:</label>
+              <input
+                type="checkbox"
+                className="checkbox checkbox-warning"
+                { ...methods.register('closed') } />
+            </div>
+          </section>
 
           <div className={styles.buttonsContainer}>
             <SaveBtn disabled={!methods.formState.isValid} />
