@@ -180,6 +180,17 @@ export const useHandlePageData = (tableData: UseHandlePageData['tableData'], cur
   return pageData
 }
 
+export const useSetDataForViolationsIndicators = (data: { date: string }[]): { date: string }[] => {
+  const { dateRangeFilter } = useContext(AppContext)
+
+  if(dateRangeFilter.start && dateRangeFilter.end) { // Filter data by date range if active
+    const start = new Date(dateRangeFilter.start)
+    const end = new Date(dateRangeFilter.end)
+
+    return data.filter(obj => new Date(obj.date) >= start && new Date(obj.date) <= end)
+  } else return data // Else return all data
+}
+
 export const setDateForForm = (date: Date | string | undefined): string | undefined => { // Format date from server for react hook form
   if(date === null || date === undefined) {
     return undefined
@@ -233,17 +244,6 @@ export const handleIssuesTableRowClick = (setState: HandleIssuesTableRowClickPro
   const { uuid } = event.currentTarget.dataset
 
   setState(prevState => ({ ...prevState, formUUID: uuid }))
-}
-
-export const useSetDataForViolationsIndicators = (data: { date: string }[]): { date: string }[] => {
-  const { dateRangeFilter } = useContext(AppContext)
-
-  if(dateRangeFilter.start && dateRangeFilter.end) { // Filter data by date range if active
-    const start = new Date(dateRangeFilter.start)
-    const end = new Date(dateRangeFilter.end)
-
-    return data.filter(obj => new Date(obj.date) >= start && new Date(obj.date) <= end)
-  } else return data // Else return all data
 }
 
 const useValidateToken = (): UseQueryResult<ValidateTokenResponse> => { // Handle token validation
