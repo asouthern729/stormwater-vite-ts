@@ -7,7 +7,7 @@ import styles from '../../Forms.module.css'
 // Components
 import MapContainer from "../../../map/MapContainer/MapContainer"
 import CreateFollowUpForm from "../CreateFollowUpForm/CreateFollowUpForm"
-import { DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, DetailsInput, CommentsInput, EnforcementActionInput, PenaltyDateInput, PenaltyAmountInput, PenaltyDueDateInput, PaymentReceivedDateInput, Buttons } from './components'
+import { DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, DetailsInput, CommentsInput, EnforcementActionInput, PenaltyInputs, Buttons } from './components'
 
 function CreateGreenViolationForm() {
   const { newSite } = useContext(MapContext)
@@ -47,7 +47,6 @@ function CreateGreenViolationForm() {
           <CommentsInput />
 
           <div className="flex flex-col gap-3 py-10 w-full">
-
             <h3 className={styles.subtitle}>Enforcement</h3>
 
             <EnforcementActionInput />
@@ -56,20 +55,10 @@ function CreateGreenViolationForm() {
           <div className="flex flex-col gap-3 w-full">
             <h3 className={styles.subtitle}>Penalty</h3>
 
-            <div className="flex gap-3 w-full flex-wrap">
-              <div className="flex gap-3 w-full">
-                <PenaltyDateInput />
-                <PenaltyAmountInput />
-              </div>
-              <div className="flex gap-3 w-full">
-                <PenaltyDueDateInput />
-                <PaymentReceivedDateInput />
-              </div>
-            </div>
+            <PenaltyInputs />
           </div>
 
           <div className="flex flex-col gap-3 py-10 w-full">
-            
             <h3 className={styles.subtitle}>Follow Up</h3>
 
             <CreateFollowUpForm />

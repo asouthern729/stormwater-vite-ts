@@ -185,11 +185,38 @@ export const EnforcementActionInput = () => { // Enforcement action input
   )
 }
 
-export const PenaltyDateInput = () => { // Penalty date input
+export const PenaltyInputs = () => { // Penalty inputs
+
+  return (
+    <div className="flex gap-3 w-full flex-wrap">
+      <PenaltyDateInput />
+      <PenaltyAmountInput />
+      <PenaltyDueDateInput />
+      <PaymentReceivedDateInput />
+    </div>
+  )
+}
+
+export const Buttons = () => { // Form buttons
+  const methods = useCreateGreenViolationFormContext()
+
+  const navigate = useNavigate()
+
+  const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
+
+  return (
+    <div className={styles.buttonsContainer}>
+      <SaveBtn disabled={disabled} />
+      <CancelBtn handleClick={() => navigate('/')} />
+    </div>
+  )
+}
+
+const PenaltyDateInput = () => { // Penalty date input
   const methods = useCreateGreenViolationFormContext()
 
   return (
-    <div className="flex w-full">
+    <div className="flex-2 flex w-full">
       <FormLabel
         label={'Date:'}
         name={'penaltyDate'} />
@@ -201,11 +228,15 @@ export const PenaltyDateInput = () => { // Penalty date input
   )
 }
 
-export const PenaltyAmountInput = () => { // Penalty amount input
+const PenaltyAmountInput = () => { // Penalty amount input
   const methods = useCreateGreenViolationFormContext()
 
+  const visible = methods.watch('penaltyDate') ? true : false
+
+  if(!visible) return null
+
   return (
-    <div className={styles.inputSection}>
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
           label={'Amount:'}
@@ -224,11 +255,15 @@ export const PenaltyAmountInput = () => { // Penalty amount input
   )
 }
 
-export const PenaltyDueDateInput = () => { // Penalty due date input
+const PenaltyDueDateInput = () => { // Penalty due date input
   const methods = useCreateGreenViolationFormContext()
 
+  const visible = methods.watch('penaltyDate') ? true : false
+
+  if(!visible) return null
+
   return (
-    <div className={styles.inputSection}>
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
           label={'Due Date:'}
@@ -247,11 +282,15 @@ export const PenaltyDueDateInput = () => { // Penalty due date input
   )
 }
 
-export const PaymentReceivedDateInput = () => { // Payment received date input
+const PaymentReceivedDateInput = () => { // Payment received date input
   const methods = useCreateGreenViolationFormContext()
 
+  const visible = methods.watch('penaltyDate') ? true : false
+
+  if(!visible) return null
+
   return (
-    <div className="flex w-full">
+    <div className="flex-1 flex w-full">
       <FormLabel
         label={'Received Date:'}
         name={'paymentReceived'} />
@@ -259,21 +298,6 @@ export const PaymentReceivedDateInput = () => { // Payment received date input
         type="date"
         className={styles.input}
         { ...methods.register('paymentReceived') } />
-    </div>
-  )
-}
-
-export const Buttons = () => { // Form buttons
-  const methods = useCreateGreenViolationFormContext()
-
-  const navigate = useNavigate()
-
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
-
-  return (
-    <div className={styles.buttonsContainer}>
-      <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={() => navigate('/')} />
     </div>
   )
 }

@@ -246,22 +246,11 @@ export const CommentsInput = () => { // Comments input
 export const ComplaintantInputs = () => { // Complaintant information inputs
   
   return (
-    <div className="flex flex-col gap-3 py-10 w-full">
-
-      <h3 className={styles.subtitle}>Complaintant</h3>
-
-      <div className="flex flex-col gap-3">
-
-        <div className="flex gap-3 w-full">
-          <ComplaintantNameInput />
-          <ComplaintantAddressInput />
-        </div>
-
-        <div className="flex gap-3 w-full">
-          <ComplaintantPhoneInput />
-          <ComplaintantEmailInput />
-        </div>
-      </div>
+    <div className="flex gap-3 w-full flex-wrap">
+      <ComplaintantNameInput />
+      <ComplaintantAddressInput />
+      <ComplaintantPhoneInput />
+      <ComplaintantEmailInput />
     </div>
   )
 }
@@ -285,7 +274,7 @@ const ComplaintantNameInput = () => { // Complaintant name input
   const methods = useCreateSiteComplaintFormContext()
 
   return (
-    <div className={styles.inputSection}>
+    <div className="flex flex-col gap-2 w-full">
       <div className="flex">
         <FormLabel
           label={'Full Name:'}
@@ -309,7 +298,7 @@ const ComplaintantAddressInput = () => { // Complaintant address input
   const methods = useCreateSiteComplaintFormContext()
 
   return (
-    <div className={styles.inputSection}>
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
           label={'Address:'}
@@ -334,7 +323,7 @@ const ComplaintantPhoneInput = () => { // Complaintant phone input
   const methods = useCreateSiteComplaintFormContext()
 
   return (
-    <div className={styles.inputSection}>
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
           label={'Phone:'}
@@ -367,7 +356,7 @@ const ComplaintantEmailInput = () => { // Complaintant email input
   const methods = useCreateSiteComplaintFormContext()
 
   return (
-    <div className={styles.inputSection}>
+    <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
           label={'Email:'}

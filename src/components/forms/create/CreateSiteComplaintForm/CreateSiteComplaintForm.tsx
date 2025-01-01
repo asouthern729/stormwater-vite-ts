@@ -48,7 +48,11 @@ function CreateSiteComplaintForm({ site, date, resetState }: CreateSiteComplaint
           <DetailsInput />
           <CommentsInput />
 
-          <ComplaintantInputs />
+          <div className="flex flex-col gap-3 py-10 w-full">
+            <h3 className={styles.subtitle}>Complaintant</h3>
+            
+            <ComplaintantInputs />
+          </div>
 
           <div className="flex flex-col gap-3 pb-10 w-full">
             <h3 className={styles.subtitle}>Follow Up</h3>
