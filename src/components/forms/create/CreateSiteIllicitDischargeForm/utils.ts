@@ -1,5 +1,3 @@
-import { useCallback, useEffect } from "react"
-import { useForm, UseFormReturn } from "react-hook-form"
 import { createIllicitDischarge, createFollowUp } from "../../../../context/App/AppActions"
 import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { getSite } from "../../../../context/App/AppActions"
@@ -7,49 +5,7 @@ import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
 import { IllicitObj, FollowUpObj } from "../../../../context/App/types"
-import { CreateSiteIllicitDischargeFormUseForm, UseCreateSiteIllicitDischargeFormProps, UseHandleMapChangeProps, HandleCreateSiteIllicitDischargeFormSubmitProps } from "./types"
-
-export const useCreateSiteIllicitDischargeForm = (site: UseCreateSiteIllicitDischargeFormProps['site'], date: UseCreateSiteIllicitDischargeFormProps['date']): UseFormReturn<CreateSiteIllicitDischargeFormUseForm> => { // CreateSiteIllicitDischargeForm useForm
-  const illicitDate = new Date(date || '').toISOString().split('T')[0]
-
-  return useForm<CreateSiteIllicitDischargeFormUseForm>({
-    defaultValues: {
-      siteId: site?.siteId || undefined,
-      date: illicitDate,
-      xCoordinate: site?.xCoordinate || undefined,
-      yCoordinate: site?.yCoordinate || undefined,
-      locationDescription: null,
-      inspectorId: site?.inspectorId || null,
-      details: '',
-      responsibleParty: null,
-      volumeLost: null,
-      streamWatershed: null,
-      otherStreamWatershed: null,
-      enforcementAction: null,
-      penaltyDate: undefined,
-      penaltyAmount: null,
-      penaltyDueDate: undefined,
-      paymentReceived: undefined,
-      compliance: null,
-      closed: null
-    }
-  })
-}
-
-export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update complaint location on map change
-  const { setValue } = options
-
-  const cb = useCallback(() => { // Update form state on coordinates change
-    if(coordinates.xCoordinate && coordinates.yCoordinate) {
-      setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
-      setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
-    }
-  }, [coordinates, setValue])
-
-  useEffect(() => {
-    cb()
-  }, [cb])
-}
+import { HandleCreateSiteIllicitDischargeFormSubmitProps } from "./types"
 
 export const handleCreateSiteIllicitDischargeFormSubmit = async (formData: HandleCreateSiteIllicitDischargeFormSubmitProps['formData'], siteUUID: HandleCreateSiteIllicitDischargeFormSubmitProps['siteUUID'], options: HandleCreateSiteIllicitDischargeFormSubmitProps['options']): Promise<void> => { // Handle form submit
   const { invalidateQuery, resetState, navigate } = options

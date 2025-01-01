@@ -1,34 +1,10 @@
-import { useForm } from 'react-hook-form'
 import { handleSuccessfulFormSubmit } from '../../../../helpers'
 import { createFollowUp, createViolation } from '../../../../context/App/AppActions'
 import { errorPopup } from '../../../../utils/Toast/Toast'
 
 // Types
-import { UseFormReturn } from 'react-hook-form'
 import { ViolationObj, FollowUpObj } from '../../../../context/App/types'
-import { CreateViolationFormUseForm, UseCreateViolationFormProps, HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useCreateViolationForm = (site: UseCreateViolationFormProps['site'], date: UseCreateViolationFormProps['date']): UseFormReturn<CreateViolationFormUseForm> => { // CreateViolationForm useForm
-  const violationDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-
-  return useForm<CreateViolationFormUseForm>({
-    defaultValues: {
-      siteId: site?.siteId,
-      date: violationDate,
-      details: '',
-      enforcementAction: null,
-      penaltyDate: undefined,
-      penaltyAmount: null,
-      penaltyDueDate: undefined,
-      paymentReceived: undefined,
-      swoDate: undefined,
-      swoLiftedDate: undefined,
-      compliance: null,
-      closed: null,
-      followUpDate: undefined
-    }
-  })
-}
+import { HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleCreateViolationFormSubmit = async (formData: HandleCreateViolationFormSubmitProps['formData'], options: HandleCreateViolationFormSubmitProps['options']): Promise<void> => {
   const { invalidateQuery, resetState, navigate } = options

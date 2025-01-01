@@ -1,34 +1,10 @@
-import { useForm } from "react-hook-form"
 import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { createSite, createSiteContact } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
 import { SiteObj, SiteContactObj } from "../../../../context/App/types"
-import { CreateSiteFormUseForm, HandleCreateSiteFormSubmitProps, AddContactProps, HandleRequiredFieldValidationProps } from "./types"
-
-export const useCreateSiteForm = (): UseFormReturn<CreateSiteFormUseForm> => { // CreateSiteForm useForm state
-  return useForm<CreateSiteFormUseForm>({
-    defaultValues: {
-      name: '',
-      location: '',
-      xCoordinate: undefined,
-      yCoordinate: undefined,
-      inspectorId: null,
-      preconDate: '',
-      permit: null,
-      cof: null,
-      tnq: null,
-      greenInfrastructure: null,
-      inactive: null,
-      primaryContact: null,
-      contractors: [],
-      siteInspectors: [],
-      otherContacts: []
-    }
-  })
-}
+import { HandleCreateSiteFormSubmitProps, AddContactProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const handleCreateSiteFormSubmit = async (formData: HandleCreateSiteFormSubmitProps['formData'], options: HandleCreateSiteFormSubmitProps['options']): Promise<void> => { // Handle form submit
   if(!formData.xCoordinate) {

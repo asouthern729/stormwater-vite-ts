@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { setDateForForm , handleSuccessfulFormSubmit} from "../../../../helpers"
 import { updateSite, deleteSiteContacts, createSiteContact } from "../../../../context/App/AppActions"
-import { addContact } from "../../create/CreateSiteForm"
+import { addContact } from "../../create/CreateSiteForm/utils"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types

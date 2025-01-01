@@ -1,54 +1,10 @@
-import { useCallback, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { handleSuccessfulFormSubmit } from '../../../../helpers'
 import { createGreenViolation, createFollowUp } from '../../../../context/App/AppActions'
 import { errorPopup } from '../../../../utils/Toast/Toast'
 
 // Types
-import { UseFormReturn } from 'react-hook-form'
 import { GreenObj, FollowUpObj } from '../../../../context/App/types'
-import { CreateGreenViolationFormUseForm, UseHandleMapChangeProps, HandleCreateGreenViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useCreateGreenViolationForm = (): UseFormReturn<CreateGreenViolationFormUseForm> => { // Create green violation useForm state
-  const violationDate = new Date().toISOString().split('T')[0]
-
-  return useForm<CreateGreenViolationFormUseForm>({
-    defaultValues: {
-      date: violationDate,
-      xCoordinate: undefined,
-      yCoordinate: undefined,
-      locationDescription: null,
-      inspectorId: null,
-      details: '',
-      comments: null,
-      responsibleParty: null,
-      enforcementAction: null,
-      penaltyDate: undefined,
-      penaltyAmount: null,
-      penaltyDueDate: undefined,
-      paymentReceived: undefined,
-      bondReleased: null,
-      compliance: null,
-      closed: null,
-      followUpDate: undefined
-    }
-  })
-}
-
-export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update complaint location on map change
-  const { setValue } = options
-
-  const cb = useCallback(() => { // Update form state on coordinates change
-    if(coordinates.xCoordinate && coordinates.yCoordinate) {
-      setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
-      setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
-    }
-  }, [coordinates, setValue])
-
-  useEffect(() => {
-    cb()
-  }, [cb])
-}
+import { HandleCreateGreenViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleCreateGreenInfrastructureViolationFormSubmit = async (formData: HandleCreateGreenViolationFormSubmitProps['formData'], options: HandleCreateGreenViolationFormSubmitProps['options']): Promise<void> => { // Handle form submit
   const { invalidateQuery, navigate } = options

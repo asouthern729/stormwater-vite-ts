@@ -1,24 +1,10 @@
-import { useForm } from "react-hook-form"
 import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { createContact } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
 import { ContactObj } from "../../../../context/App/types"
-import { CreateContactFormUseForm, HandleCreateContactFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
-
-export const useCreateContactForm = (): UseFormReturn<CreateContactFormUseForm> => { // CreateContactForm useform
-  return useForm<CreateContactFormUseForm>({
-    defaultValues: {
-      name: null,
-      company: null,
-      phone: null,
-      email: null,
-      inactive: false
-    }
-  })
-}
+import { HandleCreateContactFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const handleCreateContactFormSubmit = async (formData: HandleCreateContactFormSubmitProps['formData'], options: HandleCreateContactFormSubmitProps['options']): Promise<void> => { // Handle form submit
   const { invalidateQuery, navigate } = options
