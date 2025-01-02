@@ -7,7 +7,7 @@ import { ViolationObj, FollowUpObj } from '../../../../context/App/types'
 import { HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleCreateViolationFormSubmit = async (formData: HandleCreateViolationFormSubmitProps['formData'], options: HandleCreateViolationFormSubmitProps['options']): Promise<void> => {
-  const { invalidateQuery, resetState, navigate } = options
+  const { invalidateQuery, handleCloseForm, navigate } = options
 
   const violationObj: ViolationObj = {
     siteId: formData.siteId,
@@ -40,7 +40,7 @@ export const handleCreateViolationFormSubmit = async (formData: HandleCreateViol
       }
     }
     
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm, navigate: !handleCloseForm ? () => navigate('/') : undefined })
   } else errorPopup(result.msg)
 }
 

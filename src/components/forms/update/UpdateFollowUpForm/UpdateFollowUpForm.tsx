@@ -8,6 +8,7 @@ import { UpdateFollowUpFormProps } from "./types"
 import FormLabel from "../../FormLabel/FormLabel"
 
 function UpdateFollowUpForm({ followUp }: UpdateFollowUpFormProps) {
+  
   return (
     <div data-testid="update-follow-up-form" className="flex w-full">
       <FormLabel

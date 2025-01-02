@@ -7,7 +7,7 @@ import { GetViolationProps } from './types'
 // Components
 import { Form } from './components'
 
-function GetViolation({ uuid, resetState }: GetViolationProps) {
+function GetViolation({ uuid, handleCloseForm }: GetViolationProps) {
   const validated = useValidateUser()
 
   const { data } = useGetViolation(uuid, validated)
@@ -16,7 +16,7 @@ function GetViolation({ uuid, resetState }: GetViolationProps) {
     <div data-testid="get-violation">
       <Form
         violation={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

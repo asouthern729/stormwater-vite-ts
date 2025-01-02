@@ -6,7 +6,7 @@ import { Site } from "../../../../context/App/types"
 export interface CreateSiteIllicitDischargeFormProps { // CreateSiteIllicitDischargeForm props
   site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
-  resetState?: () => void
+  handleCloseForm?: () => void
 }
 
 export interface CreateSiteIllicitDischargeFormUseForm { // CreateSiteIllicitDischargeForm useForm state
@@ -49,7 +49,7 @@ export interface HandleCreateSiteIllicitDischargeFormSubmitProps { // handleCrea
   options: {
     invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
-    resetState?: () => void
+    handleCloseForm?: () => void
   }
 }
 

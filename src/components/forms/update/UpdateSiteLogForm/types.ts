@@ -4,7 +4,7 @@ import { SiteLog } from "../../../../context/App/types"
 
 export interface UpdateSiteLogFormProps { // UpdateSiteLog props
   siteLog: SiteLog
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateSiteLogUseForm { // UpdateSiteLog useForm state
@@ -20,7 +20,7 @@ export interface UseUpdateSiteLogFormProps { // useUpdateSiteLogForm hook props
 export interface HandleUpdateSiteLogFormSubmitProps { // handleUpdateSiteLogFormSubmit fn props
   formData: UpdateSiteLogUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

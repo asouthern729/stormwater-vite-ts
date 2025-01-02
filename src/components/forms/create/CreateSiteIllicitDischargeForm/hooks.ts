@@ -40,7 +40,7 @@ export const useCreateSiteIllicitDischargeFormContext = (): UseFormReturn<Create
   return methods
 }
 
-export const useHandleFormSubmit = (resetState: (() => void) | undefined, uuid: string) => { // Handle form submit
+export const useHandleFormSubmit = (handleCloseForm: (() => void) | undefined, uuid: string) => { // Handle form submit
   const queryClient = useQueryClient()
 
   const navigate = useNavigate()
@@ -48,7 +48,7 @@ export const useHandleFormSubmit = (resetState: (() => void) | undefined, uuid: 
   return useCallback((formData: CreateSiteIllicitDischargeFormUseForm) => 
     handleCreateSiteIllicitDischargeFormSubmit(formData, uuid, {
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
-      resetState,
+      handleCloseForm,
       navigate
     }), [queryClient, navigate, uuid]
   )

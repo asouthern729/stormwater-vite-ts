@@ -6,6 +6,7 @@ import { handleCreateSiteComplaintFormSubmit } from './utils'
 
 // Types
 import { UseFormReturn } from "react-hook-form"
+import { UpdateSiteComplaintFormUseForm } from "../../update/UpdateSiteComplaintForm/types"
 import { UseCreateSiteComplaintFormProps, UseHandleMapChangeProps, CreateSiteComplaintFormUseForm } from "./types"
 
 export const useCreateSiteComplaintForm = (site: UseCreateSiteComplaintFormProps['site'], date: UseCreateSiteComplaintFormProps['date']): UseFormReturn<CreateSiteComplaintFormUseForm> => { // CreateSiteComplaintForm useForm
@@ -35,13 +36,13 @@ export const useCreateSiteComplaintForm = (site: UseCreateSiteComplaintFormProps
   })
 }
 
-export const useCreateSiteComplaintFormContext = (): UseFormReturn<CreateSiteComplaintFormUseForm> => { // CreateSiteComplaintForm context
-  const methods = useFormContext<CreateSiteComplaintFormUseForm>()
+export const useCreateSiteComplaintFormContext = (): UseFormReturn<CreateSiteComplaintFormUseForm|UpdateSiteComplaintFormUseForm> => { // CreateSiteComplaintForm context
+  const methods = useFormContext<CreateSiteComplaintFormUseForm|UpdateSiteComplaintFormUseForm>()
 
   return methods
 }
 
-export const useHandleFormSubmit = (uuid: string, resetState: (() => void) | undefined) => { // Handle form submit
+export const useHandleFormSubmit = (uuid: string, handleCloseForm: (() => void) | undefined) => { // Handle form submit
   const queryClient = useQueryClient()
 
   const navigate = useNavigate()
@@ -49,10 +50,10 @@ export const useHandleFormSubmit = (uuid: string, resetState: (() => void) | und
   return useCallback((formData: CreateSiteComplaintFormUseForm) => 
     handleCreateSiteComplaintFormSubmit(formData, uuid, {
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
-      resetState,
+      handleCloseForm,
       navigate
     })
-  , [queryClient, resetState, navigate, uuid])
+  , [queryClient, handleCloseForm, navigate, uuid])
 }
 
 export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update complaint location on map change

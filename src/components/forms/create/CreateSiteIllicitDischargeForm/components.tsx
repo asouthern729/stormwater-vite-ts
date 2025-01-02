@@ -221,7 +221,7 @@ export const PenaltyInputs = () => { // Penalty inputs
   )
 }
 
-export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }) => {
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: (() => void) | undefined }) => {
   const methods = useCreateSiteIllicitDischargeFormContext()
 
   const navigate = useNavigate()
@@ -231,7 +231,7 @@ export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={resetState || (() => navigate('/'))} />
+      <CancelBtn handleClick={handleCloseForm || (() => navigate('/'))} />
     </div>
   )
 }

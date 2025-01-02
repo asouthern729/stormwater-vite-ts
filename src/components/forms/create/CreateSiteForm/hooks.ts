@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm, useFormContext } from "react-hook-form"
 import { useQueryClient } from "react-query"
@@ -5,8 +6,8 @@ import { handleCreateSiteFormSubmit } from "./utils"
 
 // Types
 import { UseFormReturn } from "react-hook-form"
+import { UpdateSiteFormUseForm } from "../../update/UpdateSiteForm/types"
 import { CreateSiteFormUseForm } from "./types"
-import { useCallback } from "react"
 
 export const useCreateSiteForm = (): UseFormReturn<CreateSiteFormUseForm> => { // CreateSiteForm useForm state
   return useForm<CreateSiteFormUseForm>({
@@ -30,8 +31,8 @@ export const useCreateSiteForm = (): UseFormReturn<CreateSiteFormUseForm> => { /
   })
 }
 
-export const useCreateSiteFormContext = (): UseFormReturn<CreateSiteFormUseForm> => { // CreateSiteForm context
-  const methods = useFormContext<CreateSiteFormUseForm>()
+export const useCreateSiteFormContext = (): UseFormReturn<CreateSiteFormUseForm|UpdateSiteFormUseForm> => { // CreateSiteForm context
+  const methods = useFormContext<CreateSiteFormUseForm|UpdateSiteFormUseForm>()
 
   return methods
 }

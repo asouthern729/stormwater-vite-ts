@@ -6,6 +6,7 @@ import { handleCreateInspectorFormSubmit } from './utils'
 
 // Types
 import { UseFormReturn } from "react-hook-form"
+import { UpdateInspectorFormUseForm } from "../../update/UpdateInspectorForm/types"
 import { CreateInspectorFormUseForm } from "./types"
 
 export const useCreateInspectorForm = () => { // CreateInspectorForm useForm
@@ -18,7 +19,7 @@ export const useCreateInspectorForm = () => { // CreateInspectorForm useForm
 }
 
 export const useCreateInspectorFormContext = (): UseFormReturn<CreateInspectorFormUseForm> => { // CreateInspectorForm context
-  const methods = useFormContext<CreateInspectorFormUseForm>()
+  const methods = useFormContext<CreateInspectorFormUseForm|UpdateInspectorFormUseForm>()
 
   return methods
 }

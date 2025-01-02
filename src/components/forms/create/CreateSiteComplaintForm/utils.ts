@@ -8,7 +8,7 @@ import { HandleCreateSiteComplaintFormSubmitProps, HandleRequiredFieldValidation
 import { Concern } from "./types"
 
 export const handleCreateSiteComplaintFormSubmit = async (formData: HandleCreateSiteComplaintFormSubmitProps['formData'], siteUUID: HandleCreateSiteComplaintFormSubmitProps['siteUUID'], options: HandleCreateSiteComplaintFormSubmitProps['options']): Promise<void> => {
-  const { invalidateQuery, resetState, navigate } = options
+  const { invalidateQuery, handleCloseForm, navigate } = options
 
   let siteComplaintObj
 
@@ -74,7 +74,7 @@ export const handleCreateSiteComplaintFormSubmit = async (formData: HandleCreate
         }
       } 
 
-      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
+      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm, navigate: !handleCloseForm ? () => navigate('/') : undefined })
     } else errorPopup(result.msg) // Handle error
   } else errorPopup('Something Went Wrong')
 }

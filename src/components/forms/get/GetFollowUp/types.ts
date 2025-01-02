@@ -1,6 +1,6 @@
 export interface GetFollowUpProps { // GetFollowUpProps
   uuid: string | undefined
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface GetFollowUpState { // GetFollowUp state obj

@@ -4,7 +4,7 @@ import { Contact } from "../../../../context/App/types"
 
 export interface UpdateContactFormProps { // UpdateContactForm props
   contact: Contact
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateContactFormUseForm { // UpdateContactForm useForm state object
@@ -19,7 +19,7 @@ export interface UpdateContactFormUseForm { // UpdateContactForm useForm state o
 export interface HandleUpdateContactFormSubmitProps { // handleUpdateContactFormSubmit fn props
   formData: UpdateContactFormUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

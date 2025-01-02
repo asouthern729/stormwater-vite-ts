@@ -1,6 +1,6 @@
 export interface GetSiteLogProps { // GetSiteLog props
   uuid: string | undefined
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface GetSiteLogState { // GetSiteLog state obj

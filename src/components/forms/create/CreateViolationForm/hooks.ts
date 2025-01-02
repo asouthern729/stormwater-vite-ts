@@ -36,7 +36,7 @@ export const useCreateViolationFormContext = (): UseFormReturn<CreateViolationFo
   return methods
 }
 
-export const useHandleFormSubmit = (resetState: (() => void) | undefined, uuid: string) => {
+export const useHandleFormSubmit = (handleCloseForm: (() => void) | undefined, uuid: string) => {
   const queryClient = useQueryClient()
 
   const navigate = useNavigate()
@@ -44,8 +44,8 @@ export const useHandleFormSubmit = (resetState: (() => void) | undefined, uuid: 
   return useCallback((formData: CreateViolationFormUseForm) => 
     handleCreateViolationFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
-      resetState,
+      handleCloseForm,
       navigate
-    }), [queryClient, uuid, resetState]
+    }), [queryClient, uuid, handleCloseForm]
   )
 }

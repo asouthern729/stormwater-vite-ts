@@ -1,5 +1,4 @@
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import AppContext from "../../../../context/App/AppContext"
 import { useCreateGreenViolationFormContext } from "./hooks"
 import { handleRequiredFieldValidation } from "./utils"
@@ -197,17 +196,15 @@ export const PenaltyInputs = () => { // Penalty inputs
   )
 }
 
-export const Buttons = () => { // Form buttons
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useCreateGreenViolationFormContext()
-
-  const navigate = useNavigate()
 
   const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
 
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={() => navigate('/')} />
+      <CancelBtn handleClick={handleCloseForm} />
     </div>
   )
 }

@@ -212,13 +212,13 @@ export const formatPhone = (phone: string): string | undefined => { // Format ph
 }
 
 export const handleSuccessfulFormSubmit = async (msg: HandleSuccessfulFormSubmitProps['msg'], options: HandleSuccessfulFormSubmitProps['options']): Promise<void> => { // Handle successful form submit
-  const { invalidateQuery, navigate, resetState } = options
+  const { invalidateQuery, navigate, handleCloseForm } = options
 
   savedPopup(msg)
   await invalidateQuery()
 
-  if(resetState) { // Reset component state
-    resetState()
+  if(handleCloseForm) { // Reset component state
+    handleCloseForm()
   } 
 
   if(navigate) { // Navigate
@@ -227,7 +227,7 @@ export const handleSuccessfulFormSubmit = async (msg: HandleSuccessfulFormSubmit
 }
 
 export const handleDeleteBtnClick = async (uuid: HandleDeleteBtnClickProps['uuid'], deleteBtnActive: HandleDeleteBtnClickProps['deleteBtnActive'], deleteFn: HandleDeleteBtnClickProps['deleteFn'], options: HandleDeleteBtnClickProps['options']): Promise<void> => { // Handle delete button click
-  const { setState, resetState, invalidateQuery } = options 
+  const { setState, handleCloseForm, invalidateQuery } = options 
 
   if(!deleteBtnActive && setState) {
     setState(prevState => ({ ...prevState, deleteBtnActive: true }))
@@ -235,7 +235,7 @@ export const handleDeleteBtnClick = async (uuid: HandleDeleteBtnClickProps['uuid
     const result = await deleteFn(uuid)
 
     if(result.success) {
-      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
     } else errorPopup(result.msg)
   }
 }

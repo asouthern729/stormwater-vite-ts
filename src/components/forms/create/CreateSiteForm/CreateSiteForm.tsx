@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import MapContext from "../../../../context/Map/MapContext"
 import { useHandleMapChange } from "../../../../helpers"
 import { useCreateSiteForm, useHandleFormSubmit } from "./hooks"
@@ -11,6 +12,8 @@ import { Map, NameInput, LocationInput, PreconDateInput, GreenInfrastructureSele
 
 function CreateSiteForm() {
   const { newSite } = useContext(MapContext)
+
+  const navigate = useNavigate()
 
   const methods = useCreateSiteForm()
 
@@ -48,7 +51,7 @@ function CreateSiteForm() {
             <UpdateSiteContactsForm />
           </div>
 
-          <Buttons />
+          <Buttons handleCloseForm={() => navigate('/')} />
 
         </form>
       </FormProvider>

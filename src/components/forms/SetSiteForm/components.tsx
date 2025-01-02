@@ -1,11 +1,11 @@
-import { deleteSite } from "../../../context/App/AppActions"
-import { handleSuccessfulFormSubmit } from "../../../helpers"
-import { errorPopup } from "../../../utils/Toast/Toast"
+import { useNavigate } from "react-router-dom"
+import { useQueryClient } from "react-query"
+import { handleDeleteSiteBtnClick } from './utils'
 
 // Types
-import { ReactNode, MouseEvent } from "react"
-import { SiteForm } from "../../containers/SiteContainer/types"
-import { SetFormProps, HandleFormProps, HandleDeleteSiteBtnClickProps } from "./types"
+import { MouseEvent, Dispatch, SetStateAction } from "react"
+import { Site } from "../../../context/App/types"
+import { SiteForm, SiteContainerState } from "../../containers/SiteContainer/types"
 
 // Components
 import FormContainer from "../FormContainer/FormContainer"
@@ -21,23 +21,30 @@ import GetComplaint from "../get/GetComplaint/GetComplaint"
 import GetIllicitDischarge from "../get/GetIllicitDischarge/GetIllicitDischarge"
 import DeleteBtn from "../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const setForm = (state: SetFormProps['state'], site: SetFormProps['site'], options: SetFormProps['options']): ReactNode => { // Set form
-  const { setState, navigate, queryClient } = options
+export const Form = ({ state, setState, site }: { state: SiteContainerState, setState: Dispatch<SetStateAction<SiteContainerState>>, site: Site }) => { // Set form opened on site page
+  const { activeForm } = state
+  
+  const queryClient = useQueryClient()
 
-  if(state.activeForm) {
-    if(state.activeForm && state.activeForm !== 'updateSite') { // Create site log, violation, complaint, and illicit discharge
+  const navigate = useNavigate()
+
+  if(activeForm) {
+    if(activeForm !== 'updateSite') { // Create site log, violation, complaint, and illicit discharge
       return (
         <FormContainer>
-          {state.activeForm.search('create') !== -1 && ( // Hide if form is of update type
+          {activeForm.search('create') !== -1 && ( // Hide if ofrm is of update type
             <FormNav 
-              activeForm={state.activeForm}
+              activeForm={activeForm}
               handleBtnClick={(e: MouseEvent<HTMLButtonElement>) => setState(prevState => ({ ...prevState, activeForm: e.currentTarget.value as SiteForm }))} />
           )}
-          {handleForm(state, site, { setState })}
+          <SetForm
+            state={state}
+            setState={setState}
+            site={site} />
         </FormContainer>
-      ) 
+      )
     }
-    
+
     return ( // Update site
       <div className="flex flex-col items-center gap-8 w-full">
         <FormContainer>
@@ -45,89 +52,85 @@ export const setForm = (state: SetFormProps['state'], site: SetFormProps['site']
             site={site} 
             handleCancelBtnClick={() => setState(prevState => ({ ...prevState, activeForm: null }))} />
         </FormContainer>
-        {navigate && (
-          <DeleteBtn
-            label={!state.deleteBtnActive ? 'Delete Site' : 'Confirm Delete Site'}
-            handleClick={() => handleDeleteSiteBtnClick(site.uuid, state.deleteBtnActive, { setState, navigate, queryClient })} />
-        )}
+        <DeleteBtn
+          label={!state.deleteBtnActive ? 'Delete Site' : 'Confirm Delete Site'}
+          handleClick={() => handleDeleteSiteBtnClick(site.uuid, state.deleteBtnActive, { setState, navigate, queryClient })} />
       </div>
     )
   }
 }
 
-const handleForm = (state: HandleFormProps['state'], site: HandleFormProps['site'], options: HandleFormProps['options']): ReactNode => {
-  const { setState } = options
-
-  const resetState = () => {
+const SetForm = ({ state, setState, site }: { state: SiteContainerState, setState: Dispatch<SetStateAction<SiteContainerState>>, site: Site }) => {
+  const handleCloseForm = () => {
     setState(({ activeForm: null, formDate: undefined, deleteBtnActive: false, formUUID: undefined }))
   }
+
+  let component
   
   switch(state.activeForm) {
     case 'createSiteLog':
-      return (
+      component = (
         <CreateSiteLogForm 
           siteId={site.siteId}
           date={state.formDate || ''}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'createSiteConstructionViolation':
-      return (
+      component = (
         <CreateViolationForm
           site={site}
           date={state.formDate || ''}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'createSiteComplaint':
-      return (
+      component = (
         <CreateSiteComplaintForm
           site={site}
           date={state.formDate || ''}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'createIllicitDischarge':
-      return (
+      component = (
         <CreateSiteIllicitDischargeForm
           site={site}
           date={state.formDate || ''}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'updateSiteLog':
-      return (
+      component = (
         <GetSiteLog 
           uuid={state.formUUID}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'updateSiteConstructionViolation':
-      return (
+      component = (
         <GetViolation
           uuid={state.formUUID}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'updateSiteComplaint':
-      return (
+      component = (
         <GetComplaint
           uuid={state.formUUID}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
     case 'updateIllicitDischarge':
-      return (
+      component = (
         <GetIllicitDischarge
           uuid={state.formUUID}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
       )
+      break
+    default:
+      component = null
   }
-}
 
-const handleDeleteSiteBtnClick = async (uuid: HandleDeleteSiteBtnClickProps['uuid'], deleteBtnActive: HandleDeleteSiteBtnClickProps['deleteBtnActive'], options: HandleDeleteSiteBtnClickProps['options']): Promise<void> => { // Handle delete site button click
-  const { setState, navigate, queryClient } = options 
-
-  if(!deleteBtnActive) {
-    setState(prevState => ({ ...prevState, deleteBtnActive: true }))
-  } else {
-    const result = await deleteSite(uuid)
-
-    if(result.success) {
-      handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery: () => queryClient.invalidateQueries('getSites'), navigate: () => navigate('/') })
-    } else errorPopup(result.msg)
-  }
+  return component
 }

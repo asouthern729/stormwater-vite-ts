@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { setDateForForm } from "../../../../helpers"
 import { handleSiteSelect } from "./utils"
 
@@ -47,6 +48,8 @@ export const NoSiteBtn = ({ form, handleClick }: { form: CreateForm, handleClick
 export const Form = ({ visible, form, site }: { visible: boolean, form: CreateForm, site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined }) => { // Set form
   if(!visible) return null
 
+  const navigate = useNavigate()
+
   const today = setDateForForm(new Date().toString())
 
   let component
@@ -65,7 +68,8 @@ export const Form = ({ visible, form, site }: { visible: boolean, form: CreateFo
         <CreateSiteComplaintForm
           key={`create-complaints-${ site?.siteId }`}
           date={today as string}
-          site={site} />
+          site={site}
+          handleCloseForm={() => navigate('/')} />
       )
       break
     case 'createDischarge':

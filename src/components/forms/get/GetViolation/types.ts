@@ -1,6 +1,6 @@
 export interface GetViolationProps { // GetViolation props
   uuid: string | undefined
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface GetViolationState { // GetViolation state obj

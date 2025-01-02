@@ -11,7 +11,7 @@ import { GetContactState } from "./types"
 import UpdateContactForm from "../../update/UpdateContactForm/UpdateContactForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const Form = ({ contact, resetState, uuid }: { contact: Contact | undefined, resetState: () => void, uuid: string }) => {
+export const Form = ({ contact, handleCloseForm, uuid }: { contact: Contact | undefined, handleCloseForm: () => void, uuid: string }) => {
   const [state, setState] = useState<GetContactState>({ deleteBtnActive: false })
 
   const queryClient = useQueryClient()
@@ -22,10 +22,10 @@ export const Form = ({ contact, resetState, uuid }: { contact: Contact | undefin
         <div className="flex flex-col items-center">
           <UpdateContactForm
             contact={contact}
-            resetState={resetState} />
+            handleCloseForm={handleCloseForm} />
           <DeleteBtn
             label={!state.deleteBtnActive ? 'Delete Contact' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteContact, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries('getContacts') })} />
+            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteContact, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries('getContacts') })} />
       </div>
       )}
     </>

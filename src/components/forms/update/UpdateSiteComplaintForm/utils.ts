@@ -1,46 +1,14 @@
-import { useForm } from "react-hook-form"
-import { handleSuccessfulFormSubmit, setDateForForm } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { updateComplaint, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
 import { ComplaintObj, FollowUpObj } from "../../../../context/App/types"
 import { Concern } from "../../create/CreateSiteComplaintForm/types"
-import { UseUpdateSiteComplaintFormProps, UpdateSiteComplaintFormUseForm, HandleUpdateSiteComplaintFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useUpdateSiteComplaintForm = (complaint: UseUpdateSiteComplaintFormProps['complaint']): UseFormReturn<UpdateSiteComplaintFormUseForm> => { // UpdateComplaintForm useForm
-  return useForm<UpdateSiteComplaintFormUseForm>({
-    defaultValues: {
-      complaintId: complaint.complaintId,
-      siteId: complaint.siteId,
-      date: setDateForForm(complaint.date),
-      details: complaint.details,
-      inspectorId: complaint.Inspector?.inspectorId,
-      name: complaint.name,
-      address: complaint.address,
-      phone: complaint.phone,
-      email: complaint.email,
-      xCoordinate: complaint.xCoordinate,
-      yCoordinate: complaint.yCoordinate,
-      locationDescription: complaint.locationDescription,
-      concern: complaint.concern,
-      otherConcern: complaint.otherConcern,
-      responsibleParty: complaint.responsibleParty,
-      comments: complaint.comments,
-      compliance: complaint.compliance,
-      closed: complaint.closed,
-      followUpDate: undefined,
-      existingFollowUpDates: complaint.FollowUpDates.length ? complaint.FollowUpDates.map(followUp => {
-        return { followUpDate: followUp.followUpDate, uuid: followUp.uuid }
-      }) : [],
-      uuid: complaint.uuid
-    }
-  })
-}
+import { HandleUpdateSiteComplaintFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleUpdateSiteComplaintFormSubmit = async (formData: HandleUpdateSiteComplaintFormSubmitProps['formData'], options: HandleUpdateSiteComplaintFormSubmitProps['options']): Promise<void> => {
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const complaintObj: ComplaintObj = {
     complaintId: formData.complaintId,
@@ -80,7 +48,7 @@ export const handleUpdateSiteComplaintFormSubmit = async (formData: HandleUpdate
       }
     }
 
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
   } else errorPopup(result.msg)
 }
 

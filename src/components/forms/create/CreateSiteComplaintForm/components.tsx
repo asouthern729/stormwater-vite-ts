@@ -1,5 +1,4 @@
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import AppContext from "../../../../context/App/AppContext"
 import { useCreateSiteComplaintFormContext } from "./hooks"
 import { handleRequiredFieldValidation } from './utils'
@@ -255,9 +254,7 @@ export const ComplaintantInputs = () => { // Complaintant information inputs
   )
 }
 
-export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }) => { // Form buttons
-  const navigate = useNavigate()
-
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useCreateSiteComplaintFormContext()
 
   const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
@@ -265,7 +262,7 @@ export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={resetState || (() => navigate('/'))} />
+      <CancelBtn handleClick={() => handleCloseForm()} />
     </div>
   )
 }

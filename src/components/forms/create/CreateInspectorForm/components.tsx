@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom"
 import { useCreateInspectorFormContext } from "./hooks"
 import { handleRequiredFieldValidation } from "./utils"
 import styles from '../../Forms.module.css'
@@ -63,17 +62,15 @@ export const EmailInput = () => { // Inspector email input
   )
 }
 
-export const Buttons = () => { // Form buttons
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useCreateInspectorFormContext()
-
-  const navigate = useNavigate()
 
   const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
 
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={() => navigate('/')} />
+      <CancelBtn handleClick={handleCloseForm} />
     </div>
   )
 }

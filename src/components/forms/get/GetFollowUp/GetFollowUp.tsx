@@ -7,7 +7,7 @@ import { GetFollowUpProps } from "./types"
 // Components
 import { Form } from './components'
 
-function GetFollowUp({ uuid, resetState }: GetFollowUpProps) {
+function GetFollowUp({ uuid, handleCloseForm }: GetFollowUpProps) {
   const validated = useValidateUser()
 
   const { data } = useGetFollowUp(uuid, validated)
@@ -16,7 +16,7 @@ function GetFollowUp({ uuid, resetState }: GetFollowUpProps) {
     <div data-testid="get-follow-up">
       <Form
         followUp={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

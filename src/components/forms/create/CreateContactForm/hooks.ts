@@ -6,6 +6,7 @@ import { handleCreateContactFormSubmit } from './utils'
 
 // Types
 import { UseFormReturn } from "react-hook-form"
+import { UpdateContactFormUseForm } from "../../update/UpdateContactForm/types"
 import { CreateContactFormUseForm } from "./types"
 
 export const useCreateContactForm = (): UseFormReturn<CreateContactFormUseForm> => { // CreateContactForm useform
@@ -20,8 +21,8 @@ export const useCreateContactForm = (): UseFormReturn<CreateContactFormUseForm> 
   })
 }
 
-export const useCreateContactFormContext = (): UseFormReturn<CreateContactFormUseForm> => { // CreateContactForm context
-  const methods = useFormContext<CreateContactFormUseForm>()
+export const useCreateContactFormContext = (): UseFormReturn<CreateContactFormUseForm|UpdateContactFormUseForm> => { // CreateContactForm context
+  const methods = useFormContext<CreateContactFormUseForm|UpdateContactFormUseForm>()
 
   return methods
 }

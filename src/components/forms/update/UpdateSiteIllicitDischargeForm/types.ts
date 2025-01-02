@@ -5,7 +5,7 @@ import { IllicitDischarge } from "../../../../context/App/types"
 
 export interface UpdateSiteIllicitDischargeFormProps { // UpdateSiteIllicitDischargeForm props
   illicitDischarge: IllicitDischarge
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateSiteIllicitDischargeFormUseForm { // UpdateSiteIllicitDischargeForm useForm state
@@ -39,7 +39,7 @@ export interface UseUpdateSiteIllicitDischargeFormProps { // useUpdateSiteIllici
 export interface HandleUpdateSiteIllicitDischargeFormSubmitProps { // handleUpdateSiteIllicitDischargeFormSubmit fn props
   formData: UpdateSiteIllicitDischargeFormUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

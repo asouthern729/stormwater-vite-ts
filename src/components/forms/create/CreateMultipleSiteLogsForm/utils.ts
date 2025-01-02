@@ -6,7 +6,7 @@ import { SiteLogObj } from "../../../../context/App/types"
 import { HandleCreateMultipleSiteLogsFormSubmitProps } from "./types"
 
 export const handleCreateMultipleSiteLogsFormSubmit = async (formData: HandleCreateMultipleSiteLogsFormSubmitProps['formData'], options: HandleCreateMultipleSiteLogsFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const { siteIds, inspectionDate } = formData
 
@@ -21,5 +21,5 @@ export const handleCreateMultipleSiteLogsFormSubmit = async (formData: HandleCre
     })
   )
 
-  handleSuccessfulFormSubmit('Saved', { invalidateQuery, resetState })
+  handleSuccessfulFormSubmit('Saved', { invalidateQuery, handleCloseForm })
 }

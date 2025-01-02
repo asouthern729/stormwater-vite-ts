@@ -1,54 +1,28 @@
 import { FormProvider } from "react-hook-form"
-import { useQueryClient } from "react-query"
-import { useGetSiteUUID } from "../../../../helpers"
-import { useUpdateSiteLogForm, handleUpdateSiteLogFormSubmit, handleRequiredFieldValidation } from "."
+import { useUpdateSiteLogForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 
 // Types
 import { UpdateSiteLogFormProps } from "./types"
 
 // Components
-import FormLabel from "../../FormLabel/FormLabel"
-import FormError from "../../FormError/FormError"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
+import { DateInput, Buttons } from '../../create/CreateSiteLogForm/components'
 
-function UpdateSiteLogForm({ siteLog, resetState }: UpdateSiteLogFormProps) {
+function UpdateSiteLogForm({ siteLog, handleCloseForm }: UpdateSiteLogFormProps) {
   const methods = useUpdateSiteLogForm(siteLog)
 
-  const siteUUID = useGetSiteUUID()
-
-  const queryClient = useQueryClient()
+  const handleFormSubmit = useHandleFormSubmit(handleCloseForm)
 
   return (
     <div data-testid="update-site-log-form" className={styles.container}>
 
-      <div className={styles.title}>Update Site Log</div>
+      <h2 className={styles.title}>Update Site Log</h2>
 
         <FormProvider { ...methods }>
-          <form onSubmit={methods && methods.handleSubmit(formData => handleUpdateSiteLogFormSubmit(formData, { resetState, invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]) }))} className={styles.body}>
+          <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-            <div className={styles.inputSection}>
-              <div className="flex">
-                <FormLabel
-                  label={'Inspection Date:'}
-                  name={'inspectionDate'}
-                  required={true} />
-                <input 
-                  type="date"
-                  className={styles.input}
-                  { ...methods.register('inspectionDate', {
-                    required: 'Inspection date is required',
-                    onBlur: () => handleRequiredFieldValidation('inspectionDate', { watch: methods.watch, trigger: methods.trigger })
-                  }) } />
-              </div>
-              <FormError field={'inspectionDate'} />
-            </div>
-
-            <div className={styles.buttonsContainer}>
-              <SaveBtn disabled={!methods.formState.isValid} />
-              <CancelBtn handleClick={resetState} />
-            </div>
+            <DateInput />
+            <Buttons handleCloseForm={handleCloseForm} />
 
           </form>
         </FormProvider>

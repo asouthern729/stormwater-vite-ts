@@ -7,12 +7,12 @@ import { CreateViolationFormProps } from "./types"
 
 // Components
 import CreateFollowUpForm from "../CreateFollowUpForm/CreateFollowUpForm"
-import { DateInput, DetailsInput, EnforcementActionInput, SWOInputs, PenaltyInputs, ComplianceCheckbox, ClosedCheckbox, Buttons } from './components'
+import { DateInput, DetailsInput, EnforcementActionInput, SWOInputs, PenaltyInputs, Buttons } from './components'
 
-function CreateViolationForm({ site, date, resetState }: CreateViolationFormProps) {
+function CreateViolationForm({ site, date, handleCloseForm }: CreateViolationFormProps) {
   const methods = useCreateViolationForm(site, date)
 
-  const handleFormSubmit = useHandleFormSubmit(resetState, site.uuid)
+  const handleFormSubmit = useHandleFormSubmit(handleCloseForm, site.uuid)
 
   return (
     <div className={styles.container}>
@@ -44,12 +44,7 @@ function CreateViolationForm({ site, date, resetState }: CreateViolationFormProp
             <CreateFollowUpForm />
           </div>
 
-          <div className="flex justify-between gap-20 pb-10 m-auto w-fit">
-            <ComplianceCheckbox />
-            <ClosedCheckbox />
-          </div>
-
-          <Buttons resetState={resetState} />
+          <Buttons handleCloseForm={handleCloseForm} />
 
         </form>
       </FormProvider>

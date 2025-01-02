@@ -1,4 +1,5 @@
 import { FormProvider } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { useCreateContactForm, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
 
@@ -6,6 +7,8 @@ import styles from '../../Forms.module.css'
 import { NameInput, CompanyInput, PhoneInput, EmailInput, Buttons } from './components'
 
 function CreateContactForm() {
+  const navigate = useNavigate()
+
   const methods = useCreateContactForm()
 
   const handleFormSubmit = useHandleFormSubmit()
@@ -26,7 +29,7 @@ function CreateContactForm() {
             <EmailInput />
           </div>
 
-          <Buttons />
+          <Buttons handleCloseForm={() => navigate('/contacts')} />
 
         </form>
       </FormProvider>

@@ -107,35 +107,7 @@ export const PenaltyInputs = () => { // Penalty inputs
   )
 }
 
-export const ComplianceCheckbox = () => { // Compliance checkbox
-  const methods = useCreateViolationFormContext()
-
-  return (
-    <div className="flex flex-col gap-1 items-center">
-      <label htmlFor="compliance" className={styles.checkboxLabel}>Compliance:</label>
-      <input
-        type="checkbox"
-        className="checkbox checkbox-warning"
-        { ...methods.register('compliance') } />
-    </div>
-  )
-}
-
-export const ClosedCheckbox = () => { // Closed checkbox
-  const methods = useCreateViolationFormContext()
-
-  return (
-    <div className="flex flex-col gap-1 items-center">
-      <label htmlFor="closed" className={styles.checkboxLabel}>Closed:</label>
-      <input
-        type="checkbox"
-        className="checkbox checkbox-warning"
-        { ...methods.register('closed') } />
-    </div>
-  )
-}
-
-export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }) => { // Form buttons
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: (() => void) | undefined }) => { // Form buttons
   const methods = useCreateViolationFormContext()
 
   const navigate = useNavigate()
@@ -145,7 +117,7 @@ export const Buttons = ({ resetState }: { resetState: (() => void) | undefined }
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={resetState ? resetState : () => navigate('/')} />
+      <CancelBtn handleClick={handleCloseForm ? handleCloseForm : () => navigate('/')} />
     </div>
   )
 }

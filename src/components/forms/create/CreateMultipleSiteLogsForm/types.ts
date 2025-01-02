@@ -1,6 +1,6 @@
 export interface CreateMultipleSiteLogsFormProps { // CreateMultipleSiteLogsForm props
   siteIds: string[]
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface CreateMultipleSiteLogsFormUseForm { // CreateMultipleSiteLogsForm useForm state
@@ -16,6 +16,6 @@ export interface HandleCreateMultipleSiteLogsFormSubmitProps { // handleCreateMu
   formData: CreateMultipleSiteLogsFormUseForm
   options: {
     invalidateQuery: () => Promise<void>
-    resetState: () => void
+    handleCloseForm: () => void
   }
 }

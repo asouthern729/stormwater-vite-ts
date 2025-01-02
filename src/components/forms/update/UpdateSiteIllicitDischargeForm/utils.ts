@@ -1,41 +1,14 @@
-import { useForm, UseFormReturn } from "react-hook-form"
-import { handleSuccessfulFormSubmit, setDateForForm } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { updateIllicitDischarge, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
 import { IllicitDischarge, IllicitObj, FollowUpObj } from "../../../../context/App/types"
 import { StreamWatershed } from "../../create/CreateSiteIllicitDischargeForm/types"
-import { UpdateSiteIllicitDischargeFormUseForm, UseUpdateSiteIllicitDischargeFormProps, HandleUpdateSiteIllicitDischargeFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useUpdateSiteIllicitDischargeForm = (illicitDischarge: UseUpdateSiteIllicitDischargeFormProps['illicitDischarge']): UseFormReturn<UpdateSiteIllicitDischargeFormUseForm> => { // UpdateSiteIllicitDischargeForm useForm
-  return useForm<UpdateSiteIllicitDischargeFormUseForm>({
-    defaultValues: {
-      siteId: illicitDischarge.siteId as string,
-      date: setDateForForm(illicitDischarge.date),
-      xCoordinate: illicitDischarge.xCoordinate,
-      yCoordinate: illicitDischarge.yCoordinate,
-      locationDescription: illicitDischarge.locationDescription,
-      inspectorId: illicitDischarge.inspectorId,
-      details: illicitDischarge.details,
-      responsibleParty: illicitDischarge.responsibleParty,
-      volumeLost: illicitDischarge.volumeLost,
-      streamWatershed: setStreamWatershed(illicitDischarge),
-      otherStreamWatershed: setStreamWatershed(illicitDischarge) === 'Other' ? illicitDischarge.streamWatershed : null,
-      enforcementAction: illicitDischarge.enforcementAction,
-      penaltyDate: setDateForForm(illicitDischarge.penaltyDate),
-      penaltyAmount: illicitDischarge.penaltyAmount,
-      penaltyDueDate: setDateForForm(illicitDischarge.penaltyDueDate),
-      paymentReceived: setDateForForm(illicitDischarge.paymentReceived),
-      compliance: illicitDischarge.compliance,
-      closed: illicitDischarge.closed,
-      uuid: illicitDischarge.uuid
-    }
-  })
-}
+import { HandleUpdateSiteIllicitDischargeFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleUpdateSiteIllicitDischargeFormSubmit = async (formData: HandleUpdateSiteIllicitDischargeFormSubmitProps['formData'], options: HandleUpdateSiteIllicitDischargeFormSubmitProps['options']): Promise<void> => {
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const illicitObj: IllicitObj = {
     illicitId: formData.illicitId,
@@ -75,7 +48,7 @@ export const handleUpdateSiteIllicitDischargeFormSubmit = async (formData: Handl
       }
     }
 
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
   } else errorPopup(result.msg)
 }
 
@@ -87,7 +60,7 @@ export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidati
   }
 }
 
-const setStreamWatershed = (illicitDischarge: IllicitDischarge): string => { // Set streamWatershed
+export const setStreamWatershed = (illicitDischarge: IllicitDischarge): string => { // Set streamWatershed
   const options = Object.values(StreamWatershed)
 
   const streamWatershed = illicitDischarge.streamWatershed

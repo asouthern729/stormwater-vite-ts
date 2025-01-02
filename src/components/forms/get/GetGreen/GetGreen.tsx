@@ -7,7 +7,7 @@ import { GetGreenProps } from "./types"
 // Components
 import { Form } from "./components"
 
-function GetGreen({ uuid, resetState }: GetGreenProps) {
+function GetGreen({ uuid, handleCloseForm }: GetGreenProps) {
   const validated = useValidateUser()
 
   const { data } = useGetGreenViolation(uuid, validated)
@@ -16,7 +16,7 @@ function GetGreen({ uuid, resetState }: GetGreenProps) {
     <div data-testid="get-green">
       <Form
         green={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

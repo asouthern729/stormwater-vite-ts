@@ -1,40 +1,13 @@
-import { useForm } from "react-hook-form"
-import { handleSuccessfulFormSubmit, setDateForForm } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { updateViolation, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
 import { ViolationObj, FollowUpObj } from "../../../../context/App/types"
-import { UseUpdateViolationFormProps, UpdateViolationFormUseForm, HandleUpdateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useUpdateViolationForm = (violation: UseUpdateViolationFormProps['violation']): UseFormReturn<UpdateViolationFormUseForm> => { // UpdateViolationForm useForm
-  return useForm<UpdateViolationFormUseForm>({
-    defaultValues: {
-      violationId: violation.violationId,
-      siteId: violation.siteId,
-      date: setDateForForm(violation.date),
-      details: violation.details,
-      enforcementAction: violation.enforcementAction,
-      penaltyDate: setDateForForm(violation.penaltyDate),
-      penaltyAmount: violation.penaltyAmount,
-      penaltyDueDate: setDateForForm(violation.penaltyDueDate),
-      paymentReceived: setDateForForm(violation.paymentReceived),
-      swoDate: setDateForForm(violation.swoDate),
-      swoLiftedDate: setDateForForm(violation.swoLiftedDate),
-      compliance: violation.compliance,
-      closed: violation.closed,
-      followUpDate: undefined,
-      existingFollowUpDates: violation.FollowUpDates.length ? violation.FollowUpDates.map(followUp => {
-        return { followUpDate: followUp.followUpDate, uuid: followUp.uuid }
-      }) : [],
-      uuid: violation.uuid
-    }
-  })
-}
+import { HandleUpdateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleUpdateViolationFormSubmit = async (formData: HandleUpdateViolationFormSubmitProps['formData'], options: HandleUpdateViolationFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const violationObj: ViolationObj = {
     violationId: formData.violationId,
@@ -69,7 +42,7 @@ export const handleUpdateViolationFormSubmit = async (formData: HandleUpdateViol
       }
     }
 
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
   } else errorPopup(result.msg)
 }
 

@@ -9,12 +9,12 @@ import { CreateMultipleSiteLogsFormProps } from "./types"
 // Components
 import { DateInput, Buttons } from './components'
 
-function CreateMultipleSiteLogsForm({ siteIds, resetState }: CreateMultipleSiteLogsFormProps) {
+function CreateMultipleSiteLogsForm({ siteIds, handleCloseForm }: CreateMultipleSiteLogsFormProps) {
   const methods = useCreateMultipleSiteLogsForm(siteIds)
 
   const inspectorId = useLocation().pathname.split('/')[-1]
 
-  const handleFormSubmit = useHandleFormSubmit(inspectorId, resetState)
+  const handleFormSubmit = useHandleFormSubmit(inspectorId, handleCloseForm)
 
   return (
     <div data-testid="create-site-log-form" className={styles.container}>
@@ -25,7 +25,7 @@ function CreateMultipleSiteLogsForm({ siteIds, resetState }: CreateMultipleSiteL
           <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
             <DateInput />
-            <Buttons resetState={resetState} />
+            <Buttons handleCloseForm={handleCloseForm} />
 
           </form>
         </FormProvider>

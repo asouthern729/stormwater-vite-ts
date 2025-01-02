@@ -2,11 +2,12 @@
 import { NavigateFunction } from "react-router-dom"
 import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { Site } from "../../../../context/App/types"
+import { UpdateSiteComplaintFormUseForm } from "../../update/UpdateSiteComplaintForm/types"
 
 export interface CreateSiteComplaintFormProps { // CreateSiteComplaintForm props
   site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined
   date: string
-  resetState?: () => void
+  handleCloseForm: () => void
 }
 
 export interface CreateSiteComplaintFormUseForm { // CreateSiteComplaintForm useForm state
@@ -48,7 +49,7 @@ export interface HandleCreateSiteComplaintFormSubmitProps { // handleCreateSiteC
   options: {
     invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
-    resetState?: () => void
+    handleCloseForm?: () => void
   }
 }
 
@@ -70,9 +71,9 @@ export enum Concern {
 }
 
 export interface HandleRequiredFieldValidationProps {
-  field: keyof CreateSiteComplaintFormUseForm
+  field: keyof CreateSiteComplaintFormUseForm | keyof UpdateSiteComplaintFormUseForm
   options: {
-    watch: UseFormWatch<CreateSiteComplaintFormUseForm>
-    trigger: UseFormTrigger<CreateSiteComplaintFormUseForm>
+    watch: UseFormWatch<CreateSiteComplaintFormUseForm|UpdateSiteComplaintFormUseForm>
+    trigger: UseFormTrigger<CreateSiteComplaintFormUseForm|UpdateSiteComplaintFormUseForm>
   }
 }

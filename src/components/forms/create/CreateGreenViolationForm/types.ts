@@ -1,6 +1,7 @@
 // Types
 import { NavigateFunction } from "react-router-dom"
 import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
+import { UpdateGreenViolationFormUseForm } from "../../update/UpdateGreenViolationForm/types"
 
 export interface CreateGreenViolationFormUseForm { // CreateGreenViolation useForm state
   date: string | undefined
@@ -34,14 +35,14 @@ export interface HandleCreateGreenViolationFormSubmitProps { // handleCreateGree
   options: {
     invalidateQuery: () => Promise<void>
     navigate: NavigateFunction
-    resetState?: () => void
+    handleCloseForm?: () => void
   }
 }
 
 export interface HandleRequiredFieldValidationProps {
   field: keyof CreateGreenViolationFormUseForm
   options: {
-    watch: UseFormWatch<CreateGreenViolationFormUseForm>
-    trigger: UseFormTrigger<CreateGreenViolationFormUseForm>
+    watch: UseFormWatch<CreateGreenViolationFormUseForm|UpdateGreenViolationFormUseForm>
+    trigger: UseFormTrigger<CreateGreenViolationFormUseForm|UpdateGreenViolationFormUseForm>
   }
 }

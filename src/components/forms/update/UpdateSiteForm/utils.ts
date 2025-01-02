@@ -1,36 +1,11 @@
-import { useForm } from "react-hook-form"
-import { setDateForForm , handleSuccessfulFormSubmit} from "../../../../helpers"
+import { handleSuccessfulFormSubmit} from "../../../../helpers"
 import { updateSite, deleteSiteContacts, createSiteContact } from "../../../../context/App/AppActions"
 import { addContact } from "../../create/CreateSiteForm/utils"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { Site, SiteContact, SiteObj, SiteContactObj } from "../../../../context/App/types"
-import { UpdateSiteFormUseForm, HandleUpdateSiteFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
-
-export const useUpdateSiteForm = (site: Site): UseFormReturn<UpdateSiteFormUseForm> => { // UpdateSiteForm useForm state
-  return useForm<UpdateSiteFormUseForm>({
-    defaultValues: {
-      name: site.name,
-      location: site.location,
-      xCoordinate: site.xCoordinate,
-      yCoordinate: site.yCoordinate,
-      inspectorId: site.inspectorId,
-      preconDate: setDateForForm(site.preconDate),
-      permit: site.permit,
-      cof: site.cof,
-      tnq: site.tnq,
-      greenInfrastructure: site.greenInfrastructure,
-      inactive: site.inactive,
-      primaryContact: setContacts(site.SiteContacts).primary,
-      contractors: setContacts(site.SiteContacts).contractors,
-      siteInspectors: setContacts(site.SiteContacts).siteInspectors,
-      otherContacts: setContacts(site.SiteContacts).otherContacts,
-      uuid: site.uuid
-    }
-  })
-}
+import { SiteContact, SiteObj, SiteContactObj } from "../../../../context/App/types"
+import { HandleUpdateSiteFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const handleUpdateSiteFormSubmit = async (formData: HandleUpdateSiteFormSubmitProps['formData'], options: HandleUpdateSiteFormSubmitProps['options']): Promise<void> => { // Handle form submit
   const { navigate, invalidateQuery } = options
@@ -70,7 +45,7 @@ export const handleUpdateSiteFormSubmit = async (formData: HandleUpdateSiteFormS
     })
 
     formData.otherContacts.forEach(contact => { // Handle other contacts
-      addContact(contactsArray, contact, siteId, { isPrimary: false, isContractor: false, isInspector: true })
+      addContact(contactsArray, contact, siteId, { isPrimary: false, isContractor: false, isInspector: false })
     })
 
     await Promise.all([
@@ -90,7 +65,7 @@ export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidati
   }
 }
 
-const setContacts = (contacts: SiteContact[]): { primary: string, contractors: string[], siteInspectors: string[], otherContacts: string[] } => {
+export const setContacts = (contacts: SiteContact[]): { primary: string, contractors: string[], siteInspectors: string[], otherContacts: string[] } => {
   const types: { primary: string, contractors: string[], siteInspectors: string[], otherContacts: string[] } = {
     primary: '',
     contractors: [],

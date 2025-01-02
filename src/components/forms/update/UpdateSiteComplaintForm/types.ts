@@ -5,7 +5,7 @@ import { Concern } from "../../create/CreateSiteComplaintForm/types"
 
 export interface UpdateSiteComplaintFormProps { // UpdateSiteComplaintForm props
   complaint: Complaint
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateSiteComplaintFormUseForm { // UpdateSiteComplaintForm useForm state
@@ -39,7 +39,7 @@ export interface UseUpdateSiteComplaintFormProps { // useUpdateSiteComplaintForm
 export interface HandleUpdateSiteComplaintFormSubmitProps { // handleUpdateSiteComplaintFormSubmit fn props
   formData: UpdateSiteComplaintFormUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

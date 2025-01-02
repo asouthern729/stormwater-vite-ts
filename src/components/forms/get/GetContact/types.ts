@@ -1,6 +1,6 @@
 export interface GetContactProps { // GetContact props
   uuid: string | undefined
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface GetContactState { // GetContact state obj

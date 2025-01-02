@@ -6,6 +6,7 @@ import { handleCreateGreenInfrastructureViolationFormSubmit } from './utils'
 
 // Types
 import { UseFormReturn } from 'react-hook-form'
+import { UpdateGreenViolationFormUseForm } from '../../update/UpdateGreenViolationForm/types'
 import { CreateGreenViolationFormUseForm, UseHandleMapChangeProps } from './types'
 
 export const useCreateGreenViolationForm = (): UseFormReturn<CreateGreenViolationFormUseForm> => { // Create green violation useForm state
@@ -35,7 +36,7 @@ export const useCreateGreenViolationForm = (): UseFormReturn<CreateGreenViolatio
 }
 
 export const useCreateGreenViolationFormContext = (): UseFormReturn<CreateGreenViolationFormUseForm> => { // CreateGreenViolationForm context
-  const methods = useFormContext<CreateGreenViolationFormUseForm>()
+  const methods = useFormContext<CreateGreenViolationFormUseForm|UpdateGreenViolationFormUseForm>()
 
   return methods
 }

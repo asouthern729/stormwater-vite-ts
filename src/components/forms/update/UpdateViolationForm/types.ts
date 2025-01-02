@@ -4,7 +4,7 @@ import { ConstructionViolation } from "../../../../context/App/types"
 
 export interface UpdateViolationFormProps { // UpdateViolationForm props
   violation: ConstructionViolation
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateViolationFormUseForm { // UpdateViolationForm useForm state
@@ -33,7 +33,7 @@ export interface UseUpdateViolationFormProps { // useUpdateViolationForm hook pr
 export interface HandleUpdateViolationFormSubmitProps { // handleUpdateViolationFormSubmit fn props
   formData: UpdateViolationFormUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

@@ -1,44 +1,13 @@
-import { useForm } from "react-hook-form"
-import { handleSuccessfulFormSubmit, setDateForForm } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers"
 import { updateGreenViolation, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
 import { GreenObj, FollowUpObj } from '../../../../context/App/types'
-import { UseUpdateGreenViolationFormProps, UpdateGreenViolationFormUseForm, HandleUpdateGreenViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
-
-export const useUpdateGreenViolationForm = (green: UseUpdateGreenViolationFormProps['green']): UseFormReturn<UpdateGreenViolationFormUseForm> => { // UpdateGreenViolationForm useForm
-  return useForm<UpdateGreenViolationFormUseForm>({
-    defaultValues: {
-      greenId: green.greenId,
-      date: setDateForForm(green.date),
-      xCoordinate: green.xCoordinate,
-      yCoordinate: green.yCoordinate,
-      locationDescription: green.locationDescription,
-      inspectorId: green.inspectorId,
-      details: green.details,
-      comments: green.comments,
-      responsibleParty: green.responsibleParty,
-      enforcementAction: green.enforcementAction,
-      penaltyDate: setDateForForm(green.penaltyDate),
-      penaltyAmount: green.penaltyAmount,
-      penaltyDueDate: setDateForForm(green.penaltyDueDate),
-      paymentReceived: setDateForForm(green.paymentReceived),
-      bondReleased: green.bondReleased,
-      compliance: green.compliance,
-      closed: green.closed,
-      followUpDate: undefined,
-      existingFollowUpDates: green.FollowUpDates.length ? green.FollowUpDates.map(followUp => {
-        return { followUpDate: followUp.followUpDate, uuid: followUp.uuid }
-      }) : [],
-      uuid: green.uuid
-    }
-  })
-}
+import { HandleUpdateGreenViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleUpdateGreenViolationFormSubmit = async (formData: HandleUpdateGreenViolationFormSubmitProps['formData'], options: HandleUpdateGreenViolationFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const greenObj: GreenObj = {
     date: formData.date,
@@ -76,7 +45,7 @@ export const handleUpdateGreenViolationFormSubmit = async (formData: HandleUpdat
       }
     }
 
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
   } else errorPopup(result.msg)
 }
 

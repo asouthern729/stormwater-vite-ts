@@ -11,7 +11,7 @@ import { GetGreenState } from "./types"
 import UpdateGreenViolationForm from "../../update/UpdateGreenViolationForm/UpdateGreenViolationForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const Form = ({ green, resetState, uuid }: { green: GreenInfrastructure | undefined, resetState: () => void, uuid: string }) => { // Update green violation form
+export const Form = ({ green, handleCloseForm, uuid }: { green: GreenInfrastructure | undefined, handleCloseForm: () => void, uuid: string }) => { // Update green violation form
   const [state, setState] = useState<GetGreenState>({ deleteBtnActive: false })
 
   const queryClient = useQueryClient()
@@ -22,10 +22,10 @@ export const Form = ({ green, resetState, uuid }: { green: GreenInfrastructure |
         <div className="flex flex-col items-center">
           <UpdateGreenViolationForm
             green={green}
-            resetState={resetState} />
+            handleCloseForm={handleCloseForm} />
           <DeleteBtn
             label={!state.deleteBtnActive ? 'Delete Violation' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteGreenViolation, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries('getGreenViolations') })} />
+            handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteGreenViolation, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries('getGreenViolations') })} />
         </div>
       )}
     </>

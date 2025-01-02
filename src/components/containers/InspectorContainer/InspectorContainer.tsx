@@ -88,11 +88,11 @@ function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
           <FormContainer key={`violation-${ state.formUUID }`}>
             <UpdateInspectorForm 
               inspector={inspector}
-              resetState={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
             <div className="mx-auto">
               <DeleteBtn
                 label={!state.deleteBtnActive ? 'Delete Inspector' : 'Confirm Delete'}
-                handleClick={() => handleDeleteBtnClick(inspector.uuid, state.deleteBtnActive, deleteInspector, { setState, resetState: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
+                handleClick={() => handleDeleteBtnClick(inspector.uuid, state.deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
             </div>
           </FormContainer>
         </div>

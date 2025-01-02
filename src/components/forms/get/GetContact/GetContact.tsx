@@ -7,7 +7,7 @@ import { GetContactProps } from "./types"
 // Components
 import { Form } from './components'
 
-function GetContact({ uuid, resetState }: GetContactProps) {
+function GetContact({ uuid, handleCloseForm }: GetContactProps) {
   const validated = useValidateUser()
 
   const { data } = useGetContact(uuid, validated)
@@ -16,7 +16,7 @@ function GetContact({ uuid, resetState }: GetContactProps) {
     <div data-testid="get-contact">
       <Form
         contact={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

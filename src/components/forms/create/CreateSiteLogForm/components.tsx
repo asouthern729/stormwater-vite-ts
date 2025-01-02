@@ -34,7 +34,7 @@ export const DateInput = () => { // Inspection date input
   )
 }
 
-export const Buttons = ({ resetState }: { resetState: () => void }) => { // Form buttons
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useFormContext<CreateSiteLogFormUseForm>()
 
   const disabled = !methods.formState.isValid || methods.formState.isSubmitting ? true : false
@@ -42,7 +42,7 @@ export const Buttons = ({ resetState }: { resetState: () => void }) => { // Form
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={resetState} />
+      <CancelBtn handleClick={handleCloseForm} />
     </div>
 )
 }

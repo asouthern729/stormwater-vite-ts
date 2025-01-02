@@ -1,6 +1,5 @@
 import { useCallback } from "react"
 import { useQueryClient } from "react-query"
-import { useNavigate } from "react-router-dom"
 import { useForm, useFormContext } from "react-hook-form"
 import { setDateForForm } from "../../../../helpers"
 import { handleCreateMultipleSiteLogsFormSubmit } from './utils'
@@ -25,14 +24,14 @@ export const useCreateMultipleSiteLogsFormContext = (): UseFormReturn<CreateMult
   return methods
 }
 
-export const useHandleFormSubmit = (inspectorId: string, resetState: () => void) => { // Handle form submit
+export const useHandleFormSubmit = (inspectorId: string, handleCloseForm: () => void) => { // Handle form submit
   const queryClient = useQueryClient()
 
 
   return useCallback((formData: CreateMultipleSiteLogsFormUseForm) =>
     handleCreateMultipleSiteLogsFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(['getInspector', inspectorId]),
-      resetState
-    }), [queryClient, resetState]
+      handleCloseForm
+    }), [queryClient, handleCloseForm]
   )
 }

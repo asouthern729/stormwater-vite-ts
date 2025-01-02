@@ -53,7 +53,7 @@ function ViolationsContainer({ sites }: ViolationsContainerProps) {
           <FormContainer key={`violation-${ state.formUUID }`}>
             <GetViolation
               uuid={state.formUUID}
-              resetState={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
           </FormContainer>
         </div>
       )}

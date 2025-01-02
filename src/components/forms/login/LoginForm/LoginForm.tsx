@@ -1,66 +1,35 @@
-import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
-import UserContext from "../../../../context/User/UserContext"
+import { FormProvider } from "react-hook-form"
 import image from '../../../../assets/icons/cof/cof.jpeg'
-import { useLoginForm, onSubmit } from '.'
+import { useLoginForm, useHandleFormSubmit } from './hooks'
 import styles from './LoginForm.module.css'
 
 // Components
-import LoginBtn from "../../../buttons/forms/LoginBtn/LoginBtn"
+import { EmailInput, PasswordInput, Button } from "./components"
 
 function LoginForm() {
-  const { dispatch } = useContext(UserContext)
+  const methods = useLoginForm()
 
-  const navigate = useNavigate()
-
-  const { register, handleSubmit, formState: { isValid } } = useLoginForm()
+  const handleFormSubmit = useHandleFormSubmit()
 
   return (
     <div className={styles.container}>
 
-      <form onSubmit={handleSubmit(formData => onSubmit(formData, { navigate, dispatch }))}>
+      <FormProvider { ...methods }>
+        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
 
-        <img src={image} alt="cof logo" className="w-fit hidden md:block" />
+          <img src={image} alt="cof logo" className="w-fit hidden md:block" />
 
-        <div className={styles.body}>
-          <h1 className={styles.title}>Stormwater Dept Login</h1>
-          
-            <div className={styles.inputSection}>
-              <div className="flex flex-col">
-                <label htmlFor="email" className={styles.label}>Email</label>
-                <input 
-                  { ...register('email', {
-                    required: {
-                      value: true,
-                      message: 'Email is required'
-                    }
-                  }) }
-                  type="email" 
-                  className={styles.input} />
-              </div>
-            </div>
+          <div className={styles.body}>
+            <h2 className={styles.title}>Stormwater Dept Login</h2>
+            
+            <EmailInput />
+            <PasswordInput />
 
-            <div className={styles.inputSection}>
-              <div className="flex flex-col">
-                <label htmlFor="password" className={styles.label}>Password</label>
-                <input 
-                  { ...register('password', {
-                    required: {
-                      value: true,
-                      message: 'Password is required'
-                    }
-                  }) }
-                  type="password" 
-                  className={styles.input} />
-              </div>
-            </div>
-
-          <div className="flex flex-col mt-8 gap-3">
-            <LoginBtn disabled={!isValid} />
+            <Button />
           </div>
-        </div>
 
-      </form>
+          </form>
+      </FormProvider>
 
     </div>
   )

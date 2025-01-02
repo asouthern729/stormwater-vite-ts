@@ -4,7 +4,7 @@ import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 export interface CreateSiteLogFormProps { // CreateSiteLogForm props
   siteId: string
   date: string
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface CreateSiteLogFormUseForm { // CreateSiteLogForm useForm state
@@ -21,7 +21,7 @@ export interface HandleCreateSiteLogFormSubmitProps { // handleCreateSiteLogForm
   formData: CreateSiteLogFormUseForm
   options: {
     invalidateQuery: () => Promise<void>
-    resetState: () => void
+    handleCloseForm: () => void
   }
 }
 

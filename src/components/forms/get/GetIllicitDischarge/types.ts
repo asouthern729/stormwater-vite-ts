@@ -1,6 +1,6 @@
 export interface GetIllicitDischargeProps { // GetIllicitDischarge props
   uuid: string | undefined
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface GetIllicitDischargeState { // GetIllicitDischarge state obj

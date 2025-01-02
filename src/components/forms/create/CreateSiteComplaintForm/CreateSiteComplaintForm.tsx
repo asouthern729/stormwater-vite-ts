@@ -11,14 +11,14 @@ import { CreateSiteComplaintFormProps } from "./types"
 import CreateFollowUpForm from "../CreateFollowUpForm/CreateFollowUpForm"
 import { Map, DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, ConcernSelect, OtherConcernInput, DetailsInput, CommentsInput, ComplaintantInputs, Buttons } from './components'
 
-function CreateSiteComplaintForm({ site, date, resetState }: CreateSiteComplaintFormProps) {
+function CreateSiteComplaintForm({ site, date, handleCloseForm }: CreateSiteComplaintFormProps) {
   const { newSite } = useContext(MapContext)
 
   const methods = useCreateSiteComplaintForm(site, date)
 
   useHandleMapChange(newSite, { setValue: methods.setValue })
 
-  const handleFormSubmit = useHandleFormSubmit(site?.uuid as string, resetState)
+  const handleFormSubmit = useHandleFormSubmit(site?.uuid as string, handleCloseForm)
 
   return (
     <div data-testid="create-site-complaint-form" className={styles.container}>
@@ -60,7 +60,7 @@ function CreateSiteComplaintForm({ site, date, resetState }: CreateSiteComplaint
             <CreateFollowUpForm />
           </div>
 
-          <Buttons resetState={resetState} />
+          <Buttons handleCloseForm={handleCloseForm} />
 
         </form>
       </FormProvider>

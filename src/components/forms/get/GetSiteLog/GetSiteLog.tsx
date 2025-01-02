@@ -7,7 +7,7 @@ import { GetSiteLogProps } from "./types"
 // Components
 import { Form } from "./components"
 
-function GetSiteLog({ uuid, resetState }: GetSiteLogProps) {
+function GetSiteLog({ uuid, handleCloseForm }: GetSiteLogProps) {
   const validated = useValidateUser()
 
   const { data } = useGetSiteLog(uuid, validated)
@@ -16,7 +16,7 @@ function GetSiteLog({ uuid, resetState }: GetSiteLogProps) {
     <div data-testid="get-site-log">
       <Form
         siteLog={data?.data} 
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

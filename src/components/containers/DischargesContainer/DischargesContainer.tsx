@@ -53,7 +53,7 @@ function DischargesContainer({ sites, discharges }: DischargesContainerProps) {
           <FormContainer key={`discharge-${ state.formUUID }`}>
             <GetIllicitDischarge
               uuid={state.formUUID}
-              resetState={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
           </FormContainer>
         </div>
       )}

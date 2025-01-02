@@ -31,7 +31,7 @@ export interface HandleSuccessfulFormSubmitProps { // handleSuccessfulFormSubmit
   options: {
     invalidateQuery: () => Promise<void>
     navigate?: () => void
-    resetState?: () => void
+    handleCloseForm?: () => void
   }
 }
 
@@ -42,7 +42,7 @@ export interface HandleDeleteBtnClickProps { // handleDeleteBtn fn props
   options: {
     invalidateQuery: () => Promise<void>
     setState?: Dispatch<SetStateAction<{ deleteBtnActive: boolean, formUUID?: string | undefined }>>
-    resetState?: () => void
+    handleCloseForm?: () => void
   }
 }
 

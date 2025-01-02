@@ -11,14 +11,14 @@ import { CreateSiteIllicitDischargeFormProps } from "./types"
 import CreateFollowUpForm from "../CreateFollowUpForm/CreateFollowUpForm"
 import { Map, DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, DetailsInput, StreamWatershedSelect, EnforcementActionInput, PenaltyInputs, Buttons } from "./components"
 
-function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIllicitDischargeFormProps) {
+function CreateSiteIllicitDischargeForm({ site, date, handleCloseForm }: CreateSiteIllicitDischargeFormProps) {
   const { newSite } = useContext(MapContext)
 
   const methods = useCreateSiteIllicitDischargeForm(site, date)
 
   useHandleMapChange(newSite, { setValue: methods.setValue })
 
-  const handleFormSubmit = useHandleFormSubmit(resetState, site?.uuid as string)
+  const handleFormSubmit = useHandleFormSubmit(handleCloseForm, site?.uuid as string)
 
   return (
     <div className={styles.container}>
@@ -61,7 +61,7 @@ function CreateSiteIllicitDischargeForm({ site, date, resetState }: CreateSiteIl
             <CreateFollowUpForm />
           </div>
 
-          <Buttons resetState={resetState} />
+          <Buttons handleCloseForm={handleCloseForm} />
 
         </form>
       </FormProvider>

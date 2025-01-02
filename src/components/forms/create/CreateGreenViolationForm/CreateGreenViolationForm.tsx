@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import MapContext from "../../../../context/Map/MapContext"
 import { useCreateGreenViolationForm, useHandleMapChange, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
@@ -11,6 +12,8 @@ import { DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyI
 
 function CreateGreenViolationForm() {
   const { newSite } = useContext(MapContext)
+
+  const navigate = useNavigate()
 
   const methods = useCreateGreenViolationForm()
 
@@ -64,7 +67,7 @@ function CreateGreenViolationForm() {
             <CreateFollowUpForm />
           </div>
 
-          <Buttons />
+          <Buttons handleCloseForm={() => navigate('/')} />
 
         </form>
       </FormProvider>

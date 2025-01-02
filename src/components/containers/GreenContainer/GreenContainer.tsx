@@ -52,7 +52,7 @@ function GreenContainer({ green }: GreenContainerProps) {
           <FormContainer key={`discharge-${ state.formUUID }`}>
             <GetGreen
               uuid={state.formUUID}
-              resetState={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
           </FormContainer>
         </div>
       )}

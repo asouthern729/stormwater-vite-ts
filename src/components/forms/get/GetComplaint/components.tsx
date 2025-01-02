@@ -11,7 +11,7 @@ import { GetComplaintState } from './types'
 import UpdateSiteComplaintForm from "../../update/UpdateSiteComplaintForm/UpdateSiteComplaintForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const Form = ({ complaint, resetState, uuid }: { complaint: Complaint | undefined, resetState: () => void, uuid: string }) => { // Update site complaint form
+export const Form = ({ complaint, handleCloseForm, uuid }: { complaint: Complaint | undefined, handleCloseForm: () => void, uuid: string }) => { // Update site complaint form
   const [state, setState] = useState<GetComplaintState>({ deleteBtnActive: false })
 
   const queryClient = useQueryClient()
@@ -24,10 +24,10 @@ export const Form = ({ complaint, resetState, uuid }: { complaint: Complaint | u
         <div className="flex flex-col items-center">
           <UpdateSiteComplaintForm 
             complaint={complaint}
-            resetState={resetState} />
+            handleCloseForm={handleCloseForm} />
           <DeleteBtn
             label={!state.deleteBtnActive ? 'Delete Complaint' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteComplaint, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries(uuid ? ['getSite', siteUUID] : 'getSites') })} />
+            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteComplaint, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(uuid ? ['getSite', siteUUID] : 'getSites') })} />
         </div>
       )}
     </>

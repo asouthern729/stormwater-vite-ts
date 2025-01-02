@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { useCreateContactFormContext } from './hooks'
 import { handleRequiredFieldValidation } from './utils'
 import styles from '../../Forms.module.css'
@@ -132,9 +131,7 @@ export const EmailInput = () => { // Email input
   )
 }
 
-export const Buttons = () => { // Form buttons
-  const navigate = useNavigate()
-
+export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useCreateContactFormContext()
 
   const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
@@ -142,7 +139,7 @@ export const Buttons = () => { // Form buttons
   return (
     <div className={styles.buttonsContainer}>
       <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={() => navigate('/')} />
+      <CancelBtn handleClick={handleCloseForm} />
     </div>
   )
 }

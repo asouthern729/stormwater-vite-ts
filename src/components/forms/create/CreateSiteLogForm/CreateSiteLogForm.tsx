@@ -9,12 +9,12 @@ import { CreateSiteLogFormProps } from "./types"
 // Components
 import { DateInput, Buttons } from './components'
 
-function CreateSiteLogForm({ siteId, date, resetState }: CreateSiteLogFormProps) {
+function CreateSiteLogForm({ siteId, date, handleCloseForm }: CreateSiteLogFormProps) {
   const methods = useCreateSiteLogForm(siteId, date)
 
   const siteUUID = useGetSiteUUID()
 
-  const handleFormSubmit = useHandleFormSubmit(resetState, siteUUID as string)
+  const handleFormSubmit = useHandleFormSubmit(handleCloseForm, siteUUID as string)
 
   return (
     <div data-testid="create-site-log-form" className={styles.container}>
@@ -25,7 +25,7 @@ function CreateSiteLogForm({ siteId, date, resetState }: CreateSiteLogFormProps)
           <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
             <DateInput />
-            <Buttons resetState={resetState} />
+            <Buttons handleCloseForm={handleCloseForm} />
 
           </form>
         </FormProvider>

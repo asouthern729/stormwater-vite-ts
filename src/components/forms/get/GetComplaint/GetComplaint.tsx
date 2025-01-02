@@ -7,7 +7,7 @@ import { GetComplaintProps } from "./types"
 // Components
 import { Form } from './components'
 
-function GetComplaint({ uuid, resetState }: GetComplaintProps) {
+function GetComplaint({ uuid, handleCloseForm }: GetComplaintProps) {
   const validated = useValidateUser()
 
   const { data } = useGetComplaint(uuid, validated)
@@ -16,7 +16,7 @@ function GetComplaint({ uuid, resetState }: GetComplaintProps) {
     <div data-testid="get-complaint">
       <Form
         complaint={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

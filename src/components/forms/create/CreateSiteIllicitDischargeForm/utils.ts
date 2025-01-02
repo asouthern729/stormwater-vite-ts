@@ -8,7 +8,7 @@ import { IllicitObj, FollowUpObj } from "../../../../context/App/types"
 import { HandleCreateSiteIllicitDischargeFormSubmitProps } from "./types"
 
 export const handleCreateSiteIllicitDischargeFormSubmit = async (formData: HandleCreateSiteIllicitDischargeFormSubmitProps['formData'], siteUUID: HandleCreateSiteIllicitDischargeFormSubmitProps['siteUUID'], options: HandleCreateSiteIllicitDischargeFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, resetState, navigate } = options
+  const { invalidateQuery, handleCloseForm, navigate } = options
 
   let illicitObj
 
@@ -75,7 +75,7 @@ export const handleCreateSiteIllicitDischargeFormSubmit = async (formData: Handl
         }
       }
       
-      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState, navigate: !resetState ? () => navigate('/') : undefined })
+      handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm, navigate: !handleCloseForm ? () => navigate('/') : undefined })
     } else errorPopup(result.msg) // Handle error
   } else errorPopup('Something Went Wrong')
 }

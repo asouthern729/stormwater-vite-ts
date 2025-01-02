@@ -1,5 +1,6 @@
 // Types
 import { UseFormWatch, UseFormTrigger } from "react-hook-form"
+import { UpdateContactFormUseForm } from "../../update/UpdateContactForm/types"
 
 export interface CreateContactFormUseForm { // CreateContactForm useForm state object
   name: string | null
@@ -20,7 +21,7 @@ export interface HandleCreateContactFormSubmitProps { // handleCreateContactForm
 export interface HandleRequiredFieldValidationProps {
   field: keyof CreateContactFormUseForm
   options: {
-    watch: UseFormWatch<CreateContactFormUseForm>
-    trigger: UseFormTrigger<CreateContactFormUseForm>
+    watch: UseFormWatch<CreateContactFormUseForm|UpdateContactFormUseForm>
+    trigger: UseFormTrigger<CreateContactFormUseForm|UpdateContactFormUseForm>
   }
 }

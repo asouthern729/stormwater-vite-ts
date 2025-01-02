@@ -7,7 +7,7 @@ import { SiteLogObj } from "../../../../context/App/types"
 import { HandleCreateSiteLogFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
 
 export const handleCreateSiteLogFormSubmit = async (formData: HandleCreateSiteLogFormSubmitProps['formData'], options: HandleCreateSiteLogFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, resetState } = options
+  const { invalidateQuery, handleCloseForm } = options
 
   const siteLogObj: SiteLogObj = {
     inspectionDate: formData.inspectionDate || '',
@@ -17,7 +17,7 @@ export const handleCreateSiteLogFormSubmit = async (formData: HandleCreateSiteLo
   const result = await createSiteLog(siteLogObj)
 
   if(result.success) {
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, resetState })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
   } else errorPopup(result.msg)
 }
 

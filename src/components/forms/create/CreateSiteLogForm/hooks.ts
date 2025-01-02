@@ -18,13 +18,13 @@ export const useCreateSiteLogForm = (siteId: UseCreateSiteLogFormProps['siteId']
   })
 }
 
-export const useHandleFormSubmit = (resetState: () => void, uuid: string) => { // Handle form submit
+export const useHandleFormSubmit = (handleCloseForm: () => void, uuid: string) => { // Handle form submit
   const queryClient = useQueryClient()
 
   return useCallback((formData: CreateSiteLogFormUseForm) => 
     handleCreateSiteLogFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
-      resetState
+      handleCloseForm
     }), [queryClient, uuid]
   )
 }

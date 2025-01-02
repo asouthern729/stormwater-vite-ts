@@ -68,7 +68,7 @@ function InspectorTable({ sites }: InspectorTableProps) {
           <FormContainer>
             <CreateMultipleSiteLogsForm 
               siteIds={state.selection}
-              resetState={() => setState(prevState => ({ ...prevState, showForm: false }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, showForm: false }))} />
           </FormContainer>
         </div>
       )}

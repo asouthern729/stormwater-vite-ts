@@ -4,7 +4,7 @@ import { GreenInfrastructure } from "../../../../context/App/types"
 
 export interface UpdateGreenViolationFormProps { // UpdateGreenViolationForm props
   green: GreenInfrastructure
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateGreenViolationFormUseForm { // UpdateGreenViolationForm useForm
@@ -37,7 +37,7 @@ export interface UseUpdateGreenViolationFormProps { // useUpdateGreenViolationFo
 export interface HandleUpdateGreenViolationFormSubmitProps { // handleUpdateGreenViolationFormSubmit fn props
   formData: UpdateGreenViolationFormUseForm
   options: {
-    resetState: () => void
+    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

@@ -7,7 +7,7 @@ import { GetIllicitDischargeProps } from './types'
 // Components
 import { Form } from './components'
 
-function GetIllicitDischarge({ uuid, resetState }: GetIllicitDischargeProps) {
+function GetIllicitDischarge({ uuid, handleCloseForm }: GetIllicitDischargeProps) {
   const validated = useValidateUser()
 
   const { data } = useGetIllicitDischarge(uuid, validated)
@@ -16,7 +16,7 @@ function GetIllicitDischarge({ uuid, resetState }: GetIllicitDischargeProps) {
     <div data-testid="get-illicit-discharge">
       <Form
         illicitDischarge={data?.data}
-        resetState={resetState}
+        handleCloseForm={handleCloseForm}
         uuid={uuid as string} />
     </div>
   )

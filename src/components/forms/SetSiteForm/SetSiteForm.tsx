@@ -1,18 +1,17 @@
-import { useNavigate } from "react-router-dom"
-import { useQueryClient } from "react-query"
-import { setForm } from "."
-
 // Types
 import { SetSiteFormProps } from "./types"
 
-function SetSiteForm({ state, site, setState }: SetSiteFormProps) {
-  const navigate = useNavigate()
+// Components
+import { Form } from './components'
 
-  const queryClient = useQueryClient()
+function SetSiteForm({ state, site, setState }: SetSiteFormProps) {
 
   return (
     <div data-testid="set-site-form">
-      {setForm(state, site, { setState, navigate, queryClient })}
+      <Form
+        state={state}
+        setState={setState}
+        site={site} />
     </div>
   )
 }

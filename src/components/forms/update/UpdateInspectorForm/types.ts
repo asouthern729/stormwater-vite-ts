@@ -4,7 +4,7 @@ import { Inspector } from "../../../../context/App/types"
 
 export interface UpdateInspectorFormProps { // UpdateInspector props
   inspector: Inspector
-  resetState: () => void
+  handleCloseForm: () => void
 }
 
 export interface UpdateInspectorFormUseForm { // UpdateInspectorForm useForm

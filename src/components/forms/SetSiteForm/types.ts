@@ -11,24 +11,6 @@ export interface SetSiteFormProps { // SetSiteForm props
   setState: Dispatch<SetStateAction<SiteContainerState>>
 }
 
-export interface SetFormProps { // setForm fn props
-  state: SiteContainerState
-  site: Site
-  options: {
-    setState: Dispatch<SetStateAction<SiteContainerState>>
-    queryClient: QueryClient
-    navigate?: NavigateFunction
-  }
-}
-
-export interface HandleFormProps { // handleForm fn props
-  state: SiteContainerState
-  site: Site
-  options: {
-    setState: Dispatch<SetStateAction<SiteContainerState>>
-  }
-}
-
 export interface HandleDeleteSiteBtnClickProps { // handleDeleteSiteBtnClick fn props
   uuid: string
   deleteBtnActive: boolean

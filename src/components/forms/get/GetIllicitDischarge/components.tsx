@@ -11,7 +11,7 @@ import { GetIllicitDischargeState } from "./types"
 import UpdateSiteIllicitDischargeForm from "../../update/UpdateSiteIllicitDischargeForm/UpdateSiteIllicitDischargeForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const Form = ({ illicitDischarge, resetState, uuid }: { illicitDischarge: IllicitDischarge | undefined, resetState: () => void, uuid: string }) => { // Update site illicit discharge form
+export const Form = ({ illicitDischarge, handleCloseForm, uuid }: { illicitDischarge: IllicitDischarge | undefined, handleCloseForm: () => void, uuid: string }) => { // Update site illicit discharge form
   const [state, setState] = useState<GetIllicitDischargeState>({ deleteBtnActive: false })
 
   const queryClient = useQueryClient()
@@ -24,10 +24,10 @@ export const Form = ({ illicitDischarge, resetState, uuid }: { illicitDischarge:
       <div className="flex flex-col items-center">
         <UpdateSiteIllicitDischargeForm 
           illicitDischarge={illicitDischarge}
-          resetState={resetState} />
+          handleCloseForm={handleCloseForm} />
         <DeleteBtn
           label={!state.deleteBtnActive ? 'Delete Illicit Discharge' : 'Confirm Delete'}
-          handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteIllicitDischarge, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites') })} />
+          handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteIllicitDischarge, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites') })} />
       </div>
       )}
     </>

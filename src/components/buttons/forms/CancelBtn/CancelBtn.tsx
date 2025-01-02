@@ -6,7 +6,7 @@ import { CancelBtnProps } from './types'
 function CancelBtn({ handleClick }: CancelBtnProps) {
   return (
     <button
-      type="submit"
+      type="button"
       className={styles.btn}
       onClick={handleClick}>
         Cancel

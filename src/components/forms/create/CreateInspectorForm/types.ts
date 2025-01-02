@@ -1,5 +1,6 @@
 // Types
 import { UseFormWatch, UseFormTrigger } from 'react-hook-form'
+import { UpdateInspectorFormUseForm } from '../../update/UpdateInspectorForm/types'
 
 export interface CreateInspectorFormUseForm {
   name: string
@@ -17,7 +18,7 @@ export interface HandleCreateInspectorFormSubmitProps { // handleCreateInspector
 export interface HandleRequiredFieldValidationProps {
   field: keyof CreateInspectorFormUseForm
   options: {
-    watch: UseFormWatch<CreateInspectorFormUseForm>
-    trigger: UseFormTrigger<CreateInspectorFormUseForm>
+    watch: UseFormWatch<CreateInspectorFormUseForm|UpdateInspectorFormUseForm>
+    trigger: UseFormTrigger<CreateInspectorFormUseForm|UpdateInspectorFormUseForm>
   }
 }

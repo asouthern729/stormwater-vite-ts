@@ -1,328 +1,67 @@
-import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
-import { useQueryClient } from "react-query"
-import AppContext from "../../../../context/App/AppContext"
-import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
-import { deleteFollowUp } from "../../../../context/App/AppActions"
-import { useUpdateSiteComplaintForm, handleUpdateSiteComplaintFormSubmit, handleRequiredFieldValidation } from "."
+import { useUpdateSiteComplaintForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 
 // Types
-import { Concern } from "../../create/CreateSiteComplaintForm/types"
 import { UpdateSiteComplaintFormProps } from "./types"
 
 // Components
-import FormLabel from "../../FormLabel/FormLabel"
 import CreateFollowUpForm from "../../create/CreateFollowUpForm/CreateFollowUpForm"
-import UpdateFollowUpForm from "../UpdateFollowUpForm/UpdateFollowUpForm"
-import FormError from "../../FormError/FormError"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import { DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, ConcernSelect, OtherConcernInput, DetailsInput, CommentsInput, ComplaintantInputs, Buttons } from '../../create/CreateSiteComplaintForm/components'
+import { ExistingFollowUpsInputs, ComplianceCheckbox, ClosedCheckbox } from './components'
 
-function UpdateSiteComplaintForm({ complaint, resetState }: UpdateSiteComplaintFormProps) {
-  const { inspectorOptions } = useContext(AppContext)
-
+function UpdateSiteComplaintForm({ complaint, handleCloseForm }: UpdateSiteComplaintFormProps) {
   const methods = useUpdateSiteComplaintForm(complaint)
 
-  const siteUUID = useGetSiteUUID()
-
-  const queryClient = useQueryClient()
+  const handleFormSubmit = useHandleFormSubmit(handleCloseForm)
 
   return (
     <div data-testid="update-site-complaint-form" className={styles.container}>
 
-      <div className={styles.title}>Update Complaint</div>
+      <h2 className={styles.title}>Update Complaint</h2>
 
         <FormProvider { ...methods }>
-          <form onSubmit={methods.handleSubmit(formData => handleUpdateSiteComplaintFormSubmit(formData, { invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'), resetState }))} className={styles.body}>
+          <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
             <div className="flex gap-3 w-full">
-              <div className="flex-1 flex flex-col">
-                <div className="flex">
-                  <FormLabel
-                    label={'Complaint Date:'}
-                    name={'date'}
-                    required={true} />
-                  <input 
-                    type="date"
-                    className={styles.input}
-                    { ...methods.register('date', {
-                      required: 'Complaint date is required',
-                      onBlur: () => handleRequiredFieldValidation('date', { watch: methods.watch, trigger: methods.trigger })
-                    }) } />
-                </div>
-                <FormError field={'date'} />
-              </div>
-
-              {!complaint.siteId && ( // No associated site - show inspector question
-                <div className="flex-1 flex flex-col">
-                  <div className="flex">
-                    <FormLabel
-                      label={'Inspector:'}
-                      name={'inspectorId'} />
-                    <select 
-                      className={styles.input}
-                      { ...methods.register('inspectorId') }>
-                        <option value={''}></option>
-                        {inspectorOptions.map((inspector) => (
-                          <option key={inspector.value} value={inspector.value}>
-                            {inspector.text}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                </div>
-              )}
+              <DateInput />
+              <InspectorSelect visible={!complaint.siteId ? true : false} />
             </div>
 
             <div className="flex gap-3 w-full">
-              <div className="flex-1 flex flex-col">
-                <div className="flex">
-                  <FormLabel
-                    label={'Location Description:'}
-                    name={'locationDescription'} />
-                  <input 
-                    type="text"
-                    className={styles.input}
-                    { ...methods.register('locationDescription', {
-                      maxLength: {
-                        value: 50,
-                        message: 'Location description must be 50 characters or less'
-                      }
-                    }) } />
-                </div>
-                <FormError field={'locationDescription'} />
-              </div>
-
-              <div className="flex-1 flex flex-col">
-                <div className="flex">
-                  <FormLabel
-                    label={'Responsible Party:'}
-                    name={'responsibleParty'} />
-                  <input 
-                    type="text"
-                    className={styles.input}
-                    { ...methods.register('responsibleParty', {
-                      maxLength: {
-                        value: 50,
-                        message: 'Responsible party must be 50 characters or less'
-                      }
-                    }) } />
-                </div>
-                <FormError field={'responsibleParty'} />
-              </div>
+              <LocationDescriptionInput />
+              <ResponsiblePartyInput />
             </div>
 
-            <div className="flex gap-3 w-full flex-wrap">
-              <div className="flex-1 flex flex-col">
-                <div className="flex">
-                  <FormLabel
-                    label={'Concern:'}
-                    name={'concern'}
-                    required={true} />
-                  <select 
-                    className={styles.input}
-                    { ...methods.register('concern', {
-                      required: 'Concern is required',
-                      onBlur: () => handleRequiredFieldValidation('concern', { watch: methods.watch, trigger: methods.trigger })
-                    }) }>
-                      <option value={''}></option>
-                      {Object.values(Concern).map((concern) => (
-                        <option key={concern} value={concern}>
-                          {concern}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <FormError field={'concern'} />
-              </div>
-
-              {methods.watch('concern') === 'Other' && (
-                <div className="flex-1 flex flex-col">
-                  <div className="flex">
-                    <FormLabel
-                      label={'Other Concern:'}
-                      name={'otherConcern'}
-                      required={true} />
-                    <input 
-                      type="text"
-                      className={styles.input}
-                      { ...methods.register('otherConcern', {
-                        required: 'Other concern is required',
-                        maxLength: {
-                          value: 50,
-                          message: 'Other concern must be 50 characters or less'
-                        },
-                        onBlur: () => handleRequiredFieldValidation('otherConcern', { watch: methods.watch, trigger: methods.trigger })
-                      }) } />
-                  </div>
-                  <FormError field={'otherConcern'} />
-                </div>
-              )}
+            <div className="flex gap-3 w-full">
+              <ConcernSelect />
+              <OtherConcernInput />
             </div>
 
-            <div className={styles.inputSection}>
-              <div className="flex">
-                <FormLabel
-                  label={'Details:'}
-                  name={'details'}
-                  required={true} />
-                <textarea 
-                  rows={3} 
-                  className={styles.input}
-                  { ...methods.register('details', {
-                    required: 'Complaint details is required',
-                    maxLength: {
-                      value: 2000,
-                      message: 'Complaint details must be 2000 characters or less'
-                    },
-                    onBlur: () => handleRequiredFieldValidation('details', { watch: methods.watch, trigger: methods.trigger })
-                  }) } />
-              </div>
-              <FormError field={'details'} />
-            </div>
-
-            <div className={styles.inputSection}>
-              <div className="flex">
-                <FormLabel
-                  label={'Comments:'}
-                  name={'comments'} />
-                <textarea 
-                  rows={3} 
-                  className={styles.input}
-                  { ...methods.register('comments', {
-                    maxLength: {
-                      value: 2000,
-                      message: 'Comments must be 2000 characters or less'
-                    }
-                  }) } />
-              </div>
-              <FormError field={'comments'} />
-            </div>
+            <DetailsInput />
+            <CommentsInput />
 
             <div className="flex flex-col gap-3 py-10 w-full">
-              <div className={styles.subtitle}>Complaintant</div>
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-3 w-full">
-                  
-                  <div className={styles.inputSection}>
-                    <div className="flex">
-                      <FormLabel
-                        label={'Full Name:'}
-                        name={'name'} />
-                      <input
-                        type="text"
-                        className={styles.input}
-                        { ...methods.register('name', {
-                          maxLength: {
-                            value: 50,
-                            message: 'Name must be 50 characters or less'
-                          }
-                        }) } />
-                    </div>
-                    <FormError field={'name'} />
-                  </div>
-
-                  <div className={styles.inputSection}>
-                    <div className="flex">
-                      <FormLabel
-                        label={'Address:'}
-                        name={'address'} />
-                      <input
-                        type="text"
-                        className={styles.input}
-                        { ...methods.register('address', {
-                          maxLength: {
-                            value: 100,
-                            message: 'Address must be 100 characters or less'
-                          }
-                        }) } />
-                    </div>
-                    <FormError field={'address'} />
-                  </div>
-                </div>
-
-                <div className="flex gap-3 w-full">
-                  <div className={styles.inputSection}>
-                    <div className="flex">
-                      <FormLabel
-                        label={'Phone:'}
-                        name={'phone'} />
-                      <input
-                        type="text"
-                        className={styles.input}
-                        { ...methods.register('phone', {
-                          maxLength: {
-                            value: 10,
-                            message: 'Phone must be 10 characters or less'
-                          }
-                        }) } />
-                    </div>
-                    <FormError field={'phone'} />
-                  </div>    
-                
-                  <div className={styles.inputSection}>
-                    <div className="flex">
-                      <FormLabel
-                        label={'Email:'}
-                        name={'email'} />
-                      <input
-                        type="text"
-                        className={styles.input}
-                        { ...methods.register('email', {
-                          maxLength: {
-                            value: 50,
-                            message: 'Email must be 50 characters or less'
-                          }
-                        }) } />
-                    </div>
-                    <FormError field={'email'} />
-                  </div>
-
-                </div>
-              </div>
+              <h3 className={styles.subtitle}>Complaintant</h3>
+              
+              <ComplaintantInputs />
             </div>
 
             <div className="flex flex-col gap-3 pb-10 w-full">
-              <div className={styles.subtitle}>Follow Up</div>
+              <h3 className={styles.subtitle}>Follow Up</h3>
+
               <CreateFollowUpForm />
-                {complaint.FollowUpDates.length > 0 && (
-                  complaint.FollowUpDates.map(followUp => {
-                    return (
-                      <div key={`follow-up-${ followUp.uuid }`} className="flex flex-col gap-4 items-center p-10 pb-6 bg-error/10">
-                        <UpdateFollowUpForm followUp={followUp} />
-                        <DeleteBtn
-                          label={'Delete Follow Up'}
-                          handleClick={() => handleDeleteBtnClick(followUp.uuid, true, deleteFollowUp, { invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]), resetState })} />
-                      </div>
-                    )
-                  })
-                )}
+              <ExistingFollowUpsInputs 
+                followUps={complaint.FollowUpDates}
+                handleCloseForm={handleCloseForm} />              
             </div>
 
-            <section className="flex justify-between gap-20 pb-10 m-auto w-fit">
-              <div className="flex flex-col gap-1 items-center">
-                <label htmlFor="compliance" className={styles.checkboxLabel}>Compliance:</label>
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-warning"
-                  { ...methods.register('compliance') } />
-              </div>
-
-              <div className="flex flex-col gap-1 items-center">
-                <label htmlFor="closed" className={styles.checkboxLabel}>Closed:</label>
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-warning"
-                  { ...methods.register('closed') } />
-              </div>
-            </section>
-
-            <div className={styles.buttonsContainer}>
-              <SaveBtn disabled={!methods.formState.isValid} />
-              <CancelBtn handleClick={resetState} />
+            <div className="flex justify-between gap-20 pb-10 m-auto w-fit">
+              <ComplianceCheckbox />
+              <ClosedCheckbox />
             </div>
+
+            <Buttons handleCloseForm={handleCloseForm} />
 
           </form>
         </FormProvider>

@@ -11,7 +11,7 @@ import { GetSiteLogState } from "./types"
 import UpdateSiteLogForm from "../../update/UpdateSiteLogForm/UpdateSiteLogForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
-export const Form = ({ siteLog, resetState, uuid }: { siteLog: SiteLog | undefined, resetState: () => void, uuid: string }) => {
+export const Form = ({ siteLog, handleCloseForm, uuid }: { siteLog: SiteLog | undefined, handleCloseForm: () => void, uuid: string }) => {
   const [state, setState] = useState<GetSiteLogState>({ deleteBtnActive: false })
 
   const queryClient = useQueryClient()
@@ -24,10 +24,10 @@ export const Form = ({ siteLog, resetState, uuid }: { siteLog: SiteLog | undefin
         <div className="flex flex-col items-center">
           <UpdateSiteLogForm
             siteLog={siteLog}
-            resetState={resetState} />
+            handleCloseForm={handleCloseForm} />
           <DeleteBtn
             label={!state.deleteBtnActive ? 'Delete Site Log' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteSiteLog, { setState, resetState, invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]) })} />
+            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteSiteLog, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]) })} />
         </div>
       )}
     </>

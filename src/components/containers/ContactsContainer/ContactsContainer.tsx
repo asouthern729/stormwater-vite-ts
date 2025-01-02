@@ -48,7 +48,7 @@ function ContactsContainer({ contacts }: ContactsContainerProps) {
           <FormContainer key={`contact-${ state.formUUID }`}>
             <GetContact
               uuid={state.formUUID}
-              resetState={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
+              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
           </FormContainer>
         </div>
       )}
