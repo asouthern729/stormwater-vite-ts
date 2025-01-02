@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import AppContext from '../../../context/App/AppContext'
-import { setDischargesObj } from '.'
+import { setDischargesObj } from './utils'
 import icon from '../../../assets/icons/discharge/discharge.svg'
 
 // Types

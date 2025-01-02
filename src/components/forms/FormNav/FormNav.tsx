@@ -7,6 +7,7 @@ import { FormNavProps } from './types'
 import FormNavBtn from "../../buttons/forms/FormNavBtn/FormNavBtn"
 
 function FormNav({ activeForm, handleBtnClick }: FormNavProps) {
+  
   return (
     <nav className={styles.container}>
       Select Form Type

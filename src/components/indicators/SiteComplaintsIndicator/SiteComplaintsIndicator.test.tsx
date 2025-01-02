@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { instance } from 'ts-mockito'
 import { mockComplaint } from '../../../test/mocks'
-import { setComplaintsObj } from '.'
+import { setComplaintsObj } from './utils'
 
 // Components
 import SiteComplaintsIndicator from './SiteComplaintsIndicator'

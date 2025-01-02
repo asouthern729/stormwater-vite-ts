@@ -8,7 +8,7 @@ import { MapContainerProps, MapContainerState } from './types'
 // Components
 import Map from '../Map/Map'
 import BasemapSelector from '../BasemapSelector/BasemapSelector'
-import Search from '../../search/Search/Search'
+import { MapSearch } from './components'
 
 const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
   const { activePage } = useContext(AppContext)
@@ -18,11 +18,7 @@ const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
   return (
     <div data-testid="map-container" className={styles.container}>
 
-      {['Sites', 'Inspectors'].includes(activePage) && ( // Show search component on Sites and Inspectors pages
-        <div className="absolute bottom-8 top-10 left-10 z-10 h-fit">
-          <Search placeholder={'by site name, COF #, or permit..'} />
-        </div>
-      )}
+      <MapSearch visible={['Sites', 'Inspectors'].includes(activePage) ? true : false} />
 
       <div className="absolute top-4 right-4 z-10">
         <BasemapSelector 

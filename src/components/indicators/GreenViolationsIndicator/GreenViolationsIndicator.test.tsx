@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { instance } from 'ts-mockito'
 import { mockGreen } from '../../../test/mocks'
-import { setGreenObj } from '.'
+import { setGreenObj } from './utils'
 
 // Components
 import GreenViolationsIndicator from './GreenViolationsIndicator'

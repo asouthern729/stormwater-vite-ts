@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import AppContext from '../../../context/App/AppContext'
-import { setViolationsObj } from '.'
+import { setViolationsObj } from './utils'
 import icon from '../../../assets/icons/violation/violation.svg'
 
 // Types

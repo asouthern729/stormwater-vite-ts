@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { instance } from 'ts-mockito'
 import { mockViolation } from '../../../test/mocks'
-import { setViolationsObj } from '.'
+import { setViolationsObj } from './utils'
 
 // Components
 import SiteViolationsIndicator from './SiteViolationsIndicator'

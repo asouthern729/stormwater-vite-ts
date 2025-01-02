@@ -1,4 +1,4 @@
-import { setGreenObj } from '.'
+import { setGreenObj } from './utils'
 import icon from '../../../assets/icons/green-violation/green-violation.svg'
 
 // Types

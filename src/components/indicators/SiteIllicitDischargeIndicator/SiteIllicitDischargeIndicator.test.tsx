@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { instance } from 'ts-mockito'
 import { mockDischarge } from '../../../test/mocks'
-import { setDischargesObj } from '.'
+import { setDischargesObj } from './utils'
 
 // Components
 import SiteIllicitDischargeIndicator from './SiteIllicitDischargeIndicator'

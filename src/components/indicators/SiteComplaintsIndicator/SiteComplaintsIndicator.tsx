@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import AppContext from '../../../context/App/AppContext'
-import { setComplaintsObj } from '.'
+import { setComplaintsObj } from './utils'
 import icon from '../../../assets/icons/complaint/complaint.svg'
 
 // Types
