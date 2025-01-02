@@ -1,19 +1,16 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useValidateUser } from "../../../../helpers"
-import { useGetActiveSiteNames, setCreateForm, handleSiteSelect } from "."
+import { useGetActiveSiteNames } from "./hooks"
 import styles from './GetSite.module.css'
 
 // Types
 import { GetSiteProps, GetSiteState } from "./types"
 
 // Components
-import FormContainer from "../../FormContainer/FormContainer"
+import { SiteSelect, NoSiteBtn, Form } from "./components"
 
 function GetSite({ form }: GetSiteProps) {
   const [state, setState] = useState<GetSiteState>({ siteId: null })
-
-  const navigate = useNavigate()
 
   const validated = useValidateUser()
 
@@ -25,36 +22,22 @@ function GetSite({ form }: GetSiteProps) {
     <div data-testid="get-site" className={styles.container}>
       <div className="flex flex-col gap-1 items-center">
 
-        <div className="text-xl">Select Site</div>
+        <h2 className="text-xl">Select Site</h2>
 
-        <select 
-          className="text-info select select-bordered"
-          onChange={(event) => handleSiteSelect(event, { setState })}
-          value={state.siteId as string}>
-            <option value=""></option>
-            {data ? data?.data.map(site => {
-              return (
-                <option key={`site-option-${ site.siteId }`} value={site.siteId}>{site.name}</option>
-              )
-            }) : null}
-        </select>
+        <SiteSelect 
+          sites={data?.data || []}
+          setState={setState} />
 
-        {['createComplaint', 'createDischarge'].includes(form) ? ( // Show button for complaints and illicit discharge forms
-          <button 
-            type="button"
-            className="btn btn-ghost hover:text-warning"
-            onClick={() => setState(({ siteId: undefined }))}>
-              Continue Without Site
-          </button>
-        ) : null}
+        <NoSiteBtn
+          form={form}
+          handleClick={() => setState({ siteId: undefined })} />
 
       </div>
 
-      {state.siteId !== null && (
-        <FormContainer>
-          {setCreateForm(form, selectedSite, { navigate: () => navigate('/') })}
-        </FormContainer>
-      )}
+      <Form
+        visible={state.siteId !== null ? true : false}
+        form={form}
+        site={selectedSite} />
     </div>
   )
 }

@@ -7,7 +7,6 @@ export interface CreateViolationFormProps { // CreateViolationForm props
   site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, uuid: string }
   date: string
   resetState?: () => void
-  navigate?: () => void
 }
 
 export interface CreateViolationFormUseForm { // CreateViolationForm useForm state

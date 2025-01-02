@@ -6,7 +6,7 @@ import { mockSite } from '../../../../test/mocks'
 import { vi } from 'vitest'
 import { instance } from 'ts-mockito'
 import { useValidateUser } from '../../../../helpers'
-import { setCreateForm } from '.'
+import { setCreateForm } from './hooks'
 
 // Types
 import { CreateForm } from '../../../../pages/Create/types'
