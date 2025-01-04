@@ -8,7 +8,7 @@ import { SiteDetailsProps } from './types'
 import PermitNumber from '../PermitNumber/PermitNumber'
 import ProjectNumber from '../ProjectNumber/ProjectNumber'
 import LastInspected from '../LastInspected/LastInspected'
-import GreenInfrastructure from '../GreenInfrastructure/GreenInfrastructure'
+import { GreenInfrastructureIcon } from './components'
 
 function SiteDetails({ site }: SiteDetailsProps) {
   const { activePage } = useContext(AppContext)
@@ -19,9 +19,7 @@ function SiteDetails({ site }: SiteDetailsProps) {
       <PermitNumber site={site} />
       <ProjectNumber site={site} />
       <LastInspected site={site} />
-      {site.greenInfrastructure && (
-        <GreenInfrastructure />
-      )}
+      <GreenInfrastructureIcon visible={!!site.greenInfrastructure} />
 
     </div>
   )

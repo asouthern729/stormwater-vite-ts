@@ -1,13 +1,9 @@
 import { useState, useRef, memo } from "react"
-import { useNavigate } from "react-router-dom"
-import { useQueryClient } from "react-query"
-import { useScrollToFormRef, handleDeleteBtnClick } from "../../../helpers"
-import { useSetSitesData } from "../SitesContainer"
-import { deleteInspector } from "../../../context/App/AppActions"
+import { useScrollToFormRef } from "../../../helpers"
+import { useSetSitesData } from "../SitesContainer/hooks"
 import styles from './InspectorContainer.module.css'
 
 // Types
-import { MbscCalendarEvent } from '@mobiscroll/react'
 import { InspectorContainerProps, InspectorContainerState, SiteActivityCalendarViewState } from "./types"
 
 // Components
@@ -18,11 +14,7 @@ import OpenIssuesBtn from '../../buttons/filters/OpenIssuesBtn/OpenIssuesBtn'
 import MapLegend from '../../map/MapLegend/MapLegend'
 import MapContainer from '../../map/MapContainer/MapContainer'
 import SitesTable from "../../tables/SitesTable/SitesTable"
-import SitesActivityCalendar from '../../calendars/SitesActivityCalendar/SitesActivityCalendar'
-import InspectorTable from "../../tables/InspectorTable/InspectorTable"
-import FormContainer from "../../forms/FormContainer/FormContainer"
-import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
-import DeleteBtn from "../../buttons/forms/DeleteBtn/DeleteBtn"
+import { CalendarTable, Form } from './components'
 
 function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
   const [state, setState] = useState<InspectorContainerState>({ deleteBtnActive: false, formUUID: undefined })
@@ -32,16 +24,12 @@ function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
 
   const sitesArray = useSetSitesData(sites)
 
-  const navigate = useNavigate()
-
-  const queryClient = useQueryClient()
-
   useScrollToFormRef(state, formRef) 
 
   return (
     <div data-testid="inspector-container" className={styles.container}>
 
-      <section className={styles.topDiv}>
+      <div className={styles.topDiv}>
         <div className="absolute left-0">
           <UpdateBtn
             label={'Update Inspector'}
@@ -52,51 +40,39 @@ function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
           <ActiveSitesBtn />
           <OpenIssuesBtn />
         </div>
-      </section>
+      </div>
 
-      <section className={styles.mapDiv}>
+      <div className={styles.mapDiv}>
+
         <div className="absolute bottom-4 left-4 z-10">
           <MapLegend sites={sites} />
         </div>
+        
         <MapContainer sites={sitesArray} />
         <SitesTable sites={sitesArray} />
-      </section>
+      </div>
 
-      <section className={styles.bottomDiv}>
+      <div className={styles.bottomDiv}>
         <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
-          <div className={styles.header}>
-            Sites Activity
-            <button 
-              type="button"
-              onClick={() => setSiteActivityView(prevState => ({ activeView: prevState.activeView === 'calendar' ? 'table' : 'calendar' }))}
-              className="font-sans text-lg uppercase hover:text-warning">
-                Switch To { siteActivityView.activeView === 'calendar' ? 'Table' : 'Calendar' } View
-            </button>
-          </div>
-          {siteActivityView.activeView === 'calendar' ? (
-            <SitesActivityCalendar 
-              sites={sitesArray}
-              handleEventClick={(event: MbscCalendarEvent) => navigate(`/site/${ event.event.uuid }`)} />
-          ):(
-            <InspectorTable sites={sitesArray} />
-          )}
-        </div>
-      </section>
+          <h3 className={styles.header}>Sites Activity</h3>
 
-      {state.formUUID && (
-        <div ref={formRef}>
-          <FormContainer key={`violation-${ state.formUUID }`}>
-            <UpdateInspectorForm 
-              inspector={inspector}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-            <div className="mx-auto">
-              <DeleteBtn
-                label={!state.deleteBtnActive ? 'Delete Inspector' : 'Confirm Delete'}
-                handleClick={() => handleDeleteBtnClick(inspector.uuid, state.deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
-            </div>
-          </FormContainer>
+          <button 
+            type="button"
+            onClick={() => setSiteActivityView(prevState => ({ activeView: prevState.activeView === 'calendar' ? 'table' : 'calendar' }))}
+            className="text-neutral-content font-sans text-lg uppercase hover:text-warning">
+              Switch To { siteActivityView.activeView === 'calendar' ? 'Table' : 'Calendar' } View
+          </button>
+          <CalendarTable
+            activeView={siteActivityView.activeView}
+            sitesArray={sitesArray} />
         </div>
-      )}
+      </div>
+
+      <Form
+        state={state}
+        formRef={formRef}
+        setState={setState}
+        inspector={inspector} />
 
     </div>
   )

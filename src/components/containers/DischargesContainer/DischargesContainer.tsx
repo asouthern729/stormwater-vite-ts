@@ -11,8 +11,7 @@ import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteIllicitDischargeBtn from "../../indicators/SiteIllicitDischargeIndicator/SiteIllicitDischargeIndicator"
 import SitesIssuesTable from "../../tables/SitesIssuesTable/SitesIssuesTable"
 import DateRangeFilter from "../../filters/DateRangeFilter/DateRangeFilter"
-import FormContainer from '../../forms/FormContainer/FormContainer'
-import GetIllicitDischarge from '../../forms/get/GetIllicitDischarge/GetIllicitDischarge'
+import { Form } from './components'
 
 function DischargesContainer({ sites, discharges }: DischargesContainerProps) {
   const [state, setState] = useState<DischargesContainerState>({ formUUID: undefined })
@@ -48,15 +47,10 @@ function DischargesContainer({ sites, discharges }: DischargesContainerProps) {
         </div>
       </div>
 
-      {state.formUUID && (
-        <div data-testid="form-container" ref={formRef}>
-          <FormContainer key={`discharge-${ state.formUUID }`}>
-            <GetIllicitDischarge
-              uuid={state.formUUID}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        formUUID={state.formUUID}
+        formRef={formRef}
+        setState={setState} />
 
     </div>
   )

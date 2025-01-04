@@ -11,8 +11,7 @@ import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteComplaintsBtn from '../../indicators/SiteComplaintsIndicator/SiteComplaintsIndicator'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
-import FormContainer from '../../forms/FormContainer/FormContainer'
-import GetComplaint from '../../forms/get/GetComplaint/GetComplaint'
+import { Form } from './components'
 
 function ComplaintsContainer({ sites, complaints }: ComplaintsContainerProps) {
   const [state, setState] = useState<ComplaintsContainerState>({ formUUID: undefined })
@@ -31,7 +30,7 @@ function ComplaintsContainer({ sites, complaints }: ComplaintsContainerProps) {
             location={'/create?formType=createComplaint'} />
         </div>
 
-        <div className={styles.header}>Complaints</div>
+        <h2 className={styles.header}>Complaints</h2>
 
         <div className="flex justify-evenly w-full">
           <SiteComplaintsBtn
@@ -48,15 +47,10 @@ function ComplaintsContainer({ sites, complaints }: ComplaintsContainerProps) {
         </div>
       </div>
 
-      {state.formUUID && (
-        <div ref={formRef}>
-          <FormContainer key={`complaint-${ state.formUUID }`}>
-            <GetComplaint
-              uuid={state.formUUID}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        formUUID={state.formUUID}
+        formRef={formRef}
+        setState={setState} />
 
     </div>
   )

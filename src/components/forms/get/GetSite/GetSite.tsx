@@ -35,7 +35,7 @@ function GetSite({ form }: GetSiteProps) {
       </div>
 
       <Form
-        visible={state.siteId !== null ? true : false}
+        visible={state.siteId !== null}
         form={form}
         site={selectedSite} />
     </div>

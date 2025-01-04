@@ -6,7 +6,7 @@ import styles from './Map.module.css'
 import { MapProps } from './types'
 
 const Map = ({ sites, basemap, type, zoom }: MapProps) => {
-  const mapRef = useRef<HTMLDivElement | null>(null)
+  const mapRef = useRef<HTMLDivElement>(null)
 
   useSetMapView(mapRef, sites, basemap, type, zoom)
 

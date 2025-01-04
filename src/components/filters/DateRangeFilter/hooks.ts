@@ -2,7 +2,7 @@ import { useContext, useCallback, useEffect } from "react"
 import AppContext from "../../../context/App/AppContext"
 
 // Types
-import { UseHandleDateRangeChangeProps, HandleDateChangeProps } from "./types"
+import { UseHandleDateRangeChangeProps } from "./types"
 
 export const useHandleDateRangeChange = (state: UseHandleDateRangeChangeProps['state']): void => { // Set date range to ctx on change
   const { dispatch } = useContext(AppContext)
@@ -16,15 +16,4 @@ export const useHandleDateRangeChange = (state: UseHandleDateRangeChangeProps['s
   useEffect(() => {
     cb()
   }, [cb])
-}
-
-export const handleDateChange = (event: HandleDateChangeProps['event'], options: HandleDateChangeProps['options']): void => { // Handle date input change
-  const { setState } = options
-
-  const value = event.currentTarget.value
-  const target = event.currentTarget.id
-
-  if(value) {
-    setState(prevState => ({ ...prevState, [target]: value }))
-  }
 }

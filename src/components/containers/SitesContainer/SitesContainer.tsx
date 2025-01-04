@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSetSitesData } from '.'
+import { useSetSitesData } from './hooks'
 import styles from './SitesContainer.module.css'
 
 // Types
@@ -24,32 +24,33 @@ function SitesContainer({ sites }: SitesContainerProps) {
   return (
     <div data-testid="sites-container" className={styles.container}>
 
-      <section className={styles.topDiv}>
+      <div className={styles.topDiv}>
         <SitesHeader />
 
         <div className="absolute flex gap-4 right-0">
           <ActiveSitesBtn />
           <OpenIssuesBtn />
         </div>
-      </section>
+      </div>
 
-      <section className={styles.mapDiv}>
+      <div className={styles.mapDiv}>
         <div className="absolute bottom-4 left-4 z-10">
           <MapLegend sites={sites} />
         </div>
 
         <MapContainer sites={sitesArray} />
         <SitesTable sites={sitesArray} />
-      </section>
+      </div>
 
-      <section className={styles.bottomDiv}>
+      <div className={styles.bottomDiv}>
         <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
-          <div className={styles.header}>Sites Activity</div>
+          <h3 className={styles.header}>Sites Activity</h3>
+
           <SitesActivityCalendar 
             sites={sitesArray}
             handleEventClick={(event: MbscCalendarEvent) => navigate(`/site/${ event.event.uuid }`)} />
         </div>
-      </section>
+      </div>
 
     </div>
   )

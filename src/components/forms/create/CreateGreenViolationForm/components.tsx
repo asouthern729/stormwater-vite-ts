@@ -228,7 +228,7 @@ const PenaltyDateInput = () => { // Penalty date input
 const PenaltyAmountInput = () => { // Penalty amount input
   const methods = useCreateGreenViolationFormContext()
 
-  const visible = methods.watch('penaltyDate') ? true : false
+  const visible = !!methods.watch('penaltyDate')
 
   if(!visible) return null
 
@@ -238,7 +238,7 @@ const PenaltyAmountInput = () => { // Penalty amount input
         <FormLabel
           label={'Amount:'}
           name={'penaltyAmount'}
-          required={methods.watch('penaltyDate') ? true : false} />
+          required={!!methods.watch('penaltyDate')} />
         <input
           type="number"
           className={styles.input}
@@ -255,7 +255,7 @@ const PenaltyAmountInput = () => { // Penalty amount input
 const PenaltyDueDateInput = () => { // Penalty due date input
   const methods = useCreateGreenViolationFormContext()
 
-  const visible = methods.watch('penaltyDate') ? true : false
+  const visible = !!methods.watch('penaltyDate')
 
   if(!visible) return null
 
@@ -265,7 +265,7 @@ const PenaltyDueDateInput = () => { // Penalty due date input
         <FormLabel
           label={'Due Date:'}
           name={'penaltyDueDate'}
-          required={methods.watch('penaltyDate') ? true : false} />
+          required={!!methods.watch('penaltyDate')} />
         <input
           type="date"
           className={styles.input}
@@ -282,7 +282,7 @@ const PenaltyDueDateInput = () => { // Penalty due date input
 const PaymentReceivedDateInput = () => { // Payment received date input
   const methods = useCreateGreenViolationFormContext()
 
-  const visible = methods.watch('penaltyDate') ? true : false
+  const visible = !!methods.watch('penaltyDate')
 
   if(!visible) return null
 

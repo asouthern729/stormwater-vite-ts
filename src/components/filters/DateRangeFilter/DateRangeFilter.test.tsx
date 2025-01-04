@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import AppContext, { AppProvider } from '../../../context/App/AppContext'
-import { useHandleDateRangeChange } from '.'
+import { useHandleDateRangeChange } from './hooks'
 
 // Types
 import { DateRangeFilterState } from './types'

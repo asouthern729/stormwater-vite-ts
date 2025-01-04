@@ -11,8 +11,7 @@ import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteViolationsBtn from '../../indicators/SiteViolationsIndicator/SiteViolationsIndicator'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
-import FormContainer from '../../forms/FormContainer/FormContainer'
-import GetViolation from '../../forms/get/GetViolation/GetViolation'
+import { Form } from './components'
 
 function ViolationsContainer({ sites }: ViolationsContainerProps) {
   const [state, setState] = useState<ViolationsContainerState>({ formUUID: undefined })
@@ -48,15 +47,10 @@ function ViolationsContainer({ sites }: ViolationsContainerProps) {
         </div>
       </div>
 
-      {state.formUUID && (
-        <div ref={formRef}>
-          <FormContainer key={`violation-${ state.formUUID }`}>
-            <GetViolation
-              uuid={state.formUUID}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        formUUID={state.formUUID}
+        formRef={formRef}
+        setState={setState} />
       
     </div>
   )

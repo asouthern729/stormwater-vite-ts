@@ -1,6 +1,7 @@
 import styles from './ActivityCalendarLegend.module.css'
 
 function ActivityCalendarLegend() {
+  
   return (
     <div className={styles.container}>
       <div className={styles.inspection}>Inspection</div>

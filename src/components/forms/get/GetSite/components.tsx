@@ -31,7 +31,7 @@ export const SiteSelect = ({ sites, setState }: { sites: { name: string, siteId:
 }
 
 export const NoSiteBtn = ({ form, handleClick }: { form: CreateForm, handleClick: () => void }) => { // Show button for complaints and illicit discharge forms only
-  const visible = form === 'createComplaint' || form === 'createDischarge' ? true : false
+  const visible = ['createComplaint', 'createDischarge'].includes(form)
 
   if(!visible) return null
   

@@ -20,7 +20,7 @@ import SiteIssuesTable from '../../tables/SiteIssuesTable/SiteIssuesTable'
 import SiteContactsTable from '../../tables/SiteContactsTable/SiteContactsTable'
 import BackToHomeBtn from '../../buttons/nav/BackToHomeBtn/BackToHomeBtn'
 import UpdateBtn from '../../buttons/forms/UpdateBtn/UpdateBtn'
-import SetSiteForm from '../../forms/SetSiteForm/SetSiteForm'
+import { Form } from './components'
 
 function SiteContainer({ site }: SiteContainerProps) {
   const { showClosedSiteIssues, dispatch } = useContext(AppContext)
@@ -38,7 +38,7 @@ function SiteContainer({ site }: SiteContainerProps) {
       <SiteHeader site={site} />
       <div className={styles.container}>
 
-        <section className="flex flex-col gap-10 w-full 2xl:w-2/3">
+        <div className="flex flex-col gap-10 w-full 2xl:w-2/3">
           <div className={styles.startDiv}>
             <div className="flex gap-2 w-fit 2xl:flex-col 2xl:w-full 2xl:gap-4">
               <BackToHomeBtn />
@@ -60,10 +60,10 @@ function SiteContainer({ site }: SiteContainerProps) {
 
           </div>
           <SiteContactsTable siteContacts={site.SiteContacts} />
-        </section>
+        </div>
         
 
-        <section className={styles.endDiv}>
+        <div className={styles.endDiv}>
 
           <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
             <div className={styles.header}>Site Activity</div>
@@ -100,18 +100,15 @@ function SiteContainer({ site }: SiteContainerProps) {
             </div>
           </div>
 
-        </section>
+        </div>
         
       </div>
 
-      {state.activeForm && (
-        <div ref={formRef}>
-          <SetSiteForm
-            state={state}
-            site={site}
-            setState={setState} />
-        </div>
-      )}
+      <Form
+        state={state}
+        setState={setState}
+        formRef={formRef}
+        site={site} />
         
     </div>
   )

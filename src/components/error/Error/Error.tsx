@@ -1,5 +1,5 @@
-import { useHandleError } from '.'
 import icon from '../../../assets/icons/sad-face/sad-face.svg'
+import { useHandleError } from './hooks'
 import styles from './Error.module.css'
 
 // Types
@@ -12,7 +12,7 @@ function Error({ title, subtitle }: ErrorProps) {
     <div className={styles.container}>
       <img src={icon} alt="sad face icon" className="w-28" />
       <div className="flex flex-col gap-3 items-center">
-        <h1 className={styles.title}>{title}</h1>
+        <h2 className={styles.title}>{title}</h2>
         <div className={styles.subTitle}>{subtitle} in <span className={styles.counter}>{countdown}</span> seconds</div>
       </div>
     </div>

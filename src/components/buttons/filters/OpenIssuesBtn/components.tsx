@@ -1,11 +1,12 @@
+import { useContext } from 'react'
+import AppContext from '../../../../context/App/AppContext'
 import warningPinIcon from '../../../../assets/icons/pin/warning-pin.png'
 import errorPinIcon from '../../../../assets/icons/pin/error-pin.png'
 
-// Types
-import { SetLabelProps } from './types'
+export const Label = () => { // Open issues button label
+  const { showOpenIssuesOnly } = useContext(AppContext)
 
-export const setLabel = (showOpenIssuesOnly: SetLabelProps['showOpenIssuesOnly']) => {
-  if(!showOpenIssuesOnly) {
+  if(!showOpenIssuesOnly) { // Show all
     return (
       <div className="flex gap-1 items-center">
         Open Issues

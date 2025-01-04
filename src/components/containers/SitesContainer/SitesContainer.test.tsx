@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { instance, when } from 'ts-mockito'
 import { mockSite } from '../../../test/mocks'
 import { AppProvider } from '../../../context/App/AppContext'
-import { useSetSitesData } from '.'
+import { useSetSitesData } from './hooks'
 
 // Components
 import SitesContainer from './SitesContainer'

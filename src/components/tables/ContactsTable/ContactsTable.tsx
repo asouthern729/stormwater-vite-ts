@@ -8,8 +8,7 @@ import { Contact } from '../../../context/App/types'
 import { ContactsTableProps, ContactsTableState } from './types'
 
 // Components
-import PrevPageBtn from '../../buttons/nav/PrevPageBtn/PrevPageBtn'
-import NextPageBtn from '../../buttons/nav/NextPageBtn/NextPageBtn'
+import { PageBtns } from './components'
 
 function ContactsTable({ contacts, handleRowClick }: ContactsTableProps) {
   const [state, setState] = useState<ContactsTableState>({ currentPage: 1 })
@@ -21,16 +20,10 @@ function ContactsTable({ contacts, handleRowClick }: ContactsTableProps) {
   return (
     <div data-testid="contacts-table" className={styles.container}>
 
-      <div className="flex justify-between items-end w-full">
-        <div className="flex gap-4 ml-auto">
-          <PrevPageBtn 
-            handleClick={() => setState(prevState => ({ ...prevState, currentPage: prevState.currentPage - 1 }))}
-            disabled={state.currentPage === 1} />
-          <NextPageBtn 
-            handleClick={() => setState(prevState => ({ ...prevState, currentPage: prevState.currentPage + 1 }))}
-            disabled={state.currentPage === totalPages} />
-        </div>
-      </div>
+      <PageBtns 
+        currentPage={state.currentPage}
+        totalPages={totalPages}
+        setState={setState} />
 
       <table className="table table-sm text-neutral-content">
         <thead>

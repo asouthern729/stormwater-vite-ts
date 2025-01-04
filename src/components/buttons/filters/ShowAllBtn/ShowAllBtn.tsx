@@ -10,7 +10,7 @@ function ShowAllBtn({ label, handleClick }: ShowAllBtnProps) {
       type="button"
       className={styles.btn}
       onClick={handleClick}>
-      {label}
+        {label}
     </button>
   )
 }

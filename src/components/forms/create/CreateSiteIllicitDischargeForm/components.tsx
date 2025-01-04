@@ -226,7 +226,7 @@ export const Buttons = ({ handleCloseForm }: { handleCloseForm: (() => void) | u
 
   const navigate = useNavigate()
 
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting ? true : false
+  const disabled = !methods.formState.isValid || methods.formState.isSubmitting
 
   return (
     <div className={styles.buttonsContainer}>
@@ -239,7 +239,7 @@ export const Buttons = ({ handleCloseForm }: { handleCloseForm: (() => void) | u
 const OtherStreamWatershedInput = () => { // Other stream / watershed input
   const methods = useCreateSiteIllicitDischargeFormContext()
 
-  const visible = methods.watch('streamWatershed') === 'Other' ? true : false
+  const visible = methods.watch('streamWatershed') === 'Other'
 
   if(!visible) return null
 
@@ -287,7 +287,7 @@ const PenaltyDateInput = () => { // Penalty date input
 const PenaltyAmountInput = () => { // Penalty amount input
   const methods = useCreateSiteIllicitDischargeFormContext()
 
-  const visible = methods.watch('penaltyDate') ? true : false
+  const visible = !!methods.watch('penaltyDate')
 
   if(!visible) return null
 
@@ -341,7 +341,7 @@ const PenaltyDueDate = () => { // Penalty due date input
 const PaymentReceivedDateInput = () => { // Payment received date input
   const methods = useCreateSiteIllicitDischargeFormContext()
 
-  const visible = methods.watch('penaltyDate') ? true : false
+  const visible = !!methods.watch('penaltyDate')
 
   if(!visible) return null
 

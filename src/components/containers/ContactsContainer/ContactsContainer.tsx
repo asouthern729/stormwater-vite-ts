@@ -1,6 +1,7 @@
 import { useState, useRef, memo } from 'react'
 import { useScrollToFormRef } from '../../../helpers'
-import { useSetContactsData, handleContactsTableRowClick } from '.'
+import { useSetContactsData } from './hooks'
+import { handleContactsTableRowClick } from './utils'
 import styles from './ContactsContainer.module.css'
 
 // Types
@@ -10,8 +11,7 @@ import { ContactsContainerProps, ContactsContainerState } from './types'
 import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import Search from '../../search/Search/Search'
 import ContactsTable from '../../tables/ContactsTable/ContactsTable'
-import FormContainer from '../../forms/FormContainer/FormContainer'
-import GetContact from '../../forms/get/GetContact/GetContact'
+import { Form } from './components'
 
 function ContactsContainer({ contacts }: ContactsContainerProps) {
   const [state, setState] = useState<ContactsContainerState>({ formUUID: undefined })
@@ -43,15 +43,10 @@ function ContactsContainer({ contacts }: ContactsContainerProps) {
           handleRowClick={handleContactsTableRowClick(setState)} />
       </div>
 
-      {state.formUUID && (
-        <div ref={formRef}>
-          <FormContainer key={`contact-${ state.formUUID }`}>
-            <GetContact
-              uuid={state.formUUID}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        formUUID={state.formUUID}
+        formRef={formRef}
+        setState={setState} />
     </div>
   )
 }

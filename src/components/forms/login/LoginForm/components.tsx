@@ -50,7 +50,7 @@ export const PasswordInput = () => { // Password input
 export const Button = () => { // Login button
   const methods = useFormContext<LoginFormUseFormState>()
 
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting ? true : false
+  const disabled = !methods.formState.isValid || methods.formState.isSubmitting
 
   return (
     <div className="flex flex-col mt-8 gap-3">

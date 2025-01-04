@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import AppContext from '../../../../context/App/AppContext'
-import { setBtnStyle } from '.'
+import { setBtnStyle } from './utils'
 
 // Types
 import { HeaderBtnProps } from "./types"

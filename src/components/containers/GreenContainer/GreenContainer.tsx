@@ -11,8 +11,7 @@ import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import GreenViolationsIndicator from '../../indicators/GreenViolationsIndicator/GreenViolationsIndicator'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
-import FormContainer from '../../forms/FormContainer/FormContainer'
-import GetGreen from '../../forms/get/GetGreen/GetGreen'
+import { Form } from './components'
 
 function GreenContainer({ green }: GreenContainerProps) {
   const [state, setState] = useState<GreenContainerState>({ formUUID: undefined })
@@ -31,7 +30,7 @@ function GreenContainer({ green }: GreenContainerProps) {
             location={'/create?formType=createGreen'} />
         </div>
 
-        <div className={styles.header}>Green Infrastructure Violations</div>
+        <h2 className={styles.header}>Green Infrastructure Violations</h2>
 
         <div className="flex justify-evenly w-full">
           <GreenViolationsIndicator
@@ -47,15 +46,10 @@ function GreenContainer({ green }: GreenContainerProps) {
         </div>
       </div>
 
-      {state.formUUID && (
-        <div ref={formRef}>
-          <FormContainer key={`discharge-${ state.formUUID }`}>
-            <GetGreen
-              uuid={state.formUUID}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        formUUID={state.formUUID}
+        formRef={formRef}
+        setState={setState} />
 
     </div>
   )

@@ -28,11 +28,11 @@ function CreateSiteComplaintForm({ site, date, handleCloseForm }: CreateSiteComp
       <FormProvider { ...methods }>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-          <Map visible={!site ? true : false} />
+          <Map visible={!site} />
 
           <div className="flex gap-3 w-full">
             <DateInput />
-            <InspectorSelect visible={!site ? true : false} />
+            <InspectorSelect visible={!site} />
           </div>
 
           <div className="flex gap-3 w-full">

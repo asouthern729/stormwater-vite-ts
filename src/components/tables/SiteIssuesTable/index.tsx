@@ -48,12 +48,12 @@ export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['
     const obj: Issue = {
       date: issue.date,
       civilPenalty: {
-        issued: issue?.penaltyDate ? true : false,
-        received: issue?.paymentReceived ? true : false
+        issued: !!issue?.penaltyDate,
+        received: !!issue?.paymentReceived
       },
       swo: {
-        issued: issue?.swoDate ? true : false,
-        lifted: issue?.swoLiftedDate ? true : false
+        issued: !!issue?.swoDate,
+        lifted: !!issue?.swoLiftedDate
       },
       closed: issue.closed,
       concern: issue?.concern,

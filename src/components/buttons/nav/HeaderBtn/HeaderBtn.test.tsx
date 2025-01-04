@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { vi } from 'vitest'
-import { setBtnStyle } from '.'
+import { setBtnStyle } from './utils'
 import styles from './HeaderBtn.module.css'
 
 // Components

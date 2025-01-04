@@ -18,7 +18,7 @@ const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
   return (
     <div data-testid="map-container" className={styles.container}>
 
-      <MapSearch visible={['Sites', 'Inspectors'].includes(activePage) ? true : false} />
+      <MapSearch visible={['Sites', 'Inspectors'].includes(activePage)} />
 
       <div className="absolute top-4 right-4 z-10">
         <BasemapSelector 

@@ -25,7 +25,7 @@ function UpdateSiteComplaintForm({ complaint, handleCloseForm }: UpdateSiteCompl
 
             <div className="flex gap-3 w-full">
               <DateInput />
-              <InspectorSelect visible={!complaint.siteId ? true : false} />
+              <InspectorSelect visible={!!complaint.siteId} />
             </div>
 
             <div className="flex gap-3 w-full">

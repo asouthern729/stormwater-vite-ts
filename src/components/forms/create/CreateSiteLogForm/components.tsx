@@ -37,7 +37,7 @@ export const DateInput = () => { // Inspection date input
 export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
   const methods = useFormContext<CreateSiteLogFormUseForm>()
 
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting ? true : false
+  const disabled = !methods.formState.isValid || methods.formState.isSubmitting
 
   return (
     <div className={styles.buttonsContainer}>
