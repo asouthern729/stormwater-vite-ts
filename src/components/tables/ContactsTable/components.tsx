@@ -1,5 +1,8 @@
+import { setContactTableDataCell, setSitesTableData } from './utils'
+
 // Types
 import { Dispatch, SetStateAction } from "react"
+import { Contact } from "../../../context/App/types"
 import { ContactsTableState } from './types'
 
 // Components
@@ -20,4 +23,21 @@ export const PageBtns = ({ currentPage, totalPages, setState }: { currentPage: n
       </div>
     </div>
   )
+}
+
+export const TableBody = ({ contacts, handleRowClick }: { contacts: Contact[], handleRowClick: (event: React.MouseEvent<HTMLTableRowElement>) => void}) => { // Contacts table body
+
+  return (
+    <tbody>
+      {contacts.map(contact => {
+        return (
+          <tr key={`contacts-table-${ contact.contactId }`} data-uuid={contact.uuid} onClick={handleRowClick}>
+            {setContactTableDataCell(contact)}
+            {setSitesTableData(contact)}
+          </tr>
+        )
+      })}
+    </tbody>
+  )
+  
 }

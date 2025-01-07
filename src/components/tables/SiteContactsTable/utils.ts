@@ -1,9 +1,6 @@
-import { formatPhone } from "../../../helpers"
-
 // Types
 import { SiteContact } from "../../../context/App/types"
 import { SetSiteContactsTableDataProps, SetAllSiteContactsProps, SiteContactObj } from "./types"
-import { ReactElement } from "react"
 
 export const setSiteContactsTableData = (siteContacts: SetSiteContactsTableDataProps['siteContacts']): SiteContactObj[] => {
   const siteContactsArray: SiteContactObj[] = []
@@ -32,19 +29,6 @@ export const setAllSiteContacts = (siteContacts: SetAllSiteContactsProps['siteCo
   })
 
   return emailArray
-}
-
-export const setContactTableDataCell = (contact: SiteContactObj): ReactElement => { // Set contact table data cell
-  const phone = formatPhone(contact.phone as string)
-  
-  return (
-    <td className="flex flex-col">
-      <div className="font-extrabold">{contact.name}</div>
-      <div>{contact.company}</div>
-      <a href={`tel:${ phone }`} className="hover:text-info">{phone}</a>
-      <a href={`mail:${ contact.email }`} className="hover:text-info">{contact.email}</a>
-    </td>
-  )
 }
 
 const setRole = (siteContact: SiteContact, obj: SiteContactObj): SiteContactObj => {

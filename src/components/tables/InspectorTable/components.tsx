@@ -1,0 +1,99 @@
+import { Link } from "react-router-dom"
+
+// Types
+import { Dispatch, RefObject, SetStateAction } from "react"
+import { InspectorTableState } from "./types"
+import { InspectorTableData } from "./types"
+
+// Components
+import CreateSiteLogBtn from "../../buttons/forms/CreateSiteLogBtn/CreateSiteLogBtn"
+import FormContainer from "../../forms/FormContainer/FormContainer"
+import CreateMultipleSiteLogsForm from "../../forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
+
+export const CreateLogBtn = ({ selected, handleClick }: { selected: number, handleClick: () => void }) => { // Create site log button
+  if(selected === 0) return null
+
+  return (
+    <div className="mx-auto mt-2">
+      <CreateSiteLogBtn 
+        selected={selected}
+        handleClick={handleClick} />
+    </div>
+  )
+}
+
+export const TableBody = ({ tableData, selection, setState }: { tableData: InspectorTableData[], selection: string[], setState: Dispatch<SetStateAction<InspectorTableState>> }) => { // Inspector table body
+
+  return (
+    <>
+      {tableData.map(row => {
+        return (
+          <TableRow
+            key={`inspector-table-row-${ row.siteId }`}
+            row={row}
+            selected={selection.includes(row.siteId)}
+            selection={selection}
+            setState={setState} />
+        )
+      })}
+    </>
+  )
+}
+
+export const Form = ({ visible, formRef, selection, handleCloseForm }: { visible: boolean, formRef: RefObject<HTMLDivElement>, selection: string[], handleCloseForm: () => void }) => { // Site log form
+  if(!visible) return null
+
+  return (
+    <div ref={formRef} className="w-full">
+      <FormContainer>
+        <CreateMultipleSiteLogsForm 
+          siteIds={selection}
+          handleCloseForm={handleCloseForm} />
+      </FormContainer>
+    </div>
+  )
+}
+
+const TableRow = ({ row, selected, selection, setState }: { row: InspectorTableData, selected: boolean, selection: string[], setState: Dispatch<SetStateAction<InspectorTableState>> }) => {
+
+  return (
+    <tr>
+
+      <td className="flex flex-col items-center">
+        <input 
+          type="checkbox" 
+          className="checkbox checkbox-secondary"
+          checked={selected}
+          onChange={() => setState(prevState => selected ? { ...prevState, selection: selection.filter(siteId => siteId !== row.siteId) } : { ...prevState, selection: [ ...prevState.selection, row.siteId] })} />
+      </td>
+
+      <td className="w-fit hover:text-warning"><Link to={`/site/${ row.uuid }`}>{row.site}</Link></td>
+      {Array.from({ length: 12 }).map((_, index) => {
+        return (
+          <td>
+            <div className="flex flex-col">
+              {row.dates.filter(date => new Date(date).getMonth() === index).sort((a, b) => {
+                const dateA = new Date(a).getTime()
+                const dateB = new Date(b).getTime()
+
+                if(dateA > dateB) {
+                  return -1
+                }
+
+                if(dateB < dateA) {
+                  return 1
+                }
+
+                return 0
+              }).map(x => {
+                return (
+                  <small>{x}</small>
+                )
+              })}
+            </div>
+          </td>
+        )
+      })}
+    </tr>
+  )
+}

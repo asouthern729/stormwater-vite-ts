@@ -1,9 +1,12 @@
 import { memo } from 'react'
-import { setSiteContactsTableData, setAllSiteContacts , setContactTableDataCell} from '.'
+import { setSiteContactsTableData, setAllSiteContacts } from './utils'
 import styles from './SiteContactsTable.module.css'
 
 // Types
 import { SiteContactsTableProps } from "./types"
+
+// Components
+import { TableBody } from './components'
 
 function SiteContactsTable({ siteContacts }: SiteContactsTableProps) {
   const tableData = setSiteContactsTableData(siteContacts)
@@ -22,16 +25,7 @@ function SiteContactsTable({ siteContacts }: SiteContactsTableProps) {
             <th>Role</th>
           </tr>
         </thead>
-        <tbody>
-          {tableData.map((obj, index) => {
-            return (
-              <tr key={`site-contacts-table-row-${ index }`} className="hover:cursor-default">
-                {setContactTableDataCell(obj)}
-                <td>{obj.role}</td>
-              </tr>
-            )
-          })}
-        </tbody>
+        <TableBody siteContacts={tableData} />
       </table>
 
       <a href={`mailto:${ allContacts.join(';') }`} className={styles.emailAll}>Email All Site Contacts</a>

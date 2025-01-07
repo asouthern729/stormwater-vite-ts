@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { useSetInspectorTableData, setInspectorTableRow, useScrollToFormRef } from "."
+import { useSetInspectorTableData, useScrollToFormRef } from "./hooks"
 import styles from './InspectorTable.module.css'
 
 // Types
@@ -7,9 +7,7 @@ import { InspectorTableProps, InspectorTableState } from "./types"
 
 // Components
 import InspectorTableYearBtns from "../../buttons/filters/InspectorTableYearBtns/InspectorTableYearBtns"
-import CreateSiteLogBtn from "../../buttons/forms/CreateSiteLogBtn/CreateSiteLogBtn"
-import FormContainer from "../../forms/FormContainer/FormContainer"
-import CreateMultipleSiteLogsForm from "../../forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
+import { CreateLogBtn, TableBody, Form } from './components'
 
 function InspectorTable({ sites }: InspectorTableProps) {
   const [state, setState] = useState<InspectorTableState>({ year: new Date().getFullYear(), selection: [], showForm: false })
@@ -24,14 +22,10 @@ function InspectorTable({ sites }: InspectorTableProps) {
   return (
     <div data-testid="inspector-table" ref={tableRef}  className={styles.container}>
       <div className="relative flex justify-between items-center w-full min-h-10">
-        {state.selection.length > 0 && (
-          <div className="mx-auto">
-            <CreateSiteLogBtn 
-              selected={state.selection.length}
-              handleClick={() => setState(prevState => ({ ...prevState, showForm: !prevState.showForm }))} />
-          </div>
-        )}
-        <div className="absolute right-0">
+        <CreateLogBtn
+          selected={state.selection.length}
+          handleClick={() => setState(prevState => ({ ...prevState, showForm: !prevState.showForm }))} />
+        <div className="absolute right-0 bottom-0">
           <InspectorTableYearBtns
             year={state.year}
             setState={setState} />
@@ -56,22 +50,17 @@ function InspectorTable({ sites }: InspectorTableProps) {
             <th>Dec</th>
           </tr>
         </thead>
-        <tbody>
-          {inspectorTableData.map(row => {
-            return setInspectorTableRow(row, state.selection, { setState })
-          })}
-        </tbody>
+        <TableBody 
+          tableData={inspectorTableData}
+          selection={state.selection}
+          setState={setState} />
       </table>
 
-      {state.showForm && (
-        <div ref={formRef} className="w-full">
-          <FormContainer>
-            <CreateMultipleSiteLogsForm 
-              siteIds={state.selection}
-              handleCloseForm={() => setState(prevState => ({ ...prevState, showForm: false }))} />
-          </FormContainer>
-        </div>
-      )}
+      <Form
+        visible={state.showForm}
+        formRef={formRef}
+        selection={state.selection}
+        handleCloseForm={() => setState(prevState => ({ ...prevState, showForm: false }))} />
     </div>
   )
 }

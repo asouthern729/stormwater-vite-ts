@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { instance, when } from 'ts-mockito'
 import { mockSiteContact, mockContact } from '../../../test/mocks'
-import { setSiteContactsTableData } from '.'
+import { setSiteContactsTableData } from './utils'
 
 // Components
 import SiteContactsTable from './SiteContactsTable'

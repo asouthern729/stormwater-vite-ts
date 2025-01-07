@@ -1,15 +1,9 @@
 import { useContext } from 'react'
 import AppContext from '../../../context/App/AppContext'
-import { setFormType } from '../SitesIssuesTable'
-
-// Icons
-import violationIcon from '../../../assets/icons/violation/violation.svg'
-import complaintIcon from '../../../assets/icons/complaint/complaint.svg'
-import dischargeIcon from '../../../assets/icons/discharge/discharge.svg'
+import { setFormType } from '../SitesIssuesTable/utils'
 
 // Types
-import { ReactNode } from 'react'
-import { UseSetSiteIssuesTableDataProps, SetTypeIconProps, Issue, Combined } from "./types"
+import { UseSetSiteIssuesTableDataProps, Issue, Combined } from "./types"
 
 export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['site'], showAll: UseSetSiteIssuesTableDataProps['showAll']): Issue[] => {
   const { dateRangeFilter, showSiteComplaints, showSiteViolations, showSiteIllicitDischarges, showClosedSiteIssues } = useContext(AppContext)
@@ -71,22 +65,4 @@ export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['
   if(showAll) {
     return sorted
   } else return sorted.slice(0, 5)
-}
-
-export const setTypeIcon = (type: SetTypeIconProps['type']): ReactNode => { // Set issue type icon for table
-  if(type === 'updateSiteComplaint') { // Site complaint
-    return (
-      <td title={'Site Complaint'}><img src={complaintIcon} className="p-1 w-8"></img></td>
-    )
-  }
-
-  if(type === 'updateIllicitDischarge') { // Illicit discharge
-    return (
-      <td title={'Illicit Discharge'}><img src={dischargeIcon} className="p-1 w-8"></img></td>
-    )
-  }
-
-  return ( // Construction violation
-    <td title={'Construction Violation'}><img src={violationIcon} className="p-1 w-8"></img></td>
-  )
 }

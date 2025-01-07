@@ -1,6 +1,6 @@
 import { useState, memo } from 'react'
 import { useHandlePageData } from '../../../helpers'
-import { setContactTableDataCell, setSitesTableData } from '.'
+import { setContactTableDataCell, setSitesTableData } from './utils'
 import styles from './ContactsTable.module.css'
 
 // Types
@@ -8,7 +8,7 @@ import { Contact } from '../../../context/App/types'
 import { ContactsTableProps, ContactsTableState } from './types'
 
 // Components
-import { PageBtns } from './components'
+import { PageBtns, TableBody } from './components'
 
 function ContactsTable({ contacts, handleRowClick }: ContactsTableProps) {
   const [state, setState] = useState<ContactsTableState>({ currentPage: 1 })
@@ -32,17 +32,15 @@ function ContactsTable({ contacts, handleRowClick }: ContactsTableProps) {
             <th className="text-lg text-center">Sites</th>
           </tr>
         </thead>
-        <tbody>
-          {pageData.map(contact => {
-            return (
-              <tr key={`contacts-table-${ contact.contactId }`} data-uuid={contact.uuid} onClick={handleRowClick}>
-                {setContactTableDataCell(contact)}
-                {setSitesTableData(contact)}
-              </tr>
-            )
-          })}
-        </tbody>
+        <TableBody
+          contacts={pageData}
+          handleRowClick={handleRowClick} />
       </table>
+
+      <PageBtns 
+        currentPage={state.currentPage}
+        totalPages={totalPages}
+        setState={setState} />
 
     </div>
   )

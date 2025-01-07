@@ -47,16 +47,16 @@ export interface Issue { // For SiteIssues and SitesIssues components
 }
 
 export interface Combined {
-  date: string, 
-  siteId?: string | null, 
-  responsibleParty?: string | null, 
-  penaltyDate?: string, 
-  paymentReceived?: string, 
-  swoDate?: string, 
-  swoLiftedDate?: string, 
-  closed: boolean, 
-  concern?: string, 
-  otherConcern?: string | null, 
-  details: string, 
+  date: string
+  siteId?: string | null 
+  responsibleParty?: string | null 
+  penaltyDate?: string 
+  paymentReceived?: string 
+  swoDate?: string 
+  swoLiftedDate?: string 
+  closed: boolean 
+  concern?: string 
+  otherConcern?: string | null 
+  details: string 
   uuid: string 
 }

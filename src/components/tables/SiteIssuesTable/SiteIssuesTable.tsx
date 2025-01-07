@@ -1,13 +1,12 @@
 import { useState, memo } from "react"
-import { setCivilPenaltyTableData, setSWOTableData, setStatusTableData } from "../SitesIssuesTable"
-import { useSetSiteIssuesTableData, setTypeIcon } from "."
+import { useSetSiteIssuesTableData } from "./hooks"
 import styles from './SiteIssuesTable.module.css'
 
 // Types
 import { SiteIssuesTableProps, SiteIssuesTableState } from "./types"
 
 // Components
-import ShowAllBtn from "../../buttons/filters/ShowAllBtn/ShowAllBtn"
+import { TableBody, ShowAllIssuesBtn } from './components'
 
 function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
   const [state, setState] = useState<SiteIssuesTableState>({ showAll: false })
@@ -27,34 +26,16 @@ function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
             <th className="text-center">Status</th>
           </tr>
         </thead>
-        <tbody>
-          {tableData.map((obj, index) => {
-            return (
-              <tr 
-                key={`site-issues-table-row-${ index }`} 
-                data-form={obj.form} 
-                data-uuid={obj.uuid} 
-                title={obj.details} 
-                onClick={(event) => handleRowClick(event)}>
-                  <td>{obj.date}</td>
-                  {setTypeIcon(obj.form)}
-                  {setCivilPenaltyTableData(obj.civilPenalty)}
-                  {setSWOTableData(obj.swo)}
-                  {setStatusTableData(obj.closed)}
-              </tr>
-            )
-          })}
-        </tbody>
+        <TableBody
+          issues={tableData}
+          handleRowClick={handleRowClick} />
       </table>
 
-      {site.ConstructionViolations.length + site.Complaints.length > 5 && (
-        <div className="w-full">
-          <ShowAllBtn 
-            label={!state.showAll ? 'Show All' : 'Show Less'}
-            handleClick={() => setState(prevState => ({ showAll: !prevState.showAll }))} />
-        </div>
-      )}
-      
+      <ShowAllIssuesBtn
+        visible={site.ConstructionViolations.length + site.Complaints.length > 5}
+        showAll={state.showAll}
+        setState={setState} />
+
     </div>
   )
 }
