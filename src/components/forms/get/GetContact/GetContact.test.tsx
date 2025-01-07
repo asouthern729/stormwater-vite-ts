@@ -11,7 +11,7 @@ import GetContact from './GetContact'
 import UpdateContactForm from '../../update/UpdateContactForm/UpdateContactForm'
 
 describe('GetContact', () => {
-  const resetStateMock = vi.fn()
+  const handleCloseFormMock = vi.fn()
 
   vi.mock('../../../../helpers', () => ({
     useValidateUser: vi.fn(),
@@ -31,7 +31,7 @@ describe('GetContact', () => {
         <QueryClientProvider client={queryClient}>
           <GetContact
             uuid={'123'}
-            resetState={resetStateMock} />
+            handleCloseForm={handleCloseFormMock} />
         </QueryClientProvider>
       </BrowserRouter>
     )
@@ -52,7 +52,7 @@ describe('GetContact', () => {
             <div className="flex flex-col items-center">
               <UpdateContactForm
                 contact={data.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseFormMock} />
             </div>
           )}
         </>

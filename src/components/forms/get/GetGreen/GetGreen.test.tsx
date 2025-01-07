@@ -11,8 +11,8 @@ import GetGreen from './GetGreen'
 import UpdateGreenViolationForm from '../../update/UpdateGreenViolationForm/UpdateGreenViolationForm'
 
 describe('GetGreen', () => {
+  const handleCloseFormMock = vi.fn()
   const queryClient = new QueryClient()
-  const resetStateMock = vi.fn()
 
   vi.mock('../../../../helpers', () => ({
     useValidateUser: vi.fn(),
@@ -36,7 +36,7 @@ describe('GetGreen', () => {
           <QueryClientProvider client={queryClient}>
             <GetGreen
               uuid={'123'}
-              resetState={resetStateMock} />
+              handleCloseForm={handleCloseFormMock} />
           </QueryClientProvider>
         </BrowserRouter>
       )
@@ -57,7 +57,7 @@ describe('GetGreen', () => {
             <div className="flex flex-col items-center">
               <UpdateGreenViolationForm
                 green={data.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseFormMock} />
             </div>
           )}
         </>

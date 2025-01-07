@@ -33,9 +33,9 @@ export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calenda
 export const Form = ({ state, formRef, setState, inspector }: { state: InspectorContainerState, formRef: RefObject<HTMLDivElement>, setState: Dispatch<SetStateAction<InspectorContainerState>>, inspector: Inspector }) => { // Update inspector form
   const { formUUID, deleteBtnActive } = state
 
-  if(!formUUID) return null
-
   const queryClient= useQueryClient()
+
+  if(!formUUID) return null
 
   return (
     <div ref={formRef}>

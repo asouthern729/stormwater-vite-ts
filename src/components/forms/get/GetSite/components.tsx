@@ -46,9 +46,9 @@ export const NoSiteBtn = ({ form, handleClick }: { form: CreateForm, handleClick
 }
 
 export const Form = ({ visible, form, site }: { visible: boolean, form: CreateForm, site: Site | { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string } | undefined }) => { // Set form
-  if(!visible) return null
-
   const navigate = useNavigate()
+
+  if(!visible) return null
 
   const today = setDateForForm(new Date().toString())
 

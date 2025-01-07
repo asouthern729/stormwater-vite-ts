@@ -11,7 +11,7 @@ import GetFollowUp from './GetFollowUp'
 import UpdateFollowUpForm from '../../update/UpdateFollowUpForm/UpdateFollowUpForm'
 
 describe('GetFollowUp', () => {
-  const resetStateMock = vi.fn()
+  const handleCloseFormMock = vi.fn()
   const queryClient = new QueryClient()
 
   vi.mock('../../../../helpers', () => ({
@@ -33,7 +33,7 @@ describe('GetFollowUp', () => {
           <QueryClientProvider client={queryClient}>
             <GetFollowUp
               uuid={'123'}
-              resetState={resetStateMock} />
+              handleCloseForm={handleCloseFormMock} />
           </QueryClientProvider>
         </BrowserRouter>
       )

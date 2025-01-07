@@ -11,7 +11,7 @@ import GetIllicitDischarge from './GetIllicitDischarge'
 import UpdateSiteIllicitDischargeForm from '../../update/UpdateSiteIllicitDischargeForm/UpdateSiteIllicitDischargeForm'
 
 describe('GetIllicitDischarge', () => {
-  const resetStateMock = vi.fn()
+  const handleCloseFormMock = vi.fn()
   const queryClient = new QueryClient()
 
   vi.mock('../../../../helpers', () => ({
@@ -36,7 +36,7 @@ describe('GetIllicitDischarge', () => {
         <QueryClientProvider client={queryClient}>
           <GetIllicitDischarge 
             uuid= {'123'}
-            resetState={resetStateMock} />
+            handleCloseForm={handleCloseFormMock} />
         </QueryClientProvider>
       </BrowserRouter>
     )
@@ -57,7 +57,7 @@ describe('GetIllicitDischarge', () => {
             <QueryClientProvider client={queryClient}>
               <UpdateSiteIllicitDischargeForm 
                 illicitDischarge={data.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseFormMock} />
             </QueryClientProvider>
             
           )}

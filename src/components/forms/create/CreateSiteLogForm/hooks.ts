@@ -25,6 +25,6 @@ export const useHandleFormSubmit = (handleCloseForm: () => void, uuid: string) =
     handleCreateSiteLogFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
       handleCloseForm
-    }), [queryClient, uuid]
+    }), [queryClient, uuid, handleCloseForm]
   )
 }

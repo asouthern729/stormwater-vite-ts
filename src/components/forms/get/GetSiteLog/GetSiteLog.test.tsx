@@ -13,8 +13,8 @@ import UpdateSiteLogForm from '../../update/UpdateSiteLogForm/UpdateSiteLogForm'
 import GetSiteLog from './GetSiteLog'
 
 describe('GetSiteLog', () => {
+  const handleCloseFormMock = vi.fn()
   const queryClient = new QueryClient()
-  const resetStateMock = vi.fn()
 
   vi.mock('../../../../helpers', () => ({
     useValidateUser: vi.fn(),
@@ -32,7 +32,7 @@ describe('GetSiteLog', () => {
           <QueryClientProvider client={queryClient}>
             <GetSiteLog
               uuid={'123'}
-              resetState={resetStateMock} />
+              handleCloseForm={handleCloseFormMock} />
           </QueryClientProvider>
         </BrowserRouter>
       )
@@ -54,7 +54,7 @@ describe('GetSiteLog', () => {
             <div className="flex flex-col items-center">
               <UpdateSiteLogForm
                 siteLog={data.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseFormMock} />
             </div>
           )}
         </>

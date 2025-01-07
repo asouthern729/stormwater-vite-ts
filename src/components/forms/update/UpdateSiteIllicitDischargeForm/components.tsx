@@ -13,11 +13,11 @@ import UpdateFollowUpForm from "../UpdateFollowUpForm/UpdateFollowUpForm"
 import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
 
 export const ExistingFollowUpsInputs = ({ followUps, handleCloseForm }: { followUps: FollowUp[], handleCloseForm: () => void }) => { // Existing follow up dates inputs
-  if(!followUps.length) return null
-  
   const queryClient = useQueryClient()
 
   const siteUUID = useGetSiteUUID()
+
+  if(!followUps.length) return null
 
   return (
     <div className="flex flex-col gap-4 mt-4">

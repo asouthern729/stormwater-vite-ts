@@ -11,8 +11,8 @@ import GetViolation from './GetViolation'
 import UpdateViolationForm from '../../update/UpdateViolationForm/UpdateViolationForm'
 
 describe('GetViolation', () => {
+  const handleCloseFormMock = vi.fn()
   const queryClient = new QueryClient()
-  const resetStateMock = vi.fn()
 
   vi.mock('../../../../helpers', () => ({
     useValidateUser: vi.fn(),
@@ -30,7 +30,7 @@ describe('GetViolation', () => {
           <QueryClientProvider client={queryClient}>
             <GetViolation 
               uuid={'123'} 
-              resetState={resetStateMock} />
+              handleCloseForm={handleCloseFormMock} />
           </QueryClientProvider>
         </BrowserRouter>
       )
@@ -52,7 +52,7 @@ describe('GetViolation', () => {
             <div className="flex flex-col items-center">
               <UpdateViolationForm 
                 violation={data.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseFormMock} />
             </div>
           )}
         </>

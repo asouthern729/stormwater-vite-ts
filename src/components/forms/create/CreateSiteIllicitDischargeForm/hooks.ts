@@ -50,7 +50,7 @@ export const useHandleFormSubmit = (handleCloseForm: (() => void) | undefined, u
       invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
       handleCloseForm,
       navigate
-    }), [queryClient, navigate, uuid]
+    }), [queryClient, navigate, uuid, handleCloseForm]
   )
 }
 

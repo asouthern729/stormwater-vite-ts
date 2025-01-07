@@ -42,6 +42,6 @@ export const useHandleFormSubmit = (handleCloseForm: () => void) => { // Handle 
     handleUpdateSiteIllicitDischargeFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'),
       handleCloseForm
-    }), [queryClient, handleCloseForm]
+    }), [queryClient, handleCloseForm, siteUUID]
   )
 }

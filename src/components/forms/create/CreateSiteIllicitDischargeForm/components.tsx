@@ -51,11 +51,11 @@ export const DateInput = () => { // Illicit discharge date
 }
 
 export const InspectorSelect = ({ visible }: { visible: boolean }) => { // Inspector select
-  if(!visible) return null
-
   const { inspectorOptions } = useContext(AppContext)
 
   const methods = useCreateSiteIllicitDischargeFormContext()
+
+  if(!visible) return null
 
   return (
     <div className="flex-1 flex flex-col">

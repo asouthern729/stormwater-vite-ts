@@ -1,6 +1,5 @@
 import { useState, memo } from 'react'
 import { useHandlePageData } from '../../../helpers'
-import { setContactTableDataCell, setSitesTableData } from './utils'
 import styles from './ContactsTable.module.css'
 
 // Types

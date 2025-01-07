@@ -1,4 +1,3 @@
-import icon from '../../../assets/icons/inspector/inspector.svg'
 import styles from './SiteHeader.module.css'
 
 // Types

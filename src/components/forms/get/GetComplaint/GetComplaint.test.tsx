@@ -11,7 +11,7 @@ import GetComplaint from './GetComplaint'
 import UpdateSiteComplaintForm from '../../update/UpdateSiteComplaintForm/UpdateSiteComplaintForm'
 
 describe('GetComplaint', () => {
-  const resetStateMock = vi.fn()
+  const handleCloseMock = vi.fn()
 
   vi.mock('../../../../helpers', () => ({
     useValidateUser: vi.fn(),
@@ -34,7 +34,7 @@ describe('GetComplaint', () => {
         <QueryClientProvider client={queryClient}>
           <GetComplaint
             uuid={'123'}
-            resetState={resetStateMock} />
+            handleCloseForm={handleCloseMock} />
         </QueryClientProvider>
       </BrowserRouter>
     )
@@ -55,7 +55,7 @@ describe('GetComplaint', () => {
             <div className="flex flex-col items-center">
               <UpdateSiteComplaintForm 
                 complaint={data?.data}
-                resetState={resetStateMock} />
+                handleCloseForm={handleCloseMock} />
             </div>
           )}
         </>

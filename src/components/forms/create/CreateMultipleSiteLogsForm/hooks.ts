@@ -32,6 +32,6 @@ export const useHandleFormSubmit = (inspectorId: string, handleCloseForm: () => 
     handleCreateMultipleSiteLogsFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries(['getInspector', inspectorId]),
       handleCloseForm
-    }), [queryClient, handleCloseForm]
+    }), [queryClient, handleCloseForm, inspectorId]
   )
 }

@@ -28,5 +28,5 @@ export const useSetMapView = (mapRef: RefObject<HTMLDivElement>, sites: Site[], 
         state.view.destroy()
       }
     }
-  }, [sites, basemap, hoveredSite, newSite, updateSite])
+  }, [sites, basemap, hoveredSite, newSite, updateSite, mapDispatch, mapRef, navigate, type, zoom])
 }

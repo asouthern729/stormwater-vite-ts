@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { BrowserRouter, useNavigate} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { mockSite } from '../../../../test/mocks'
 import { vi } from 'vitest'
 import { instance } from 'ts-mockito'
 import { useValidateUser } from '../../../../helpers'
-import { setCreateForm } from './hooks'
 
 // Types
 import { CreateForm } from '../../../../pages/Create/types'
@@ -14,7 +13,7 @@ import { GetSiteState } from './types'
 
 // Components
 import GetSite from './GetSite'
-import FormContainer from '../../FormContainer/FormContainer'
+import { Form } from './components'
 
 describe('GetSite', () => {
   const site = mockSite()
@@ -72,16 +71,13 @@ describe('GetSite', () => {
     const TestComponent = ({ form }: { form: CreateForm }) => {
       const [state, setState] = useState<GetSiteState>({ siteId: null })
 
-      const navigate = useNavigate()
-
       return (
         <>
           <button type="button" onClick={() => setState({ siteId: '123' })}></button>
-          {state.siteId !== null && (
-            <FormContainer>
-              {setCreateForm(form, instance(site), { navigate: () => navigate('/') })}
-            </FormContainer>
-          )}
+          <Form
+            visible={state.siteId !== null}
+            form={form}
+            site={instance(site)}  />
         </>
       )
     }
