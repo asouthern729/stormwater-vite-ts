@@ -1,44 +1,51 @@
 // Types
-import { ReactNode } from "react"
-import { SetCreateFormProps } from "./types"
+import { CreateForm } from "./types"
 
 // Components
 import GetSite from "../../components/forms/get/GetSite/GetSite"
 import FormContainer from "../../components/forms/FormContainer/FormContainer"
-import CreateSiteForm from "../../components/forms/create/CreateSiteForm/CreateSiteForm"
 import CreateInspectorForm from "../../components/forms/create/CreateInspectorForm/CreateInspectorForm"
 import CreateContactForm from "../../components/forms/create/CreateContactForm/CreateContactForm"
 import CreateGreenViolationForm from "../../components/forms/create/CreateGreenViolationForm/CreateGreenViolationForm"
+import CreateSiteForm from "../../components/forms/create/CreateSiteForm/CreateSiteForm"
 
-export const setCreateForm = (form: SetCreateFormProps['form']): ReactNode => { // Return GetSite and pass form prop
+export const Form = ({ form }: { form: CreateForm }) => { // Create form
+  let element
+
   if(['createViolation', 'createComplaint', 'createDischarge'].includes(form)) {
-    return <GetSite form={form} />
+    element = <GetSite form={form} />
+    return element
   }
 
   switch(form) {
     case 'createInspector': // Create inspector
-      return (
+      element = (
         <FormContainer>
           <CreateInspectorForm />
         </FormContainer>
       )
+      break
     case 'createContact': // Create contact
-      return (
+      element = (
         <FormContainer>
           <CreateContactForm />
         </FormContainer>
       )
+      break
     case 'createGreen': // Create green infrastructure violation
-      return (
+      element = (
         <FormContainer>
           <CreateGreenViolationForm />
         </FormContainer>
       )
+      break
     default: // Create site
-      return (
+      element = (
         <FormContainer>
           <CreateSiteForm />
         </FormContainer>
       )
   }
+
+  return element
 }

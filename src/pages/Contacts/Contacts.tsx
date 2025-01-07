@@ -1,5 +1,5 @@
 import { useHandlePageLoad, useValidateUser } from '../../helpers'
-import { useGetContacts } from '.'
+import { useGetContacts } from './hooks'
 
 // Types
 import { Contact } from '../../context/App/types'

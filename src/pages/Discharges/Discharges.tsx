@@ -1,6 +1,6 @@
 import { useValidateUser, useHandlePageLoad } from "../../helpers"
-import { useGetSites } from "../Sites"
-import { useGetDischarges } from "."
+import { useGetSites } from "../Sites/hooks"
+import { useGetDischarges } from "./hooks"
 
 // Types
 import { Site, IllicitDischarge } from "../../context/App/types"

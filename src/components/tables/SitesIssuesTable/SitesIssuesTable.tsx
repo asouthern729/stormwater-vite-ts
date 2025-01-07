@@ -1,6 +1,6 @@
 import { useState, memo } from 'react'
 import { useHandlePageData } from '../../../helpers'
-import { useSetSitesIssuesTableData } from './utils'
+import { useSetSitesIssuesTableData } from './hooks'
 import styles from './SitesIssuesTable.module.css'
 
 // Types

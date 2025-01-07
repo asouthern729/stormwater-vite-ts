@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useValidateUser, useHandlePageLoad } from '../../helpers'
-import { useGetInspector } from '.'
+import { useGetInspector } from './hooks'
 
 // Types
 import { Inspector as InspectorType } from '../../context/App/types'

@@ -1,5 +1,5 @@
 import { useValidateUser, useHandlePageLoad } from '../../helpers'
-import { useGetGreenViolations } from '.'
+import { useGetGreenViolations } from './hooks'
 
 // Components
 import Layout from '../../components/layout/Layout/Layout'

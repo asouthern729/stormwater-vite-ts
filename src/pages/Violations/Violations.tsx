@@ -1,5 +1,5 @@
 import { useValidateUser, useHandlePageLoad } from '../../helpers'
-import { useGetSites } from '../Sites'
+import { useGetSites } from '../Sites/hooks'
 
 // Types
 import { Site } from '../../context/App/types'
