@@ -115,8 +115,8 @@ export const GreenInfrastructureSelect = () => { // Green infrastructure select
           className={styles.input}
           { ...methods.register('greenInfrastructure') }>
             <option value=""></option>
-            <option value={0}>No</option>
-            <option value={1}>Yes</option>
+            <option value={"false"}>No</option>
+            <option value={"true"}>Yes</option>
           </select>
       </div>
     </div>

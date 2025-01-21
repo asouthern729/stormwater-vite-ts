@@ -20,7 +20,7 @@ export const handleUpdateSiteFormSubmit = async (formData: HandleUpdateSiteFormS
     permit: formData.permit,
     cof: formData.cof,
     tnq: formData.tnq,
-    greenInfrastructure: formData.greenInfrastructure,
+    greenInfrastructure: formData.greenInfrastructure === 'true' ? true : false,
     inactive: formData.inactive,
     uuid: formData.uuid
   }
@@ -48,9 +48,10 @@ export const handleUpdateSiteFormSubmit = async (formData: HandleUpdateSiteFormS
       addContact(contactsArray, contact, siteId, { isPrimary: false, isContractor: false, isInspector: false })
     })
 
+    await deleteSiteContacts(siteId) // Delete existing site contacts
+
     await Promise.all([
-      deleteSiteContacts(siteId), // Delete existing site contacts 
-      ...contactsArray.map(contact => createSiteContact(contact))
+      ...contactsArray.map(contact => createSiteContact(contact)) // Replace with contacts from form
     ])
 
     handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery, navigate })

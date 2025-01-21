@@ -23,7 +23,7 @@ export const handleCreateSiteFormSubmit = async (formData: HandleCreateSiteFormS
     permit: formData.permit,
     cof: formData.cof,
     tnq: formData.tnq,
-    greenInfrastructure: formData.greenInfrastructure
+    greenInfrastructure: formData.greenInfrastructure === "true" ? true : false
   }
 
   const result = await createSite(siteObj)
@@ -42,7 +42,7 @@ export const handleCreateSiteFormSubmit = async (formData: HandleCreateSiteFormS
     })
 
     formData.siteInspectors.forEach(inspector => { // Handle site inspectors
-      addContact(contactsArray, inspector, newSiteId, { isPrimary: false, isContractor: false, isInspector: false })
+      addContact(contactsArray, inspector, newSiteId, { isPrimary: false, isContractor: false, isInspector: true })
     })
 
     formData.otherContacts.forEach(contact => { // Handle other contacts

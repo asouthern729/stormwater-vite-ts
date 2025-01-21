@@ -6,7 +6,7 @@ import { SiteContactObj } from "./types"
 export const TableBody = ({ siteContacts }: { siteContacts: SiteContactObj[] }) => { // Site contacts table body
 
   return (
-    <>
+    <tbody>
       {siteContacts.map((contact, index) => {
         return (
           <tr key={`site-contacts-table-row-${ index }`} className="hover:cursor-default">
@@ -15,7 +15,7 @@ export const TableBody = ({ siteContacts }: { siteContacts: SiteContactObj[] }) 
           </tr>
         )
       })}
-    </>
+    </tbody>
   )
 }
 

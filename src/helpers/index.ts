@@ -102,16 +102,16 @@ export const useHandlePageLoad = (validated: boolean): void => { // Set current 
 export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update form on site location change
   const { setValue } = options
 
-  const cb = useCallback(() => { // Update form state on coordinates change
-    if(coordinates.xCoordinate && coordinates.yCoordinate) {
-      setValue('xCoordinate', coordinates.xCoordinate, { shouldValidate: false })
-      setValue('yCoordinate', coordinates.yCoordinate, { shouldValidate: false })
-    }
-  }, [coordinates, setValue])
+  const updateFormValues = useCallback((x: number, y: number) => {
+    setValue('xCoordinate', x, { shouldValidate: false })
+    setValue('yCoordinate', y, { shouldValidate: false })
+  }, [setValue])
 
   useEffect(() => {
-    cb()
-  }, [cb])
+    if(coordinates?.xCoordinate && coordinates.yCoordinate) {
+      updateFormValues(coordinates.xCoordinate, coordinates.yCoordinate)
+    }
+  }, [coordinates, updateFormValues])
 }
 
 export const useGetInspectorsForForms = (validated: boolean): void => { // Set inspector options to ctx

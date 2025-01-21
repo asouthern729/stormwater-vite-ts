@@ -17,6 +17,7 @@ export const TableBody = ({ sites }: { sites: Site[] }) => { // Sites table body
       {sites.map((site, index) => {
         return (
           <TableRow
+            key={`sites-table-row-${ site.uuid }`}
             site={site}
             index={index} />
         )

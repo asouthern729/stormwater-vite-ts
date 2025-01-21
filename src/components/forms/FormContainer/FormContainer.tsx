@@ -1,4 +1,3 @@
-import { MapProvider } from '../../../context/Map/MapContext'
 import styles from './FormContainer.module.css'
 
 // Icons
@@ -6,6 +5,9 @@ import cofIcon from '../../../assets/icons/cof/cof.svg'
 
 // Types
 import { FormContainerProps } from './types'
+
+// Components
+import { MapProvider } from '../../../context/Map/MapContext'
 
 function FormContainer({ children }: FormContainerProps) {
   return (
