@@ -7,7 +7,7 @@ import { InspectorTableProps, InspectorTableState } from "./types"
 
 // Components
 import InspectorTableYearBtns from "../../buttons/filters/InspectorTableYearBtns/InspectorTableYearBtns"
-import { CreateLogBtn, TableBody, Form } from './components'
+import { TableHeaders, CreateLogBtn, TableBody, Form } from './components'
 
 function InspectorTable({ sites }: InspectorTableProps) {
   const [state, setState] = useState<InspectorTableState>({ year: new Date().getFullYear(), selection: [], showForm: false })
@@ -32,24 +32,7 @@ function InspectorTable({ sites }: InspectorTableProps) {
         </div>
       </div>
       <table className="table table-sm text-neutral-content">
-        <thead>
-          <tr>
-            <th>Create Site Log</th>
-            <th>Site</th>
-            <th>Jan</th>
-            <th>Feb</th>
-            <th>Mar</th>
-            <th>Apr</th>
-            <th>May</th>
-            <th>Jun</th>
-            <th>Jul</th>
-            <th>Aug</th>
-            <th>Sep</th>
-            <th>Oct</th>
-            <th>Nov</th>
-            <th>Dec</th>
-          </tr>
-        </thead>
+        <TableHeaders />
         <TableBody 
           tableData={inspectorTableData}
           selection={state.selection}

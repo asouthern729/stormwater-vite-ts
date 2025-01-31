@@ -7,11 +7,10 @@ import { ConstructionViolation } from '../../../context/App/types'
 import { ViolationsContainerProps, ViolationsContainerState } from "./types"
 
 // Components
-import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteViolationsBtn from '../../indicators/SiteViolationsIndicator/SiteViolationsIndicator'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
-import { Form } from './components'
+import { Form, CreateBtn } from './components'
 
 function ViolationsContainer({ sites }: ViolationsContainerProps) {
   const [state, setState] = useState<ViolationsContainerState>({ formUUID: undefined })
@@ -24,11 +23,7 @@ function ViolationsContainer({ sites }: ViolationsContainerProps) {
     <div data-testid="violations-container" className="flex flex-col gap-10">
       <div className={styles.container}>
 
-        <div className="absolute top-5 right-6">
-          <CreateLink
-            label={'Create New Violation'}
-            location={'/create?formType=createViolation'} />
-        </div>
+        <CreateBtn />
         
         <div className={styles.header}>Construction Violations</div>
 

@@ -1,4 +1,5 @@
-import { useState, memo } from "react"
+import { useState, memo, useContext } from "react"
+import UserContext from "../../../context/User/UserContext"
 import { useSetSiteIssuesTableData } from "./hooks"
 import styles from './SiteIssuesTable.module.css'
 
@@ -9,9 +10,13 @@ import { SiteIssuesTableProps, SiteIssuesTableState } from "./types"
 import { TableBody, ShowAllIssuesBtn } from './components'
 
 function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
+  const { user } = useContext(UserContext)
+
   const [state, setState] = useState<SiteIssuesTableState>({ showAll: false })
 
   const tableData = useSetSiteIssuesTableData(site, state.showAll)
+
+  const onClick = user?.role === 'Viewer' ? () => null : handleRowClick
 
   return (
     <div className={styles.container}>
@@ -28,7 +33,7 @@ function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
         </thead>
         <TableBody
           issues={tableData}
-          handleRowClick={handleRowClick} />
+          handleRowClick={onClick} />
       </table>
 
       <ShowAllIssuesBtn

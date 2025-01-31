@@ -7,11 +7,10 @@ import { Complaint } from '../../../context/App/types'
 import { ComplaintsContainerProps, ComplaintsContainerState } from "./types"
 
 // Components
-import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteComplaintsBtn from '../../indicators/SiteComplaintsIndicator/SiteComplaintsIndicator'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
-import { Form } from './components'
+import { Form, CreateBtn } from './components'
 
 function ComplaintsContainer({ sites, complaints }: ComplaintsContainerProps) {
   const [state, setState] = useState<ComplaintsContainerState>({ formUUID: undefined })
@@ -24,11 +23,7 @@ function ComplaintsContainer({ sites, complaints }: ComplaintsContainerProps) {
     <div data-testid="complaints-container" className="flex flex-col gap-10">
       <div className={styles.container}>
 
-        <div className="absolute top-5 right-6">
-          <CreateLink
-            label={'Create New Complaint'}
-            location={'/create?formType=createComplaint'} />
-        </div>
+        <CreateBtn />
 
         <h2 className={styles.header}>Complaints</h2>
 

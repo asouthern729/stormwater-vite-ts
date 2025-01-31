@@ -7,11 +7,10 @@ import { GreenInfrastructure } from '../../../context/App/types'
 import { GreenContainerProps, GreenContainerState } from "./types"
 
 // Components
-import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import GreenViolationsIndicator from '../../indicators/GreenViolationsIndicator/GreenViolationsIndicator'
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
 import SitesIssuesTable from '../../tables/SitesIssuesTable/SitesIssuesTable'
-import { Form } from './components'
+import { Form, CreateBtn } from './components'
 
 function GreenContainer({ green }: GreenContainerProps) {
   const [state, setState] = useState<GreenContainerState>({ formUUID: undefined })
@@ -24,11 +23,7 @@ function GreenContainer({ green }: GreenContainerProps) {
     <div data-testid="green-container" className="flex flex-col gap-10">
       <div className={styles.container}>
 
-        <div className="absolute top-5 right-6">
-          <CreateLink
-            label={'Create New Green Violation'}
-            location={'/create?formType=createGreen'} />
-        </div>
+        <CreateBtn />
 
         <h2 className={styles.header}>Green Infrastructure Violations</h2>
 

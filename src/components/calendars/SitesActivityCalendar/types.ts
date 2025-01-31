@@ -22,8 +22,8 @@ export interface UseCalendarPropsProps { // useCalendarProps hook props
   type: 'week' | 'month'
   data: CalendarObj[]
   options: {
-    handleCellClick?: (event: MbscCalendarEvent) => void
-    handleEventClick?: (event: MbscCalendarEvent) => void
+    onCellClick?: (event: MbscCalendarEvent) => void
+    onEventClick?: (event: MbscCalendarEvent) => void
   }
 }
 

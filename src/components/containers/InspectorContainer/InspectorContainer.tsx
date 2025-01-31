@@ -8,13 +8,12 @@ import { InspectorContainerProps, InspectorContainerState, SiteActivityCalendarV
 
 // Components
 import SitesHeader from "../../layout/SitesHeader/SitesHeader"
-import UpdateBtn from "../../buttons/forms/UpdateBtn/UpdateBtn"
 import ActiveSitesBtn from '../../buttons/filters/ActiveSitesBtn/ActiveSitesBtn'
 import OpenIssuesBtn from '../../buttons/filters/OpenIssuesBtn/OpenIssuesBtn'
 import MapLegend from '../../map/MapLegend/MapLegend'
 import MapContainer from '../../map/MapContainer/MapContainer'
 import SitesTable from "../../tables/SitesTable/SitesTable"
-import { CalendarTable, Form } from './components'
+import { CalendarTable, Form, UpdateInspectorBtn } from './components'
 
 function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
   const [state, setState] = useState<InspectorContainerState>({ deleteBtnActive: false, formUUID: undefined })
@@ -30,11 +29,7 @@ function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
     <div data-testid="inspector-container" className={styles.container}>
 
       <div className={styles.topDiv}>
-        <div className="absolute left-0">
-          <UpdateBtn
-            label={'Update Inspector'}
-            handleClick={() => setState(prevState => ({ ...prevState, formUUID: sites[0].Inspector?.uuid }))} />
-        </div>
+        <UpdateInspectorBtn handleClick={() => setState(prevState => ({ ...prevState, formUUID: sites[0].Inspector?.uuid }))} />
         <SitesHeader />
         <div className="absolute flex gap-4 right-0">
           <ActiveSitesBtn />

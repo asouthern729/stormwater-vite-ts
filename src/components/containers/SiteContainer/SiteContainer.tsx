@@ -18,9 +18,7 @@ import SiteIllicitDischargeBtn from '../../indicators/SiteIllicitDischargeIndica
 import DateRangeFilter from '../../filters/DateRangeFilter/DateRangeFilter'
 import SiteIssuesTable from '../../tables/SiteIssuesTable/SiteIssuesTable'
 import SiteContactsTable from '../../tables/SiteContactsTable/SiteContactsTable'
-import BackToHomeBtn from '../../buttons/nav/BackToHomeBtn/BackToHomeBtn'
-import UpdateBtn from '../../buttons/forms/UpdateBtn/UpdateBtn'
-import { Form } from './components'
+import { Form, Buttons } from './components'
 
 function SiteContainer({ site }: SiteContainerProps) {
   const { showClosedSiteIssues, dispatch } = useContext(AppContext)
@@ -40,13 +38,9 @@ function SiteContainer({ site }: SiteContainerProps) {
 
         <div className="flex flex-col gap-10 w-full 2xl:w-2/3">
           <div className={styles.startDiv}>
-            <div className="flex gap-2 w-fit 2xl:flex-col 2xl:w-full 2xl:gap-4">
-              <BackToHomeBtn />
-              <UpdateBtn 
-                label={'Update Site'}
-                handleClick={() => setState(prevState => ({ ...prevState, activeForm: 'updateSite' }))}
-                disabled={!!state.activeForm} />
-            </div>
+            <Buttons
+              handleUpdateBtnClick={() => setState(prevState => ({ ...prevState, activeForm: 'updateSite' }))}
+              disabled={!!state.activeForm} />
 
             <div className={styles.mapDiv}>
               <MapContainer
@@ -66,7 +60,8 @@ function SiteContainer({ site }: SiteContainerProps) {
         <div className={styles.endDiv}>
 
           <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
-            <div className={styles.header}>Site Activity</div>
+            <h3 className={styles.header}>Site Activity</h3>
+
             <SitesActivityCalendar 
               sites={[site]}
               handleEventClick={(event: MbscCalendarEvent) => setState(prevState => ({ ...prevState, activeForm: event.event.form, formUUID: event.event.formUUID }))}
@@ -74,7 +69,7 @@ function SiteContainer({ site }: SiteContainerProps) {
           </div>
 
           <div className={styles.violationsDiv}>
-            <div className={styles.header}>Site Issues</div>
+            <h3 className={styles.header}>Site Issues</h3>
 
             <div className="flex justify-evenly w-full">
               <SiteViolationsBtn violations={issuesObj.violations} />

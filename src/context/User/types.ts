@@ -37,3 +37,4 @@ export interface UserObj {
 type Role =
   | "Super User"
   | "Editor"
+  | "Viewer"

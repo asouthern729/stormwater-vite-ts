@@ -8,10 +8,9 @@ import styles from './ContactsContainer.module.css'
 import { ContactsContainerProps, ContactsContainerState } from './types'
 
 // Components
-import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import Search from '../../search/Search/Search'
 import ContactsTable from '../../tables/ContactsTable/ContactsTable'
-import { Form } from './components'
+import { Form, CreateBtn } from './components'
 
 function ContactsContainer({ contacts }: ContactsContainerProps) {
   const [state, setState] = useState<ContactsContainerState>({ formUUID: undefined })
@@ -26,11 +25,7 @@ function ContactsContainer({ contacts }: ContactsContainerProps) {
     <div data-testid="contacts-container" className="flex flex-col gap-10">
       <div className={styles.container}>
 
-        <div className="absolute top-5 right-6">
-          <CreateLink
-            label={'Create New Contact'}
-            location={'/create?formType=createContact'} />
-        </div>
+        <CreateBtn />
 
         <div className={styles.header}>Site Contacts</div>
 

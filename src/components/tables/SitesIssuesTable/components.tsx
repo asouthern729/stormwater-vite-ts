@@ -11,6 +11,7 @@ import { SitesIssuesTableState } from "./types"
 // Components
 import PrevPageBtn from "../../buttons/nav/PrevPageBtn/PrevPageBtn"
 import NextPageBtn from "../../buttons/nav/NextPageBtn/NextPageBtn"
+import UserContext from "../../../context/User/UserContext"
 
 export const ShowClosedCheckbox = () => { // Show closed site issues checkbox
   const { showClosedSiteIssues, dispatch } = useContext(AppContext)
@@ -107,16 +108,20 @@ export const TableHeaders = () => { // Site issues table headers
 }
 
 const TableRow = ({ issue, handleRowClick }: { issue: Issue, handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void }) => {
+  const { user } = useContext(UserContext)
+
   const pathname = useLocation().pathname
 
   const page = pathname.split('/')[1]
 
   let element
 
+  const onClick = user?.role === 'Viewer' ? () => null : handleRowClick
+
   switch(page) {
     case 'complaints':
       element = (
-        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
+        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => onClick(event)}>
           <td>{issue?.date}</td>
           <td className={issue?.siteUUID ? "whitespace-nowrap hover:text-warning" : "whitespace-nowrap"}>{issue?.siteUUID ? <Link to={`/site/${ issue.siteUUID }`}>{issue.site}</Link> : null}</td>
           <td>{issue?.responsibleParty}</td>
@@ -127,7 +132,7 @@ const TableRow = ({ issue, handleRowClick }: { issue: Issue, handleRowClick: (ev
       break
     case 'green':
       element = (
-        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
+        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => onClick(event)}>
           <td>{issue?.date}</td>
           <td>{issue?.responsibleParty}</td>
           <CivilPenalty civilPenalty={issue.civilPenalty} />
@@ -137,7 +142,7 @@ const TableRow = ({ issue, handleRowClick }: { issue: Issue, handleRowClick: (ev
       break
     default:
       element = (
-        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => handleRowClick(event)}>
+        <tr data-uuid={issue?.uuid} title={issue?.details} onClick={(event) => onClick(event)}>
           <td>{issue?.date}</td>
           <td className={issue?.siteUUID ? "whitespace-nowrap hover:text-warning" : "whitespace-nowrap"}>{issue?.siteUUID ? <Link to={`/site/${ issue.siteUUID }`}>{issue.site}</Link> : null}</td>
           <td>{issue?.responsibleParty}</td>

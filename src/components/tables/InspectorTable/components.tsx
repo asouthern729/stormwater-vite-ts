@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import { Link } from "react-router-dom"
+import UserContext from "../../../context/User/UserContext"
 
 // Types
 import { Dispatch, RefObject, SetStateAction } from "react"
@@ -9,6 +11,31 @@ import { InspectorTableData } from "./types"
 import CreateSiteLogBtn from "../../buttons/forms/CreateSiteLogBtn/CreateSiteLogBtn"
 import FormContainer from "../../forms/FormContainer/FormContainer"
 import CreateMultipleSiteLogsForm from "../../forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
+
+export const TableHeaders = () => {
+  const { user } = useContext(UserContext)
+
+  return (
+    <thead>
+      <tr>
+        <th className={`${ user?.role === 'Viewer' ? 'hidden' : undefined }`}>Create Site Log</th>
+        <th>Site</th>
+        <th>Jan</th>
+        <th>Feb</th>
+        <th>Mar</th>
+        <th>Apr</th>
+        <th>May</th>
+        <th>Jun</th>
+        <th>Jul</th>
+        <th>Aug</th>
+        <th>Sep</th>
+        <th>Oct</th>
+        <th>Nov</th>
+        <th>Dec</th>
+      </tr>
+    </thead>
+  )
+}
 
 export const CreateLogBtn = ({ selected, handleClick }: { selected: number, handleClick: () => void }) => { // Create site log button
   if(selected === 0) return null
@@ -59,13 +86,9 @@ const TableRow = ({ row, selected, selection, setState }: { row: InspectorTableD
   return (
     <tr>
 
-      <td className="flex flex-col items-center">
-        <input 
-          type="checkbox" 
-          className="checkbox checkbox-secondary"
-          checked={selected}
-          onChange={() => setState(prevState => selected ? { ...prevState, selection: selection.filter(siteId => siteId !== row.siteId) } : { ...prevState, selection: [ ...prevState.selection, row.siteId] })} />
-      </td>
+      <CreateSiteLogColumn
+        selected={selected}
+        onChange={() => setState(prevState => selected ? { ...prevState, selection: selection.filter(siteId => siteId !== row.siteId) } : { ...prevState, selection: [ ...prevState.selection, row.siteId] })} />
 
       <td className="w-fit hover:text-warning"><Link to={`/site/${ row.uuid }`}>{row.site}</Link></td>
       {Array.from({ length: 12 }).map((_, index) => {
@@ -95,5 +118,21 @@ const TableRow = ({ row, selected, selection, setState }: { row: InspectorTableD
         )
       })}
     </tr>
+  )
+}
+
+const CreateSiteLogColumn = ({ selected, onChange }: { selected: boolean, onChange: () => void }) => {
+  const { user } = useContext(UserContext)
+
+  if(user?.role === 'Viewer') return null
+
+  return (
+    <td className="flex flex-col items-center">
+      <input 
+        type="checkbox" 
+        className="checkbox checkbox-secondary"
+        checked={selected}
+        onChange={onChange} />
+    </td>
   )
 }

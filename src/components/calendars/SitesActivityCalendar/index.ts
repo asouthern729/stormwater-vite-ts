@@ -77,7 +77,7 @@ export const useFormatCalendarData = (sites: UseFormatCalendarDataProps['sites']
 }
 
 export const useCalendarProps = (type: UseCalendarPropsProps['type'], data: UseCalendarPropsProps['data'], options: UseCalendarPropsProps['options']): MbscEventcalendarOptions => { // Set calendar props
-  const { handleCellClick, handleEventClick } = options
+  const { onCellClick, onEventClick } = options
 
   const calendarProps = useMemo(() => {
     const props: MbscEventcalendarOptions = {
@@ -94,16 +94,16 @@ export const useCalendarProps = (type: UseCalendarPropsProps['type'], data: UseC
       data
     }
 
-    if(handleCellClick) { // Handle cell double click on site page
-      props.onCellDoubleClick = (event) => handleCellClick(event)
+    if(onCellClick) { // Handle cell double click on site page
+      props.onCellDoubleClick = (event) => onCellClick(event)
     }
 
-    if(handleEventClick) { // Handle event click on site page
-      props.onEventClick = (event) => handleEventClick(event)
+    if(onEventClick) { // Handle event click on site page
+      props.onEventClick = (event) => onEventClick(event)
     }
 
     return props
-  }, [data, handleCellClick, handleEventClick, type])
+  }, [data, onCellClick, onEventClick, type])
 
   return calendarProps
 }

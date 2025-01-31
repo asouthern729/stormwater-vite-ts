@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import UserContext from '../../../context/User/UserContext'
 import { setContactTableDataCell, setSitesTableData } from './utils'
 
 // Types
@@ -26,12 +28,15 @@ export const PageBtns = ({ currentPage, totalPages, setState }: { currentPage: n
 }
 
 export const TableBody = ({ contacts, handleRowClick }: { contacts: Contact[], handleRowClick: (event: React.MouseEvent<HTMLTableRowElement>) => void}) => { // Contacts table body
+  const { user } = useContext(UserContext)
+
+  const onClick = user?.role === 'Viewer' ? () => null : handleRowClick
 
   return (
     <tbody>
       {contacts.map(contact => {
         return (
-          <tr key={`contacts-table-${ contact.contactId }`} data-uuid={contact.uuid} onClick={handleRowClick}>
+          <tr key={`contacts-table-${ contact.contactId }`} data-uuid={contact.uuid} onClick={onClick}>
             {setContactTableDataCell(contact)}
             {setSitesTableData(contact)}
           </tr>

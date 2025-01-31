@@ -1,5 +1,6 @@
-import { useState, memo } from 'react'
+import { useState, memo, useContext } from 'react'
 import { Eventcalendar } from '@mobiscroll/react'
+import UserContext from '../../../context/User/UserContext'
 import { useFormatCalendarData, useCalendarProps } from '.'
 import styles from './SitesActivityCalendar.module.css'
 
@@ -11,11 +12,15 @@ import CalendarTypeBtn from '../../buttons/calendars/CalendarTypeBtn/CalendarTyp
 import ActivityCalendarLegend from '../ActivityCalendarLegend/ActivityCalendarLegend'
 
 function SitesActivityCalendar({ sites, handleCellClick, handleEventClick }: SitesActivityCalendarProps) {
+  const { user } = useContext(UserContext)
+
   const [state, setState] = useState<SitesActivityCalendarState>({ type: 'week', filter: null })
 
   const data = useFormatCalendarData(sites)
 
-  const calendarProps = useCalendarProps(state.type, data, { handleCellClick, handleEventClick })
+  const [onCellClick, onEventClick] = user?.role === 'Viewer' ? [() => null, () => null] : [handleCellClick, handleEventClick]
+
+  const calendarProps = useCalendarProps(state.type, data, { onCellClick, onEventClick })
 
   return (
     <div data-testid="sites-acitivity-calendar" className={styles.container}>

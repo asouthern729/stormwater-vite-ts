@@ -7,11 +7,10 @@ import { IllicitDischarge } from '../../../context/App/types'
 import { DischargesContainerProps, DischargesContainerState } from "./types"
 
 // Components
-import CreateLink from '../../buttons/nav/CreateLink/CreateLink'
 import SiteIllicitDischargeBtn from "../../indicators/SiteIllicitDischargeIndicator/SiteIllicitDischargeIndicator"
 import SitesIssuesTable from "../../tables/SitesIssuesTable/SitesIssuesTable"
 import DateRangeFilter from "../../filters/DateRangeFilter/DateRangeFilter"
-import { Form } from './components'
+import { Form, CreateBtn } from './components'
 
 function DischargesContainer({ sites, discharges }: DischargesContainerProps) {
   const [state, setState] = useState<DischargesContainerState>({ formUUID: undefined })
@@ -24,13 +23,9 @@ function DischargesContainer({ sites, discharges }: DischargesContainerProps) {
     <div data-testid="discharges-container" className="flex flex-col gap-10">
       <div className={styles.container}>
 
-        <div className="absolute top-5 right-6">
-          <CreateLink
-            label={'Create New Illicit Discharge'}
-            location={'/create?formType=createDischarge'} />
-        </div>
+        <CreateBtn />
 
-        <div className={styles.header}>Illicit Discharges</div>
+        <h2 className={styles.header}>Illicit Discharges</h2>
 
         <div className="flex justify-evenly w-full">
           <SiteIllicitDischargeBtn

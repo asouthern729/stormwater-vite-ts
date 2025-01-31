@@ -1,5 +1,7 @@
+import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { useQueryClient } from "react-query"
+import UserContext from "../../../context/User/UserContext"
 import { handleDeleteBtnClick } from "../../../helpers"
 import { deleteInspector } from "../../../context/App/AppActions"
 
@@ -15,6 +17,7 @@ import InspectorTable from "../../tables/InspectorTable/InspectorTable"
 import FormContainer from "../../forms/FormContainer/FormContainer"
 import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
 import DeleteBtn from "../../buttons/forms/DeleteBtn/DeleteBtn"
+import UpdateBtn from "../../buttons/forms/UpdateBtn/UpdateBtn"
 
 export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calendar" | "table", sitesArray: Site[] }) => { // Calendar or table view
   const navigate = useNavigate()
@@ -49,6 +52,20 @@ export const Form = ({ state, formRef, setState, inspector }: { state: Inspector
             handleClick={() => handleDeleteBtnClick(inspector.uuid, deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
         </div>
       </FormContainer>
+    </div>
+  )
+}
+
+export const UpdateInspectorBtn = ({ handleClick }: { handleClick: () => void }) => {
+  const { user } = useContext(UserContext)
+
+  if(user?.role === 'Viewer') return null
+
+  return (
+    <div className="absolute left-0">
+      <UpdateBtn
+        label={'Update Inspector'}
+        handleClick={handleClick} />
     </div>
   )
 }
