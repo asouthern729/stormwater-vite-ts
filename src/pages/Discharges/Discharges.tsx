@@ -1,4 +1,4 @@
-import { useValidateUser, useHandlePageLoad } from "../../helpers"
+import { useHandlePageLoad } from "../../helpers"
 import { useGetSites } from "../Sites/hooks"
 import { useGetDischarges } from "./hooks"
 
@@ -12,12 +12,10 @@ import DischargesContainer from "../../components/containers/DischargesContainer
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Discharges() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites(validated)
-  const { data: dischargesData, isSuccess: dischargesSuccess } = useGetDischarges(validated)
+  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites()
+  const { data: dischargesData, isSuccess: dischargesSuccess } = useGetDischarges()
 
   const isSuccess = sitesSuccess && dischargesSuccess
 

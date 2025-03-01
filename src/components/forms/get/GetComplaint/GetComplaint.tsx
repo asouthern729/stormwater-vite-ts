@@ -1,4 +1,3 @@
-import { useValidateUser } from "../../../../helpers"
 import { useGetComplaint } from "./hooks"
 
 // Types
@@ -8,9 +7,7 @@ import { GetComplaintProps } from "./types"
 import { Form } from './components'
 
 function GetComplaint({ uuid, handleCloseForm }: GetComplaintProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetComplaint(uuid, validated)
+  const { data } = useGetComplaint(uuid)
 
   return (
     <div data-testid="get-complaint">

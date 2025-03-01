@@ -1,4 +1,3 @@
-import { useValidateUser } from "../../../../helpers"
 import { useGetSiteLog } from "./hooks"
 
 // Types
@@ -8,9 +7,7 @@ import { GetSiteLogProps } from "./types"
 import { Form } from "./components"
 
 function GetSiteLog({ uuid, handleCloseForm }: GetSiteLogProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetSiteLog(uuid, validated)
+  const { data } = useGetSiteLog(uuid)
 
   return (
     <div data-testid="get-site-log">

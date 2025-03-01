@@ -1,4 +1,4 @@
-import { useValidateUser, useHandlePageLoad } from "../../helpers"
+import { useHandlePageLoad } from "../../helpers"
 import { useGetSites } from "./hooks"
 
 // Components
@@ -8,11 +8,9 @@ import SitesContainer from "../../components/containers/SitesContainer/SitesCont
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Sites() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data, isSuccess } = useGetSites(validated)
+  const { data, isSuccess } = useGetSites()
 
   return (
     <Layout>

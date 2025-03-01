@@ -8,7 +8,6 @@ import { Basemap, MapType } from '../MapContainer/types'
 
 export interface MapProps { // Map props
   sites: Site[]
-  basemap: Basemap
   type?: MapType
   zoom?: number
 }

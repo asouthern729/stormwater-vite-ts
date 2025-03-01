@@ -2,6 +2,7 @@
 import { Dispatch } from "react"
 import { StreamWatershed } from "../../components/forms/create/CreateSiteIllicitDischargeForm/types"
 import { Concern } from "../../components/forms/create/CreateSiteComplaintForm/types"
+import { Basemap } from "../../components/map/MapContainer/types"
 
 export interface AppContextObj { // App ctx
   dispatch: Dispatch<AppAction>
@@ -437,6 +438,7 @@ export interface FollowUpObj { // FollowUp obj for forms
 export interface InspectorObj { // Inspector obj for forms
   name: string
   email: string
+  inspectorId?: string
   uuid?: string
 }
 

@@ -1,4 +1,3 @@
-import { useValidateUser } from '../../../../helpers'
 import { useGetIllicitDischarge } from './hooks'
 
 // Types
@@ -8,9 +7,7 @@ import { GetIllicitDischargeProps } from './types'
 import { Form } from './components'
 
 function GetIllicitDischarge({ uuid, handleCloseForm }: GetIllicitDischargeProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetIllicitDischarge(uuid, validated)
+  const { data } = useGetIllicitDischarge(uuid)
 
   return (
     <div data-testid="get-illicit-discharge">

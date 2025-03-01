@@ -1,4 +1,4 @@
-import { useValidateUser, useHandlePageLoad } from "../../helpers"
+import { useHandlePageLoad } from "../../helpers"
 import { useGetSites } from "../Sites/hooks"
 import { useGetComplaints } from './hooks'
 
@@ -12,12 +12,10 @@ import ComplaintsContainer from "../../components/containers/ComplaintsContainer
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Complaints() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites(validated)
-  const { data: complaintsData, isSuccess: complaintsSuccess } = useGetComplaints(validated)
+  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites()
+  const { data: complaintsData, isSuccess: complaintsSuccess } = useGetComplaints()
 
   const isSuccess = sitesSuccess && complaintsSuccess
 

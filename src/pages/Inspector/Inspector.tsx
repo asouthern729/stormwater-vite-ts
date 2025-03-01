@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useValidateUser, useHandlePageLoad } from '../../helpers'
+import { useHandlePageLoad } from '../../helpers'
 import { useGetInspector } from './hooks'
 
 // Types
@@ -12,13 +12,11 @@ import InspectorContainer from '../../components/containers/InspectorContainer/I
 import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Inspector() {
-  const validated = useValidateUser()
-
-  useHandlePageLoad(validated)
+  useHandlePageLoad()
 
   const { inspectorId } = useParams()
 
-  const { data, isSuccess } = useGetInspector(inspectorId, validated)
+  const { data, isSuccess } = useGetInspector(inspectorId)
 
   return (
     <Layout>

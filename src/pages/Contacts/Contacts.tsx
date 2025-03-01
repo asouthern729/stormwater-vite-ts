@@ -1,4 +1,4 @@
-import { useHandlePageLoad, useValidateUser } from '../../helpers'
+import { useHandlePageLoad } from '../../helpers'
 import { useGetContacts } from './hooks'
 
 // Types
@@ -11,11 +11,9 @@ import ContactsContainer from '../../components/containers/ContactsContainer/Con
 import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Contacts() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data, isSuccess } = useGetContacts(validated)
+  const { data, isSuccess } = useGetContacts()
 
   return (
     <Layout>

@@ -1,4 +1,3 @@
-import { useValidateUser } from "../../../../helpers"
 import { useGetContact } from "./hooks"
 
 // Types
@@ -8,9 +7,7 @@ import { GetContactProps } from "./types"
 import { Form } from './components'
 
 function GetContact({ uuid, handleCloseForm }: GetContactProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetContact(uuid, validated)
+  const { data } = useGetContact(uuid)
 
   return (
     <div data-testid="get-contact">

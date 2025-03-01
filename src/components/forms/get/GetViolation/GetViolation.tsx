@@ -1,4 +1,3 @@
-import { useValidateUser } from '../../../../helpers'
 import { useGetViolation } from './hooks'
 
 // Types
@@ -8,9 +7,7 @@ import { GetViolationProps } from './types'
 import { Form } from './components'
 
 function GetViolation({ uuid, handleCloseForm }: GetViolationProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetViolation(uuid, validated)
+  const { data } = useGetViolation(uuid)
 
   return (
     <div data-testid="get-violation">

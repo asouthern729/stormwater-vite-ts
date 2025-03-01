@@ -10,6 +10,7 @@ export interface UpdateInspectorFormProps { // UpdateInspector props
 export interface UpdateInspectorFormUseForm { // UpdateInspectorForm useForm
   name: string
   email: string
+  inspectorId: string
   uuid: string
 }
 

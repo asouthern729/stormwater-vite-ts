@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useValidateUser } from "../../../../helpers"
 import { useGetActiveSiteNames } from "./hooks"
 import styles from './GetSite.module.css'
 
@@ -12,9 +11,7 @@ import { SiteSelect, NoSiteBtn, Form } from "./components"
 function GetSite({ form }: GetSiteProps) {
   const [state, setState] = useState<GetSiteState>({ siteId: null })
 
-  const validated = useValidateUser()
-
-  const { data } = useGetActiveSiteNames(validated)
+  const { data } = useGetActiveSiteNames()
 
   const selectedSite = data?.data.find(site => site.siteId === state.siteId)
 

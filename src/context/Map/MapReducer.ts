@@ -1,4 +1,5 @@
 // Types
+import { Basemap } from "../../components/map/MapContainer/types"
 import { MapReducerProps } from "./types"
 
 const mapReducer = (state: MapReducerProps['state'], action: MapReducerProps['action']) => {
@@ -13,8 +14,14 @@ const mapReducer = (state: MapReducerProps['state'], action: MapReducerProps['ac
         ...state,
         updateSite: action.payload
       }
+    case 'SET_BASEMAP':
+      return {
+        ...state,
+        basemap: action.payload
+      }
     case 'RESET_CTX':
       return {
+        basemap: 'dark-gray-vector' as Basemap,
         newSite: {
           xCoordinate: undefined,
           yCoordinate: undefined

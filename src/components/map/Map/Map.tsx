@@ -5,10 +5,10 @@ import styles from './Map.module.css'
 // Types
 import { MapProps } from './types'
 
-const Map = ({ sites, basemap, type, zoom }: MapProps) => {
+const Map = ({ sites, type, zoom }: MapProps) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
-  useSetMapView(mapRef, sites, basemap, type, zoom)
+  useSetMapView(mapRef, sites, type, zoom)
 
   return (
     <div className={styles.container}>

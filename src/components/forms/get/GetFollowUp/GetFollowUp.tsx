@@ -1,4 +1,3 @@
-import { useValidateUser } from "../../../../helpers"
 import { useGetFollowUp } from './hooks'
 
 // Types
@@ -8,9 +7,7 @@ import { GetFollowUpProps } from "./types"
 import { Form } from './components'
 
 function GetFollowUp({ uuid, handleCloseForm }: GetFollowUpProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetFollowUp(uuid, validated)
+  const { data } = useGetFollowUp(uuid)
 
   return (
     <div data-testid="get-follow-up">

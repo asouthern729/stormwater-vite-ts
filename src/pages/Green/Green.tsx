@@ -1,4 +1,4 @@
-import { useValidateUser, useHandlePageLoad } from '../../helpers'
+import { useHandlePageLoad } from '../../helpers'
 import { useGetGreenViolations } from './hooks'
 
 // Components
@@ -8,11 +8,9 @@ import GreenContainer from '../../components/containers/GreenContainer/GreenCont
 import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Green() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data, isSuccess } = useGetGreenViolations(validated)
+  const { data, isSuccess } = useGetGreenViolations()
 
   return (
     <Layout>

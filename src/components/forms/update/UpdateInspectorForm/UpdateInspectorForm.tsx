@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from 'react-query'
 import { FormProvider } from 'react-hook-form'
-import { useUpdateInspectorForm, handleUpdateInspectorFormSubmit } from '.'
+import { handleUpdateInspectorFormSubmit } from './utils'
+import { useUpdateInspectorForm } from './hooks'
 import styles from '../../Forms.module.css'
 
 // Types

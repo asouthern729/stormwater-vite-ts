@@ -49,7 +49,7 @@ export const Form = ({ state, formRef, setState, inspector }: { state: Inspector
         <div className="mx-auto">
           <DeleteBtn
             label={!deleteBtnActive ? 'Delete Inspector' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(inspector.uuid, deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
+            handleClick={() => handleDeleteBtnClick(inspector.inspectorId, deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
         </div>
       </FormContainer>
     </div>

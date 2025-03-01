@@ -1,4 +1,3 @@
-import { useValidateUser } from "../../../../helpers"
 import { useGetGreenViolation } from "./hooks"
 
 // Types
@@ -8,9 +7,7 @@ import { GetGreenProps } from "./types"
 import { Form } from "./components"
 
 function GetGreen({ uuid, handleCloseForm }: GetGreenProps) {
-  const validated = useValidateUser()
-
-  const { data } = useGetGreenViolation(uuid, validated)
+  const { data } = useGetGreenViolation(uuid)
 
   return (
     <div data-testid="get-green">

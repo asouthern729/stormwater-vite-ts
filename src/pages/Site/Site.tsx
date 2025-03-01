@@ -1,4 +1,4 @@
-import { useValidateUser, useHandlePageLoad } from "../../helpers"
+import { useHandlePageLoad } from "../../helpers"
 import { useGetSite } from "./hooks"
 
 // Types
@@ -11,11 +11,9 @@ import SiteContainer from "../../components/containers/SiteContainer/SiteContain
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Site() {
-  const validated = useValidateUser()
+  useHandlePageLoad()
 
-  useHandlePageLoad(validated)
-
-  const { data, isSuccess } = useGetSite(validated)
+  const { data, isSuccess } = useGetSite()
   
   return (
     <Layout>

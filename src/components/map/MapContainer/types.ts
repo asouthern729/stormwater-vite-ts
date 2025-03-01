@@ -7,10 +7,6 @@ export interface MapContainerProps { // MapContainer props
   zoom?: number
 }
 
-export interface MapContainerState { // MapContainer state object
-  basemap: Basemap
-}
-
 export type Basemap =
   | "dark-gray-vector"
   | "satellite"

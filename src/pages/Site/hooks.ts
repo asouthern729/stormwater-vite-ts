@@ -1,9 +1,14 @@
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import { getSite } from "../../context/App/AppActions"
+import { useValidateUser, useEnableQuery } from "../../helpers"
 
-export const useGetSite = (validated: boolean) => { // Get site data by uuid
+export const useGetSite = () => { // Get site data by uuid
+  const { isAuthenticated, isLoading } = useValidateUser()
+
   const { uuid } = useParams()
 
-  return useQuery(['getSite', uuid], () => getSite(uuid || ''), { enabled: !!uuid && validated })
+  const enabled = useEnableQuery(isAuthenticated, isLoading)
+
+  return useQuery(['getSite', uuid], () => getSite(uuid || ''), { enabled: enabled && !!uuid })
 }

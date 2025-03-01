@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { useValidateUser,  useHandlePageLoad } from '../../helpers'
+import { useHandlePageLoad } from '../../helpers'
 
 // Types
 import { CreateForm } from './types'
@@ -14,9 +14,7 @@ function Create() {
   const queryParams = new URLSearchParams(location.search)
   const formType = queryParams.get('formType')
 
-  const validated = useValidateUser()
-
-  useHandlePageLoad(validated)
+  useHandlePageLoad()
 
   return (
     <Layout>

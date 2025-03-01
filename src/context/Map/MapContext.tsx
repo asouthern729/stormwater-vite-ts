@@ -7,6 +7,7 @@ import { MapContextObj, MapState, MapAction } from "./types"
 
 const MapContext = createContext<MapContextObj>({
   mapDispatch: () => {},
+  basemap: 'dark-gray-vector',
   newSite: {
     xCoordinate: undefined,
     yCoordinate: undefined
@@ -19,6 +20,7 @@ const MapContext = createContext<MapContextObj>({
 
 export const MapProvider = ({ children }: { children: ReactNode }) => {
   const initialState: MapState = {
+    basemap: 'dark-gray-vector',
     newSite: {
       xCoordinate: undefined,
       yCoordinate: undefined

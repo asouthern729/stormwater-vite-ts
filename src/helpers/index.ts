@@ -1,4 +1,4 @@
-import { useEffect, useContext, useCallback, useMemo } from "react"
+import { useState, useEffect, useContext, useCallback, useMemo } from "react"
 import { useQuery } from "react-query"
 import { useNavigate, useLocation, useParams } from "react-router-dom"
 import UserContext from "../context/User/UserContext"
@@ -15,47 +15,81 @@ import { ValidateTokenResponse } from "../context/User/types"
 import { Issue } from "../components/tables/SiteIssuesTable/types"
 import { UseHandleMapChangeProps, UseScrollToFormRefProps, HandleSuccessfulFormSubmitProps, HandleDeleteBtnClickProps, HandleIssuesTableRowClickProps, UseHandlePageData } from "./types"
 
-export const useValidateUser = (): boolean => { // Validate user
+export const useValidateUser = (): { isAuthenticated: boolean, isLoading: boolean } => { // Validate user
+  const [state, setState] = useState<{ retries: number }>({ retries: 0 })
   const { dispatch } = useContext(UserContext)
 
   const navigate = useNavigate()
 
-  const { data } = useValidateToken()
+  const validateToken = useValidateToken()
 
-  const { data: refreshData } = useRefreshToken(data?.success ? false : true)
+  const tryRefresh = validateToken.isSuccess && !validateToken.data?.success
 
-  const onSuccess = useCallback(() => {
-    if(data && data?.success) {
-      dispatch({ type: 'SET_USER', payload: data.data })
-    }
-    
-    if(refreshData && refreshData?.success) {
-      dispatch({ type: 'SET_USER', payload: refreshData.data })
-    } 
-  }, [data, refreshData, dispatch])
+  const refreshToken = useRefreshToken(tryRefresh, state.retries)
 
-  const onFail = useCallback(() => {
-    if(refreshData && !refreshData?.success) {
-      dispatch({ type: 'SET_USER', payload: undefined })
-      navigate('/login')
-    }
-  }, [refreshData, navigate, dispatch])
+  const isAuthenticated = (validateToken.isSuccess && validateToken.data?.success) || 
+  (refreshToken.isSuccess && refreshToken.data?.success)
+
+  const isLoading = validateToken.isLoading || refreshToken.isLoading
 
   useEffect(() => {
-    onSuccess()
-    onFail()
-  }, [onSuccess, onFail])
+    if(isAuthenticated) {
+      const userData = validateToken.data?.success 
+        ? validateToken.data?.data 
+        : refreshToken.data?.data
+        
+      dispatch({ type: 'SET_USER', payload: userData })
+      setState({ retries: 0 }) // Reset retries state on success
+    }
+  }, [isAuthenticated, validateToken.data, refreshToken.data, dispatch])
 
-  return data?.success || refreshData?.success ? true : false
+  useEffect(() => {
+    if(refreshToken.isSuccess && !refreshToken.data?.success) {
+      if(state.retries >= 5) {
+        dispatch({ type: 'SET_USER', payload: undefined })
+        navigate('/login')
+      } else {
+        setState(prevState => ({ retries: prevState.retries + 1 }))
+      }
+    }
+  }, [refreshToken.isSuccess, refreshToken.data, state.retries, dispatch, navigate])
+
+  return { isAuthenticated, isLoading }
 }
 
-export const useHandlePageLoad = (validated: boolean): void => { // Set current page and reset ctx on page change
+export const useEnableQuery = (isAuthenticated: boolean, isLoading: boolean) => {
+  const [state, setState] = useState<{ enabled: boolean }>({ enabled: false })
+
+  const isReady = isAuthenticated && !isLoading
+
+  useEffect(() => {
+    let timeout = null
+
+    if(isReady) {
+      timeout = setTimeout(() => {
+        setState({ enabled: true })
+      }, 300) // 300ms delay
+    } else setState({ enabled: false })
+
+    return () => {
+      if(timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [isReady])
+
+  return state.enabled
+}
+
+export const useHandlePageLoad = (): void => { // Set current page and reset ctx on page change
   const { dispatch } = useContext(AppContext)
+
+  const { isAuthenticated } = useValidateUser()
 
   const location = useLocation()
 
-  useGetInspectorsForForms(validated) // Set inspectors to ctx
-  useGetContactsForForms(validated) // Set contacts to ctx
+  useGetInspectorsForForms(isAuthenticated) // Set inspectors to ctx
+  useGetContactsForForms(isAuthenticated) // Set contacts to ctx
 
   const cb = useCallback(() => {
     let page: Page = 'Sites'
@@ -247,9 +281,9 @@ export const handleIssuesTableRowClick = (setState: HandleIssuesTableRowClickPro
 }
 
 const useValidateToken = (): UseQueryResult<ValidateTokenResponse> => { // Handle token validation
-  return useQuery('validateToken', () => validateToken(), { suspense: true })
+  return useQuery('validateToken', () => validateToken())
 }
 
-const useRefreshToken = (refresh: boolean | undefined): UseQueryResult<ValidateTokenResponse> => { // Handle token refresh
-  return useQuery('refreshToken', () => refreshToken(), { enabled: refresh })
+const useRefreshToken = (refresh: boolean | undefined, retries: number): UseQueryResult<ValidateTokenResponse> => { // Handle token refresh
+  return useQuery(['refreshToken', retries], () => refreshToken(), { enabled: refresh })
 }

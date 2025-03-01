@@ -233,9 +233,9 @@ export const createInspector = async (formData: InspectorObj): Promise<CreateIns
 }
 
 // Update inspector
-// PUT /api/v1/eng/stormwater/inspectors/:uuid
+// PUT /api/v1/eng/stormwater/inspectors/:inspectorid
 export const updateInspector = async (formData: InspectorObj): Promise<ServerResponse> => {
-  const res = await fetch(`${ baseUrl }/inspectors/${ formData.uuid }`, {
+  const res = await fetch(`${ baseUrl }/inspectors/${ formData.inspectorId }`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -248,9 +248,9 @@ export const updateInspector = async (formData: InspectorObj): Promise<ServerRes
 }
 
 // Delete inspector
-// DELETE /api/v1/eng/stormwater/inspectors/:uuid
-export const deleteInspector = async (uuid: string): Promise<ServerResponse> => {
-  const res = await fetch(`${ baseUrl }/inspectors/${ uuid }`, {
+// DELETE /api/v1/eng/stormwater/inspectors/:inspectorid
+export const deleteInspector = async (inspectorid: string): Promise<ServerResponse> => {
+  const res = await fetch(`${ baseUrl }/inspectors/${ inspectorid }`, {
     method: 'DELETE',
     credentials: 'include'
   })

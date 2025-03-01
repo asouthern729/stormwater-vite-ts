@@ -7,12 +7,12 @@ import { setViewType } from './utils'
 // Types
 import { RefObject } from "react"
 import { Site } from "../../../context/App/types"
-import { Basemap, MapType } from "../MapContainer/types"
+import { MapType } from "../MapContainer/types"
 import { MapState, MapProperties } from "./types"
 
-export const useSetMapView = (mapRef: RefObject<HTMLDivElement>, sites: Site[], basemap: Basemap, type: MapType | undefined, zoom: number | undefined) => {
+export const useSetMapView = (mapRef: RefObject<HTMLDivElement>, sites: Site[], type: MapType | undefined, zoom: number | undefined) => {
   const { hoveredSite } = useContext(AppContext)
-  const { newSite, updateSite, mapDispatch } = useContext(MapContext)
+  const { basemap, newSite, updateSite, mapDispatch } = useContext(MapContext)
 
   const [state, setState] = useState<MapState>({ view: null })
 
