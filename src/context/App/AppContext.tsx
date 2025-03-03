@@ -8,7 +8,6 @@ import { AppContextObj, AppState, AppAction } from './types'
 const AppContext = createContext<AppContextObj>({
   dispatch: () => {},
   activePage: 'Sites',
-  basemap: 'dark-gray-vector',
   contactOptions: [],
   dateRangeFilter: {
     start: undefined,
@@ -29,7 +28,6 @@ const AppContext = createContext<AppContextObj>({
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const initialState: AppState = {
     activePage: 'Sites',
-    basemap: 'dark-gray-vector',
     contactOptions: [],
     dateRangeFilter: {
       start: undefined,
