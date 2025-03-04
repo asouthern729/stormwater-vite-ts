@@ -1,10 +1,10 @@
-import { API_URL as baseUrl } from '../../config'
+import { API_URL as baseUrl, ACTIVE_SITES_URL } from '../../config'
 
 // Types
 import { ServerResponse, GetSitesResponse, GetSiteResponse, GetActiveSiteNamesResponse, CreateSiteResponse, UpdateSiteResponse, GetContactsResponse, GetContactResponse, CreateContactResponse, UpdateContactResponse, CreateSiteContactsResponse, CreateFollowUpResponse, GetInspectorsResponse, CreateViolationResponse, CreateComplaintResponse, CreateIllicitDischargeResponse, GetSiteLogResponse, GetViolationResponse, GetViolationsResponse, GetComplaintResponse, GetComplaintsResponse, GetFollowUpResponse, GetIllicitDischargeResponse, GetIllicitDischargesResponse, GetInspectorResponse, GetGreenViolationsResponse, GetGreenViolationResponse, SiteObj, ContactObj, SiteContactObj, SiteLogObj, ViolationObj, ComplaintObj, IllicitObj, FollowUpObj, InspectorObj, GreenObj, CreateInspectorResponse, CreateGreenViolationResponse } from './types'
 
 // Get sites
-// GET /api/v1/eng/stormwater/sites
+// GET /api/v2/eng/stormwater/sites
 export const getSites = async (): Promise<GetSitesResponse> => {
   const res = await fetch(`${ baseUrl }/sites`, {
     credentials: 'include'
@@ -14,7 +14,7 @@ export const getSites = async (): Promise<GetSitesResponse> => {
 }
 
 // Get site
-// GET /api/v1/eng/stormwater/sites/:uuid
+// GET /api/v2/eng/stormwater/sites/:uuid
 export const getSite = async (uuid: string): Promise<GetSiteResponse> => {
   const res = await fetch(`${ baseUrl }/sites/${ uuid }`, {
     credentials: 'include'
@@ -24,17 +24,15 @@ export const getSite = async (uuid: string): Promise<GetSiteResponse> => {
 }
 
 // Get active site names
-// POST /api/v1/eng/stormwater/sites/active
+// POST /api/v2/eng/public/active-sites
 export const getActiveSiteNames = async (): Promise<GetActiveSiteNamesResponse> => {
-  const res = await fetch(`${ baseUrl }/sites/active/get`, {
-    credentials: 'include'
-  })
+  const res = await fetch(`${ ACTIVE_SITES_URL }`)
 
   return await res.json()
 }
 
 // Create site
-// POST /api/v1/eng/stormwater/sites
+// POST /api/v2/eng/stormwater/sites
 export const createSite = async (formData: SiteObj): Promise<CreateSiteResponse> => {
   const res = await fetch(`${ baseUrl }/sites`, {
     method: 'POST',
@@ -49,7 +47,7 @@ export const createSite = async (formData: SiteObj): Promise<CreateSiteResponse>
 }
 
 // Update site
-// PUT /api/v1/eng/stormwater/sites/:uuid
+// PUT /api/v2/eng/stormwater/sites/:uuid
 export const updateSite = async (formData: SiteObj): Promise<UpdateSiteResponse> => {
   const res = await fetch(`${ baseUrl }/sites/${ formData.uuid }`, {
     method: 'PUT',
@@ -64,7 +62,7 @@ export const updateSite = async (formData: SiteObj): Promise<UpdateSiteResponse>
 }
 
 // Delete site
-// DELETE /api/v1/eng/stormwater/sites/:uuid
+// DELETE /api/v2/eng/stormwater/sites/:uuid
 export const deleteSite = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/sites/${ uuid }`, {
     method: 'DELETE',
@@ -75,7 +73,7 @@ export const deleteSite = async (uuid: string): Promise<ServerResponse> => {
 }
 
 // Get contacts
-// GET /api/v1/eng/stormwater/contacts
+// GET /api/v2/eng/stormwater/contacts
 export const getContacts = async (): Promise<GetContactsResponse> => {
   const res = await fetch(`${ baseUrl }/contacts`, {
     credentials: 'include'
@@ -85,7 +83,7 @@ export const getContacts = async (): Promise<GetContactsResponse> => {
 }
 
 // Get contact
-// GET /api/v1/eng/stormwater/contacts/:uuid
+// GET /api/v2/eng/stormwater/contacts/:uuid
 export const getContact = async (uuid: string): Promise<GetContactResponse> => {
   const res = await fetch(`${ baseUrl }/contacts/${ uuid }`, {
     credentials: 'include'
@@ -95,7 +93,7 @@ export const getContact = async (uuid: string): Promise<GetContactResponse> => {
 }
 
 // Create contact
-// POST /api/v1/eng/stormwater/contacts
+// POST /api/v2/eng/stormwater/contacts
 export const createContact = async (formData: ContactObj): Promise<CreateContactResponse> => {
   const res = await fetch(`${ baseUrl }/contacts`, {
     method: 'POST',
@@ -110,7 +108,7 @@ export const createContact = async (formData: ContactObj): Promise<CreateContact
 }
 
 // Update contact
-// PUT /api/v1/eng/stormwater/contacts/:uuid
+// PUT /api/v2/eng/stormwater/contacts/:uuid
 export const updateContact = async (formData: ContactObj): Promise<UpdateContactResponse> => {
   const res = await fetch(`${ baseUrl }/contacts/${ formData.uuid }`, {
     method: 'PUT',
@@ -125,7 +123,7 @@ export const updateContact = async (formData: ContactObj): Promise<UpdateContact
 }
 
 // Delete contact
-// DELETE /api/v1/eng/stormwater/contacts/:uuid 
+// DELETE /api/v2/eng/stormwater/contacts/:uuid 
 export const deleteContact = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/contacts/${ uuid }`, {
     method: 'DELETE',
@@ -136,7 +134,7 @@ export const deleteContact = async (uuid: string): Promise<ServerResponse> => {
 }
 
 // Create site contact
-// POST /api/v1/eng/stormwater/sitecontacts
+// POST /api/v2/eng/stormwater/sitecontacts
 export const createSiteContact = async (formData: SiteContactObj): Promise<CreateSiteContactsResponse> => {
   const res = await fetch(`${ baseUrl }/sitecontacts`, {
     method: 'POST',
@@ -151,7 +149,7 @@ export const createSiteContact = async (formData: SiteContactObj): Promise<Creat
 }
 
 // Delete site contacts by siteId
-// DELETE /api/v1/stormwater/sitecontacts/site/:siteid
+// DELETE /api/v2/stormwater/sitecontacts/site/:siteid
 export const deleteSiteContacts = async (siteId: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/sitecontacts/site/${ siteId }`, {
     method: 'DELETE',
@@ -162,7 +160,7 @@ export const deleteSiteContacts = async (siteId: string): Promise<ServerResponse
 }
 
 // Create follow up date
-// POST /api/v1/stormwater/followup
+// POST /api/v2/stormwater/followup
 export const createFollowUp = async (formData: FollowUpObj): Promise<CreateFollowUpResponse> => {
   const res = await fetch(`${ baseUrl }/followup`, {
     method: 'POST',
@@ -177,7 +175,7 @@ export const createFollowUp = async (formData: FollowUpObj): Promise<CreateFollo
 }
 
 // Get follow up date
-// GET /api/v1/stormwater/followup
+// GET /api/v2/stormwater/followup
 export const getFollowUp = async (uuid: string): Promise<GetFollowUpResponse> => {
   const res = await fetch(`${ baseUrl }/followup/${ uuid }`, {
     credentials: 'include'
@@ -187,7 +185,7 @@ export const getFollowUp = async (uuid: string): Promise<GetFollowUpResponse> =>
 }
 
 // Delete follow up date
-// DELETE /api/v1/eng/stormwater/followup?parentId=parentId&followUpDate=followUpDate
+// DELETE /api/v2/eng/stormwater/followup?parentId=parentId&followUpDate=followUpDate
 export const deleteFollowUp = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/followup/${ uuid }`, {
     method: 'DELETE',
@@ -198,7 +196,7 @@ export const deleteFollowUp = async (uuid: string): Promise<ServerResponse> => {
 }
 
 // Get inspectors
-// GET /api/v1/eng/stormwater/inspectors
+// GET /api/v2/eng/stormwater/inspectors
 export const getInspectors = async (): Promise<GetInspectorsResponse> => {
   const res = await fetch(`${ baseUrl }/inspectors`, {
     credentials: 'include'
@@ -208,7 +206,7 @@ export const getInspectors = async (): Promise<GetInspectorsResponse> => {
 }
 
 // Get inspector
-// GET /api/v1/eng/stormwater/inspectors/:inspectorId
+// GET /api/v2/eng/stormwater/inspectors/:inspectorId
 export const getInspector = async (inspectorId: string): Promise<GetInspectorResponse> => {
   const res = await fetch(`${ baseUrl }/inspectors/${ inspectorId }`, {
     credentials: 'include'
@@ -218,7 +216,7 @@ export const getInspector = async (inspectorId: string): Promise<GetInspectorRes
 }
 
 // Create inspector
-// POST /api/v1/eng/stormwater/inspectors
+// POST /api/v2/eng/stormwater/inspectors
 export const createInspector = async (formData: InspectorObj): Promise<CreateInspectorResponse> => {
   const res = await fetch(`${ baseUrl }/inspectors`, {
     method: 'POST',
@@ -233,7 +231,7 @@ export const createInspector = async (formData: InspectorObj): Promise<CreateIns
 }
 
 // Update inspector
-// PUT /api/v1/eng/stormwater/inspectors/:inspectorid
+// PUT /api/v2/eng/stormwater/inspectors/:inspectorid
 export const updateInspector = async (formData: InspectorObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/inspectors/${ formData.inspectorId }`, {
     method: 'PUT',
@@ -248,7 +246,7 @@ export const updateInspector = async (formData: InspectorObj): Promise<ServerRes
 }
 
 // Delete inspector
-// DELETE /api/v1/eng/stormwater/inspectors/:inspectorid
+// DELETE /api/v2/eng/stormwater/inspectors/:inspectorid
 export const deleteInspector = async (inspectorid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/inspectors/${ inspectorid }`, {
     method: 'DELETE',
@@ -259,7 +257,7 @@ export const deleteInspector = async (inspectorid: string): Promise<ServerRespon
 }
 
 // Create site log
-// POST /api/v1/eng/stormwater/logs
+// POST /api/v2/eng/stormwater/logs
 export const createSiteLog = async (formData: SiteLogObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/logs`, {
     method: 'POST',
@@ -274,7 +272,7 @@ export const createSiteLog = async (formData: SiteLogObj): Promise<ServerRespons
 }
 
 // Get site log
-// GET /api/v1/eng/stormwater/logs/:uuid
+// GET /api/v2/eng/stormwater/logs/:uuid
 export const getSiteLog = async (uuid: string): Promise<GetSiteLogResponse> => {
   const res = await fetch(`${ baseUrl }/logs/${ uuid }`, {
     credentials: 'include'
@@ -284,7 +282,7 @@ export const getSiteLog = async (uuid: string): Promise<GetSiteLogResponse> => {
 }
 
 // Update site log
-// PUT /api/v1/eng/stormwater/logs/:uuid
+// PUT /api/v2/eng/stormwater/logs/:uuid
 export const updateSiteLog = async (formData: SiteLogObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/logs/${ formData.uuid }`, {
     method: 'PUT',
@@ -299,7 +297,7 @@ export const updateSiteLog = async (formData: SiteLogObj): Promise<ServerRespons
 }
 
 // Delete site log
-// DELETE /api/v1/eng/stormwater/logs/:uuid
+// DELETE /api/v2/eng/stormwater/logs/:uuid
 export const deleteSiteLog = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/logs/${ uuid }`, {
     method: 'DELETE',
@@ -310,7 +308,7 @@ export const deleteSiteLog = async (uuid: string): Promise<ServerResponse> => {
 }
 
 // Create construction violation
-// POST /api/v1/eng/stormwater/violations
+// POST /api/v2/eng/stormwater/violations
 export const createViolation = async (formData: ViolationObj): Promise<CreateViolationResponse> => {
   const res = await fetch(`${ baseUrl }/violations`, {
     method: 'POST',
@@ -325,7 +323,7 @@ export const createViolation = async (formData: ViolationObj): Promise<CreateVio
 }
 
 // Get construction violation
-// GET /api/v1/eng/stormwater/violations/:uuid
+// GET /api/v2/eng/stormwater/violations/:uuid
 export const getViolation = async (uuid: string): Promise<GetViolationResponse> => {
   const res = await fetch(`${ baseUrl }/violations/${ uuid }`, {
     credentials: 'include'
@@ -335,7 +333,7 @@ export const getViolation = async (uuid: string): Promise<GetViolationResponse> 
 }
 
 // Get construction violations
-// GET /api/v1/eng/stormwater/violations
+// GET /api/v2/eng/stormwater/violations
 export const getViolations = async (): Promise<GetViolationsResponse> => {
   const res = await fetch(`${ baseUrl }/violations`, {
     credentials: 'include'
@@ -345,7 +343,7 @@ export const getViolations = async (): Promise<GetViolationsResponse> => {
 }
 
 // Update construction violation
-// PUT /api/v1/eng/stormwater/violations/:uuid
+// PUT /api/v2/eng/stormwater/violations/:uuid
 export const updateViolation = async (formData: ViolationObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/violations/${ formData.uuid }`, {
     method: 'PUT',
@@ -360,7 +358,7 @@ export const updateViolation = async (formData: ViolationObj): Promise<ServerRes
 }
 
 // Delete construction violation
-// DELETE /api/v1/eng/stormwater/violations/:uuid
+// DELETE /api/v2/eng/stormwater/violations/:uuid
 export const deleteViolation = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/violations/${ uuid }`, {
     method: 'DELETE',
@@ -371,7 +369,7 @@ export const deleteViolation = async (uuid: string): Promise<ServerResponse> => 
 }
 
 // Create complaint
-// POST /api/v1/eng/stormwater/complaints
+// POST /api/v2/eng/stormwater/complaints
 export const createComplaint = async (formData: ComplaintObj): Promise<CreateComplaintResponse> => {
   const res = await fetch(`${ baseUrl }/complaints`, {
     method: 'POST',
@@ -386,7 +384,7 @@ export const createComplaint = async (formData: ComplaintObj): Promise<CreateCom
 }
 
 // Get complaint
-// GET /api/v1/eng/stormwater/complaints/:uuid
+// GET /api/v2/eng/stormwater/complaints/:uuid
 export const getComplaint = async (uuid: string): Promise<GetComplaintResponse> => {
   const res = await fetch(`${ baseUrl }/complaints/${ uuid }`,{
     credentials: 'include'
@@ -396,7 +394,7 @@ export const getComplaint = async (uuid: string): Promise<GetComplaintResponse> 
 }
 
 // Get complaints - no associated site
-// GET /api/v1/eng/stormwater/complaints
+// GET /api/v2/eng/stormwater/complaints
 export const getComplaints = async (): Promise<GetComplaintsResponse> => {
   const res = await fetch(`${ baseUrl }/complaints`, {
     credentials: 'include'
@@ -406,7 +404,7 @@ export const getComplaints = async (): Promise<GetComplaintsResponse> => {
 }
 
 // Update complaint
-// PUT /api/v1/eng/stormwater/complaints/:uuid
+// PUT /api/v2/eng/stormwater/complaints/:uuid
 export const updateComplaint = async (formData: ComplaintObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/complaints/${ formData.uuid }`, {
     method: 'PUT',
@@ -421,7 +419,7 @@ export const updateComplaint = async (formData: ComplaintObj): Promise<ServerRes
 }
 
 // Delete complaint
-// DELETE /api/v1/eng/stormwater/complaints/:uuid
+// DELETE /api/v2/eng/stormwater/complaints/:uuid
 export const deleteComplaint = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/complaints/${ uuid }`, {
     method: 'DELETE',
@@ -432,7 +430,7 @@ export const deleteComplaint = async (uuid: string): Promise<ServerResponse> => 
 }
 
 // Create illicit discharge
-// POST /api/v1/eng/stormwater/illicitdischarges
+// POST /api/v2/eng/stormwater/illicitdischarges
 export const createIllicitDischarge = async (formData: IllicitObj): Promise<CreateIllicitDischargeResponse> => {
   const res = await fetch(`${ baseUrl }/illicitdischarges`, {
     method: 'POST',
@@ -447,7 +445,7 @@ export const createIllicitDischarge = async (formData: IllicitObj): Promise<Crea
 }
 
 // Get illicit discharge
-// GET /api/v1/eng/stormwater/illicitdischarges/:uuid
+// GET /api/v2/eng/stormwater/illicitdischarges/:uuid
 export const getIllicitDischarge = async (uuid: string): Promise<GetIllicitDischargeResponse> => {
   const res = await fetch(`${ baseUrl }/illicitdischarges/${ uuid }`, {
     credentials: 'include'
@@ -457,7 +455,7 @@ export const getIllicitDischarge = async (uuid: string): Promise<GetIllicitDisch
 }
 
 // Get illicit discharges - no associated site
-// GET /api/v1/eng/stormwater/illicitdischarges
+// GET /api/v2/eng/stormwater/illicitdischarges
 export const getIllicitDischarges = async (): Promise<GetIllicitDischargesResponse> => {
   const res = await fetch(`${ baseUrl }/illicitdischarges`, {
     credentials: 'include'
@@ -467,7 +465,7 @@ export const getIllicitDischarges = async (): Promise<GetIllicitDischargesRespon
 }
 
 // Update illicit discharge
-// PUT /api/v1/eng/stormwater/illicitdischarges/:uuid
+// PUT /api/v2/eng/stormwater/illicitdischarges/:uuid
 export const updateIllicitDischarge = async (formData: IllicitObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/illicitdischarges/${ formData.uuid }`, {
     method: 'PUT',
@@ -482,7 +480,7 @@ export const updateIllicitDischarge = async (formData: IllicitObj): Promise<Serv
 }
 
 // Delete illicit discharge
-// DELETE /api/v1/eng/stormwater/illicitdischarges/:uuid
+// DELETE /api/v2/eng/stormwater/illicitdischarges/:uuid
 export const deleteIllicitDischarge = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/illicitdischarges/${ uuid }`, {
     method: 'DELETE',
@@ -493,7 +491,7 @@ export const deleteIllicitDischarge = async (uuid: string): Promise<ServerRespon
 }
 
 // Get green violations
-// GET /api/v1/eng/stormwater/greeninfrastructure
+// GET /api/v2/eng/stormwater/greeninfrastructure
 export const getGreenViolations = async (): Promise<GetGreenViolationsResponse> => {
   const res = await fetch(`${ baseUrl }/greeninfrastructure`, {
     credentials: 'include'
@@ -503,7 +501,7 @@ export const getGreenViolations = async (): Promise<GetGreenViolationsResponse> 
 }
 
 // Get green violation
-// GET /api/v1/eng/stormwater/greeninfrastructure/:uuid
+// GET /api/v2/eng/stormwater/greeninfrastructure/:uuid
 export const getGreenViolation = async (uuid: string): Promise<GetGreenViolationResponse> => {
   const res = await fetch(`${ baseUrl }/greeninfrastructure/${ uuid }`, {
     credentials: 'include'
@@ -513,7 +511,7 @@ export const getGreenViolation = async (uuid: string): Promise<GetGreenViolation
 }
 
 // Create green violation
-// POST /api/v1/eng/stormwater/greeninfrastructure
+// POST /api/v2/eng/stormwater/greeninfrastructure
 export const createGreenViolation = async (formData: GreenObj): Promise<CreateGreenViolationResponse> => {
   const res = await fetch(`${ baseUrl }/greeninfrastructure`, {
     method: 'POST',
@@ -528,7 +526,7 @@ export const createGreenViolation = async (formData: GreenObj): Promise<CreateGr
 }
 
 // Update green violation
-// PUT /api/v1/eng/stormwater/greeninfrastructure
+// PUT /api/v2/eng/stormwater/greeninfrastructure
 export const updateGreenViolation = async (formData: GreenObj): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/greeninfrastructure/${ formData.uuid }`, {
     method: 'PUT',
@@ -543,7 +541,7 @@ export const updateGreenViolation = async (formData: GreenObj): Promise<ServerRe
 }
 
 // Delete green violation
-// DELETE /api/v1/eng/stormwater/greeninfrastructure
+// DELETE /api/v2/eng/stormwater/greeninfrastructure
 export const deleteGreenViolation = async (uuid: string): Promise<ServerResponse> => {
   const res = await fetch(`${ baseUrl }/greeninfrastructure/${ uuid }`, {
     method: 'DELETE',

@@ -8,17 +8,17 @@ import { AppProvider } from "./context/App/AppContext"
 import 'react-toastify/dist/ReactToastify.css'
 
 // Components
-import Login from "./pages/Login/Login"
-import Sites from "./pages/Sites/Sites"
-import Site from "./pages/Site/Site"
-import Create from "./pages/Create/Create"
-import Inspector from "./pages/Inspector/Inspector"
-import Violations from "./pages/Violations/Violations"
-import Complaints from "./pages/Complaints/Complaints"
-import Discharges from "./pages/Discharges/Discharges"
-import Green from "./pages/Green/Green"
-import Contacts from "./pages/Contacts/Contacts"
-import NotFound from "./pages/NotFound/NotFound"
+import Login from "./pages/Login"
+import Sites from "./pages/Sites"
+import Site from "./pages/Site"
+import Create from "./pages/Create"
+import Inspector from "./pages/Inspector"
+import Violations from "./pages/Violations"
+import Complaints from "./pages/Complaints"
+import Discharges from "./pages/Discharges"
+import Green from "./pages/Green"
+import Contacts from "./pages/Contacts"
+import NotFound from "./pages/NotFound"
 
 const queryClient = new QueryClient()
 

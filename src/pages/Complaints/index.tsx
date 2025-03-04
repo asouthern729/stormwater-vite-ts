@@ -21,13 +21,12 @@ function Complaints() {
 
   return (
     <Layout>
-      <HandleLoading
-        isSuccess={isSuccess}>
-          <ErrorBoundary>
-            <ComplaintsContainer 
-              sites={sitesData?.data as Site[] || []}
-              complaints={complaintsData?.data as Complaint[] || []} />
-          </ErrorBoundary>
+      <HandleLoading isSuccess={isSuccess}>
+        <ErrorBoundary>
+          <ComplaintsContainer 
+            sites={sitesData?.data as Site[] || []}
+            complaints={complaintsData?.data as Complaint[] || []} />
+        </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )
