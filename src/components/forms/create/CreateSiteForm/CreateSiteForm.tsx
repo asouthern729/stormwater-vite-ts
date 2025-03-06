@@ -26,7 +26,6 @@ function CreateSiteForm() {
 
       <h2 className={styles.title}>Create Site</h2>
 
-
         <FormProvider { ...methods }>
           <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
           

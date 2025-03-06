@@ -8,7 +8,6 @@ import { MapContainerProps } from './types'
 // Components
 import Map from '../Map/Map'
 import BasemapSelector from '../BasemapSelector/BasemapSelector'
-import { MapProvider } from '../../../context/Map/MapContext'
 import { MapSearch } from './components'
 
 const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
@@ -19,7 +18,6 @@ const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
 
       <MapSearch visible={['Sites', 'Inspectors'].includes(activePage)} />
 
-      <MapProvider>
         <div className="absolute top-4 right-4 z-10">
           <BasemapSelector />
         </div>
@@ -28,7 +26,6 @@ const MapContainer = memo(({ sites, type, zoom }: MapContainerProps) => {
           sites={sites}
           type={type}
           zoom={zoom} />
-      </MapProvider>
         
     </div>
   )

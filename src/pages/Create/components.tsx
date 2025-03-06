@@ -40,7 +40,7 @@ export const Form = ({ form }: { form: CreateForm }) => { // Create form
       )
       break
     default: // Create site
-      element = (
+      element = ( 
         <FormContainer>
           <CreateSiteForm />
         </FormContainer>
