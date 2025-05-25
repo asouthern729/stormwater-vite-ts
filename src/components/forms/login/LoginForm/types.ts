@@ -1,6 +1,6 @@
 // Types
 import { Dispatch } from 'react'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction } from 'react-router'
 import { UserAction } from '../../../../context/User/types'
 
 export interface LoginFormUseFormState { // LoginForm useForm state object

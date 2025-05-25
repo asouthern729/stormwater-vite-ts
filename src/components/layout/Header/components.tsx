@@ -1,67 +1,79 @@
-import { useContext } from "react"
-import { useLocation, Link, useNavigate } from "react-router-dom"
-import AppContext from "../../../context/App/AppContext"
-import UserContext from "../../../context/User/UserContext"
-import { handleLogoutClick } from "./utils"
+import { useState } from "react"
+import { useLocation, Link } from "react-router"
+import { useReturnUserRoles } from '@/helpers/hooks'
+import { useGetInspectors } from './hooks'
+
+// Icons
+import icon from '@/assets/icons/menu/menu.svg'
+import activeIcon from '@/assets/icons/menu/menu-light.svg'
+
+// Types
+import { InspectorInterface } from '@/context/App/types'
 
 // Components
-import HeaderBtn from "../../buttons/nav/HeaderBtn/HeaderBtn"
-import MenuBtn from "../../buttons/nav/MenuBtn/MenuBtn"
-import NavDropdown from "../nav/NavDropdown/NavDropdown"
+import NavDropdown from "../nav/NavDropdown"
 
 export const Buttons = () => {
-  const { showMenu, dispatch } = useContext(AppContext)
-  const { dispatch: userDispatch } = useContext(UserContext)
-
-  const navigate = useNavigate()
+  const [state, setState] = useState<{ expanded: boolean }>({ expanded: true })
 
   const pathname = useLocation().pathname
 
-  if(pathname === '/login') return null
+  if(pathname === '/') return null // Hide on login page
 
   return (
     <div className="flex gap-4">
-      {showMenu && (
+      {state.expanded && (
         <>
-          <HeaderBtn
-            label={'Sites'}
-            handleClick={() => navigate('/')} />
-
-          <HeaderBtn
-            label={'Contacts'}
-            handleClick={() => navigate('/contacts')} />
-
+          <HeaderLink href={'/sites'}>Sites</HeaderLink>
+          <HeaderLink href={'/contacts'}>Contacts</HeaderLink>
           <InspectorsMenu />
           <EnforcementMenu />
           <CreateMenu />
-
-          <HeaderBtn
-            label={'Logout'}
-            handleClick={() => handleLogoutClick(navigate, userDispatch)} />
         </>
       )}
 
-      <MenuBtn
-        handleClick={() => dispatch({ type: 'TOGGLE_SHOW_MENU', payload: undefined })}
-        active={showMenu} />
+      <MenuBtn 
+        onClick={() => setState(prevState => ({ expanded: !prevState.expanded }))}
+        expanded={state.expanded} />
 
     </div>
   )
 }
 
+type HeaderLinkProps = { href: string, children: React.ReactNode }
+
+const HeaderLink = (props: HeaderLinkProps) => {
+  const pathname = useLocation().pathname
+
+  const active = pathname === props.href
+
+  return (
+    <Link to={props.href} className={`btn btn-ghost text-neutral-content rounded-none uppercase hover:bg-primary hover:shadow-none ${ active ? 'text-warning' : null }`}>{props.children}</Link>
+  )
+}
+
 const InspectorsMenu = () => {
-  const { inspectorOptions } = useContext(AppContext)
+  const { data } = useGetInspectors()
 
   return (
     <NavDropdown label={'Inspectors'}>
       <>
-        {inspectorOptions.map(inspector => {
+        {data?.data.map(inspector => {
           return (
-            <li key={`inspector-${ inspector.value }`}><Link to={`/inspectors/${ inspector.value }`}>{inspector.text}</Link></li>
+            <InspectorMenuItem 
+              key={`inspector-menu-${ inspector.slug }`}
+              inspector={inspector} />
           )
         })}
       </>
     </NavDropdown>
+  )
+}
+
+const InspectorMenuItem = ({ inspector }: { inspector: InspectorInterface }) => {
+
+  return (
+    <li key={`inspector-${ inspector.uuid }`} className="hover:cursor-pointer hover:bg-neutral"><Link to={`/inspectors/${ inspector.slug }`}>{inspector.name}</Link></li>
   )
 }
 
@@ -70,31 +82,59 @@ const EnforcementMenu = () => {
   return (
     <NavDropdown label={'Enforcement'}>
       <>
-        <li><Link to={'/violations'}>Construction Violations</Link></li>
-        <li><Link to={'/complaints'}>Complaints</Link></li>
-        <li><Link to={'/discharges'}>Illicit Discharges</Link></li>
-        <li><Link to={'/green'}>Green Infrastructure Violations</Link></li>
+        <EnforcementMenuItem href={'/violations'}>Construction Violations</EnforcementMenuItem>
+        <EnforcementMenuItem href={'/complaints'}>Complaints</EnforcementMenuItem>
+        <EnforcementMenuItem href={'/discharges'}>Illicit Discharges</EnforcementMenuItem>
       </>
     </NavDropdown>
   )
 }
 
-const CreateMenu = () => {
-  const { user } = useContext(UserContext)
+type EnforcementMenuItemProps = { href: string, children: React.ReactNode }
 
-  if(user?.role === 'Viewer') return null
+const EnforcementMenuItem = (props: EnforcementMenuItemProps) => {
+
+  return (
+    <li><Link to={props.href} className="hover:cursor-pointer hover:bg-neutral">{props.children}</Link></li>
+  )
+}
+
+const CreateMenu = () => {
+  const roles = useReturnUserRoles()
+
+  if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
     <NavDropdown label={'Create'}>
       <>
-        <li><Link to={'/create?formType=createSite'}>Site</Link></li>
-        <li><Link to={'/create?formType=createViolation'}>Construction Violation</Link></li>
-        <li><Link to={'/create?formType=createComplaint'}>Complaint</Link></li>
-        <li><Link to={'/create?formType=createDischarge'}>Illicit Discharge</Link></li>
-        <li><Link to={'/create?formType=createGreen'}>Green Infrastructure Violation</Link></li>
-        <li><Link to={'/create?formType=createContact'}>Contact</Link></li>
-        <li><Link to={'/create?formType=createInspector'}>Inspector</Link></li>
+        <CreateMenuItem href={'/create?formType=createSite'}>Site</CreateMenuItem>
+        <CreateMenuItem href={'/create?formType=createViolation'}>Construction Violation</CreateMenuItem>
+        <CreateMenuItem href={'/create?formType=createComplaint'}>Complaint</CreateMenuItem>
+        <CreateMenuItem href={'/create?formType=createDischarge'}>Illicit Discharge</CreateMenuItem>
+        <CreateMenuItem href={'/create?formType=createContact'}>Contact</CreateMenuItem>
+        <CreateMenuItem href={'/create?formType=createInspector'}>Inspector</CreateMenuItem>
       </>
     </NavDropdown>
+  )
+}
+
+type CreateMenuItemProps = { href: string, children: React.ReactNode }
+
+const CreateMenuItem = (props: CreateMenuItemProps) => {
+
+  return (
+    <li><Link to={props.href}>{props.children}</Link></li>
+  )
+}
+
+const MenuBtn = ({ onClick, expanded }: { onClick: React.MouseEventHandler<HTMLButtonElement>, expanded: boolean }) => {
+
+  return (
+    <button 
+      type="button"
+      className="flex flex-col justify-center w-16"
+      onClick={onClick}>
+        <img src={!expanded ? icon : activeIcon} alt="menu icon" className="m-auto w-3/4" />
+    </button>
   )
 }

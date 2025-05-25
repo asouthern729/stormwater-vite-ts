@@ -4,7 +4,7 @@ import styles from './FormNav.module.css'
 import { FormNavProps } from './types'
 
 // Components
-import FormNavBtn from "../../buttons/forms/FormNavBtn/FormNavBtn"
+import FormNavBtn from "../../form-elements/buttons/FormNavBtn/FormNavBtn"
 
 function FormNav({ activeForm, handleBtnClick }: FormNavProps) {
   

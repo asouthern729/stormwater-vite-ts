@@ -1,4 +1,4 @@
-import { handleSuccessfulFormSubmit } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers/hooks"
 import { updateViolation, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 
@@ -7,7 +7,7 @@ import { ViolationObj, FollowUpObj } from "../../../../context/App/types"
 import { HandleUpdateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
 
 export const handleUpdateViolationFormSubmit = async (formData: HandleUpdateViolationFormSubmitProps['formData'], options: HandleUpdateViolationFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, handleCloseForm } = options
+  const { invalidateQuery } = options
 
   const violationObj: ViolationObj = {
     violationId: formData.violationId,
@@ -42,7 +42,7 @@ export const handleUpdateViolationFormSubmit = async (formData: HandleUpdateViol
       }
     }
 
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
+    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery })
   } else errorPopup(result.msg)
 }
 

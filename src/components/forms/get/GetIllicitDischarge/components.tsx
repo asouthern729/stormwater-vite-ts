@@ -1,35 +1,23 @@
-import { useState } from "react" 
-import { useQueryClient } from "react-query"
-import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers"
-import { deleteIllicitDischarge } from "../../../../context/App/AppActions"
+import { useHandleDeleteBtnClick } from "./hooks"
 
 // Types
-import { IllicitDischarge } from "../../../../context/App/types"
-import { GetIllicitDischargeState } from "./types"
+import { IllicitDischargeInterface } from "@/context/App/types"
 
 // Components
 import UpdateSiteIllicitDischargeForm from "../../update/UpdateSiteIllicitDischargeForm/UpdateSiteIllicitDischargeForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
-export const Form = ({ illicitDischarge, handleCloseForm, uuid }: { illicitDischarge: IllicitDischarge | undefined, handleCloseForm: () => void, uuid: string }) => { // Update site illicit discharge form
-  const [state, setState] = useState<GetIllicitDischargeState>({ deleteBtnActive: false })
+export const Form = ({ illicitDischarge }: { illicitDischarge: IllicitDischargeInterface | undefined }) => { // Update site illicit discharge form
+  const { handleClick, active } = useHandleDeleteBtnClick()
 
-  const queryClient = useQueryClient()
-
-  const siteUUID = useGetSiteUUID()
+  if(!illicitDischarge) return null
 
   return (
-    <>
-    {illicitDischarge && (
-      <div className="flex flex-col items-center">
-        <UpdateSiteIllicitDischargeForm 
-          illicitDischarge={illicitDischarge}
-          handleCloseForm={handleCloseForm} />
-        <DeleteBtn
-          label={!state.deleteBtnActive ? 'Delete Illicit Discharge' : 'Confirm Delete'}
-          handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteIllicitDischarge, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites') })} />
-      </div>
-      )}
-    </>
+    <div className="flex flex-col items-center">
+      <UpdateSiteIllicitDischargeForm illicitDischarge={illicitDischarge} />
+      <DeleteBtn
+        label={!active ? 'Delete Violation' : 'Confirm Delete'}
+        handleClick={handleClick} />
+    </div>
   )
 }

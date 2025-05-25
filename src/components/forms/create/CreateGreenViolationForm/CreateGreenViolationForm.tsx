@@ -1,12 +1,12 @@
 import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import MapContext from "../../../../context/Map/MapContext"
 import { useCreateGreenViolationForm, useHandleMapChange, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
 
 // Components
-import MapContainer from "../../../map/MapContainer/MapContainer"
+import MapContainer from "../../../map/MapContainer"
 import CreateFollowUpForm from "../CreateFollowUpForm/CreateFollowUpForm"
 import { DateInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, DetailsInput, CommentsInput, EnforcementActionInput, PenaltyInputs, Buttons } from './components'
 

@@ -1,5 +1,5 @@
 import { deleteSite } from "../../../context/App/AppActions"
-import { handleSuccessfulFormSubmit } from "../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../helpers/hooks"
 import { errorPopup } from "../../../utils/Toast/Toast"
 
 // Types

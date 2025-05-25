@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { useQueryClient } from "react-query"
 import { handleDeleteSiteBtnClick } from './utils'
 
 // Types
 import { MouseEvent, Dispatch, SetStateAction } from "react"
 import { Site } from "../../../context/App/types"
-import { SiteForm, SiteContainerState } from "../../containers/SiteContainer/types"
+import { SiteForm, SiteContainerState } from "../../site/containers/SiteContainer/types"
 
 // Components
 import FormContainer from "../FormContainer/FormContainer"
@@ -16,10 +16,10 @@ import CreateViolationForm from "../create/CreateViolationForm/CreateViolationFo
 import CreateSiteComplaintForm from "../create/CreateSiteComplaintForm/CreateSiteComplaintForm"
 import CreateSiteIllicitDischargeForm from "../create/CreateSiteIllicitDischargeForm/CreateSiteIllicitDischargeForm"
 import GetSiteLog from "../get/GetSiteLog/GetSiteLog"
-import GetViolation from "../get/GetViolation/GetViolation"
+import GetViolation from "../get/GetViolation"
 import GetComplaint from "../get/GetComplaint/GetComplaint"
-import GetIllicitDischarge from "../get/GetIllicitDischarge/GetIllicitDischarge"
-import DeleteBtn from "../../buttons/forms/DeleteBtn/DeleteBtn"
+import GetIllicitDischarge from "../get/GetIllicitDischarge"
+import DeleteBtn from "../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const Form = ({ state, setState, site }: { state: SiteContainerState, setState: Dispatch<SetStateAction<SiteContainerState>>, site: Site }) => { // Set form opened on site page
   const { activeForm } = state

@@ -1,11 +1,10 @@
 import { useQuery } from "react-query"
+import { useEnableQuery } from "@/helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
 import { getIllicitDischarges } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers"
 
 export const useGetDischarges = () => { // Get illicit discharges - no associated site
-  const { isAuthenticated, isLoading } = useValidateUser()
+  const { enabled, token } = useEnableQuery()
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
-
-  return useQuery('getIllicitDischarges', () => getIllicitDischarges(), { enabled })
+  return useQuery('getIllicitDischarges', () => getIllicitDischarges(authHeaders(token)), { enabled })
 }

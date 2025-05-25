@@ -1,9 +1,9 @@
 // Types
 import { Dispatch, SetStateAction } from 'react'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction } from 'react-router'
 import { QueryClient } from 'react-query'
 import { Site } from "../../../context/App/types"
-import { SiteContainerState } from "../../containers/SiteContainer/types"
+import { SiteContainerState } from "../../site/containers/SiteContainer/types"
 
 export interface SetSiteFormProps { // SetSiteForm props
   state: SiteContainerState

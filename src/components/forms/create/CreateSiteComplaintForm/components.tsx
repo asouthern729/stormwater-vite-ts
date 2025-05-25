@@ -8,11 +8,11 @@ import styles from '../../Forms.module.css'
 import { Concern } from "./types"
 
 // Components
-import MapContainer from "../../../map/MapContainer/MapContainer"
+import MapContainer from "../../../map/MapContainer"
 import FormLabel from "../../FormLabel/FormLabel"
 import FormError from "../../FormError/FormError"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
+import CancelBtn from "../../../form-elements/buttons/CancelBtn/CancelBtn"
+import SaveBtn from "../../../form-elements/buttons/SaveBtn/SaveBtn"
 
 export const Map = ({ visible }: { visible: boolean }) => { // Map - show if no associated site
   if(!visible) return null

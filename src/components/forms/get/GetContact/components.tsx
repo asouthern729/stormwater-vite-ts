@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useQueryClient } from "react-query"
 import { deleteContact } from "../../../../context/App/AppActions"
-import { handleDeleteBtnClick } from "../../../../helpers"
+import { handleDeleteBtnClick } from "../../../../helpers/hooks"
 
 // Types
 import { Contact } from "../../../../context/App/types"
@@ -9,7 +9,7 @@ import { GetContactState } from "./types"
 
 // Components
 import UpdateContactForm from "../../update/UpdateContactForm/UpdateContactForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const Form = ({ contact, handleCloseForm, uuid }: { contact: Contact | undefined, handleCloseForm: () => void, uuid: string }) => {
   const [state, setState] = useState<GetContactState>({ deleteBtnActive: false })

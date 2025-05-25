@@ -1,14 +1,11 @@
-import { useParams } from 'react-router-dom'
-import { useHandlePageLoad } from '../../helpers'
+import { useParams } from 'react-router'
+import { useHandlePageLoad } from '../../helpers/hooks'
 import { useGetInspector } from './hooks'
-
-// Types
-import { Inspector as InspectorType } from '../../context/App/types'
 
 // Components
 import Layout from '../../components/layout/Layout/Layout'
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
-import InspectorContainer from '../../components/containers/InspectorContainer/InspectorContainer'
+import InspectorContainer from '../../components/inspectors/containers/InspectorContainer'
 import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Inspector() {
@@ -20,13 +17,12 @@ function Inspector() {
 
   return (
     <Layout>
-      <HandleLoading
-        isSuccess={isSuccess}>
-          <ErrorBoundary>
-            <InspectorContainer 
-              sites={data?.data.sites || []}
-              inspector={data?.data.inspector as InspectorType} />
-          </ErrorBoundary>
+      <HandleLoading isSuccess={isSuccess}>
+        <ErrorBoundary>
+          <InspectorContainer 
+            sites={data?.data.sites || []}
+            inspector={data?.data.inspector} />
+        </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )

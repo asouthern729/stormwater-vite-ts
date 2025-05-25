@@ -1,21 +1,16 @@
-import { useLocation } from 'react-router-dom'
-import styles from './Layout.module.css'
-
 // Components
-import Header from '../Header/Header'
-import Footer from '../Footer/Footer'
+import Header from '../Header'
+import Footer from '../Footer'
 
 // Types
 import { ReactNode } from 'react'
 
 function Layout({ children }: { children: ReactNode }) {
-  const pathname = useLocation().pathname
-
   return (
-    <div className={styles.layout}>
+    <div className="flex flex-col w-full h-[100%] min-h-screen">
       <Header />
       <main>
-        <div className={pathname !== '/login' ? styles.container : 'mt-20'}>
+        <div className="flex flex-col m-auto w-[90%] h-full 2xl:w-[80%]">
           {children}
         </div>
       </main>

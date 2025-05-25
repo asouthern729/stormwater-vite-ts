@@ -6,7 +6,7 @@ import { LoginFormUseFormState } from "./types"
 
 // Components
 import FormError from "../../FormError/FormError"
-import LoginBtn from "../../../buttons/forms/LoginBtn/LoginBtn"
+import LoginBtn from "../../../form-elements/buttons/LoginBtn/LoginBtn"
 
 export const EmailInput = () => { // Email input
   const methods = useFormContext<LoginFormUseFormState>()

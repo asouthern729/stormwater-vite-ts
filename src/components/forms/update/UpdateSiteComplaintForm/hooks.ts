@@ -2,7 +2,7 @@ import { useCallback } from "react"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
 import { handleUpdateSiteComplaintFormSubmit } from './utils'
-import { setDateForForm, useGetSiteUUID } from "../../../../helpers"
+import { setDateForForm, useGetSiteUUID } from "../../../../helpers/hooks"
 
 // Types
 import { UseFormReturn } from "react-hook-form"

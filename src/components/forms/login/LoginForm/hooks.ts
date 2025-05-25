@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import UserContext from '../../../../context/User/UserContext'
 import { onSubmit } from './utils'

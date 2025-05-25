@@ -1,27 +1,26 @@
-import { useHandlePageLoad } from '../../helpers'
-import { useGetSites } from '../Sites/hooks'
-
-// Types
-import { Site } from '../../context/App/types'
+import { useHandlePageLoad } from '../../helpers/hooks'
+import { EnforcementProvider } from '@/components/enforcement/context'
+import { useGetViolations } from './hooks'
 
 // Components
 import Layout from '../../components/layout/Layout/Layout'
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
-import ViolationsContainer from '../../components/containers/ViolationsContainer/ViolationsContainer'
+import ViolationsContainer from '../../components/enforcement/containers/ViolationsContainer'
 import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
 
 function Violations() {
   useHandlePageLoad()
 
-  const { data, isSuccess } = useGetSites()
+  const { data, isSuccess } = useGetViolations()
 
   return (
     <Layout>
-      <HandleLoading
-        isSuccess={isSuccess}>
-          <ErrorBoundary>
-            <ViolationsContainer sites={data?.data as Site[] || []} />
-          </ErrorBoundary>
+      <HandleLoading isSuccess={isSuccess}>
+        <ErrorBoundary>
+          <EnforcementProvider>
+            <ViolationsContainer violations={data?.data || []} />
+          </EnforcementProvider>
+        </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )

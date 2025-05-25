@@ -3,21 +3,20 @@ import { useUpdateViolationForm, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
 
 // Types
-import { UpdateViolationFormProps } from "./types"
+import { ConstructionViolationInterface } from "@/context/App/types"
 
 // Components
 import CreateFollowUpForm from "../../create/CreateFollowUpForm/CreateFollowUpForm"
 import { DateInput, DetailsInput, EnforcementActionInput, SWOInputs, PenaltyInputs, Buttons } from '../../create/CreateViolationForm/components'
 import { ExistingFollowUpsInputs, ComplianceCheckbox, ClosedCheckbox } from './components'
 
-function UpdateViolationForm({ violation, handleCloseForm }: UpdateViolationFormProps) {
+function UpdateViolationForm({ violation }: { violation: ConstructionViolationInterface }) {
   const methods = useUpdateViolationForm(violation)
 
-  const handleFormSubmit = useHandleFormSubmit(handleCloseForm)
+  const handleFormSubmit = useHandleFormSubmit()
 
   return (
     <div data-testid="update-violation-form" className={styles.container}>
-
       <h2 className={styles.title}>Update Construction Violation</h2>
       
       <FormProvider { ...methods }>

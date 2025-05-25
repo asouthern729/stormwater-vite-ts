@@ -4,10 +4,10 @@ import { UseFormSetValue } from "react-hook-form"
 import { ServerResponse, Contact } from '../context/App/types'
 import { CreateSiteFormUseForm } from "../components/forms/create/CreateSiteForm/types"
 import { UpdateSiteFormUseForm } from "../components/forms/update/UpdateSiteForm/types"
-import { ComplaintsContainerState } from '../components/containers/ComplaintsContainer/types'
-import { ViolationsContainerState } from '../components/containers/ViolationsContainer/types'
-import { ContactsContainerState } from '../components/containers/ContactsContainer/types'
-import { Issue } from '../components/tables/SiteIssuesTable/types'
+import { ComplaintsContainerState } from '../components/enforcement/containers/ComplaintsContainer/types'
+import { ViolationsContainerState } from '../components/enforcement/containers/ViolationsContainer/types'
+import { ContactsContainerState } from '../components/contacts/containers/ContactsContainer/types'
+import { Issue } from '../components/site/tables/SiteIssuesTable/types'
 
 export interface UseHandleMapChangeProps { // useHandleMapChange hook props
   coordinates: { xCoordinate: number | undefined, yCoordinate: number | undefined }

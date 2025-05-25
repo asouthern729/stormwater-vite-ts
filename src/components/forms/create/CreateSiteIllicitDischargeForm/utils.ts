@@ -1,5 +1,5 @@
 import { createIllicitDischarge, createFollowUp } from "../../../../context/App/AppActions"
-import { handleSuccessfulFormSubmit } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers/hooks"
 import { getSite } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 

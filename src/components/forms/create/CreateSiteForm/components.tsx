@@ -5,11 +5,11 @@ import { handleRequiredFieldValidation } from './utils'
 import styles from '../../Forms.module.css'
 
 // Components
-import MapContainer from "../../../map/MapContainer/MapContainer"
+import MapContainer from "../../../map/MapContainer"
 import FormLabel from "../../FormLabel/FormLabel"
 import FormError from "../../FormError/FormError"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
+import SaveBtn from "../../../form-elements/buttons/SaveBtn/SaveBtn"
+import CancelBtn from "../../../form-elements/buttons/CancelBtn/CancelBtn"
 
 export const Map = () => { // Map input
 

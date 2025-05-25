@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useQueryClient } from "react-query"
-import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers"
+import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers/hooks"
 import { deleteSiteLog } from "../../../../context/App/AppActions"
 
 // Types
@@ -9,7 +9,7 @@ import { GetSiteLogState } from "./types"
 
 // Components
 import UpdateSiteLogForm from "../../update/UpdateSiteLogForm/UpdateSiteLogForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const Form = ({ siteLog, handleCloseForm, uuid }: { siteLog: SiteLog | undefined, handleCloseForm: () => void, uuid: string }) => {
   const [state, setState] = useState<GetSiteLogState>({ deleteBtnActive: false })

@@ -1,4 +1,4 @@
-import { useHandlePageLoad } from "../../helpers"
+import { useHandlePageLoad } from "../../helpers/hooks"
 import { useGetSites } from "../Sites/hooks"
 import { useGetComplaints } from './hooks'
 
@@ -8,7 +8,7 @@ import { Site, Complaint } from "../../context/App/types"
 // Components
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
-import ComplaintsContainer from "../../components/containers/ComplaintsContainer/ComplaintsContainer"
+import ComplaintsContainer from "../../components/enforcement/containers/ComplaintsContainer"
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Complaints() {

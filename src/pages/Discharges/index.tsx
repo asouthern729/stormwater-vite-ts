@@ -1,33 +1,26 @@
-import { useHandlePageLoad } from "../../helpers"
-import { useGetSites } from "../Sites/hooks"
-import { useGetDischarges } from "./hooks"
-
-// Types
-import { Site, IllicitDischarge } from "../../context/App/types"
+import { useHandlePageLoad } from "../../helpers/hooks"
+import { EnforcementProvider } from "@/components/enforcement/context"
+import { useGetDischarges } from './hooks'
 
 // Components
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
-import DischargesContainer from "../../components/containers/DischargesContainer/DischargesContainer"
+import DischargesContainer from "../../components/enforcement/containers/DischargesContainer"
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Discharges() {
   useHandlePageLoad()
 
-  const { data: sitesData, isSuccess: sitesSuccess } = useGetSites()
-  const { data: dischargesData, isSuccess: dischargesSuccess } = useGetDischarges()
-
-  const isSuccess = sitesSuccess && dischargesSuccess
+  const { data, isSuccess } = useGetDischarges()
 
   return (
     <Layout>
-      <HandleLoading
-        isSuccess={isSuccess}>
-          <ErrorBoundary>
-            <DischargesContainer 
-              sites={sitesData?.data as Site[] || []}
-              discharges={dischargesData?.data as IllicitDischarge[] || []} />
-          </ErrorBoundary>
+      <HandleLoading isSuccess={isSuccess}>
+        <ErrorBoundary>
+          <EnforcementProvider>
+            <DischargesContainer discharges={data?.data || []} />
+          </EnforcementProvider>
+        </ErrorBoundary>
       </HandleLoading>
     </Layout>
   )

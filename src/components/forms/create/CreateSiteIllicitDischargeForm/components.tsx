@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import AppContext from "../../../../context/App/AppContext"
 import { useCreateSiteIllicitDischargeFormContext } from "./hooks"
 import styles from '../../Forms.module.css'
@@ -10,9 +10,9 @@ import { StreamWatershed } from "./types"
 // Components
 import FormLabel from "../../FormLabel/FormLabel"
 import FormError from "../../FormError/FormError"
-import MapContainer from "../../../map/MapContainer/MapContainer"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
+import MapContainer from "../../../map/MapContainer"
+import SaveBtn from "../../../form-elements/buttons/SaveBtn/SaveBtn"
+import CancelBtn from "../../../form-elements/buttons/CancelBtn/CancelBtn"
 
 export const Map = ({ visible }: { visible: boolean }) => { // Map
   if(!visible) return null

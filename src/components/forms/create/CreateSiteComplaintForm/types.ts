@@ -1,5 +1,5 @@
 // Types
-import { NavigateFunction } from "react-router-dom"
+import { NavigateFunction } from "react-router"
 import { UseFormSetValue, UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { Site } from "../../../../context/App/types"
 import { UpdateSiteComplaintFormUseForm } from "../../update/UpdateSiteComplaintForm/types"

@@ -1,4 +1,4 @@
-import { handleSuccessfulFormSubmit } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers/hooks"
 import { createSiteLog } from "../../../../context/App/AppActions"
 
 // Types

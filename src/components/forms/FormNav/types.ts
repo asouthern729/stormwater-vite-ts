@@ -1,6 +1,6 @@
 // Types
 import { MouseEvent } from "react"
-import { SiteForm } from "../../containers/SiteContainer/types"
+import { SiteForm } from "../../site/containers/SiteContainer/types"
 
 export interface FormNavProps { // FormNav props
   activeForm: SiteForm

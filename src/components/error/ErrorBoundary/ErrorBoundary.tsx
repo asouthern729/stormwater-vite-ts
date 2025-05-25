@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary'
 
 // Types

@@ -1,6 +1,6 @@
 // Types
 import { Dispatch, SetStateAction } from 'react'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction } from 'react-router'
 import MapView from '@arcgis/core/views/MapView'
 import { Site } from '../../../context/App/types'
 import { MapAction } from '../../../context/Map/types'

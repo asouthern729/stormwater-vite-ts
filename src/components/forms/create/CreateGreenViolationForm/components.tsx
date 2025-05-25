@@ -7,8 +7,8 @@ import styles from '../../Forms.module.css'
 // Components
 import FormLabel from "../../FormLabel/FormLabel"
 import FormError from "../../FormError/FormError"
-import SaveBtn from "../../../buttons/forms/SaveBtn/SaveBtn"
-import CancelBtn from "../../../buttons/forms/CancelBtn/CancelBtn"
+import SaveBtn from "../../../form-elements/buttons/SaveBtn/SaveBtn"
+import CancelBtn from "../../../form-elements/buttons/CancelBtn/CancelBtn"
 
 export const DateInput = () => { // Violation date input
   const methods = useCreateGreenViolationFormContext()

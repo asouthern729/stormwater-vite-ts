@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
 import { getComplaints } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers"
+import { useValidateUser, useEnableQuery } from "../../helpers/hooks"
 
 export const useGetComplaints = () => { // Get complaints that are not associated with a site
   const { isAuthenticated, isLoading } = useValidateUser()

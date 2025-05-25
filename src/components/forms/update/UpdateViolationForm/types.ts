@@ -33,7 +33,6 @@ export interface UseUpdateViolationFormProps { // useUpdateViolationForm hook pr
 export interface HandleUpdateViolationFormSubmitProps { // handleUpdateViolationFormSubmit fn props
   formData: UpdateViolationFormUseForm
   options: {
-    handleCloseForm: () => void
     invalidateQuery: () => Promise<void>
   }
 }

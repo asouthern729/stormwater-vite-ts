@@ -1,10 +1,10 @@
 import { useQuery } from "react-query"
+import { useEnableQuery } from "@/helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
 import { getViolations } from "../../context/App/AppActions"
 
-// Types
-import { UseQueryResult } from "react-query"
-import { GetViolationsResponse } from "../../context/App/types"
+export const useGetViolations = () => { // Get construction violations
+  const { enabled, token } = useEnableQuery()
 
-export const useGetViolations = (validated: boolean): UseQueryResult<GetViolationsResponse> => { // Get construction violations
-  return useQuery('getViolations', () => getViolations(), { enabled: validated })
+  return useQuery('getViolations', () => getViolations(authHeaders(token)), { enabled })
 }

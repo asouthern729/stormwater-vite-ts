@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import AppContext from "../../../context/App/AppContext"
 import MapContext from "../../../context/Map/MapContext"
 import { setViewType } from './utils'

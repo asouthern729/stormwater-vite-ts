@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
 import { getSiteLog } from "../../../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../../../helpers"
+import { useValidateUser, useEnableQuery } from "../../../../helpers/hooks"
 
 // Types
 import { UseQueryResult } from "react-query"

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
 import { getContacts } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers"
+import { useValidateUser, useEnableQuery } from "../../helpers/hooks"
 
 // Types
 export const useGetContacts = () => { // Get contacts

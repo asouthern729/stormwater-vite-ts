@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useQueryClient } from "react-query"
-import { handleDeleteBtnClick } from "../../../../helpers"
+import { handleDeleteBtnClick } from "../../../../helpers/hooks"
 import { deleteGreenViolation } from "../../../../context/App/AppActions"
 
 // Types
@@ -9,7 +9,7 @@ import { GetGreenState } from "./types"
 
 // Components
 import UpdateGreenViolationForm from "../../update/UpdateGreenViolationForm/UpdateGreenViolationForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const Form = ({ green, handleCloseForm, uuid }: { green: GreenInfrastructure | undefined, handleCloseForm: () => void, uuid: string }) => { // Update green violation form
   const [state, setState] = useState<GetGreenState>({ deleteBtnActive: false })

@@ -1,7 +1,8 @@
 import { useCallback } from "react"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
-import { setDateForForm, useGetSiteUUID } from "../../../../helpers"
+import { useGetSiteUUID } from "../../../../helpers/hooks"
+import { setDateForForm } from "@/helpers/utils"
 import { handleUpdateViolationFormSubmit } from './utils'
 
 // Types
@@ -39,15 +40,14 @@ export const useUpdateViolationFormContext = (): UseFormReturn<UpdateViolationFo
   return methods
 }
 
-export const useHandleFormSubmit = (handleCloseForm: () => void) => { // Handle form submit
+export const useHandleFormSubmit = () => { // Handle form submit
   const queryClient = useQueryClient()
 
   const siteUUID = useGetSiteUUID()
 
   return useCallback((formData: UpdateViolationFormUseForm) => 
     handleUpdateViolationFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites'),
-      handleCloseForm
-    }), [queryClient, siteUUID, handleCloseForm]
+      invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites')
+    }), [queryClient, siteUUID]
   )
 }

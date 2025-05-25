@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { useQueryClient } from "react-query"
 import { useForm, UseFormReturn } from "react-hook-form"
-import { setDateForForm, useGetSiteUUID } from "../../../../helpers"
+import { setDateForForm, useGetSiteUUID } from "../../../../helpers/hooks"
 import { setStreamWatershed, handleUpdateSiteIllicitDischargeFormSubmit } from './utils'
 
 // Types

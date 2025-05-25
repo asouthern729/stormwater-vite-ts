@@ -1,4 +1,4 @@
-import { setDateForForm } from "../../../../helpers"
+import { setDateForForm } from "../../../../helpers/hooks"
 import styles from '../../Forms.module.css'
 
 // Types

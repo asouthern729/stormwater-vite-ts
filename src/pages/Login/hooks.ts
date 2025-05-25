@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import { useValidateUser } from "../../helpers"
+import { useValidateUser } from "../../helpers/hooks"
 
 export const useRedirectAuthenticated = () => { // Redirect authenticated users
   const { isAuthenticated, isLoading } = useValidateUser()

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useQueryClient } from "react-query"
 import { deleteFollowUp } from "../../../../context/App/AppActions"
-import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers"
+import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers/hooks"
 
 // Types
 import { FollowUp } from "../../../../context/App/types"
@@ -9,7 +9,7 @@ import { GetFollowUpState } from './types'
 
 // Components
 import UpdateFollowUpForm from "../../update/UpdateFollowUpForm/UpdateFollowUpForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const Form = ({ followUp, handleCloseForm, uuid }: { followUp: FollowUp | undefined, handleCloseForm: () => void, uuid: string }) => { // Update follow up form
   const [state, setState] = useState<GetFollowUpState>({ deleteBtnActive: false })

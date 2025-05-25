@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router"
 import AppContext from "../../../context/App/AppContext"
 
 export const useSetSitesHeaderLabel = (): string => { // Set label based on location

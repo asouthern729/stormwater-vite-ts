@@ -3,14 +3,14 @@ import { useUpdateSiteIllicitDischargeForm, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
 
 // Types
-import { UpdateSiteIllicitDischargeFormProps } from "./types"
+import { IllicitDischargeInterface } from "@/context/App/types"
 
 // Components
 import CreateFollowUpForm from "../../create/CreateFollowUpForm/CreateFollowUpForm"
 import { DateInput, DetailsInput, InspectorSelect, LocationDescriptionInput, ResponsiblePartyInput, StreamWatershedSelect, EnforcementActionInput, PenaltyInputs, Buttons } from '../../create/CreateSiteIllicitDischargeForm/components'
 import { ExistingFollowUpsInputs, ComplianceCheckbox, ClosedCheckbox } from './components'
 
-function UpdateSiteIllicitDischargeForm({ illicitDischarge, handleCloseForm }: UpdateSiteIllicitDischargeFormProps) {
+function UpdateSiteIllicitDischargeForm({ illicitDischarge }: { illicitDischarge: IllicitDischargeInterface }) {
   const methods = useUpdateSiteIllicitDischargeForm(illicitDischarge)
 
   const handleFormSubmit = useHandleFormSubmit(handleCloseForm)

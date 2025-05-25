@@ -1,11 +1,10 @@
 import { useQuery } from "react-query"
-import { getSites } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers"
+import { authHeaders } from "@/helpers/utils"
+import { getSites } from "@/context/App/AppActions"
+import { useEnableQuery } from '@helpers/hooks'
 
 export const useGetSites = () => { // Get sites
-  const { isAuthenticated, isLoading } = useValidateUser()
+  const { enabled, token } = useEnableQuery()
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
-
-  return useQuery('getSites', () => getSites(), { enabled })
+  return useQuery('getSites', () => getSites(authHeaders(token)), { enabled })
 }

@@ -1,5 +1,5 @@
 import { FormProvider } from "react-hook-form"
-import { useGetSiteUUID } from "../../../../helpers"
+import { useGetSiteUUID } from "../../../../helpers/hooks"
 import { useCreateSiteLogForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 

@@ -5,7 +5,7 @@ import styles from '../../Forms.module.css'
 import { Site } from "../../../../context/App/types"
 
 // Components
-import MapContainer from "../../../map/MapContainer/MapContainer"
+import MapContainer from "../../../map/MapContainer"
 
 export const Map = ({ site }: { site: Site }) => { // Map input
 

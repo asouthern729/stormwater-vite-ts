@@ -1,5 +1,5 @@
 import { FormProvider } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useCreateInspectorForm, useHandleFormSubmit } from './hooks'
 import styles from '../../Forms.module.css'
 

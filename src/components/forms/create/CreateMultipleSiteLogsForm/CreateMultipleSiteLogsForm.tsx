@@ -1,5 +1,5 @@
 import { FormProvider } from "react-hook-form"
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router"
 import { useCreateMultipleSiteLogsForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 

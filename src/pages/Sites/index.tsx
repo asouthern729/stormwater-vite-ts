@@ -1,25 +1,27 @@
-import { useHandlePageLoad } from "../../helpers"
+// import { useHandlePageLoad } from "../../helpers/hooks"
+import { SitesProvider } from "@/components/sites/context"
 import { useGetSites } from "./hooks"
 
 // Components
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
-import SitesContainer from "../../components/containers/SitesContainer/SitesContainer"
+import SitesContainer from "../../components/sites/containers/SitesContainer"
 import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
 
 function Sites() {
-  useHandlePageLoad()
+  // useHandlePageLoad()
 
   const { data, isSuccess } = useGetSites()
 
   return (
     <Layout>
-      <HandleLoading
-        isSuccess={isSuccess}>
-          <ErrorBoundary>
+      <HandleLoading isSuccess={isSuccess}>
+        <ErrorBoundary>
+          <SitesProvider>
             <SitesContainer sites={data?.data || []} />
-          </ErrorBoundary>
-        </HandleLoading>
+          </SitesProvider>
+        </ErrorBoundary>
+      </HandleLoading>
     </Layout>
   )
 }

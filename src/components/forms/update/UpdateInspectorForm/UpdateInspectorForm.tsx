@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useQueryClient } from 'react-query'
 import { FormProvider } from 'react-hook-form'
 import { handleUpdateInspectorFormSubmit } from './utils'

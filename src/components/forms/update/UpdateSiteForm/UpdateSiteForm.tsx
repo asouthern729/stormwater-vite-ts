@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
 import MapContext from "../../../../context/Map/MapContext"
-import { useHandleMapChange } from "../../../../helpers"
+import { useHandleMapChange } from "../../../../helpers/hooks"
 import { useUpdateSiteForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 

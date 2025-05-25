@@ -1,35 +1,23 @@
-import { useState } from "react"
-import { useQueryClient } from "react-query"
-import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../helpers"
-import { deleteViolation } from "../../../../context/App/AppActions"
+import { useHandleDeleteBtnClick } from './hooks'
 
 // Types
-import { ConstructionViolation } from "../../../../context/App/types"
-import { GetViolationState } from "./types"
+import { ConstructionViolationInterface } from "@/context/App/types"
 
 // Components
 import UpdateViolationForm from "../../update/UpdateViolationForm/UpdateViolationForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
-export const Form = ({ violation, handleCloseForm, uuid }: { violation: ConstructionViolation | undefined, handleCloseForm: () => void, uuid: string }) => { // Update violation form
-  const [state, setState] = useState<GetViolationState>({ deleteBtnActive: false })
+export const Form = ({ violation }: { violation: ConstructionViolationInterface | undefined }) => { // Update violation form
+  const { active, handleClick } = useHandleDeleteBtnClick()
 
-  const queryClient = useQueryClient()
-
-  const siteUUID = useGetSiteUUID()
+  if(!violation) return null
 
   return (
-    <>
-      {violation && (
-        <div className="flex flex-col items-center">
-          <UpdateViolationForm 
-            violation={violation}
-            handleCloseForm={handleCloseForm} />
-          <DeleteBtn
-            label={!state.deleteBtnActive ? 'Delete Violation' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid as string, state.deleteBtnActive, deleteViolation, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(siteUUID ? ['getSite', siteUUID] : 'getSites') })} />
-        </div>
-      )}
-    </>
+    <div className="flex flex-col items-center">
+      <UpdateViolationForm violation={violation} />
+      <DeleteBtn
+        label={!active ? 'Delete Violation' : 'Confirm Delete'}
+        handleClick={handleClick} />
+    </div>
   )
 }

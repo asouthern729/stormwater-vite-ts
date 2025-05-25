@@ -1,4 +1,4 @@
-import { handleSuccessfulFormSubmit } from "../../../../helpers"
+import { handleSuccessfulFormSubmit } from "../../../../helpers/hooks"
 import { updateComplaint, createFollowUp } from "../../../../context/App/AppActions"
 import { errorPopup } from "../../../../utils/Toast/Toast"
 

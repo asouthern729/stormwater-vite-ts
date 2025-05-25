@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useQueryClient } from "react-query"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { useForm, useFormContext } from "react-hook-form"
 import { handleCreateInspectorFormSubmit } from './utils'
 

@@ -1,6 +1,6 @@
 import { useQueryClient } from "react-query"
 import { useFormContext } from "react-hook-form"
-import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers"
+import { useGetSiteUUID, handleDeleteBtnClick } from "../../../../helpers/hooks"
 import { deleteFollowUp } from "../../../../context/App/AppActions"
 import styles from '../../Forms.module.css'
 
@@ -10,7 +10,7 @@ import { UpdateSiteIllicitDischargeFormUseForm } from "./types"
 
 // Components
 import UpdateFollowUpForm from "../UpdateFollowUpForm/UpdateFollowUpForm"
-import DeleteBtn from "../../../buttons/forms/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 
 export const ExistingFollowUpsInputs = ({ followUps, handleCloseForm }: { followUps: FollowUp[], handleCloseForm: () => void }) => { // Existing follow up dates inputs
   const queryClient = useQueryClient()

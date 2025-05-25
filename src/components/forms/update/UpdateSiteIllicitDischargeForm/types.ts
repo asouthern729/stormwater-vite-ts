@@ -1,12 +1,7 @@
 // Types
 import { UseFormWatch, UseFormTrigger } from "react-hook-form"
 import { StreamWatershed } from "../../create/CreateSiteIllicitDischargeForm/types"
-import { IllicitDischarge } from "../../../../context/App/types"
-
-export interface UpdateSiteIllicitDischargeFormProps { // UpdateSiteIllicitDischargeForm props
-  illicitDischarge: IllicitDischarge
-  handleCloseForm: () => void
-}
+import { IllicitDischargeInterface } from "../../../../context/App/types"
 
 export interface UpdateSiteIllicitDischargeFormUseForm { // UpdateSiteIllicitDischargeForm useForm state
   readonly illicitId: string
