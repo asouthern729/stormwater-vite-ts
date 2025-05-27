@@ -1,6 +1,6 @@
 // Components
 import Layout from "../../components/layout/Layout/Layout"
-import Error from "../../components/error/Error/Error"
+import Error from "../../components/layout/error/Error/Error"
 
 // Types
 import { ErrorHandlerProps } from "./types"

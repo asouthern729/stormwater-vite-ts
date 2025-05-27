@@ -1,5 +1,5 @@
 // Components
-import Search from "../../search/Search/Search"
+import Search from "../../search/Search"
 
 export const MapSearch = ({ visible }: { visible: boolean }) => { // Map search component - for Sites and Inspectors pages
   if(!visible) return null

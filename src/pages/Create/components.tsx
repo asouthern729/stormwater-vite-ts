@@ -2,12 +2,12 @@
 import { CreateForm } from "./types"
 
 // Components
-import GetSite from "../../components/forms/get/GetSite/GetSite"
-import FormContainer from "../../components/forms/FormContainer/FormContainer"
-import CreateInspectorForm from "../../components/forms/create/CreateInspectorForm/CreateInspectorForm"
-import CreateContactForm from "../../components/forms/create/CreateContactForm/CreateContactForm"
+import GetSite from "../../components/site/forms/get/GetSite/GetSite"
+import FormContainer from "../../components/form-elements/FormContainer"
+import CreateInspectorForm from "../../components/inspectors/forms/create/CreateInspectorForm/CreateInspectorForm"
+import CreateContactForm from "../../components/contacts/forms/create/CreateContactForm/CreateContactForm"
 import CreateGreenViolationForm from "../../components/forms/create/CreateGreenViolationForm/CreateGreenViolationForm"
-import CreateSiteForm from "../../components/forms/create/CreateSiteForm/CreateSiteForm"
+import CreateSiteForm from "../../components/site/forms/create/CreateSiteForm/CreateSiteForm"
 
 export const Form = ({ form }: { form: CreateForm }) => { // Create form
   let element

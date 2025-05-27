@@ -1,6 +1,6 @@
 // Types
 import { Dispatch } from "react"
-import { StreamWatershed } from "../../components/forms/create/CreateSiteIllicitDischargeForm/types"
+import { StreamWatershed } from "../../components/enforcement/forms/create/CreateSiteIllicitDischargeForm/types"
 
 export interface SiteInterface extends BaseInterface {
   siteId: string
@@ -119,6 +119,7 @@ export interface ComplaintInterface extends BaseInterface {
   closed: boolean | null
   Inspector?: InspectorInterface
   FollowUpDates?: FollowUpInterface[]
+  Site?: SiteInterface
 }
 
 export interface ComplaintCreateInterface extends Omit<ComplaintInterface, 'complaintId' | 'Inspector' | 'FollowUpDates' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{

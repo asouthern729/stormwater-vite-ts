@@ -8,7 +8,7 @@ import { useHandleNavBtns, useHandleTableRowClick } from './hooks'
 import { ConstructionViolationInterface } from "@/context/App/types"
 
 // Components
-import FormContainer from "../../../forms/FormContainer/FormContainer"
+import FormContainer from "../../../form-elements/FormContainer"
 import CreateLink from "../../../layout/nav/buttons/CreateLink"
 import PrevPageBtn from "@/components/layout/nav/buttons/PrevPageBtn/PrevPageBtn"
 import NextPageBtn from "@/components/layout/nav/buttons/NextPageBtn/NextPageBtn"
@@ -22,7 +22,7 @@ export const UpdateForm = (props: FormProps) => { // Update form
 
   return (
     <div ref={props.formRef}>
-      <FormContainer key={`violation-${ formUUID }`}>
+      <FormContainer>
         {props.children}
       </FormContainer>
     </div>

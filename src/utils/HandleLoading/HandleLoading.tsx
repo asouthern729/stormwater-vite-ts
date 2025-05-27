@@ -2,7 +2,7 @@
 import { HandleLoadingProps } from './types'
 
 // Components
-import Loading from '../../components/loading/Loading/Loading'
+import Loading from '../../components/layout/loading/Loading/Loading'
 
 function HandleLoading({ children, isSuccess }: HandleLoadingProps) {
   return (

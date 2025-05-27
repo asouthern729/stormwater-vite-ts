@@ -2,8 +2,8 @@
 import { Dispatch, SetStateAction, RefObject } from 'react'
 import { UseFormSetValue } from "react-hook-form"
 import { ServerResponse, Contact } from '../context/App/types'
-import { CreateSiteFormUseForm } from "../components/forms/create/CreateSiteForm/types"
-import { UpdateSiteFormUseForm } from "../components/forms/update/UpdateSiteForm/types"
+import { CreateSiteFormUseForm } from "../components/site/forms/create/CreateSiteForm/types"
+import { UpdateSiteFormUseForm } from "../components/site/forms/update/UpdateSiteForm/types"
 import { ComplaintsContainerState } from '../components/enforcement/containers/ComplaintsContainer/types'
 import { ViolationsContainerState } from '../components/enforcement/containers/ViolationsContainer/types'
 import { ContactsContainerState } from '../components/contacts/containers/ContactsContainer/types'

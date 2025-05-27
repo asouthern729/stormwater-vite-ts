@@ -44,7 +44,7 @@ const TableHeaders = () => {
   )
 }
 
-const TableBody = ({ tableData }: { tableData: IllicitDischargesTableDataType[] }) => { // Sites issues table body
+const TableBody = ({ tableData }: { tableData: IllicitDischargesTableDataType[] }) => { // Illicit discharges table body
   
   return (
     <>

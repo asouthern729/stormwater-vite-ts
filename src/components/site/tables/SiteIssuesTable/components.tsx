@@ -8,7 +8,7 @@ import { SiteForm } from "../../containers/SiteContainer/types"
 import { Issue, SiteIssuesTableState } from "./types"
 
 // Components
-import ShowAllBtn from '../../../filters/buttons/ShowAllBtn/ShowAllBtn'
+import ShowAllBtn from '../../../enforcement/filters/buttons/ShowAllBtn/ShowAllBtn'
 
 export const TableBody = ({ issues, handleRowClick }: { issues: Issue[], handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void }) => { // Site issues table body
 

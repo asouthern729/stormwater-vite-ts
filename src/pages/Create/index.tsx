@@ -6,7 +6,7 @@ import { CreateForm } from './types'
 
 // Components
 import Layout from "../../components/layout/Layout/Layout"
-import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 import { Form } from './components'
 
 function Create() {

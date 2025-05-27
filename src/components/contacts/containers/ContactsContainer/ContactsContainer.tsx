@@ -8,7 +8,7 @@ import styles from './ContactsContainer.module.css'
 import { ContactsContainerProps, ContactsContainerState } from './types'
 
 // Components
-import Search from '../../../search/Search/Search'
+import Search from '../../../search/Search'
 import ContactsTable from '../../tables/ContactsTable/ContactsTable'
 import { Form, CreateBtn } from './components'
 

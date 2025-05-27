@@ -6,7 +6,7 @@ import { SiteInterface } from "../../../../context/App/types"
 import { SiteContainerState } from "./types"
 
 // Components
-import SetSiteForm from "../../../forms/SetSiteForm/SetSiteForm"
+import SetSiteForm from "../../forms/SetSiteForm/SetSiteForm"
 import BackToHomeBtn from "../../../layout/nav/buttons/BackToHomeBtn/BackToHomeBtn"
 import UpdateBtn from "../../../form-elements/buttons/UpdateBtn/UpdateBtn"
 

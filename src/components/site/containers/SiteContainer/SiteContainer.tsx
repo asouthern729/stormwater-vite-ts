@@ -4,7 +4,6 @@ import { useScrollToFormRef, useSetIssuesObj, handleSiteIssuesTableRowClick } fr
 import styles from './SiteContainer.module.css'
 
 // Types
-import { MbscCalendarEvent } from '@mobiscroll/react'
 import { SiteContainerProps, SiteContainerState } from "./types"
 
 // Components
@@ -13,9 +12,9 @@ import MapContainer from "../../../map/MapContainer"
 import SiteDetails from '../../SiteDetails/SiteDetails'
 import SitesActivityCalendar from '../../../sites/calendar/SitesActivityCalendar'
 import SiteViolationsBtn from '../../../enforcement/indicators/SiteViolationsIndicator'
-import SiteComplaintsBtn from '../../../enforcement/indicators/SiteComplaintsIndicator/SiteComplaintsIndicator'
+import SiteComplaintsBtn from '../../../enforcement/indicators/Complaints/ComplaintsIndicator'
 import SiteIllicitDischargeBtn from '../../../enforcement/indicators/llicitDischargesIndicator'
-import DateRangeFilter from '../../../filters/DateRangeFilter'
+import DateRangeFilter from '../../../enforcement/filters/DateRangeFilter'
 import SiteIssuesTable from '../../tables/SiteIssuesTable/SiteIssuesTable'
 import SiteContactsTable from '../../../contacts/tables/SiteContactsTable/SiteContactsTable'
 import { Form, Buttons } from './components'

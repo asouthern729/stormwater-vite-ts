@@ -1,38 +1,84 @@
-import { useReturnUserRoles } from '@/helpers/hooks'
+import { Link } from "react-router"
+import { useHandleTableRowClick } from "../ViolationsContainer/hooks"
 
 // Types
-import { RefObject, Dispatch, SetStateAction } from "react"
-import { ComplaintsContainerState } from "./types"
+import { ComplaintInterface } from "@/context/App/types"
 
 // Components
-import FormContainer from "../../../forms/FormContainer/FormContainer"
-import GetComplaint from "../../../forms/get/GetComplaint/GetComplaint"
-import CreateLink from "../../../layout/nav/buttons/CreateLink"
+import { ShowClosedCheckbox, PageNavBtns, CivilPenalty, Status } from "../ViolationsContainer/components"
 
-export const Form = ({ formUUID, formRef, setState }: { formUUID: string | undefined, formRef: RefObject<HTMLDivElement>, setState: Dispatch<SetStateAction<ComplaintsContainerState>> }) => { // Complaint form
-  if(!formUUID) return null
+export type ComplaintsTableDataType = ComplaintInterface & { siteUUID?: string, siteName?: string, primaryPermitee?: string }
+
+export const ComplaintsTable = ({ tableData }: { tableData: ComplaintsTableDataType[] }) => {
 
   return (
-    <div ref={formRef}>
-      <FormContainer key={`complaint-${ formUUID }`}>
-        <GetComplaint
-          uuid={formUUID}
-          handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-      </FormContainer>
-    </div>
+      <div className="flex flex-col gap-6 items-center w-full">
+  
+        <div className="flex justify-between items-end w-full">
+          <ShowClosedCheckbox />
+          <PageNavBtns />
+        </div>    
+  
+        <table className="table table-sm text-neutral-content">
+          <TableHeaders />
+          <TableBody tableData={tableData} />
+        </table>
+        
+      </div>
+    )
+}
+
+const TableHeaders = () => {
+
+  return (
+    <thead>
+      <tr className="text-warning font-[play]">
+        <th>Date</th>
+        <th>Site / Location</th>
+        <th>Primary Permitee / Responsible Party</th>
+        <th className="text-center">Concern</th>
+        <th className="text-center">Status</th>
+      </tr>
+    </thead>
   )
 }
 
-export const CreateBtn = () => {
-  const roles = useReturnUserRoles()
+const TableBody = ({ tableData }: { tableData: ComplaintsTableDataType[] }) => { // Complaints table body
+  
+  return (
+    <>
+      {tableData.map(complaint => {
+        if(complaint) return (
+          <TableRow
+            key={`complaints-table-row-${ complaint.uuid }`}
+            complaint={complaint} />
+        )
+      })}
+    </>
+  )
+}
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+const TableRow = ({ complaint }: { complaint: ComplaintsTableDataType }) => {
+  const handleTableRowClick = useHandleTableRowClick(complaint.uuid)
+  
+  return (
+    <tr title={complaint.details} onClick={handleTableRowClick}>
+      <td>{complaint.date}</td>
+      <td className={"whitespace-nowrap hover:text-warning"}>
+        <LocationTableData complaint={complaint} />
+      </td>
+      <td>{complaint?.primaryPermitee || complaint.responsibleParty}</td>
+      <Status closed={complaint.closed} />
+    </tr>
+  )
+}
+
+const LocationTableData = ({ complaint }: { complaint: ComplaintsTableDataType }) => {
+  if(complaint.siteId) {
+    return <Link to={`/site/${ complaint?.siteUUID }`}>{complaint?.siteName}</Link>
+  }
 
   return (
-    <div className="absolute top-5 right-6">
-      <CreateLink href={'/create?formType=createComplaint'}>
-        Create New Complaint
-      </CreateLink>
-    </div>
+    <span>{complaint.locationDescription}</span>
   )
 }

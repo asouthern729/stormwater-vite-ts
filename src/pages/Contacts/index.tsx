@@ -8,7 +8,7 @@ import { Contact } from '../../context/App/types'
 import Layout from '../../components/layout/Layout/Layout'
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
 import ContactsContainer from '../../components/contacts/containers/ContactsContainer/ContactsContainer'
-import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 
 function Contacts() {
   useHandlePageLoad()

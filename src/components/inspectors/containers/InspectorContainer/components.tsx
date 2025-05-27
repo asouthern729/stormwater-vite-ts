@@ -10,8 +10,8 @@ import { InspectorContainerState } from "./types"
 // Components
 import SitesActivityCalendar from "../../../sites/calendar/SitesActivityCalendar"
 import InspectorTable from "../../tables/InspectorTable/InspectorTable"
-import FormContainer from "../../../forms/FormContainer/FormContainer"
-import UpdateInspectorForm from "../../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
+import FormContainer from "../../../form-elements/FormContainer"
+import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
 import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
 import UpdateBtn from "../../../form-elements/buttons/UpdateBtn/UpdateBtn"
 

@@ -8,7 +8,7 @@ import { Site as SiteType } from "../../context/App/types"
 import Layout from "../../components/layout/Layout/Layout"
 import HandleLoading from "../../utils/HandleLoading/HandleLoading"
 import SiteContainer from "../../components/site/containers/SiteContainer/SiteContainer"
-import ErrorBoundary from "../../components/error/ErrorBoundary/ErrorBoundary"
+import ErrorBoundary from "../../components/layout/error/ErrorBoundary/ErrorBoundary"
 
 function Site() {
   useHandlePageLoad()

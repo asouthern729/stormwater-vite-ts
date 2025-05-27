@@ -6,7 +6,7 @@ import { useGetViolations } from './hooks'
 import Layout from '../../components/layout/Layout/Layout'
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
 import ViolationsContainer from '../../components/enforcement/containers/ViolationsContainer'
-import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 
 function Violations() {
   useHandlePageLoad()

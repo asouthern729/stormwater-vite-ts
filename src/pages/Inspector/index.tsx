@@ -6,7 +6,7 @@ import { useGetInspector } from './hooks'
 import Layout from '../../components/layout/Layout/Layout'
 import HandleLoading from '../../utils/HandleLoading/HandleLoading'
 import InspectorContainer from '../../components/inspectors/containers/InspectorContainer'
-import ErrorBoundary from '../../components/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 
 function Inspector() {
   useHandlePageLoad()

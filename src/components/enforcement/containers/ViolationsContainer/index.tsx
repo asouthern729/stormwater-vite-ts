@@ -8,8 +8,8 @@ import { ConstructionViolationInterface } from '@/context/App/types'
 
 // Components
 import SiteViolationsIndicator from '../../indicators/SiteViolationsIndicator'
-import DateRangeFilter from '../../../filters/DateRangeFilter'
-import GetViolation from '@/components/forms/get/GetViolation'
+import DateRangeFilter from '../../filters/DateRangeFilter'
+import GetViolation from '@/components/enforcement/forms/get/GetViolation'
 import * as Components from './components'
 
 function ViolationsContainer({ violations }: { violations: ConstructionViolationInterface[] }) {
@@ -28,6 +28,7 @@ function ViolationsContainer({ violations }: { violations: ConstructionViolation
         <h2 className={styles.header}>Construction Violations</h2>
 
         <div className="m-auto">
+          <SiteViolationsIndicator violations={violations} />
         </div>
 
         <div className="flex flex-col gap-3">

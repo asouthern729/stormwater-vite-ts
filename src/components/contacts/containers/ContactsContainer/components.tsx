@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction, RefObject } from "react"
 import { ContactsContainerState } from "./types"
 
 // Components
-import FormContainer from "../../../forms/FormContainer/FormContainer"
-import GetContact from "../../../forms/get/GetContact/GetContact"
+import FormContainer from "../../../form-elements/FormContainer"
+import GetContact from "../../forms/get/GetContact/GetContact"
 import CreateLink from "../../../layout/nav/buttons/CreateLink"
 
 export const Form = ({ formUUID, formRef, setState }: { formUUID: string | undefined, setState: Dispatch<SetStateAction<ContactsContainerState>>, formRef: RefObject<HTMLDivElement> }) => { // Update contact form

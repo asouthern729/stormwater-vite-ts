@@ -8,9 +8,9 @@ import { IllicitDischargeInterface } from '@/context/App/types'
 
 // Components
 import IllicitDischargesIndicator from "../../indicators/llicitDischargesIndicator"
-import DateRangeFilter from "../../../filters/DateRangeFilter"
+import DateRangeFilter from "../../filters/DateRangeFilter"
 import { CreateBtn, UpdateForm } from '../ViolationsContainer/components'
-import GetIllicitDischarge from '@/components/forms/get/GetIllicitDischarge'
+import GetIllicitDischarge from '@/components/enforcement/forms/get/GetIllicitDischarge'
 import * as Components from './components'
 
 function DischargesContainer({ discharges }: { discharges: IllicitDischargeInterface[] }) {

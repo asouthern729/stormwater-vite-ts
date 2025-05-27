@@ -9,8 +9,8 @@ import { InspectorTableData } from "./types"
 
 // Components
 import CreateSiteLogBtn from "../../../form-elements/buttons/CreateSiteLogBtn/CreateSiteLogBtn"
-import FormContainer from "../../../forms/FormContainer/FormContainer"
-import CreateMultipleSiteLogsForm from "../../../forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
+import FormContainer from "../../../form-elements/FormContainer"
+import CreateMultipleSiteLogsForm from "../../../site/forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
 
 export const TableHeaders = () => {
   const { user } = useContext(UserContext)
