@@ -4,19 +4,17 @@ import { useForm } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
 import { useEnableQuery } from "@/helpers/hooks"
 import { errorPopup } from "@/utils/Toast/Toast"
-import { handleUpdateViolation } from './utils'
+import { handleUpdateComplaint } from './utils'
 
 // Types
-import { ConstructionViolationInterface, ConstructionViolationCreateInterface } from "@/context/App/types"
+import { ComplaintInterface, ComplaintCreateInterface } from "@/context/App/types"
 
-export const useUpdateViolationForm = (violation: ConstructionViolationInterface) => { // UpdateViolationForm useForm
+export const useUpdateComplaintForm = (complaint: ComplaintInterface) => {
 
-  return useForm<ConstructionViolationCreateInterface>({
-    mode: 'onBlur',
+  return useForm<ComplaintCreateInterface>({
     defaultValues: {
-      ...violation,
-      FollowUpDates: violation.FollowUpDates,
-      uuid: violation.uuid
+      ...complaint,
+      FollowUpDates: complaint.FollowUpDates
     }
   })
 }
@@ -28,14 +26,14 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
-  return useCallback((formData: ConstructionViolationCreateInterface) => {
+  return useCallback((formData: ComplaintCreateInterface) => {
     if(!enabled || !token) {
       return
     }
 
-    handleUpdateViolation(formData, token)
+    handleUpdateComplaint(formData, token)
       .then(_ => {
-        queryClient.invalidateQueries('getViolations')
+        queryClient.invalidateQueries('getComplaints')
         dispatch({ type: 'SET_FORM_UUID', payload: '' })
       })
       .catch(err => errorPopup(err))

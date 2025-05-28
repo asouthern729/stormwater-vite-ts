@@ -168,6 +168,16 @@ export const getFollowUp = async (uuid: string, headers: Headers): Promise<Types
   return await res.json()
 }
 
+// Update follow up date
+// PUT /api/v2/stormwater/followup
+export const updateFollowUp = async (formData: Types.FollowUpCreateInterface, headers: Headers) => {
+  headers.append('Content-Type', 'application/json')
+
+  const res = await fetch(`${ baseUrl }/followup/${ formData.uuid }`, { headers })
+
+  return await res.json()
+}
+
 // Delete follow up date
 // DELETE /api/v2/eng/stormwater/followup?parentId=parentId&followUpDate=followUpDate
 export const deleteFollowUp = async (uuid: string, headers: Headers): Promise<Types.ServerResponse> => {

@@ -4,19 +4,17 @@ import { useForm } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
 import { useEnableQuery } from "@/helpers/hooks"
 import { errorPopup } from "@/utils/Toast/Toast"
-import { handleUpdateViolation } from './utils'
+import { handleUpdateIllicitDischarge } from './utils'
 
 // Types
-import { ConstructionViolationInterface, ConstructionViolationCreateInterface } from "@/context/App/types"
+import { IllicitDischargeInterface, IllicitDischargeCreateInterface } from "@/context/App/types"
 
-export const useUpdateViolationForm = (violation: ConstructionViolationInterface) => { // UpdateViolationForm useForm
-
-  return useForm<ConstructionViolationCreateInterface>({
+export const useUpdateIllicitDischargeForm = (illicitDischarge: IllicitDischargeInterface) => { 
+  return useForm<IllicitDischargeCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
-      ...violation,
-      FollowUpDates: violation.FollowUpDates,
-      uuid: violation.uuid
+      ...illicitDischarge,
+      otherStreamWatershed: illicitDischarge.streamWatershed === 'Other' ? illicitDischarge.streamWatershed : ''
     }
   })
 }
@@ -28,14 +26,14 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
-  return useCallback((formData: ConstructionViolationCreateInterface) => {
+  return useCallback((formData: IllicitDischargeCreateInterface) => {
     if(!enabled || !token) {
       return
     }
 
-    handleUpdateViolation(formData, token)
+    handleUpdateIllicitDischarge(formData, token)
       .then(_ => {
-        queryClient.invalidateQueries('getViolations')
+        queryClient.invalidateQueries('getIllicitDischarges')
         dispatch({ type: 'SET_FORM_UUID', payload: '' })
       })
       .catch(err => errorPopup(err))

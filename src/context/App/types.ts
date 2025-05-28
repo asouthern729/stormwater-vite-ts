@@ -1,6 +1,7 @@
 // Types
 import { Dispatch } from "react"
-import { StreamWatershed } from "../../components/enforcement/forms/create/CreateSiteIllicitDischargeForm/types"
+import { StreamWatershedEnum } from "@/components/enforcement/forms/create/CreateIllicitDischargeForm/types"
+import { ConcernEnum } from "@/components/enforcement/forms/create/CreateComplaintForm/types"
 
 export interface SiteInterface extends BaseInterface {
   siteId: string
@@ -94,6 +95,7 @@ export interface ConstructionViolationInterface extends BaseInterface {
 }
 
 export interface ConstructionViolationCreateInterface extends Omit<ConstructionViolationInterface, 'violationId' | 'FollowUpDates' | 'Site' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  readonly violationId: string
   FollowUpDates: FollowUpCreateInterface[]
   uuid?: string
 }
@@ -110,7 +112,7 @@ export interface ComplaintInterface extends BaseInterface {
   xCoordinate: number | null
   yCoordinate: number | null
   locationDescription: string | null
-  concern: ConcernType
+  concern: ConcernEnum
   otherConcern: string | null
   details: string
   responsibleParty: string | null
@@ -123,6 +125,7 @@ export interface ComplaintInterface extends BaseInterface {
 }
 
 export interface ComplaintCreateInterface extends Omit<ComplaintInterface, 'complaintId' | 'Inspector' | 'FollowUpDates' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  readonly complaintId: string
   FollowUpDates: FollowUpCreateInterface[]
   uuid?: string
 }
@@ -139,20 +142,21 @@ export interface IllicitDischargeInterface extends BaseInterface {
   details: string
   responsibleParty: string | null
   volumeLost: string | null
-  streamWatershed: StreamWatershed
+  streamWatershed: StreamWatershedEnum
   otherStreamWatershed: string
   enforcementAction: string | null
   penaltyDate: string | null
   penaltyAmount: number | null
   penaltyDueDate: string | null
   paymentReceived: string | null
-  compliance: boolean
-  closed: boolean
+  compliance: boolean | null
+  closed: boolean | null
   FollowUpDates?: FollowUpInterface[]
   Site?: SiteInterface
 }
 
 export interface IllicitDischargeCreateInterface extends Omit<IllicitDischargeInterface, 'illicitId' | 'FollowUpDates' | 'Site' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  readonly illicitId: string
   FollowUpDates: FollowUpCreateInterface[]
   uuid?: string
 }
@@ -160,11 +164,17 @@ export interface IllicitDischargeCreateInterface extends Omit<IllicitDischargeIn
 export interface FollowUpInterface extends BaseInterface {
   followUpId: string
   violationId: string | null
+  complaintId: string | null
   illicitId: string | null
   followUpDate: string
 }
 
-export interface FollowUpCreateInterface extends Omit<FollowUpInterface, 'followUpId' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{}
+export interface FollowUpCreateInterface extends Omit<FollowUpInterface, 'followUpId' | 'violationId' | 'complaintId' | 'illicitId' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  violationId?: string | null
+  complaintId?: string | null
+  illicitId?: string | null
+  uuid?: string
+}
 
 export interface ContactInterface extends BaseInterface {
   contactId: string
@@ -244,19 +254,3 @@ export type PageType =
   | "Create"
   | "Login"
   | "Site"
-
-type ConcernType =
-  | "Assistance Request"
-  | "Buffer"
-  | "Draining"
-  | "Dumping"
-  | "Erosion / Sediment / Construction"
-  | "Fish Kill / Spill"
-  | "Flooding / Draining"
-  | "Garbage / Debris"
-  | "Illicit Discharge / Spill"
-  | "Leak"
-  | "Mosquitoes"
-  | "Post-construction Stormwater / PTP"
-  | "Water Line Break"
-  | "Other"

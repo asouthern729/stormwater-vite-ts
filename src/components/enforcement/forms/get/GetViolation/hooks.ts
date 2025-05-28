@@ -7,10 +7,12 @@ import { authHeaders } from "@/helpers/utils"
 import { deleteViolation } from "@/context/App/AppActions"
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
-export const useGetViolation = (uuid: string | undefined) => { // Get construction violation
+export const useGetViolation = () => { // Get construction violation
+  const { formUUID } = useContext(EnforcementCtx)
+
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getViolation', uuid], () => getViolation(uuid as string, authHeaders(token)), { enabled: enabled && !!uuid })
+  return useQuery(['getViolation', formUUID], () => getViolation(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {

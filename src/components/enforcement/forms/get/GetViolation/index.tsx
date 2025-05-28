@@ -1,17 +1,16 @@
 import { useGetViolation } from './hooks'
 
 // Components
+import HandleLoading from '@/utils/HandleLoading/HandleLoading'
 import { Form } from './components'
-import { useContext } from 'react'
-import EnforcementCtx from '@/components/enforcement/context'
 
 function GetViolation() {
-  const { formUUID } = useContext(EnforcementCtx)
-
-  const { data } = useGetViolation(formUUID)
+  const { data, isSuccess } = useGetViolation()
 
   return (
-    <Form violation={data?.data} />
+    <HandleLoading isSuccess={isSuccess}>
+      <Form violation={data?.data} />
+    </HandleLoading>
   )
 }
 

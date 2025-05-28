@@ -1,91 +1,129 @@
-import { useNavigate } from 'react-router'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 import { useCreateViolationFormContext } from './hooks'
-import { handleRequiredFieldValidation } from './utils'
 import styles from '../../Forms.module.css'
 
+
 // Components
-import FormLabel from "../../../../form-elements/FormLabel/FormLabel"
-import FormError from "../../../../form-elements/FormError"
-import SaveBtn from "../../../../form-elements/buttons/SaveBtn/SaveBtn"
-import CancelBtn from "../../../../form-elements/buttons/CancelBtn/CancelBtn"
+import FormLabel from '@/components/form-elements/FormLabel/FormLabel'
+import FormError from '@/components/form-elements/FormError'
+import CreateFollowUpForm from '../CreateFollowUpForm'
+import { ComplaintCreateInterface, ConstructionViolationCreateInterface, IllicitDischargeCreateInterface } from '@/context/App/types'
 
 export const DateInput = () => { // Violation date input
-  const methods = useCreateViolationFormContext()
+  const { register, formState: { errors } } = useCreateViolationFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Violation Date:'}
           name={'date'}
-          required={true} />
+          required={true}>
+            Violation Date:
+        </FormLabel>
         <input 
           type="date"
           className={styles.input}
-          { ...methods.register('date', {
+          { ...register('date', {
             required: 'Violation date is required',
-            onBlur: () => handleRequiredFieldValidation('date', { watch: methods.watch, trigger: methods.trigger })
           }) } />
       </div>
-      <FormError field={'date'} />
+      <FormError error={errors?.date?.message} />
     </div>
   )
 }
 
 export const DetailsInput = () => { // Details input
-  const methods = useCreateViolationFormContext()
+  const { register, formState: { errors } } = useCreateViolationFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Details:'}
           name={'details'}
-          required={true} />
+          required={true}>
+            Details:
+        </FormLabel>
         <textarea
           className={styles.input}
           rows={4}
-          { ...methods.register('details', {
+          { ...register('details', {
           required: 'Violation details is required',
           maxLength: {
             value: 2000,
             message: 'Violation details must be 2000 characters or less'
           },
-          onBlur: () => handleRequiredFieldValidation('details', { watch: methods.watch, trigger: methods.trigger }),
-          onChange: () => methods.trigger('details')
         }) } />
       </div>
-      <FormError field={'details'} />
+      <FormError error={errors?.details?.message} />
     </div>
   )
 }
 
-export const EnforcementActionInput = () => { // Enforcement action input
-  const methods = useCreateViolationFormContext()
+export const EnforcementInputs = () => {
+
+  return (
+    <div className="flex flex-col gap-3 py-10 w-full">
+      <h3 className={styles.subtitle}>Enforcement</h3>
+
+      <EnforcementActionInput />
+      <SWOInputs />
+    </div>
+  )
+}
+
+export const PenaltyInputs = () => { // Penalty inputs
+
+  return (
+    <div className="flex flex-col gap-3 w-full">
+      <h3 className={styles.subtitle}>Penalty</h3>
+
+      <div className="flex gap-3 w-full flex-wrap">
+        <PenaltyDateInput />
+        <PenaltyAmountInput />
+        <PenaltyDueDate />
+        <PaymentReceivedDateInput />
+      </div>
+    </div>
+  )
+}
+
+export const FollowUpInputs = () => {
+
+  return (
+    <div className="flex flex-col gap-3 py-10 w-full">
+      <h3 className={styles.subtitle}>Follow Up</h3>
+
+      <FollowUps />
+      <AddFollowUpBtn />
+    </div>
+  )
+}
+
+const EnforcementActionInput = () => { // Enforcement action input
+  const { register, formState: { errors } } = useCreateViolationFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Action:'}
-          name={'enforcementAction'} />
+        <FormLabel name={'enforcementAction'}>
+          Action:
+        </FormLabel>
         <textarea
           className={styles.input}
           rows={4}
-          { ...methods.register('enforcementAction', {
+          { ...register('enforcementAction', {
             maxLength: {
               value: 2000,
               message: 'Enforcement action must be 2000 characters or less'
-            },
-            onChange: () => methods.trigger('enforcementAction')
+            }
           }) } />
       </div>
-      <FormError field={'enforcementAction'} />
+      <FormError error={errors?.enforcementAction?.message} />
     </div>
   )
 }
 
-export const SWOInputs = () => { // SWO inputs
+const SWOInputs = () => { // SWO inputs
 
   return (
     <div className="flex gap-3 w-full">
@@ -95,116 +133,89 @@ export const SWOInputs = () => { // SWO inputs
   )
 }
 
-export const PenaltyInputs = () => { // Penalty inputs
-
-  return (
-    <div className="flex gap-3 w-full flex-wrap">
-      <PenaltyDateInput />
-      <PenaltyAmountInput />
-      <PenaltyDueDate />
-      <PaymentReceivedDateInput />
-    </div>
-  )
-}
-
-export const Buttons = ({ handleCloseForm }: { handleCloseForm: (() => void) | undefined }) => { // Form buttons
-  const methods = useCreateViolationFormContext()
-
-  const navigate = useNavigate()
-
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting
-
-  return (
-    <div className={styles.buttonsContainer}>
-      <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={handleCloseForm ? handleCloseForm : () => navigate('/')} />
-    </div>
-  )
-}
-
 const SWODateInput = () => { // SWO date
-  const methods = useCreateViolationFormContext()
+  const { register } = useCreateViolationFormContext()
 
   return (
     <div className="flex-1 flex w-full">
-      <FormLabel
-        label={'SWO Date:'}
-        name={'swoDate'} />
+      <FormLabel name={'swoDate'}>
+        SWO Date:
+      </FormLabel>
       <input
         type="date"
         className={styles.input}
-        { ...methods.register('swoDate') } />
+        { ...register('swoDate') } />
     </div>
   )
 }
 
 const SWOLiftedDate = () => { // SWO lifted date
-  const methods = useCreateViolationFormContext()
+  const { register, watch } = useCreateViolationFormContext()
 
-  const visible = !!methods.watch('swoDate')
+  const visible = !!watch('swoDate')
 
   if(!visible) return null
 
   return (
     <div className="flex-1 flex w-full">
-      <FormLabel
-        label={'SWO Lifted Date:'}
-        name={'swoLiftedDate'} />
+      <FormLabel name={'swoLiftedDate'}>
+        SWO Lifted Date:
+      </FormLabel>
       <input
         type="date"
         className={styles.input}
-        { ...methods.register('swoLiftedDate') } />
+        { ...register('swoLiftedDate') } />
     </div>
   )
 }
 
 const PenaltyDateInput = () => { // Penalty date input
-  const methods = useCreateViolationFormContext()
+  const { register } = useCreateViolationFormContext()
 
   return (
     <div className="flex-2 flex w-full">
-      <FormLabel
-        label={'Date:'}
-        name={'penaltyDate'} />
+      <FormLabel name={'penaltyDate'}>
+        Date:
+      </FormLabel>
       <input
         type="date"
         className={styles.input}
-        { ...methods.register('penaltyDate') } />
+        { ...register('penaltyDate') } />
     </div>
   )
 }
 
 const PenaltyAmountInput = () => { // Penalty amount input
-  const methods = useCreateViolationFormContext()
+  const { watch, register, formState: { errors } } = useCreateViolationFormContext()
 
-  const visible = !!methods.watch('penaltyDate')
+  const visible = !!watch('penaltyDate')
 
   if(!visible) return null
 
   return (
     <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
-        <FormLabel
-          label={'Amount:'}
+        <FormLabel 
           name={'penaltyAmount'}
-          required={true} />
+          required={true}>
+            Amount:
+        </FormLabel>
         <input
           type="number"
           className={styles.input}
-          { ...methods.register('penaltyAmount', {
+          { ...register('penaltyAmount', {
             required: 'Penalty amount is required',
-            onBlur: () => handleRequiredFieldValidation('penaltyAmount', { watch: methods.watch, trigger: methods.trigger })
           }) } />
       </div>
-      <FormError field={'penaltyAmount'} />
+      <FormError error={errors?.penaltyDate?.message} />
     </div>
   )
 }
 
 const PenaltyDueDate = () => { // Penalty due date input
-  const methods = useCreateViolationFormContext()
+  const { watch, register, formState: { errors } } = useCreateViolationFormContext()
 
-  const visible = !!methods.watch('penaltyDate')
+  const visible = !!watch('penaltyDate')
 
   if(!visible) return null
 
@@ -212,38 +223,75 @@ const PenaltyDueDate = () => { // Penalty due date input
     <div className="flex-1 flex flex-col gap-2">
       <div className="flex">
         <FormLabel
-          label={'Due Date:'}
           name={'penaltyDueDate'}
-          required={true} />
+          required={true}>
+            Due Date:
+        </FormLabel>
         <input
           type="date"
           className={styles.input}
-          { ...methods.register('penaltyDueDate', {
+          { ...register('penaltyDueDate', {
             required: 'Penalty due date is required',
-            onBlur: () => handleRequiredFieldValidation('penaltyDueDate', { watch: methods.watch, trigger: methods.trigger })
           }) } />
       </div>
-      <FormError field={'penaltyDate'} />
+      <FormError error={errors.penaltyDate?.message} />
     </div>
   )
 }
 
 const PaymentReceivedDateInput = () => { // Payment received date input
-  const methods = useCreateViolationFormContext()
+  const { watch, register } = useCreateViolationFormContext()
 
-  const visible = !!methods.watch('penaltyDate')
+  const visible = !!watch('penaltyDate')
 
   if(!visible) return null
 
   return (
     <div className="flex-1 flex w-full">
-      <FormLabel
-        label={'Received Date:'}
-        name={'paymentReceived'} />
+      <FormLabel name={'paymentReceived'}>
+        Received Date:
+      </FormLabel>
       <input
         type="date"
         className={styles.input}
-        { ...methods.register('paymentReceived') } />
+        { ...register('paymentReceived') } />
     </div>
+  )
+}
+
+const FollowUps = () => {
+  const { watch } = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+
+  const followups = watch('FollowUpDates')
+
+  return (
+    <>
+      {followups.map((_, index) => <CreateFollowUpForm index={index} />)}
+    </>
+  )
+}
+
+const AddFollowUpBtn = () => {
+  const { control } = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+
+  const { append } = useFieldArray({
+    control,
+    name: 'FollowUpDates'
+  })
+
+  const addFollowUp = () => {
+    append({
+      followUpDate: "",
+      violationId: ""
+    })
+  }
+
+  return (
+    <button 
+      type="button"
+      onClick={addFollowUp}
+      className="btn btn-primary w-full uppercase">
+        Add Follow Up
+    </button>
   )
 }

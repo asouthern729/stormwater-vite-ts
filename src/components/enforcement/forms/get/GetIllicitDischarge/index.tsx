@@ -1,17 +1,16 @@
-import { useContext } from 'react'
-import EnforcementCtx from '@/components/enforcement/context'
 import { useGetIllicitDischarge } from './hooks'
 
 // Components
+import HandleLoading from '@/utils/HandleLoading/HandleLoading'
 import { Form } from './components'
 
 function GetIllicitDischarge() {
-  const { formUUID } = useContext(EnforcementCtx)
-
-  const { data } = useGetIllicitDischarge(formUUID)
+  const { data, isSuccess } = useGetIllicitDischarge()
 
   return (
-    <Form illicitDischarge={data?.data} />
+    <HandleLoading isSuccess={isSuccess}>
+      <Form illicitDischarge={data?.data} />
+    </HandleLoading>
   )
 }
 

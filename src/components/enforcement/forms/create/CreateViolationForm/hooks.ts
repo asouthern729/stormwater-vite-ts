@@ -1,51 +1,66 @@
-import { useCallback } from 'react'
-import { useNavigate } from 'react-router'
+import { useCallback, useContext } from 'react'
 import { useQueryClient } from 'react-query'
 import { useForm, useFormContext } from 'react-hook-form'
-import { handleCreateViolationFormSubmit } from './utils'
+import { useEnableQuery } from '@/helpers/hooks'
+import { errorPopup } from '@/utils/Toast/Toast'
+import { handleCreateViolation } from './utils'
 
 // Types
-import { UseFormReturn } from 'react-hook-form'
-import { CreateViolationFormUseForm, UseCreateViolationFormProps } from './types'
+import { ConstructionViolationCreateInterface, SiteInterface } from '@/context/App/types'
+import EnforcementCtx from '@/components/enforcement/context'
 
-export const useCreateViolationForm = (site: UseCreateViolationFormProps['site'], date: UseCreateViolationFormProps['date']): UseFormReturn<CreateViolationFormUseForm> => { // CreateViolationForm useForm
+export const useCreateViolationForm = (site: SiteInterface, date: string) => { // CreateViolationForm useForm
   const violationDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
-  return useForm<CreateViolationFormUseForm>({
+  return useForm<ConstructionViolationCreateInterface>({
+    mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId,
       date: violationDate,
       details: '',
       enforcementAction: null,
-      penaltyDate: undefined,
+      penaltyDate: '',
       penaltyAmount: null,
-      penaltyDueDate: undefined,
-      paymentReceived: undefined,
-      swoDate: undefined,
-      swoLiftedDate: undefined,
+      penaltyDueDate: '',
+      paymentReceived: '',
+      swoDate: '',
+      swoLiftedDate: '',
       compliance: null,
       closed: null,
-      followUpDate: undefined
+      FollowUpDates: []
     }
   })
 }
 
-export const useCreateViolationFormContext = (): UseFormReturn<CreateViolationFormUseForm> => { // CreateViolationForm context
-  const methods = useFormContext<CreateViolationFormUseForm>()
+export const useCreateViolationFormContext = () => { // CreateViolationForm context
+  const methods = useFormContext<ConstructionViolationCreateInterface>()
 
   return methods
 }
 
-export const useHandleFormSubmit = (handleCloseForm: (() => void) | undefined, uuid: string) => {
+export const useOnCancelBtnClick = () => { // Handle cancel btn click
+  const { dispatch } = useContext(EnforcementCtx)
+
+  return () => dispatch({ type: 'SET_FORM_UUID', payload: '' })
+}
+
+export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(EnforcementCtx)
+
+  const { enabled, token } = useEnableQuery()
+
   const queryClient = useQueryClient()
 
-  const navigate = useNavigate()
+  return useCallback((formData: ConstructionViolationCreateInterface) => {
+    if(!enabled || !token) {
+      return
+    }
 
-  return useCallback((formData: CreateViolationFormUseForm) => 
-    handleCreateViolationFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries(['getSite', uuid]),
-      handleCloseForm,
-      navigate
-    }), [queryClient, uuid, handleCloseForm, navigate]
-  )
+    handleCreateViolation(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries('getViolations')
+        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
 }

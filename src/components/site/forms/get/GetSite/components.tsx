@@ -10,9 +10,9 @@ import { GetSiteState } from "./types"
 
 // Components
 import FormContainer from "../../../../form-elements/FormContainer"
-import CreateViolationForm from "../../../../enforcement/forms/create/CreateViolationForm/CreateViolationForm"
-import CreateSiteComplaintForm from "../../../../enforcement/forms/create/CreateSiteComplaintForm/CreateSiteComplaintForm"
-import CreateSiteIllicitDischargeForm from "../../../../enforcement/forms/create/CreateSiteIllicitDischargeForm/CreateSiteIllicitDischargeForm"
+import CreateViolationForm from "../../../../enforcement/forms/create/CreateViolationForm"
+import CreateSiteComplaintForm from "../../../../enforcement/forms/create/CreateComplaintForm"
+import CreateSiteIllicitDischargeForm from "../../../../enforcement/forms/create/CreateIllicitDischargeForm"
 
 export const SiteSelect = ({ sites, setState }: { sites: { name: string, siteId: string, xCoordinate: number, yCoordinate: number, inspectorId: string | null, uuid: string }[], setState: Dispatch<SetStateAction<GetSiteState>> }) => { // Site select
 

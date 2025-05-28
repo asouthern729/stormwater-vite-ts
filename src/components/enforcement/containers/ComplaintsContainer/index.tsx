@@ -10,7 +10,7 @@ import { ComplaintInterface } from '@/context/App/types'
 import ComplaintsIndicator from '../../indicators/Complaints/ComplaintsIndicator'
 import DateRangeFilter from '../../filters/DateRangeFilter'
 import { CreateBtn, UpdateForm } from '../ViolationsContainer/components'
-import GetComplaint from '@/components/enforcement/forms/get/GetComplaint/GetComplaint'
+import GetComplaint from '@/components/enforcement/forms/get/GetComplaint'
 import * as Components from './components'
 
 function ComplaintsContainer({ complaints }: { complaints: ComplaintInterface[] }) {

@@ -1,53 +1,22 @@
-import { handleSuccessfulFormSubmit } from '../../../../../helpers/hooks'
-import { createFollowUp, createViolation } from '../../../../../context/App/AppActions'
-import { errorPopup } from '../../../../../utils/Toast/Toast'
+import { authHeaders } from '@/helpers/utils'
+import { createFollowUp, createViolation } from '@/context/App/AppActions'
+import { errorPopup, savedPopup } from '@/utils/Toast/Toast'
 
 // Types
-import { ViolationObj, FollowUpObj } from '../../../../../context/App/types'
-import { HandleCreateViolationFormSubmitProps, HandleRequiredFieldValidationProps } from './types'
+import { ConstructionViolationCreateInterface } from '@/context/App/types'
 
-export const handleCreateViolationFormSubmit = async (formData: HandleCreateViolationFormSubmitProps['formData'], options: HandleCreateViolationFormSubmitProps['options']): Promise<void> => {
-  const { invalidateQuery, handleCloseForm, navigate } = options
-
-  const violationObj: ViolationObj = {
-    siteId: formData.siteId,
-    date: formData.date as string,
-    details: formData.details,
-    enforcementAction: formData.enforcementAction,
-    penaltyDate: formData.penaltyDate || null,
-    penaltyAmount: formData.penaltyAmount,
-    penaltyDueDate: formData.penaltyDueDate || null,
-    paymentReceived: formData.paymentReceived || null,
-    swoDate: formData.swoDate || null,
-    swoLiftedDate: formData.swoLiftedDate || null,
-    compliance: formData.compliance,
-    closed: formData.closed
-  }
-
-  const result = await createViolation(violationObj)
+export const handleCreateViolation = async (formData: ConstructionViolationCreateInterface, token: string) => {
+  const result = await createViolation(formData, authHeaders(token))
 
   if(result.success) {
-    if(formData.followUpDate) { // Handle follow-up date
-      const followUpObj: FollowUpObj = {
-        followUpDate: formData.followUpDate,
-        parentId: result.data.violationId
-      }
+    await Promise.all([
+      ...formData.FollowUpDates.map(async date => {
+        if(date.followUpDate) {
+          await createFollowUp({ ...date, violationId: result.data.violationId }, authHeaders(token))
+        }
+      })
+    ])
 
-      const followUpResult = await createFollowUp(followUpObj)
-
-      if(!followUpResult.success) { // Handle error
-        errorPopup(followUpResult.msg)
-      }
-    }
-    
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm, navigate: !handleCloseForm ? () => navigate('/') : undefined })
+    savedPopup(result.msg)
   } else errorPopup(result.msg)
-}
-
-export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
-  const { watch, trigger } = options
-
-  if(!watch(field)) {
-    trigger(field)
-  }
 }

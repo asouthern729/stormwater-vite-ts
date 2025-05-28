@@ -6,10 +6,12 @@ import { useEnableQuery } from "@/helpers/hooks"
 import { authHeaders } from "@/helpers/utils"
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
-export const useGetComplaint = (uuid: string | undefined) => { // Get complaint
+export const useGetComplaint = () => { // Get complaint
+  const { formUUID } = useContext(EnforcementCtx)
+
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getComplaint', uuid], () => getComplaint(uuid as string, authHeaders(token)), { enabled: enabled && !!uuid })
+  return useQuery(['getComplaint', formUUID], () => getComplaint(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {

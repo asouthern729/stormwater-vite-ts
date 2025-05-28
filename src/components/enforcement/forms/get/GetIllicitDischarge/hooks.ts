@@ -6,10 +6,12 @@ import { authHeaders } from "@/helpers/utils"
 import { getIllicitDischarge, deleteIllicitDischarge } from "@/context/App/AppActions"
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
-export const useGetIllicitDischarge = (uuid: string | undefined) => { // Get illicit discharge
+export const useGetIllicitDischarge = () => { // Get illicit discharge
+  const { formUUID } = useContext(EnforcementCtx)
+
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getIllicitDischarge', uuid], () => getIllicitDischarge(uuid as string, authHeaders(token)), { enabled: enabled && !!uuid })
+  return useQuery(['getIllicitDischarge', formUUID], () => getIllicitDischarge(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {

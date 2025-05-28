@@ -9,7 +9,7 @@ import { GetContactState } from "./types"
 
 // Components
 import UpdateContactForm from "../../update/UpdateContactForm/UpdateContactForm"
-import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
 
 export const Form = ({ contact, handleCloseForm, uuid }: { contact: Contact | undefined, handleCloseForm: () => void, uuid: string }) => {
   const [state, setState] = useState<GetContactState>({ deleteBtnActive: false })

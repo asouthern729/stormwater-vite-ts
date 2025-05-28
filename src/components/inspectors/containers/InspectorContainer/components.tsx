@@ -12,7 +12,7 @@ import SitesActivityCalendar from "../../../sites/calendar/SitesActivityCalendar
 import InspectorTable from "../../tables/InspectorTable/InspectorTable"
 import FormContainer from "../../../form-elements/FormContainer"
 import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
-import DeleteBtn from "../../../form-elements/buttons/DeleteBtn/DeleteBtn"
+import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
 import UpdateBtn from "../../../form-elements/buttons/UpdateBtn/UpdateBtn"
 
 export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calendar" | "table", sitesArray: SiteInterface[] }) => { // Calendar or table view
