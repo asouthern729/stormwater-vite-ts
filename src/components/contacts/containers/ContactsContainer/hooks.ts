@@ -1,14 +1,15 @@
 import { useContext } from "react"
-import AppContext from "../../../../context/App/AppContext"
+import ContactsCtx from "../../context"
 
 // Types
-import { Contact } from "../../../../context/App/types"
-import { UseSetContactsDataProps } from "./types"
+import { ContactInterface } from "@/context/App/types"
 
-export const useSetContactsData = (contacts: UseSetContactsDataProps['contacts']): Contact[] => { // Set data for contacts table
-  const { searchValue } = useContext(AppContext)
+export const useSetContactsTableData = (contacts: ContactInterface[]) => { // Set data for contacts table
+  const { searchValue } = useContext(ContactsCtx)
+  
+  useSetTotalPages(contacts.length)
 
-  let contactsArray: Contact[] = []
+  let contactsArray: ContactInterface[] = []
 
   if(searchValue) {
     const regex = new RegExp(searchValue, 'i')
@@ -21,4 +22,10 @@ export const useSetContactsData = (contacts: UseSetContactsDataProps['contacts']
   } else contactsArray = contacts
 
   return contactsArray
+}
+
+const useSetTotalPages = (count: number) => { // Set total pages to ctx
+  const { dispatch } = useContext(ContactsCtx)
+
+  dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 20) })
 }

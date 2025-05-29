@@ -53,11 +53,37 @@ export const useCreateComplaintFormContext = () => {
 
 export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>) => {
   const [state, setState] = useState<{ view: __esri.MapView | null }>({ view: null })
-  const { setValue, watch } = useFormContext<ComplaintCreateInterface>()
 
-  const xCoordinate = watch('xCoordinate')
-  const yCoordinate = watch('yCoordinate')
-  
+  useCreateMapView(mapRef, setState)
+  useSetMapGraphics(state)
+
+  return state.view
+}
+
+export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(EnforcementCtx)
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  return useCallback((formData: ComplaintCreateInterface) => {
+    if(!enabled || !token) {
+      return
+    }
+
+    handleCreateComplaint(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries('getComplaints')
+        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
+}
+
+const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null }>>) => {
+  const { setValue } = useFormContext<ComplaintCreateInterface>()
+
   useEffect(() => {
     if(!mapRef?.current) return
 
@@ -70,7 +96,7 @@ export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>)
       ui: { components: [] }
     })
 
-    const pointGraphicsLayer = new GraphicsLayer()
+    const pointGraphicsLayer = new GraphicsLayer({ id: 'pointGraphicsLayer' })
     map.add(pointGraphicsLayer)
 
     setState({ view: mapView })
@@ -85,6 +111,13 @@ export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>)
       mapView.destroy()
     }
   }, [mapRef, setValue])
+}
+
+const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
+  const { watch } = useFormContext<ComplaintCreateInterface>()
+
+  const xCoordinate = watch('xCoordinate')
+  const yCoordinate = watch('yCoordinate')
 
   useEffect(() => {
     if(!state.view || !xCoordinate || !yCoordinate) return
@@ -123,27 +156,4 @@ export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>)
 
     pointGraphicsLayer.addMany([graphic, label])
   }, [state.view, xCoordinate, yCoordinate])
-
-  return state.view
-}
-
-export const useHandleFormSubmit = () => { // Handle form submit
-  const { dispatch } = useContext(EnforcementCtx)
-
-  const { enabled, token } = useEnableQuery()
-
-  const queryClient = useQueryClient()
-
-  return useCallback((formData: ComplaintCreateInterface) => {
-    if(!enabled || !token) {
-      return
-    }
-
-    handleCreateComplaint(formData, token)
-      .then(_ => {
-        queryClient.invalidateQueries('getComplaints')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
-      })
-      .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
 }

@@ -1,7 +1,25 @@
-import { useContext } from "react"
+import { useContext, useRef } from "react"
 import SitesCtx from '../../context'
+import { useSetSitesMapView } from './hooks.ts'
+
+// Icons
 import warningPinIcon from '@/assets/icons/pin/warning-pin.png'
 import errorPinIcon from '@/assets/icons/pin/error-pin.png'
+
+// Types
+import { SiteInterface } from "@/context/App/types.ts"
+
+export const Map = ({ sites }: { sites: SiteInterface[] }) => {
+  const mapRef = useRef<HTMLDivElement>(null)
+
+  useSetSitesMapView(mapRef, sites)
+
+  return (
+    <div className="w-full h-full">
+      <div ref={mapRef} className="w-full"></div>
+    </div>
+  )
+}
 
 export const ActiveSitesBtn = () => {
   const { showActiveSitesOnly, dispatch } = useContext(SitesCtx)

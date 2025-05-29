@@ -4,6 +4,7 @@ import styles from './UpdateBtn.module.css'
 import { UpdateBtnProps } from "./types"
 
 function UpdateBtn({ label, handleClick, disabled }: UpdateBtnProps) {
+  
   return (
     <button 
       type="button"

@@ -3,16 +3,16 @@ import { useUpdateContactForm, useHandleFormSubmit } from "./hooks"
 import styles from '../../Forms.module.css'
 
 // Types
+import { ContactInterface } from "@/context/App/types"
 import { UpdateContactFormProps } from "./types"
 
 // Components
 import { NameInput, CompanyInput, PhoneInput, EmailInput, Buttons } from '../../create/CreateContactForm/components'
 import { InactiveCheckbox } from './components'
 
-function UpdateContactForm({ contact, handleCloseForm }: UpdateContactFormProps) {
+function UpdateContactForm({ contact }: { contact: ContactInterface }) {
   const methods = useUpdateContactForm(contact)
 
-  const handleFormSubmit = useHandleFormSubmit(handleCloseForm)
 
   return (
     <div data-testid="update-contact-form" className={styles.container}>
@@ -31,7 +31,7 @@ function UpdateContactForm({ contact, handleCloseForm }: UpdateContactFormProps)
             <EmailInput />
           </div>
 
-          <Buttons handleCloseForm={handleCloseForm} />
+          {/* <Buttons handleCloseForm={handleCloseForm} /> */}
 
           </form>
       </FormProvider>

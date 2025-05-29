@@ -4,9 +4,9 @@ import errorPinIcon from '../../../assets/icons/pin/error-pin.png'
 import neutralContentPinIcon from '../../../assets/icons/pin/neutral-content-pin.png'
 
 // Types
-import { SiteInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
-export const LegendItems = ({ sites }: { sites: SiteInterface[] }) => {
+export const LegendItems = ({ sites }: { sites: AppTypes.SiteInterface[] }) => {
 
   return (
     <div className="flex gap-6 text-neutral-content font-[play] font-bold p-3 py-2 bg-neutral/30 border w-fit rounded-lg">

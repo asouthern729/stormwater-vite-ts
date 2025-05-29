@@ -1,9 +1,10 @@
-import { useState, useRef, memo } from "react"
-import { useScrollToFormRef } from "../../../../helpers/hooks"
+import { useRef, memo } from "react"
+import { useScrollToFormRef } from "@/helpers/hooks"
 import { useSetSitesData } from "../../../sites/containers/SitesContainer/hooks"
 import styles from './InspectorContainer.module.css'
 
 // Types
+import * as Types from '@/context/App/types'
 import { InspectorContainerProps, InspectorContainerState, SiteActivityCalendarViewState } from "./types"
 
 // Components
@@ -14,18 +15,15 @@ import MapContainer from '../../../map/MapContainer'
 import SitesTable from "../../../sites/tables/SitesTable"
 import { CalendarTable, Form, UpdateInspectorBtn } from './components'
 
-function InspectorContainer({ sites, inspector }: InspectorContainerProps) {
-  const [state, setState] = useState<InspectorContainerState>({ deleteBtnActive: false, formUUID: undefined })
-  const [siteActivityView, setSiteActivityView] = useState<SiteActivityCalendarViewState>({ activeView: 'calendar' })
-
+function InspectorContainer({ sites, inspector }: { sites: Types.SiteInterface[], inspector: Types.InspectorInterface }) {
   const formRef = useRef<HTMLDivElement>(null)
+
+  useScrollToFormRef(formRef) 
 
   const sitesArray = useSetSitesData(sites)
 
-  useScrollToFormRef(state, formRef) 
-
   return (
-    <div data-testid="inspector-container" className={styles.container}>
+    <div className={styles.container}>
 
       <div className={styles.topDiv}>
         <UpdateInspectorBtn handleClick={() => setState(prevState => ({ ...prevState, formUUID: sites[0].Inspector?.uuid }))} />

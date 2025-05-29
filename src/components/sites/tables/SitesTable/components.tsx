@@ -1,7 +1,7 @@
 import { useContext } from "react"
-import { useNavigate } from "react-router"
 import SitesCtx from "@/components/sites/context"
 import { setTableDataStyle } from "./utils"
+import { useOnTableRowClick } from './hooks'
 import styles from './SitesTable.module.css'
 
 // Types
@@ -27,10 +27,10 @@ export const TableBody = ({ sites }: { sites: SiteInterface[] }) => { // Sites t
 }
 
 const TableRow = ({ site, index }: { site: SiteInterface, index: number }) => {
-  const navigate = useNavigate()
+  const onTableRowClick = useOnTableRowClick(site.uuid)
 
   return (
-    <tr key={`table-row-${ site.uuid }`} className={setTableDataStyle(index, site)} onClick={() => navigate(`/site/${ site.uuid }`)}>
+    <tr key={`table-row-${ site.uuid }`} className={setTableDataStyle(index, site)} onClick={onTableRowClick}>
       <TableData site={site} />
     </tr>
   )

@@ -1,12 +1,10 @@
 import { useQuery } from "react-query"
-import { getContacts } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
+import { useEnableQuery } from "@/helpers/hooks"
+import { getContacts } from "@/context/App/AppActions"
 
-// Types
 export const useGetContacts = () => { // Get contacts
-  const { isAuthenticated, isLoading } = useValidateUser()
+  const { enabled, token } = useEnableQuery()
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
-
-  return useQuery('getContacts', () => getContacts(), { enabled })
+  return useQuery('getContacts', () => getContacts(authHeaders(token)), { enabled })
 }

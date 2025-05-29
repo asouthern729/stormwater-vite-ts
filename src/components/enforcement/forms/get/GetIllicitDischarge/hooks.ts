@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "react-query"
 import EnforcementCtx from "@/components/enforcement/context"
 import { useEnableQuery } from "@/helpers/hooks"
 import { authHeaders } from "@/helpers/utils"
-import { getIllicitDischarge, deleteIllicitDischarge } from "@/context/App/AppActions"
+import * as AppActions from '@/context/App/AppActions'
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 export const useGetIllicitDischarge = () => { // Get illicit discharge
@@ -11,7 +11,7 @@ export const useGetIllicitDischarge = () => { // Get illicit discharge
 
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getIllicitDischarge', formUUID], () => getIllicitDischarge(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
+  return useQuery(['getIllicitDischarge', formUUID], () => AppActions.getIllicitDischarge(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {
@@ -29,7 +29,7 @@ export const useHandleDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await deleteIllicitDischarge(formUUID, authHeaders(token))
+      const result = await AppActions.deleteIllicitDischarge(formUUID, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)

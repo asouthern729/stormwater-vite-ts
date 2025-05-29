@@ -1,10 +1,12 @@
+import { useContext } from "react"
 import { useQueryClient } from "react-query"
+import InspectorsCtx from "../../context"
 import { useReturnUserRoles } from '@/helpers/hooks'
 import { deleteInspector } from "@/context/App/AppActions"
 
 // Types
 import { RefObject, Dispatch, SetStateAction } from "react"
-import { SiteInterface, InspectorInterface } from "../../../../context/App/types"
+import * as AppTypes from '@/context/App/types'
 import { InspectorContainerState } from "./types"
 
 // Components
@@ -15,7 +17,7 @@ import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateIn
 import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
 import UpdateBtn from "../../../form-elements/buttons/UpdateBtn/UpdateBtn"
 
-export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calendar" | "table", sitesArray: SiteInterface[] }) => { // Calendar or table view
+export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calendar" | "table", sitesArray: AppTypes.SiteInterface[] }) => { // Calendar or table view
 
   if(activeView === 'calendar') { // Show calendar
     return (
@@ -49,7 +51,9 @@ export const Form = ({ state, formRef, setState, inspector }: { state: Inspector
   )
 }
 
-export const UpdateInspectorBtn = ({ handleClick }: { handleClick: () => void }) => {
+export const UpdateInspectorBtn = ({ inspector }: { inspector: AppTypes.InspectorInterface }) => {
+  const { dispatch } = useContext(InspectorsCtx)
+
   const roles = useReturnUserRoles()
 
   if(!roles.includes('[task.write]')) return null // Viewers
@@ -58,7 +62,7 @@ export const UpdateInspectorBtn = ({ handleClick }: { handleClick: () => void })
     <div className="absolute left-0">
       <UpdateBtn
         label={'Update Inspector'}
-        handleClick={handleClick} />
+        handleClick={() => dispatch({ type: 'SET_FORM_UUID', payload: inspector.uuid })} />
     </div>
   )
 }

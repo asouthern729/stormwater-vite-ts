@@ -1,10 +1,9 @@
 import { useState, useCallback, useContext } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import EnforcementCtx from "@/components/enforcement/context"
-import { getViolation } from "@/context/App/AppActions"
 import { useEnableQuery } from "@/helpers/hooks"
 import { authHeaders } from "@/helpers/utils"
-import { deleteViolation } from "@/context/App/AppActions"
+import * as AppActions from '@/context/App/AppActions'
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 export const useGetViolation = () => { // Get construction violation
@@ -12,7 +11,7 @@ export const useGetViolation = () => { // Get construction violation
 
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getViolation', formUUID], () => getViolation(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
+  return useQuery(['getViolation', formUUID], () => AppActions.getViolation(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {
@@ -30,7 +29,7 @@ export const useHandleDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await deleteViolation(formUUID, authHeaders(token))
+      const result = await AppActions.deleteViolation(formUUID, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)

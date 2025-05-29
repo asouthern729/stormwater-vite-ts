@@ -1,10 +1,11 @@
 import { useRef, memo } from 'react'
 import { useScrollToFormRef } from '@/helpers/hooks'
+import { useResetCtx } from '../ViolationsContainer/hooks'
 import { useHandleDischargesTableData } from './hooks'
 import styles from './DischargesContainer.module.css'
 
 // Types
-import { IllicitDischargeInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import IllicitDischargesIndicator from "../../indicators/llicitDischargesIndicator"
@@ -13,12 +14,14 @@ import { CreateBtn, UpdateForm } from '../ViolationsContainer/components'
 import GetIllicitDischarge from '@/components/enforcement/forms/get/GetIllicitDischarge'
 import * as Components from './components'
 
-function DischargesContainer({ discharges }: { discharges: IllicitDischargeInterface[] }) {
+function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDischargeInterface[] }) {
   const formRef = useRef<HTMLDivElement>(null)
 
   useScrollToFormRef(formRef)
 
   const tableData = useHandleDischargesTableData(discharges)
+
+  useResetCtx()
 
   return (
     <div className="flex flex-col gap-10">

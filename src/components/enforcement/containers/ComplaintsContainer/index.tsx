@@ -1,10 +1,11 @@
 import { useRef, memo } from 'react'
 import { useScrollToFormRef } from '@/helpers/hooks'
+import { useResetCtx } from '../ViolationsContainer/hooks'
 import { useHandleComplaintsTableData } from './hooks'
 import styles from './ComplaintsContainer.module.css'
 
 // Types
-import { ComplaintInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import ComplaintsIndicator from '../../indicators/Complaints/ComplaintsIndicator'
@@ -13,12 +14,14 @@ import { CreateBtn, UpdateForm } from '../ViolationsContainer/components'
 import GetComplaint from '@/components/enforcement/forms/get/GetComplaint'
 import * as Components from './components'
 
-function ComplaintsContainer({ complaints }: { complaints: ComplaintInterface[] }) {
+function ComplaintsContainer({ complaints }: { complaints: AppTypes.ComplaintInterface[] }) {
   const formRef = useRef<HTMLDivElement>(null)
 
   useScrollToFormRef(formRef)
 
   const tableData = useHandleComplaintsTableData(complaints)
+
+  useResetCtx()
 
   return (
     <div className="flex flex-col gap-10">

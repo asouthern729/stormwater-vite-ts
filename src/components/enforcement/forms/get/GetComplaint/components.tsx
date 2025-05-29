@@ -5,7 +5,7 @@ import { ComplaintInterface } from "@/context/App/types"
 
 // Components
 import UpdateSiteComplaintForm from "../../update/UpdateComplaintForm"
-import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
+import DeleteBtn from "@/components/form-elements/buttons/DeleteBtn"
 
 export const Form = ({ complaint }: { complaint: ComplaintInterface | undefined }) => { // Update site complaint form
   const { handleClick, active } = useHandleDeleteBtnClick()

@@ -1,5 +1,6 @@
 import { useContext, useMemo } from "react"
 import EnforcementCtx from "../../context"
+import { useSetTotalPages } from "../ViolationsContainer/hooks"
 
 // Types
 import { ComplaintInterface } from "@/context/App/types"
@@ -7,6 +8,8 @@ import { ComplaintsTableDataType } from './components'
 
 export const useHandleComplaintsTableData = (complaints: ComplaintInterface[]) => { // Complaints table data
   const { currentPage } = useContext(EnforcementCtx)
+
+  useSetTotalPages(complaints.length)
 
   return useMemo(() => {
       const allViolations: ComplaintsTableDataType[] = complaints.map(complaint => ({

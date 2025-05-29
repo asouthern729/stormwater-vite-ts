@@ -3,9 +3,9 @@ import { authHeaders } from '@/helpers/utils'
 import { errorPopup, savedPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { ComplaintCreateInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
-export const handleUpdateComplaint = async (formData: ComplaintCreateInterface, token: string) => {
+export const handleUpdateComplaint = async (formData: AppTypes.ComplaintCreateInterface, token: string) => {
   const result = await AppActions.updateComplaint(formData, authHeaders(token))
   
     if(result.success) {

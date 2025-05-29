@@ -1,15 +1,13 @@
 import { useQuery } from "react-query"
+import { useParams } from "react-router"
 import { getInspector } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers/hooks"
+import { useEnableQuery } from "../../helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
 
-// Types
-import { UseQueryResult } from "react-query"
-import { GetInspectorResponse } from "../../context/App/types"
+export const useGetInspector = () => { // Get inspector data by slug
+  const { enabled, token } = useEnableQuery()
 
-export const useGetInspector = (inspectorId: string | undefined): UseQueryResult<GetInspectorResponse> => { // Get inspector by inspectorId
-  const { isAuthenticated, isLoading } = useValidateUser()
+  const { slug } = useParams<{ slug: string }>()
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
-
-  return useQuery(['getInspector', inspectorId], () => getInspector(inspectorId || ''), { enabled: enabled && !!inspectorId })
+  return useQuery(['getInspector', slug], () => getInspector(slug as string, authHeaders(token)), { enabled: enabled && !!slug })
 }

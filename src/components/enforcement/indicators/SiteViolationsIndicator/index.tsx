@@ -1,12 +1,12 @@
 import icon from '../../../assets/icons/violation/violation.svg'
 
 // Types
-import { ConstructionViolationInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import * as Components from './components'
 
-function SiteViolationsIndicator({ violations }: { violations: ConstructionViolationInterface[] }) {
+function SiteViolationsIndicator({ violations }: { violations: AppTypes.ConstructionViolationInterface[] }) {
 
   return (
     <div className="indicator bg-neutral text-neutral-content p-4 w-fit h-fit">

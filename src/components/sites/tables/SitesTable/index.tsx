@@ -2,12 +2,12 @@ import { memo } from 'react'
 import styles from './SitesTable.module.css'
 
 // Types
-import { SiteInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import { TableBody } from './components'
 
-function SitesTable({ sites }: { sites: SiteInterface[] }) {
+function SitesTable({ sites }: { sites: AppTypes.SiteInterface[] }) {
 
   return (
     <div data-testid="sites-table" className={styles.container}>

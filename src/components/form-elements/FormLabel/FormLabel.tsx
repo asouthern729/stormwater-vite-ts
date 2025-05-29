@@ -2,12 +2,12 @@ import styles from '../Forms.module.css'
 
 // Types
 import { Path } from 'react-hook-form'
-import { SiteCreateInterface, ConstructionViolationCreateInterface, ComplaintCreateInterface, IllicitDischargeCreateInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import RequiredIcon from '../RequiredIcon'
 
-type FormLabelProps = { name: Path<SiteCreateInterface|ConstructionViolationCreateInterface|ComplaintCreateInterface|IllicitDischargeCreateInterface>, required?: boolean, children: React.ReactNode }
+type FormLabelProps = { name: Path<AppTypes.SiteCreateInterface|AppTypes.ConstructionViolationCreateInterface|AppTypes.ComplaintCreateInterface|AppTypes.IllicitDischargeCreateInterface>, required?: boolean, children: React.ReactNode }
 
 function FormLabel(props: FormLabelProps) {
   

@@ -8,7 +8,7 @@ import icon from '@/assets/icons/menu/menu.svg'
 import activeIcon from '@/assets/icons/menu/menu-light.svg'
 
 // Types
-import { InspectorInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import NavDropdown from "../nav/NavDropdown"
@@ -70,7 +70,7 @@ const InspectorsMenu = () => {
   )
 }
 
-const InspectorMenuItem = ({ inspector }: { inspector: InspectorInterface }) => {
+const InspectorMenuItem = ({ inspector }: { inspector: AppTypes.InspectorInterface }) => {
 
   return (
     <li key={`inspector-${ inspector.uuid }`} className="hover:cursor-pointer hover:bg-neutral"><Link to={`/inspectors/${ inspector.slug }`}>{inspector.name}</Link></li>

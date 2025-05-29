@@ -1,4 +1,4 @@
-import { useContext, useCallback, useMemo } from "react"
+import { useContext, useCallback, useMemo, useEffect } from "react"
 import EnforcementCtx from "../../context"
 
 // Types
@@ -32,6 +32,8 @@ export const useHandleTableRowClick = (uuid: string) => {
 export const useHandleViolationsTableData = (violations: ConstructionViolationInterface[]) => { // Construction violations table data
   const { currentPage } = useContext(EnforcementCtx)
 
+  useSetTotalPages(violations.length)
+
   return useMemo(() => {
     const allViolations: ViolationTableDataType[] = violations.map(violation => ({
       ...violation,
@@ -45,4 +47,18 @@ export const useHandleViolationsTableData = (violations: ConstructionViolationIn
     
     return allViolations.slice(startIndex, endIndex)
   }, [violations, currentPage])
+}
+
+export const useSetTotalPages = (count: number) => { // Set total pages to ctx
+  const { dispatch } = useContext(EnforcementCtx)
+
+  dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 20) })
+}
+
+export const useResetCtx = () => { // Reset EnforcementCtx on enforcement page change
+  const { dispatch } = useContext(EnforcementCtx)
+
+  useEffect(() => {
+    return () => dispatch({ type: 'RESET_CTX' })
+  }, [dispatch])
 }

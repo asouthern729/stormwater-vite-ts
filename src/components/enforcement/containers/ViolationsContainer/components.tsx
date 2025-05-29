@@ -13,7 +13,7 @@ import CreateLink from "../../../layout/nav/buttons/CreateLink"
 import PrevPageBtn from "@/components/layout/nav/buttons/PrevPageBtn/PrevPageBtn"
 import NextPageBtn from "@/components/layout/nav/buttons/NextPageBtn/NextPageBtn"
 
-type FormProps = { formRef: React.RefObject<HTMLDivElement>, children: React.ReactElement }
+export type FormProps = { formRef: React.RefObject<HTMLDivElement>, children: React.ReactElement }
 
 export const UpdateForm = (props: FormProps) => { // Update form
   const { formUUID } = useContext(EnforcementCtx)

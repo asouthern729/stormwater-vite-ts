@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useContext, useCallback, useMemo } from "react"
-import { useNavigate, useLocation, useParams } from "react-router"
-import { useQuery } from "react-query"
+import { useState, useEffect, useContext, useMemo } from "react"
+import { useNavigate } from "react-router"
 import { useMsal } from "@azure/msal-react"
 import { NODE_ENV } from '@config/index'
-import AppContext from "../context/App/AppContext"
 import EnforcementCtx from "@/components/enforcement/context"
-import { getInspectors, getContacts } from "../context/App/AppActions"
 
 // Types
 import * as Types from '@/context/App/types'
 import { Issue } from "../components/site/tables/SiteIssuesTable/types"
-import { UseHandleMapChangeProps, UseScrollToFormRefProps, UseHandlePageData } from "./types"
+import { UseHandlePageData } from "./types"
 
 export const useGetToken = () => {
   const [state, setState] = useState<{ token: string | undefined }>({ token: undefined })
@@ -133,120 +130,6 @@ export const useReturnUserRoles = () => { // Return active user roles
   return roles || []
 }
 
-export const useHandlePageLoad = (): void => { // Set current page and reset ctx on page change
-  const { dispatch } = useContext(AppContext)
-
-  const { isAuthenticated } = useValidateUser()
-
-  const location = useLocation()
-
-  useGetInspectorsForForms(isAuthenticated) // Set inspectors to ctx
-  useGetContactsForForms(isAuthenticated) // Set contacts to ctx
-
-  const cb = useCallback(() => {
-    let page: Types.PageType = 'Sites'
-
-    switch(location.pathname.split('/')[1]) {
-      case 'violations':
-        page = 'Enforcement'
-        break
-      case 'complaints':
-        page = 'Enforcement'
-        break
-      case 'discharges':
-        page = 'Enforcement'
-        break
-      case 'create':
-        page = 'Create'
-        break
-      case 'contacts':
-        page = 'Contacts'
-        break
-      case 'inspectors':
-        page = 'Inspectors'
-        break
-      case 'site':
-        page = 'Site'
-        break
-      default:
-        page = 'Sites'
-        break
-    }
-
-    dispatch({ type: 'RESET_CTX', payload: undefined })
-    dispatch({ type: 'SET_ACTIVE_PAGE', payload: page })
-  }, [location, dispatch])
-
-  useEffect(() => { // Reset ctx and update current page in ctx on page change
-    cb()
-  }, [cb])
-}
-
-export const useHandleMapChange = (coordinates: UseHandleMapChangeProps['coordinates'], options: UseHandleMapChangeProps['options']): void => { // Update form on site location change
-  const { setValue } = options
-
-  const updateFormValues = useCallback((x: number, y: number) => {
-    setValue('xCoordinate', x, { shouldValidate: false })
-    setValue('yCoordinate', y, { shouldValidate: false })
-  }, [setValue])
-
-  useEffect(() => {
-    if(coordinates?.xCoordinate && coordinates.yCoordinate) {
-      updateFormValues(coordinates.xCoordinate, coordinates.yCoordinate)
-    }
-  }, [coordinates, updateFormValues])
-}
-
-export const useGetInspectorsForForms = (validated: boolean): void => { // Set inspector options to ctx
-  const { dispatch } = useContext(AppContext)
-
-  const { data } = useQuery('getInspectors', () => getInspectors(), { enabled: validated })
-
-  const inspectorsArray = useMemo(() => {
-    if(!data?.data) {
-      return []
-    }
-
-    return data.data.map(inspector => ({ value: inspector.inspectorId, text: inspector.name, uuid: inspector.uuid }))
-  }, [data?.data])
-
-  const sorted = useMemo(() => {
-    return inspectorsArray.sort((a, b) => a.text.localeCompare(b.text));
-  }, [inspectorsArray])
-
-  useEffect(() => {
-    dispatch({ type: 'SET_INSPECTOR_OPTIONS', payload: sorted })
-  }, [sorted, dispatch])
-}
-
-export const useGetContactsForForms = (validated: boolean): void => { // Set contact options to ctx
-  const { dispatch } = useContext(AppContext)
-
-  const { data } = useQuery('getContacts', () => getContacts(), { enabled: validated })
-
-  const contactsArray = useMemo(() => {
-    if(!data?.data) {
-      return []
-    }
-
-    return data.data.map(contact => ({ text: contact.name, value: contact.contactId }))
-  }, [data?.data])
-
-  const sorted = useMemo(() => {
-    return contactsArray.sort((a, b) => a.text.localeCompare(b.text));
-  }, [contactsArray])
-
-  useEffect(() => {
-    dispatch({ type: 'SET_CONTACT_OPTIONS', payload: sorted })
-  }, [sorted, dispatch])
-}
-
-export const useGetSiteUUID = (): string | undefined => { // REturn site uuid
-  const { uuid: siteUUID } = useParams()
-
-  return siteUUID
-}
-
 export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>): void => {
   const { formUUID } = useContext(EnforcementCtx)
 
@@ -257,7 +140,7 @@ export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>): vo
   }, [formUUID, formRef])
 }
 
-export const useHandlePageData = (tableData: UseHandlePageData['tableData'], currentPage: UseHandlePageData['currentPage']): Issue[] | ContactInterface[] => {
+export const useHandlePageData = (tableData: UseHandlePageData['tableData'], currentPage: UseHandlePageData['currentPage']): Issue[] | Types.ContactInterface[] => {
   const pageData = useMemo(() => {
     return tableData.slice((currentPage * 20) - 20, currentPage * 20)
   }, [tableData, currentPage])

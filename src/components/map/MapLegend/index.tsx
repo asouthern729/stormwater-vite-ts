@@ -1,10 +1,10 @@
 // Types
-import { SiteInterface } from '@/context/App/types.ts'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import * as Components from './components'
 
-function MapLegend({ sites }: { sites: SiteInterface[] }) {
+function MapLegend({ sites }: { sites: AppTypes.SiteInterface[] }) {
   
   return (
     <Components.LegendItems sites={sites} />

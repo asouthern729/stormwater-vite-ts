@@ -25,6 +25,7 @@ type EnforcementAction =
   | { type: 'RESET_DATE_RANGE_FILTER' }
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
+  | { type: 'RESET_CTX' }
 
 const initialState: EnforcementState = {
   currentPage: 1,
@@ -89,6 +90,8 @@ const enforcementReducer = (state: EnforcementState, action: EnforcementAction) 
         ...state,
         showClosedSiteIssues: !state.showClosedSiteIssues
       }
+    case 'RESET_CTX':
+      return initialState
     default:
       return state
   }

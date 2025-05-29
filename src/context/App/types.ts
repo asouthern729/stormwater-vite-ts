@@ -184,6 +184,7 @@ export interface ContactInterface extends BaseInterface {
   email: string | null
   inactive: boolean
   SiteContacts?: SiteContactInterface[]
+  [key: string]: any
 }
 
 export interface ContactCreateInterface extends Omit<ContactInterface, 'contactId' | 'inactive' | 'SiteContacts' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{

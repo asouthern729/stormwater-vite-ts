@@ -2,14 +2,14 @@ import { useGetComplaint } from "./hooks"
 
 // Components
 import HandleLoading from "@/utils/HandleLoading/HandleLoading"
-import { Form } from './components'
+import * as Components from './components'
 
 function GetComplaint() {
   const { data, isSuccess } = useGetComplaint()
 
   return (
     <HandleLoading isSuccess={isSuccess}>
-      <Form complaint={data?.data} />
+      <Components.Form complaint={data?.data} />
     </HandleLoading>
   )
 }

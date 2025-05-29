@@ -3,12 +3,12 @@ import { Eventcalendar } from '@mobiscroll/react'
 import { useFormatCalendarData, useCalendarProps, useHandleCalendarTypeBtnClick } from './hooks'
 
 // Types
-import { SiteInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import * as Components from './components'
 
-function SitesActivityCalendar({ sites }: { sites: SiteInterface[] }) {
+function SitesActivityCalendar({ sites }: { sites: AppTypes.SiteInterface[] }) {
   const { type, onClick } = useHandleCalendarTypeBtnClick()
   const calendarData = useFormatCalendarData(sites)
   const calendarProps = useCalendarProps(type, calendarData)

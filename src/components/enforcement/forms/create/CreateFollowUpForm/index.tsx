@@ -2,13 +2,13 @@ import { useFormContext } from "react-hook-form"
 import styles from '../../Forms.module.css'
 
 // Types
-import { ConstructionViolationCreateInterface, IllicitDischargeCreateInterface, ComplaintCreateInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import FormLabel from "../../../../form-elements/FormLabel/FormLabel"
 
 function CreateFollowUpForm({ index }: { index: number }) {
-  const { register } = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+  const { register } = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
 
   return (
     <div className="flex w-full">

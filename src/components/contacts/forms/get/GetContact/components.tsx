@@ -1,33 +1,25 @@
-import { useState } from "react"
-import { useQueryClient } from "react-query"
-import { deleteContact } from "../../../../../context/App/AppActions"
-import { handleDeleteBtnClick } from "../../../../../helpers/hooks"
+import { useHandleDeleteBtnClick } from "./hooks"
 
 // Types
-import { Contact } from "../../../../../context/App/types"
-import { GetContactState } from "./types"
+import { ContactInterface } from "@/context/App/types"
 
 // Components
 import UpdateContactForm from "../../update/UpdateContactForm/UpdateContactForm"
-import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
+import DeleteBtn from "@/components/form-elements/buttons/DeleteBtn"
 
-export const Form = ({ contact, handleCloseForm, uuid }: { contact: Contact | undefined, handleCloseForm: () => void, uuid: string }) => {
-  const [state, setState] = useState<GetContactState>({ deleteBtnActive: false })
+export const Form = ({ contact }: { contact: ContactInterface | undefined }) => {
+  const { handleClick, active } = useHandleDeleteBtnClick()
 
-  const queryClient = useQueryClient()
+  if(!contact) return null
+
+  const label = !active ? 'Delete Violation' : 'Confirm Delete'
 
   return (
-    <>
-      {contact && (
-        <div className="flex flex-col items-center">
-          <UpdateContactForm
-            contact={contact}
-            handleCloseForm={handleCloseForm} />
-          <DeleteBtn
-            label={!state.deleteBtnActive ? 'Delete Contact' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteContact, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries('getContacts') })} />
-      </div>
-      )}
-    </>
+    <div className="flex flex-col items-center">
+      <UpdateContactForm contact={contact} />
+      <DeleteBtn onClick={handleClick}>
+        {label}
+      </DeleteBtn>
+  </div>
   )
 }

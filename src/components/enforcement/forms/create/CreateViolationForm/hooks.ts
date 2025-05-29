@@ -6,13 +6,13 @@ import { errorPopup } from '@/utils/Toast/Toast'
 import { handleCreateViolation } from './utils'
 
 // Types
-import { ConstructionViolationCreateInterface, SiteInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 import EnforcementCtx from '@/components/enforcement/context'
 
-export const useCreateViolationForm = (site: SiteInterface, date: string) => { // CreateViolationForm useForm
+export const useCreateViolationForm = (site: AppTypes.SiteInterface, date: string) => { // CreateViolationForm useForm
   const violationDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
-  return useForm<ConstructionViolationCreateInterface>({
+  return useForm<AppTypes.ConstructionViolationCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId,
@@ -33,7 +33,7 @@ export const useCreateViolationForm = (site: SiteInterface, date: string) => { /
 }
 
 export const useCreateViolationFormContext = () => { // CreateViolationForm context
-  const methods = useFormContext<ConstructionViolationCreateInterface>()
+  const methods = useFormContext<AppTypes.ConstructionViolationCreateInterface>()
 
   return methods
 }
@@ -51,7 +51,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
-  return useCallback((formData: ConstructionViolationCreateInterface) => {
+  return useCallback((formData: AppTypes.ConstructionViolationCreateInterface) => {
     if(!enabled || !token) {
       return
     }

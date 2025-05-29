@@ -7,7 +7,7 @@ import styles from '../../Forms.module.css'
 import FormLabel from '@/components/form-elements/FormLabel/FormLabel'
 import FormError from '@/components/form-elements/FormError'
 import CreateFollowUpForm from '../CreateFollowUpForm'
-import { ComplaintCreateInterface, ConstructionViolationCreateInterface, IllicitDischargeCreateInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 export const DateInput = () => { // Violation date input
   const { register, formState: { errors } } = useCreateViolationFormContext()
@@ -260,7 +260,7 @@ const PaymentReceivedDateInput = () => { // Payment received date input
 }
 
 const FollowUps = () => {
-  const { watch } = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+  const { watch } = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
 
   const followups = watch('FollowUpDates')
 
@@ -272,7 +272,7 @@ const FollowUps = () => {
 }
 
 const AddFollowUpBtn = () => {
-  const { control } = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+  const { control } = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
 
   const { append } = useFieldArray({
     control,

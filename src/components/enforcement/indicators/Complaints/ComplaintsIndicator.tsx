@@ -1,12 +1,12 @@
 import icon from '@/assets/icons/complaint/complaint.svg'
 
 // Types
-import { ComplaintInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import { Stats } from '../SiteViolationsIndicator/components'
 
-function ComplaintsIndicator({ complaints }: { complaints: ComplaintInterface[] }) {
+function ComplaintsIndicator({ complaints }: { complaints: AppTypes.ComplaintInterface[] }) {
 
   return (
     <div className="indicator bg-neutral text-neutral-content p-4 w-fit h-fit">

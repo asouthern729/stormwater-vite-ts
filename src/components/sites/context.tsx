@@ -31,7 +31,7 @@ const SitesCtx = createContext<SitesCtx>({
   dispatch: () => null
 })
 
-const projectsReducer = (state: SitesState, action: SitesAction) => {
+const sitesReducer = (state: SitesState, action: SitesAction) => {
 
   switch(action.type) {
     case 'SET_SEARCH_VALUE':
@@ -60,7 +60,7 @@ const projectsReducer = (state: SitesState, action: SitesAction) => {
 }
 
 export const SitesProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer<Reducer<SitesState, SitesAction>>(projectsReducer, initialState)
+  const [state, dispatch] = useReducer<Reducer<SitesState, SitesAction>>(sitesReducer, initialState)
 
   return (
     <SitesCtx.Provider value={{ ...state, dispatch }}>

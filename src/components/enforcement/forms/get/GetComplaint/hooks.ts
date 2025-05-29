@@ -1,7 +1,7 @@
 import { useState, useContext, useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import EnforcementCtx from "@/components/enforcement/context"
-import { getComplaint, deleteComplaint } from "@/context/App/AppActions"
+import * as AppActions from '@/context/App/AppActions'
 import { useEnableQuery } from "@/helpers/hooks"
 import { authHeaders } from "@/helpers/utils"
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
@@ -11,7 +11,7 @@ export const useGetComplaint = () => { // Get complaint
 
   const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getComplaint', formUUID], () => getComplaint(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
+  return useQuery(['getComplaint', formUUID], () => AppActions.getComplaint(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
 export const useHandleDeleteBtnClick = () => {
@@ -29,7 +29,7 @@ export const useHandleDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await deleteComplaint(formUUID, authHeaders(token))
+      const result = await AppActions.deleteComplaint(formUUID, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)

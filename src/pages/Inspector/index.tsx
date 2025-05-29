@@ -1,5 +1,3 @@
-import { useParams } from 'react-router'
-import { useHandlePageLoad } from '../../helpers/hooks'
 import { useGetInspector } from './hooks'
 
 // Components
@@ -9,16 +7,12 @@ import InspectorContainer from '../../components/inspectors/containers/Inspector
 import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 
 function Inspector() {
-  useHandlePageLoad()
-
-  const { inspectorId } = useParams()
-
-  const { data, isSuccess } = useGetInspector(inspectorId)
+  const { data, isSuccess } = useGetInspector()
 
   return (
     <Layout>
       <HandleLoading isSuccess={isSuccess}>
-        <ErrorBoundary>
+        <ErrorBoundary href={'/sites'}>
           <InspectorContainer 
             sites={data?.data.sites || []}
             inspector={data?.data.inspector} />

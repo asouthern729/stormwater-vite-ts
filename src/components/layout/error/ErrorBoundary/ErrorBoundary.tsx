@@ -1,21 +1,14 @@
-import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary'
 
-// Types
-import { ErrorBoundaryProps } from './types'
-import AppContext from '../../../../context/App/AppContext'
+type ErrorBoundaryProps = { href: string, children: React.ReactNode }
 
-function ErrorBoundary({ children }: ErrorBoundaryProps) {
-  const { activePage } = useContext(AppContext)
-
+function ErrorBoundary(props: ErrorBoundaryProps) {
   const ErrorFallback = () => {
     const navigate = useNavigate()
 
     setTimeout(() => {
-      const href = activePage != 'Sites' ? '/' : '/login'
-
-      navigate(href)
+      navigate(props.href)
     }, (50))
 
     return null
@@ -28,7 +21,7 @@ function ErrorBoundary({ children }: ErrorBoundaryProps) {
         // Reset any state or perform any action on reset
       }}
     >
-      {children}
+      {props.children}
     </ReactErrorBoundary>
   )
 }

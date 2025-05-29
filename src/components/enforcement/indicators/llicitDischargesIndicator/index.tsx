@@ -1,12 +1,12 @@
 import icon from '@/assets/icons/discharge/discharge.svg'
 
 // Types
-import { IllicitDischargeInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import { Stats } from '../SiteViolationsIndicator/components'
 
-function IllicitDischargesIndicator({ discharges }: { discharges: IllicitDischargeInterface[] }) {
+function IllicitDischargesIndicator({ discharges }: { discharges: AppTypes.IllicitDischargeInterface[] }) {
 
   return (
     <div className="indicator bg-neutral text-neutral-content p-4 w-fit h-fit">

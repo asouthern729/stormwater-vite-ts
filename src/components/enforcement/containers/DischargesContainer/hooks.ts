@@ -1,5 +1,6 @@
 import { useContext, useMemo } from "react"
 import EnforcementCtx from "../../context"
+import { useSetTotalPages } from "../ViolationsContainer/hooks"
 
 // Types
 import { IllicitDischargeInterface } from "@/context/App/types"
@@ -7,6 +8,8 @@ import { IllicitDischargesTableDataType } from "./components"
 
 export const useHandleDischargesTableData = (discharges: IllicitDischargeInterface[]) => { // Illciit discharges table data
   const { currentPage } = useContext(EnforcementCtx)
+
+  useSetTotalPages(discharges.length)
 
   return useMemo(() => {
       const allViolations: IllicitDischargesTableDataType[] = discharges.map(discharge => ({

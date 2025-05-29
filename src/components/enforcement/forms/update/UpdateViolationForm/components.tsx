@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form'
 import styles from '../../Forms.module.css'
 
 // Types
-import { ConstructionViolationCreateInterface, IllicitDischargeCreateInterface, ComplaintCreateInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 export const CheckboxInputs = () => {
 
@@ -15,7 +15,7 @@ export const CheckboxInputs = () => {
 }
 
 const ComplianceCheckbox = () => { // Compliance checkbox
-  const methods = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+  const methods = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
 
   return (
     <div className="flex flex-col gap-1 items-center">
@@ -29,7 +29,7 @@ const ComplianceCheckbox = () => { // Compliance checkbox
 }
 
 const ClosedCheckbox = () => { // Closed checkbox
-  const methods = useFormContext<ConstructionViolationCreateInterface|IllicitDischargeCreateInterface|ComplaintCreateInterface>()
+  const methods = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
 
   return (
     <div className="flex flex-col gap-1 items-center">

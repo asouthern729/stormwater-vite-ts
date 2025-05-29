@@ -1,10 +1,10 @@
 import { useRef, memo } from 'react'
 import { useScrollToFormRef } from '@/helpers/hooks'
-import { useHandleViolationsTableData } from './hooks'
+import { useHandleViolationsTableData, useResetCtx } from './hooks'
 import styles from './ViolationsContainer.module.css'
 
 // Types
-import { ConstructionViolationInterface } from '@/context/App/types'
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import SiteViolationsIndicator from '../../indicators/SiteViolationsIndicator'
@@ -12,12 +12,13 @@ import DateRangeFilter from '../../filters/DateRangeFilter'
 import GetViolation from '@/components/enforcement/forms/get/GetViolation'
 import * as Components from './components'
 
-function ViolationsContainer({ violations }: { violations: ConstructionViolationInterface[] }) {
+function ViolationsContainer({ violations }: { violations: AppTypes.ConstructionViolationInterface[] }) {
   const formRef = useRef<HTMLDivElement>(null)
 
   useScrollToFormRef(formRef)
-
   const tableData = useHandleViolationsTableData(violations)
+
+  useResetCtx()
 
   return (
     <div className="flex flex-col gap-10">

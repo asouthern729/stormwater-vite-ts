@@ -12,7 +12,7 @@ import pinIcon from '@assets/icons/pin/warning-pin.svg'
 import { useEnableQuery } from "@/helpers/hooks"
 import EnforcementCtx from "@/components/enforcement/context"
 import { errorPopup } from "@/utils/Toast/Toast"
-import { getInspectors } from "@/context/App/AppActions"
+import * as AppActions from '@/context/App/AppActions'
 import { authHeaders } from "@/helpers/utils"
 import { handleCreateIllicitDischarge } from "./utils"
 
@@ -57,7 +57,7 @@ export const useCreateIllicitDischargeFormContext = () => { // CreateSiteIllicit
 export const useSetInspectorOptions = () => { // Return inspectors and set <select> options
   const { enabled, token } = useEnableQuery()
 
-  const result = useQuery('getInspectors', () => getInspectors(authHeaders(token)), { enabled })
+  const result = useQuery('getInspectors', () => AppActions.getInspectors(authHeaders(token)), { enabled })
 
   if(result.data?.success) {
     const inspectors = result.data.data
@@ -70,11 +70,37 @@ export const useSetInspectorOptions = () => { // Return inspectors and set <sele
 
 export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivElement>) => {
   const [state, setState] = useState<{ view: __esri.MapView | null }>({ view: null })
-  const { setValue, watch } = useFormContext<IllicitDischargeCreateInterface>()
 
-  const xCoordinate = watch('xCoordinate')
-  const yCoordinate = watch('yCoordinate')
-  
+  useCreateMapView(mapRef, setState)
+  useSetMapGraphics(state)
+
+  return state.view
+}
+
+export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(EnforcementCtx)
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  return useCallback((formData: IllicitDischargeCreateInterface) => {
+    if(!enabled || !token) {
+      return
+    }
+
+    handleCreateIllicitDischarge(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries('getIllicitDischarges')
+        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
+}
+
+const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null }>>) => {
+  const { setValue } = useFormContext<IllicitDischargeCreateInterface>()
+
   useEffect(() => {
     if(!mapRef?.current) return
 
@@ -87,7 +113,7 @@ export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivEle
       ui: { components: [] }
     })
 
-    const pointGraphicsLayer = new GraphicsLayer()
+    const pointGraphicsLayer = new GraphicsLayer({ id: 'pointGraphicsLayer' })
     map.add(pointGraphicsLayer)
 
     setState({ view: mapView })
@@ -102,6 +128,13 @@ export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivEle
       mapView.destroy()
     }
   }, [mapRef, setValue])
+}
+
+const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
+  const { watch } = useFormContext<IllicitDischargeCreateInterface>()
+
+  const xCoordinate = watch('xCoordinate')
+  const yCoordinate = watch('yCoordinate')
 
   useEffect(() => {
     if(!state.view || !xCoordinate || !yCoordinate) return
@@ -140,27 +173,4 @@ export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivEle
 
     pointGraphicsLayer.addMany([graphic, label])
   }, [state.view, xCoordinate, yCoordinate])
-
-  return state.view
-}
-
-export const useHandleFormSubmit = () => { // Handle form submit
-  const { dispatch } = useContext(EnforcementCtx)
-
-  const { enabled, token } = useEnableQuery()
-
-  const queryClient = useQueryClient()
-
-  return useCallback((formData: IllicitDischargeCreateInterface) => {
-    if(!enabled || !token) {
-      return
-    }
-
-    handleCreateIllicitDischarge(formData, token)
-      .then(_ => {
-        queryClient.invalidateQueries('getIllicitDischarges')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
-      })
-      .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
 }
