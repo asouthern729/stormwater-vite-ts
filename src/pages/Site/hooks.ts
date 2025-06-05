@@ -1,14 +1,13 @@
 import { useParams } from "react-router"
 import { useQuery } from "react-query"
-import { getSite } from "../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../helpers/hooks"
+import { useEnableQuery } from "@/helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
+import * as AppActions from '@/context/App/AppActions'
 
 export const useGetSite = () => { // Get site data by uuid
-  const { isAuthenticated, isLoading } = useValidateUser()
+  const { uuid } = useParams<{ uuid: string }>()
 
-  const { uuid } = useParams()
+  const { enabled, token } = useEnableQuery()
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
-
-  return useQuery(['getSite', uuid], () => getSite(uuid || ''), { enabled: enabled && !!uuid })
+  return useQuery(['getSite', uuid], () => AppActions.getSite(uuid as string, authHeaders(token)), { enabled: enabled && !!uuid })
 }

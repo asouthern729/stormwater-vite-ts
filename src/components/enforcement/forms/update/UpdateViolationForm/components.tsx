@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
 import * as AppTypes from '@/context/App/types'

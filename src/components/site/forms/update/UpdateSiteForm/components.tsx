@@ -1,20 +1,14 @@
 import { useUpdateSiteFormContext } from './hooks'
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
-import { Site } from "../../../../../context/App/types"
+import * as AppTypes from '@/context/App/types'
 
-// Components
-import MapContainer from "../../../../map/MapContainer"
-
-export const Map = ({ site }: { site: Site }) => { // Map input
+export const Map = ({ site }: { site: AppTypes.SiteInterface }) => { // Map input
 
   return (
     <div className={styles.mapDiv}>
-      <MapContainer
-        sites={[site]}
-        type={'update'}
-        zoom={16} />
+      {/* TODO create Site map */}
     </div>
   )
 }

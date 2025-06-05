@@ -1,27 +1,25 @@
 import { useCreateContactFormContext } from './hooks'
-import { handleRequiredFieldValidation } from './utils'
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Components
-import FormLabel from '../../../../form-elements/FormLabel/FormLabel'
-import FormError from '../../../../form-elements/FormError'
-import SaveBtn from '../../../../form-elements/buttons/SaveBtn/SaveBtn'
-import CancelBtn from '../../../../form-elements/buttons/CancelBtn/CancelBtn'
+import FormLabel from '@/components/form-elements/FormLabel'
+import FormError from '@/components/form-elements/FormError'
 
 export const NameInput = () => { // Contact name input
-  const methods = useCreateContactFormContext()
+  const { register, formState: { errors } } = useCreateContactFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Contact Name:'}
           name={'name'}
-          required={true} />
+          required={true}>
+            Contact Name:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('name', {
+          { ...register('name', {
             required: 'Contact name is required',
             maxLength: {
               value: 50,
@@ -31,28 +29,26 @@ export const NameInput = () => { // Contact name input
               value: /^[A-Za-z\s]+$/,
               message: 'No special characters or numbers'
             },
-            onChange: () => methods.trigger('name'),
-            onBlur: () => handleRequiredFieldValidation('name', { watch: methods.watch, trigger: methods.trigger })
           }) } />
       </div>
-      <FormError field={'name'} />
+      <FormError error={errors.name?.message} />
     </div>
   )
 }
 
 export const CompanyInput = () => { // Company input
-  const methods = useCreateContactFormContext()
+  const { register, formState: { errors } } = useCreateContactFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Company'}
-          name={'company'} />
+        <FormLabel name={'company'}>
+          Company:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('company', {
+          { ...register('company', {
             maxLength: {
               value: 50,
               message: 'Company must be 50 characters or less'
@@ -61,27 +57,36 @@ export const CompanyInput = () => { // Company input
               value: /^[A-Za-z\s]+$/,
               message: 'No special characters or numbers'
             },
-            onChange: () => methods.trigger('company')
           }) } />
       </div>
-      <FormError field={'company'} />
+      <FormError error={errors.company?.message} />
     </div>
   )
 }
 
-export const PhoneInput = () => { // Phone input
-  const methods = useCreateContactFormContext()
+export const PhoneAndEmailsInputs = () => {
+
+  return (
+    <div className="flex gap-2 w-full">
+      <PhoneInput />
+      <EmailInput />
+    </div>
+  )
+}
+
+const PhoneInput = () => { // Phone input
+  const { register, formState: { errors } } = useCreateContactFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Phone:'}
-          name={'phone'} />
+        <FormLabel name={'phone'}>
+          Phone:
+        </FormLabel>
         <input 
           type="tel"
           className={styles.input}
-          { ...methods.register('phone', {
+          { ...register('phone', {
             minLength: {
               value: 10,
               message: 'Required format ex: 6155506691'
@@ -94,27 +99,26 @@ export const PhoneInput = () => { // Phone input
               value: /^[0-9]{10}$/,
               message: 'Required format ex: 6155506691'
             },
-            onChange: () => methods.trigger('phone')
           }) } />
       </div>
-      <FormError field={'phone'} />
+      <FormError error={errors.phone?.message} />
     </div>
   )
 }
 
-export const EmailInput = () => { // Email input
-  const methods = useCreateContactFormContext()
+const EmailInput = () => { // Email input
+  const { register, formState: { errors } } = useCreateContactFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Email:'}
-          name={'email'} />
+        <FormLabel name={'email'}>
+          Email:
+        </FormLabel>
         <input 
           type="email"
           className={styles.input}
-          { ...methods.register('email', {
+          { ...register('email', {
             maxLength: {
               value: 50,
               message: 'Email must be 50 characters or less'
@@ -123,23 +127,9 @@ export const EmailInput = () => { // Email input
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: 'Required format ex: bin.franklin@franklintn.gov'
             },
-            onChange: () => methods.trigger('email')
           }) } />
       </div>
-      <FormError field={'email'} />
-    </div>
-  )
-}
-
-export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
-  const methods = useCreateContactFormContext()
-
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
-
-  return (
-    <div className={styles.buttonsContainer}>
-      <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={handleCloseForm} />
+      <FormError error={errors.email?.message} />
     </div>
   )
 }

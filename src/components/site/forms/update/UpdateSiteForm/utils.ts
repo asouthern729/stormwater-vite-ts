@@ -1,4 +1,3 @@
-import { handleSuccessfulFormSubmit} from "../../../../../helpers/hooks"
 import { updateSite, deleteSiteContacts, createSiteContact } from "../../../../../context/App/AppActions"
 import { addContact } from "../../create/CreateSiteForm/utils"
 import { errorPopup } from "../../../../../utils/Toast/Toast"

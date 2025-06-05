@@ -2,8 +2,8 @@ import { SitesProvider } from "@/components/sites/context"
 import { useGetSites } from "./hooks"
 
 // Components
-import Layout from "@/components/layout/Layout/Layout"
-import HandleLoading from '../../utils/HandleLoading/HandleLoading'
+import Layout from "@/components/layout/Layout"
+import HandleLoading from '../../utils/HandleLoading'
 import SitesContainer from "@/components/sites/containers/SitesContainer"
 import ErrorBoundary from "@/components/layout/error/ErrorBoundary/ErrorBoundary"
 

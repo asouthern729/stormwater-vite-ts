@@ -1,5 +1,5 @@
 // Types
-import { SiteForm } from "@/components/site/containers/SiteContainer/types"
+import { FormType } from "@/components/site/context"
 
 export interface CalendarDatesInterface {
   logsArray: CalendarDataInterface[]
@@ -8,6 +8,7 @@ export interface CalendarDatesInterface {
   followUpsArray: CalendarDataInterface[]
   penaltyArray: CalendarDataInterface[]
   illicitArray: CalendarDataInterface[]
+  swoArray: CalendarDataInterface[]
 }
 
 export type CalendarColors =
@@ -27,14 +28,5 @@ export interface CalendarDataInterface {
   color: CalendarColors
   uuid: string
   formUUID?: string
-  form?: SiteForm
+  form?: FormType
 }
-
-export type ActivityFilter =
-  | "Inspection"
-  | "Violation"
-  | "Illicit Discharge"
-  | "Complaint"
-  | "Follow Up"
-  | "Penalty"
-  | "SWO"

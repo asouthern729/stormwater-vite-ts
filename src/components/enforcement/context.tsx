@@ -11,6 +11,7 @@ type EnforcementCtx = {
     end: string
   }
   formUUID: string
+  selectedSite: string
   showClosedSiteIssues: boolean
   totalPages: number
 }
@@ -25,6 +26,7 @@ type EnforcementAction =
   | { type: 'RESET_DATE_RANGE_FILTER' }
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
+  | { type: 'SET_SELECTED_SITE', payload: string }
   | { type: 'RESET_CTX' }
 
 const initialState: EnforcementState = {
@@ -34,6 +36,7 @@ const initialState: EnforcementState = {
     end: ''
   },
   formUUID: '',
+  selectedSite: '',
   showClosedSiteIssues: true,
   totalPages: 1
 }
@@ -89,6 +92,11 @@ const enforcementReducer = (state: EnforcementState, action: EnforcementAction) 
       return {
         ...state,
         showClosedSiteIssues: !state.showClosedSiteIssues
+      }
+    case 'SET_SELECTED_SITE':
+      return {
+        ...state,
+        selectedSite: action.payload
       }
     case 'RESET_CTX':
       return initialState

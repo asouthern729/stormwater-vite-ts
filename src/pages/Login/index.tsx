@@ -1,16 +1,15 @@
-import styles from './Login.module.css'
-import { useRedirectAuthenticated } from './hooks'
+import { useRedirect } from '../Redirect/hooks'
 
 // Components
-import Layout from '../../components/layout/Layout/Layout'
-import LoginForm from '../../components/forms/login/LoginForm/LoginForm'
+import Layout from '@/components/layout/Layout'
+import LoginForm from '@/components/login/forms/LoginForm'
 
 function Login() {
-  useRedirectAuthenticated()
+  useRedirect('/sites')
 
   return (
     <Layout>
-      <div className={styles.container}>
+      <div className="flex flex-col my-10 mx-auto bg-neutral-content w-fit h-fit rounded-xl overflow-hidden">
         <LoginForm />
       </div>
     </Layout>

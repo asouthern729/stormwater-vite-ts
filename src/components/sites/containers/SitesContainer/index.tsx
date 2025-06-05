@@ -6,7 +6,7 @@ import styles from './SitesContainer.module.css'
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import MapLegend from '../../../map/MapLegend'
+import Search from '../../search/Search'
 import SitesTable from "../../tables/SitesTable"
 import SitesActivityCalendar from '../../calendar/SitesActivityCalendar'
 import * as Components from './components'
@@ -15,26 +15,25 @@ function SitesContainer({ sites }: { sites: AppTypes.SiteInterface[] }) {
   const tableData = useSetTableData(sites) 
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col my-10">
 
-      <div className={styles.topDiv}>
-        <div className="absolute flex gap-4 right-0">
+      <div className="flex justify-between w-full">
+        <Search />
+        <div className="flex gap-4 mb-6 ml-auto">
           <Components.ActiveSitesBtn />
           <Components.OpenIssuesBtn />
         </div>
       </div>
 
-      <div className={styles.mapDiv}>
-        <Components.Map sites={sites} />
-        <div className="absolute bottom-4 left-4 z-10">
-          <MapLegend sites={sites} />
+      <div className="flex flex-col gap-8 shadow-xl">
+        <div className={styles.mapDiv}>
+          <Components.Map sites={tableData} />
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <SitesTable tableData={tableData} />
+          </div>
         </div>
 
-        <SitesTable sites={tableData} />
-      </div>
-
-      <div className={styles.bottomDiv}>
-        <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
+        <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded shadow-xl">
           <h3 className={styles.header}>Sites Activity</h3>
 
           <SitesActivityCalendar sites={tableData} />

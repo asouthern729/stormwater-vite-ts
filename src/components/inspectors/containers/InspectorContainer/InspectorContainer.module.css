@@ -1,5 +1,3 @@
-@import '../../../animations.css';
-
 .container {
   display: flex;
   flex-direction: column;
@@ -13,17 +11,20 @@
 
 .header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--neutralContent);
-  font-family: 'Shrikhand', serif;
-  font-size: 2rem;
-  padding: 24px 0;
-  text-align: center;
+  justify-content: space-around;
+  gap: 12px;
+  color: var(--color-neutral-content);
+  font-family: 'Shrikhand', sans-serif;
+  font-size: 3rem;
+  font-weight: 500;
+  margin: auto;
+  width: fit-content;
+  transform: translateY(10px);
+  text-shadow: 4px 4px 0 var(--color-neutral);
 
   @media (min-width: 1920px) { /* Desktop */ 
-    font-size: 2.5rem;
-    padding: 32px 0;
+    font-size: 4rem;
+    text-shadow: 6px 6px 0 var(--color-neutral);
   }
 }
 
@@ -33,7 +34,6 @@
   justify-content: justify-around;
   align-items: end;
   width: 100%;
-  animation: fade-in-top 250ms linear;
 }
 
 .sitesTable {
@@ -48,10 +48,9 @@
   height: 90vh;
   overflow: hidden;
   border-radius: 12px;
-  background-color: var(--neutralContent);
+  background-color: var(--color-neutral-content);
   box-shadow: 8px 8px 4px rgba(0, 0, 0, .1);
   touch-action: none;
-  animation: fade-in-right 250ms linear;
 
   @media (min-width: 1920px) { /* Desktop */ 
     height: 80vh;
@@ -65,5 +64,12 @@
   gap: 60px;
   width: 100%;
   height: fit-content;
-  animation: fade-in-bottom 250ms linear;
+}
+
+.icon {
+  width: 40px;
+
+  @media (min-width: 1920px) { /* Desktop */ 
+    width: 60px;
+  }
 }

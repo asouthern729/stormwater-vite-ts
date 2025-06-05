@@ -1,8 +1,8 @@
 import { useGetContacts } from './hooks'
 
 // Components
-import Layout from '../../components/layout/Layout/Layout'
-import HandleLoading from '../../utils/HandleLoading/HandleLoading'
+import Layout from '../../components/layout/Layout'
+import HandleLoading from '../../utils/HandleLoading'
 import ContactsContainer from '../../components/contacts/containers/ContactsContainer'
 import { ContactsProvider } from '@/components/contacts/context'
 import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'

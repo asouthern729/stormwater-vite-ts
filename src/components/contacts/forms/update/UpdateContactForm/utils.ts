@@ -1,34 +1,15 @@
-import { handleSuccessfulFormSubmit } from "../../../../../helpers/hooks"
-import { updateContact } from "../../../../../context/App/AppActions"
-import { errorPopup } from "../../../../../utils/Toast/Toast"
+import * as AppActions from '@/context/App/AppActions'
+import { authHeaders } from '@/helpers/utils'
+import { errorPopup, savedPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { ContactObj } from "../../../../../context/App/types"
-import { HandleUpdateContactFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const handleUpdateContactFormSubmit = async (formData: HandleUpdateContactFormSubmitProps['formData'], options: HandleUpdateContactFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { handleCloseForm, invalidateQuery } = options
-
-  const contactObj: ContactObj = {
-    name: formData.name,
-    company: formData.company,
-    phone: formData.phone,
-    email: formData.email,
-    inactive: formData.inactive,
-    uuid: formData.uuid
-  }
-
-  const result = await updateContact(contactObj)
+export const handleUpdateContact = async (formData: AppTypes.ContactCreateInterface, token: string) => {
+  // TODO verify fn
+  const result = await AppActions.updateContact(formData, authHeaders(token))
 
   if(result.success) {
-    handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery, handleCloseForm })
+    savedPopup(result.msg)
   } else errorPopup(result.msg)
-}
-
-export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
-  const { watch, trigger } = options
-
-  if(!watch(field)) {
-    trigger(field)
-  }
 }

@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useContext } from "react"
 import { useLocation, Link } from "react-router"
+import { APP_TITLE } from '../../../config'
+import HeaderCtx from "./context"
 import { useReturnUserRoles } from '@/helpers/hooks'
 import { useGetInspectors } from './hooks'
 
@@ -13,30 +15,52 @@ import * as AppTypes from '@/context/App/types'
 // Components
 import NavDropdown from "../nav/NavDropdown"
 
-export const Buttons = () => {
-  const [state, setState] = useState<{ expanded: boolean }>({ expanded: true })
+export const Title = () => {
+  const pathname = useLocation().pathname
 
+  if(pathname === '/') { // Login page
+    return (
+      <div className="flex flex-col text-primary-content items-start">
+        <h1 className="text-2xl font-bold text-center">City of Franklin</h1>
+        <h2 className="text-xl ml-6 w-fit">{APP_TITLE}</h2>
+      </div>
+    )
+  }
+
+  return (
+    <Link to={'/sites'} className="flex flex-col text-primary-content items-start">
+      <h1 className="text-2xl font-bold text-center">City of Franklin</h1>
+      <h2 className="text-xl ml-6 w-fit">{APP_TITLE}</h2>
+    </Link>
+  )
+}
+
+export const Buttons = () => {
   const pathname = useLocation().pathname
 
   if(pathname === '/') return null // Hide on login page
 
   return (
     <div className="flex gap-4">
-      {state.expanded && (
-        <>
-          <HeaderLink href={'/sites'}>Sites</HeaderLink>
-          <HeaderLink href={'/contacts'}>Contacts</HeaderLink>
-          <InspectorsMenu />
-          <EnforcementMenu />
-          <CreateMenu />
-        </>
-      )}
-
-      <MenuBtn 
-        onClick={() => setState(prevState => ({ expanded: !prevState.expanded }))}
-        expanded={state.expanded} />
-
+      <ExpandedMenu />
+      <MenuBtn />
     </div>
+  )
+}
+
+const ExpandedMenu = () => {
+  const { expanded } = useContext(HeaderCtx)
+
+  if(!expanded) return null
+
+  return (
+    <>
+      <HeaderLink href={'/sites'}>Sites</HeaderLink>
+      <HeaderLink href={'/contacts'}>Contacts</HeaderLink>
+      <InspectorsMenu />
+      <EnforcementMenu />
+      <CreateMenu />
+    </>
   )
 }
 
@@ -73,7 +97,7 @@ const InspectorsMenu = () => {
 const InspectorMenuItem = ({ inspector }: { inspector: AppTypes.InspectorInterface }) => {
 
   return (
-    <li key={`inspector-${ inspector.uuid }`} className="hover:cursor-pointer hover:bg-neutral"><Link to={`/inspectors/${ inspector.slug }`}>{inspector.name}</Link></li>
+    <li key={`inspector-${ inspector.uuid }`}><Link to={`/inspectors/${ inspector.slug }`} className="hover:cursor-pointer hover:bg-neutral">{inspector.name}</Link></li>
   )
 }
 
@@ -82,9 +106,9 @@ const EnforcementMenu = () => {
   return (
     <NavDropdown label={'Enforcement'}>
       <>
-        <EnforcementMenuItem href={'/violations'}>Construction Violations</EnforcementMenuItem>
-        <EnforcementMenuItem href={'/complaints'}>Complaints</EnforcementMenuItem>
-        <EnforcementMenuItem href={'/discharges'}>Illicit Discharges</EnforcementMenuItem>
+        <EnforcementMenuItem href={'/enforcement/violations'}>Construction Violations</EnforcementMenuItem>
+        <EnforcementMenuItem href={'/enforcement/complaints'}>Complaints</EnforcementMenuItem>
+        <EnforcementMenuItem href={'/enforcement/discharges'}>Illicit Discharges</EnforcementMenuItem>
       </>
     </NavDropdown>
   )
@@ -102,7 +126,8 @@ const EnforcementMenuItem = (props: EnforcementMenuItemProps) => {
 const CreateMenu = () => {
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+  // TODO uncomment for prod
+  // if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
     <NavDropdown label={'Create'}>
@@ -123,17 +148,18 @@ type CreateMenuItemProps = { href: string, children: React.ReactNode }
 const CreateMenuItem = (props: CreateMenuItemProps) => {
 
   return (
-    <li><Link to={props.href}>{props.children}</Link></li>
+    <li><Link to={props.href} className="hover:cursor-pointer hover:bg-neutral">{props.children}</Link></li>
   )
 }
 
-const MenuBtn = ({ onClick, expanded }: { onClick: React.MouseEventHandler<HTMLButtonElement>, expanded: boolean }) => {
+const MenuBtn = () => {
+  const { expanded, dispatch } = useContext(HeaderCtx)
 
   return (
     <button 
       type="button"
-      className="flex flex-col justify-center w-16"
-      onClick={onClick}>
+      className="flex flex-col justify-center w-16 hover:cursor-pointer"
+      onClick={() => dispatch({ type: 'TOGGLE_EXPANDED' })}>
         <img src={!expanded ? icon : activeIcon} alt="menu icon" className="m-auto w-3/4" />
     </button>
   )

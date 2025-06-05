@@ -1,37 +1,48 @@
-import { useCallback } from "react"
+import { useCallback, useContext } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
-import { setDateForForm } from "../../../../../helpers/hooks"
-import { handleCreateMultipleSiteLogsFormSubmit } from './utils'
+import InspectorTableCtx from "@/components/inspectors/tables/InspectorTable/context"
+import { useEnableQuery } from "@/helpers/hooks"
+import { errorPopup } from "@/utils/Toast/Toast"
+import { handleCreateMultipleSiteLogs } from './utils'
 
-// Types
-import { UseFormReturn } from "react-hook-form"
-import { CreateMultipleSiteLogsFormUseForm, UseCreateMultipleSiteLogsFormProps } from "./types"
+export const useCreateMultipleSiteLogsForm = () => { // CreateMultipleSiteLogsForm useForm
+  const { selection } = useContext(InspectorTableCtx)
 
-export const useCreateMultipleSiteLogsForm = (siteIds: UseCreateMultipleSiteLogsFormProps['siteIds']): UseFormReturn<CreateMultipleSiteLogsFormUseForm> => { // CreateMultipleSiteLogsForm useForm
-
-  return useForm<CreateMultipleSiteLogsFormUseForm>({
+  return useForm<{ siteIds: string[], inspectionDate: string }>({
     defaultValues: {
-      siteIds,
-      inspectionDate: setDateForForm(new Date())
+      siteIds: selection,
+      inspectionDate: new Date().toISOString().split('T')[0]
     }
   })
 }
 
-export const useCreateMultipleSiteLogsFormContext = (): UseFormReturn<CreateMultipleSiteLogsFormUseForm> => { // CreateMultipleSiteLogsForm context
-  const methods = useFormContext<CreateMultipleSiteLogsFormUseForm>()
+export const useCreateMultipleSiteLogsFormContext = () => { // CreateMultipleSiteLogsForm context
+  const methods = useFormContext<{ siteId: string[], inspectionDate: string }>()
 
   return methods
 }
 
-export const useHandleFormSubmit = (inspectorId: string, handleCloseForm: () => void) => { // Handle form submit
+export const useOnCancelBtnClick = () => {
+  const { dispatch } = useContext(InspectorTableCtx)
+
+  return () => dispatch({ type: 'TOGGLE_FORM_OPEN' })
+}
+
+export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
+  const { slug } = useParams<{ slug: string }>()
+
   const queryClient = useQueryClient()
 
+  const { enabled, token } = useEnableQuery()
 
-  return useCallback((formData: CreateMultipleSiteLogsFormUseForm) =>
-    handleCreateMultipleSiteLogsFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries(['getInspector', inspectorId]),
-      handleCloseForm
-    }), [queryClient, handleCloseForm, inspectorId]
-  )
+  return useCallback((formData: { siteIds: string[], inspectionDate: string }) => {
+    if(!enabled || !token) return
+
+    handleCreateMultipleSiteLogs(formData, token)
+      .then(_ => queryClient.invalidateQueries(['getInspector', slug]))
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
 }

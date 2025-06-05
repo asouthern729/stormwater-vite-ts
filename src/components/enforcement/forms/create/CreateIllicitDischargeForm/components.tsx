@@ -1,13 +1,13 @@
 import { useRef } from "react"
 import { useCreateIllicitDischargeFormContext, useSetInspectorOptions, useSetIllicitDischargeMapView } from "./hooks"
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
-import { SiteInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 import { StreamWatershedEnum } from "./types"
 
 // Components
-import FormLabel from "@/components/form-elements/FormLabel/FormLabel"
+import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
 export const Map = ({ visible }: { visible: boolean }) => {
@@ -24,7 +24,7 @@ export const Map = ({ visible }: { visible: boolean }) => {
   )
 }
 
-export const DateAndInspectorInputs = ({ site }: { site: SiteInterface | string | null }) => {
+export const DateAndInspectorInputs = ({ site }: { site: AppTypes.SiteInterface | undefined }) => {
 
   return (
     <div className="flex gap-3 w-full">

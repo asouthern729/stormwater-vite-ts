@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form"
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import FormLabel from "../../../../form-elements/FormLabel/FormLabel"
+import FormLabel from "@/components/form-elements/FormLabel"
 
 function CreateFollowUpForm({ index }: { index: number }) {
   const { register } = useFormContext<AppTypes.ConstructionViolationCreateInterface|AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
@@ -13,7 +13,7 @@ function CreateFollowUpForm({ index }: { index: number }) {
   return (
     <div className="flex w-full">
       <FormLabel name={`FollowUpDates.${ index }.followUpDate`}>
-        New Follow Up Date:
+        Date:
       </FormLabel>
       <input 
         type="date"

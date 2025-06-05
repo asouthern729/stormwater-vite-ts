@@ -1,7 +1,7 @@
 import { useGetViolation } from './hooks'
 
 // Components
-import HandleLoading from '@/utils/HandleLoading/HandleLoading'
+import HandleLoading from '@/utils/HandleLoading'
 import { Form } from './components'
 
 function GetViolation() {

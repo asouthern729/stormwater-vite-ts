@@ -2,15 +2,17 @@ import { useCallback } from "react"
 import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router"
 import { useForm, useFormContext } from "react-hook-form"
+import { useEnableQuery } from "@/helpers/hooks"
+import { errorPopup } from "@/utils/Toast/Toast"
 import { handleCreateInspectorFormSubmit } from './utils'
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { UpdateInspectorFormUseForm } from "../../update/UpdateInspectorForm/types"
-import { CreateInspectorFormUseForm } from "./types"
+import * as AppTypes from '@/context/App/types'
 
 export const useCreateInspectorForm = () => { // CreateInspectorForm useForm
-  return useForm<CreateInspectorFormUseForm>({
+
+  return useForm<AppTypes.InspectorCreateInterface>({
+    mode: 'onBlur',
     defaultValues: {
       name: '',
       email: ''
@@ -18,21 +20,30 @@ export const useCreateInspectorForm = () => { // CreateInspectorForm useForm
   })
 }
 
-export const useCreateInspectorFormContext = (): UseFormReturn<CreateInspectorFormUseForm> => { // CreateInspectorForm context
-  const methods = useFormContext<CreateInspectorFormUseForm|UpdateInspectorFormUseForm>()
+export const useCreateInspectorFormContext = () => { // CreateInspectorForm context
+  const methods = useFormContext<AppTypes.InspectorCreateInterface>()
 
   return methods
 }
 
-export const useHandleFormSubmit = (): (formData: CreateInspectorFormUseForm) => Promise<void> => { // Handle form submit
-  const queryClient = useQueryClient()
-
+export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
   const navigate = useNavigate()
 
-  return useCallback((formData: CreateInspectorFormUseForm) =>
-    handleCreateInspectorFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries('getInspectors'),
-      navigate: () => navigate('/')
-    }), [queryClient, navigate]
-  )
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  return useCallback((formData: AppTypes.InspectorCreateInterface) => {
+    if(!enabled || !token) {
+      return
+    }
+
+    handleCreateInspectorFormSubmit(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries('getInspectors')
+        navigate('/sites')
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
 }

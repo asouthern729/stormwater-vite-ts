@@ -1,15 +1,50 @@
-import { useQuery } from "react-query"
-import { getSiteLog } from "../../../../../context/App/AppActions"
-import { useValidateUser, useEnableQuery } from "../../../../../helpers/hooks"
+import { useState, useContext, useCallback } from "react"
+import { useQuery, useQueryClient } from "react-query"
+import { useParams } from "react-router"
+import SiteCtx from "@/components/site/context"
+import * as AppActions from '@/context/App/AppActions'
+import { useEnableQuery } from "@/helpers/hooks"
+import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { UseQueryResult } from "react-query"
-import { GetSiteLogResponse } from "../../../../../context/App/types"
+import { authHeaders } from "@/helpers/utils"
 
-export const useGetSiteLog = (uuid: string | undefined): UseQueryResult<GetSiteLogResponse> => { // Get site log
-  const { isAuthenticated, isLoading } = useValidateUser()
+export const useGetSiteLog = () => { // Get site log
+  const { formUUID } = useContext(SiteCtx)
 
-  const enabled = useEnableQuery(isAuthenticated, isLoading)
+  const { enabled, token } = useEnableQuery()
 
-  return useQuery(['getSiteLog', uuid], () => getSiteLog(uuid || ''), { enabled: enabled && !!uuid })
+  return useQuery(['getSiteLog', formUUID], () => AppActions.getSiteLog(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
+}
+
+export const useOnDeleteBtnClick = () => {
+  const { dispatch } = useContext(SiteCtx)
+
+  const [state, setState] = useState<{ active: boolean }>({ active: false })
+  const { formUUID } = useContext(SiteCtx)
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  const { uuid } = useParams<{ uuid: string }>()
+
+  const onClick = useCallback(async () => {
+    if(!state.active) {
+      setState({ active: true })
+      return
+    } 
+
+    if(enabled) {
+      const result = await AppActions.deleteSiteLog(formUUID, authHeaders(token))
+
+      if(result.success) {
+        savedPopup(result.msg)
+        queryClient.invalidateQueries(['getSite', uuid])
+        dispatch({ type: 'RESET_CTX' })
+      } else errorPopup(result.msg)
+    }
+  }, [state.active, enabled, token, formUUID, queryClient, uuid, dispatch])
+
+  return { onClick, active: state.active }
 }

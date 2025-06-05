@@ -1,37 +1,37 @@
-import { useContext } from "react"
 import { Controller } from "react-hook-form"
 import { Select } from "@mobiscroll/react"
-import AppContext from "../../../../../context/App/AppContext"
-import { useCreateSiteContactsFormContext } from './hooks'
-import styles from '../../Forms.module.css'
+import { useUpdateSiteContactsFormContext, useSetSiteContactOptions } from './hooks'
+import styles from '@/components/form-elements/Forms.module.css'
+
+// Types
+import { ContactOptionsType } from "./hooks"
 
 export const SiteContactsInputs = () => { // Site contacts inputs
+  const contactOptions = useSetSiteContactOptions()
 
   return (
     <div className="flex w-full flex-wrap">
-      <PrimaryContactSelect />
-      <ContractorsSelect />
-      <InspectorsSelect />
-      <OtherContactsSelect />
+      <PrimaryContactSelect contactOptions={contactOptions} />
+      <ContractorsSelect contactOptions={contactOptions} />
+      <InspectorsSelect contactOptions={contactOptions} />
+      <OtherContactsSelect contactOptions={contactOptions} />
     </div>
   )
 }
 
-const PrimaryContactSelect = () => { // Primary contact select
-  const { contactOptions } = useContext(AppContext)
-
-  const methods = useCreateSiteContactsFormContext()
+const PrimaryContactSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Primary contact select
+  const { control } = useUpdateSiteContactsFormContext()
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="primaryContact" className={styles.checkboxLabel}>Primary Contact:</label>
       <Controller
         name={'primaryContact'}
-        control={methods.control}
+        control={control}
         render={({ field }) => (
           <Select
             { ...field }
-            data={[ { text: '', value: '' }, ...contactOptions ]}
+            data={contactOptions}
             onChange={(event) => field.onChange(event.value)}
             filter={true} />
         )} />
@@ -39,17 +39,15 @@ const PrimaryContactSelect = () => { // Primary contact select
   )
 }
 
-const ContractorsSelect = () => { // Contractors select
-  const { contactOptions } = useContext(AppContext)
-
-  const methods = useCreateSiteContactsFormContext()
+const ContractorsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Contractors select
+  const { control } = useUpdateSiteContactsFormContext()
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="contractors" className={styles.checkboxLabel}>Contractors:</label>
       <Controller
         name={'contractors'}
-        control={methods.control}
+        control={control}
         render={({ field }) => (
           <Select
             { ...field }
@@ -62,17 +60,15 @@ const ContractorsSelect = () => { // Contractors select
   )
 }
 
-const InspectorsSelect = () => { // Site inspectors select
-  const { contactOptions } = useContext(AppContext)
-
-  const methods = useCreateSiteContactsFormContext()
+const InspectorsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Site inspectors select
+  const { control } = useUpdateSiteContactsFormContext()
 
   return (
     <div className="flex-1 flex flex-col text-center">
-      <label htmlFor="siteInspectors" className={styles.checkboxLabel}>Inspectors:</label>
+      <label htmlFor="inspectors" className={styles.checkboxLabel}>Inspectors:</label>
       <Controller
-        name={'siteInspectors'}
-        control={methods.control}
+        name={'inspectors'}
+        control={control}
         render={({ field }) => (
           <Select
             { ...field }
@@ -85,17 +81,15 @@ const InspectorsSelect = () => { // Site inspectors select
   )
 }
 
-const OtherContactsSelect = () => { // Other site contacts select
-  const { contactOptions } = useContext(AppContext)
-
-  const methods = useCreateSiteContactsFormContext()
+const OtherContactsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Other site contacts select
+  const { control } = useUpdateSiteContactsFormContext()
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="otherContacts" className={styles.checkboxLabel}>Other:</label>
       <Controller
         name={'otherContacts'}
-        control={methods.control}
+        control={control}
         render={({ field }) => (
           <Select
             { ...field }

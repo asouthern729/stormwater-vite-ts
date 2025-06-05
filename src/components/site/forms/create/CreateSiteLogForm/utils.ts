@@ -1,30 +1,15 @@
-import { handleSuccessfulFormSubmit } from "../../../../../helpers/hooks"
-import { createSiteLog } from "../../../../../context/App/AppActions"
-import { errorPopup } from "../../../../../utils/Toast/Toast"
+import * as AppActions from '@/context/App/AppActions'
+import { authHeaders } from '@/helpers/utils'
+import { errorPopup, savedPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { SiteLogObj } from "../../../../../context/App/types"
-import { HandleCreateSiteLogFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const handleCreateSiteLogFormSubmit = async (formData: HandleCreateSiteLogFormSubmitProps['formData'], options: HandleCreateSiteLogFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, handleCloseForm } = options
-
-  const siteLogObj: SiteLogObj = {
-    inspectionDate: formData.inspectionDate || '',
-    siteId: formData. siteId
-  }
-
-  const result = await createSiteLog(siteLogObj)
+export const handleCreateSiteLog = async (formData: AppTypes.SiteLogCreateInterface, token: string) => { // Handle form submit
+  // TODO verify fn
+  const result = await AppActions.createSiteLog(formData, authHeaders(token))
 
   if(result.success) {
-    handleSuccessfulFormSubmit(result.msg as string, { invalidateQuery, handleCloseForm })
+    savedPopup(result.msg)
   } else errorPopup(result.msg)
-}
-
-export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
-  const { watch, trigger } = options
-
-  if(!watch(field)) {
-    trigger(field)
-  }
 }

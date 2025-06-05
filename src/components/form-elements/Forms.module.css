@@ -7,7 +7,7 @@
 }
 
 .title {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-size: 3rem;
   font-family: 'Play', sans-serif;
   font-weight: 400;
@@ -16,20 +16,20 @@
 }
 
 .subtitle {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-size: 1.75rem;
   font-family: 'Play', sans-serif;
   font-weight: 400;
   text-align: center;
   padding: 12px 0;
-  border-bottom: 2px solid var(--warning);
-  background-color: var(--neutral);
+  border-bottom: 2px solid var(--color-warning);
+  background-color: var(--color-neutral);
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  color: var(--neutral);
+  color: var(--color-neutral);
   gap: 12px;
   width: 100%;
 }
@@ -51,7 +51,7 @@
 .label {
   display: flex;
   gap: 4px;
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Jura', sans-serif;
   font-optical-sizing: auto;
   font-weight: 800;
@@ -59,8 +59,8 @@
   width: 30%;
   min-width: fit-content;
   padding: 12px;
-  background-color: var(--b3);
-  border-bottom: 1px solid var(--neutralContent);
+  background-color: var(--color-neutral);
+  border-bottom: 1px solid var(--color-neutral-content);
   white-space: nowrap;
 
   @media (min-width: 1920px) { /* Desktop */ 
@@ -85,7 +85,7 @@
 }
 
 .checkboxLabel {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Jura', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
@@ -107,8 +107,8 @@
   font-weight: 800;
   font-size: 1rem;
   font-style: normal;
-  color: var(--warning);
-  background-color: var(--warningContent);
+  color: var(--color-warning);
+  background-color: var(--color-warning-content);
   padding: 4px;
   text-align: center;
   width: fit-content;

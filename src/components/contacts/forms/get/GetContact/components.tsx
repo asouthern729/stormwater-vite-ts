@@ -4,7 +4,7 @@ import { useHandleDeleteBtnClick } from "./hooks"
 import { ContactInterface } from "@/context/App/types"
 
 // Components
-import UpdateContactForm from "../../update/UpdateContactForm/UpdateContactForm"
+import UpdateContactForm from "../../update/UpdateContactForm"
 import DeleteBtn from "@/components/form-elements/buttons/DeleteBtn"
 
 export const Form = ({ contact }: { contact: ContactInterface | undefined }) => {
@@ -12,7 +12,7 @@ export const Form = ({ contact }: { contact: ContactInterface | undefined }) => 
 
   if(!contact) return null
 
-  const label = !active ? 'Delete Violation' : 'Confirm Delete'
+  const label = !active ? 'Delete Contact' : 'Confirm Delete'
 
   return (
     <div className="flex flex-col items-center">

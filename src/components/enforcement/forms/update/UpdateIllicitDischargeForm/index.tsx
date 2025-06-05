@@ -1,10 +1,10 @@
 import { FormProvider } from "react-hook-form"
 import { useOnCancelBtnClick } from "../../create/CreateViolationForm/hooks"
 import { useUpdateIllicitDischargeForm, useHandleFormSubmit } from './hooks'
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
-import { IllicitDischargeInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import FormBtns from "@/components/form-elements/buttons/FormBtns"
@@ -12,7 +12,7 @@ import { Map, DateAndInspectorInputs, LocationAndResponsiblePartyInputs, Details
 import { FollowUpInputs } from "../../create/CreateViolationForm/components"
 import { CheckboxInputs } from "../UpdateViolationForm/components"
 
-function UpdateIllicitDischargeForm({ illicitDischarge }: { illicitDischarge: IllicitDischargeInterface }) {
+function UpdateIllicitDischargeForm({ illicitDischarge }: { illicitDischarge: AppTypes.IllicitDischargeInterface }) {
   const methods = useUpdateIllicitDischargeForm(illicitDischarge)
 
   const handleFormSubmit = useHandleFormSubmit()

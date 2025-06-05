@@ -1,74 +1,66 @@
-import { useEffect, useContext, useMemo } from "react"
-import AppContext from "../../../../context/App/AppContext"
+import { memo } from 'react'
+import styles from './SiteContainer.module.css'
 
 // Types
-import { MouseEvent } from "react"
-import { ConstructionViolation, Complaint, IllicitDischarge } from "../../../../context/App/types"
-import { UseScrollToFormRefProps, SetIssuesObjProps, HandleSiteIssuesTableRowClickProps, SiteForm } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const useScrollToFormRef = (state: UseScrollToFormRefProps['state'], formRef: UseScrollToFormRefProps['formRef']): void => {
-  useEffect(() => { // Scroll to form if active
-    if(state.activeForm && formRef.current) {
-      setTimeout(() => {
-        if(formRef?.current) {
-          formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      }, 500)
-    } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [state.activeForm, formRef])
+// Components
+import SiteDetails from '../../details/SiteDetails'
+import SitesActivityCalendar from '@/components/sites/calendar/SitesActivityCalendar'
+import DateRangeFilter from '@/components/enforcement/filters/DateRangeFilter'
+import SiteIssuesTable from '../../tables/SiteIssuesTable/SiteIssuesTable'
+import SiteContactsTable from '../../tables/SiteContactsTable'
+import * as Components from './components'
+
+function SiteContainer({ site }: { site: AppTypes.SiteInterface }) {
+
+  return (
+    <div className="flex flex-col gap-10">
+      <Components.Header site={site} />
+      <div className={styles.container}>
+        <div className="flex flex-col gap-10 w-full 2xl:w-2/3">
+          <div className={styles.startDiv}>
+            <Components.Buttons />
+
+            <div className={styles.mapDiv}>
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+                <SiteDetails site={site} />
+              </div>
+              {/* TODO future Site Map */}
+            </div>
+
+          </div>
+          <SiteContactsTable siteContacts={site.SiteContacts || []} />
+        </div>
+        
+
+        <div className={styles.endDiv}>
+          <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded">
+            <h3 className={styles.header}>Site Activity</h3>
+
+            <SitesActivityCalendar sites={[site]} />
+          </div>
+
+          <div className={styles.violationsDiv}>
+            <h3 className={styles.header}>Site Issues</h3>
+
+            <Components.EnforcementIndicators site={site} />
+            <DateRangeFilter />
+
+            <div className="flex flex-col gap-3">
+              <Components.SiteIssuesCheckbox />
+            
+              <SiteIssuesTable site={site} />
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <Components.Form site={site} />
+        
+    </div>
+  )
 }
 
-export const useSetIssuesObj = (site: SetIssuesObjProps['site']): { violations: ConstructionViolation[], complaints: Complaint[], discharges: IllicitDischarge[] } => { // Set issues object used for issues btns / indicators
-  const { dateRangeFilter } = useContext(AppContext)
-
-  const issues = useMemo(() => {
-    const obj: { violations: ConstructionViolation[], complaints: Complaint[], discharges: IllicitDischarge[] } = {
-      violations: [],
-      complaints: [],
-      discharges: []
-    }
-  
-    if(dateRangeFilter.start && dateRangeFilter.end) { // Date range filter applied
-      const filterStart = new Date(dateRangeFilter.start)
-      const filterEnd = new Date(dateRangeFilter.end)
-  
-      obj.violations = site.ConstructionViolations.filter(violation => {
-        const date = new Date(violation.date)
-  
-        if(date >= filterStart && date <= filterEnd) {
-          return violation
-        }
-      })
-  
-      obj.complaints = site.Complaints.filter(complaint => {
-        const date = new Date(complaint.date)
-  
-        if(date >= filterStart && date <= filterEnd) {
-          return complaint
-        }
-      })
-  
-      obj.discharges = site.IllicitDischarges.filter(discharge => {
-        const date = new Date(discharge.date)
-  
-        if(date >= filterStart && date <= filterEnd) {
-          return discharge
-        }
-      })
-    } else {
-      obj.violations = site?.ConstructionViolations
-      obj.complaints = site?.Complaints
-      obj.discharges = site?.IllicitDischarges
-    }
-  
-    return obj
-  }, [site, dateRangeFilter.start, dateRangeFilter.end])
-
-  return issues  
-}
-
-export const handleSiteIssuesTableRowClick = (setState: HandleSiteIssuesTableRowClickProps['setState']) => (event: MouseEvent<HTMLTableRowElement>): void => { // Handle issues table row click
-  const { form, uuid } = event.currentTarget.dataset
-
-  setState(prevState => ({ ...prevState, activeForm: form as SiteForm, formUUID: uuid }))
-}
+export default memo(SiteContainer)

@@ -1,58 +1,67 @@
-import { useContext } from "react"
-import { useQueryClient } from "react-query"
-import InspectorsCtx from "../../context"
+import React, { useContext, useState } from "react"
+import SitesCtx from "@/components/sites/context"
+import { InspectorTableProvider } from "../../tables/InspectorTable/context"
 import { useReturnUserRoles } from '@/helpers/hooks'
-import { deleteInspector } from "@/context/App/AppActions"
+import pinWarningIcon from '@/assets/icons/pin/warning-pin.svg'
+import styles from './InspectorContainer.module.css'
 
 // Types
-import { RefObject, Dispatch, SetStateAction } from "react"
 import * as AppTypes from '@/context/App/types'
-import { InspectorContainerState } from "./types"
+import { FormProps } from "@/components/enforcement/containers/ViolationsContainer/components"
 
 // Components
 import SitesActivityCalendar from "../../../sites/calendar/SitesActivityCalendar"
-import InspectorTable from "../../tables/InspectorTable/InspectorTable"
+import InspectorTable from "../../tables/InspectorTable"
 import FormContainer from "../../../form-elements/FormContainer"
-import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm/UpdateInspectorForm"
-import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
-import UpdateBtn from "../../../form-elements/buttons/UpdateBtn/UpdateBtn"
+import UpdateBtn from "../../../form-elements/buttons/UpdateBtn"
 
-export const CalendarTable = ({ activeView, sitesArray }: { activeView: "calendar" | "table", sitesArray: AppTypes.SiteInterface[] }) => { // Calendar or table view
+export const Header = ({ inspector }: { inspector: AppTypes.InspectorInterface }) => {
+  const name = inspector.name.split(' ')[0]
 
-  if(activeView === 'calendar') { // Show calendar
-    return (
-      <SitesActivityCalendar sites={sitesArray} />
-    )
-  }
-
-  return <InspectorTable sites={sitesArray} /> // Show table
+  return (
+    <div className="flex-1 flex">
+      <div className={styles.header}>
+        {name}'s Sites
+        <img src={pinWarningIcon} alt="pin icon" className={styles.icon} />
+      </div>
+    </div>
+  )
 }
 
-export const Form = ({ state, formRef, setState, inspector }: { state: InspectorContainerState, formRef: RefObject<HTMLDivElement>, setState: Dispatch<SetStateAction<InspectorContainerState>>, inspector: InspectorInterface }) => { // Update inspector form
-  const { formUUID, deleteBtnActive } = state
+export const CalendarAndTable = ({ tableData }: { tableData: AppTypes.SiteInterface[] }) => {
+  const [state, setState] = useState<{ view: 'calendar' | 'table' }>({ view: 'calendar' })
 
-  const queryClient= useQueryClient()
+  return (
+    <>
+      <SwitchViewBtn onClick={() => setState(prevState => ({ view: prevState.view === 'calendar' ? 'table' : 'calendar' }))}>
+        Switch To { state.view === 'calendar' ? 'Table' : 'Calendar' } View
+      </SwitchViewBtn>
+      <Calendar 
+        visible={state.view === 'calendar'}
+        tableData={tableData} />
+      <Table
+        visible={state.view === 'table'}
+        tableData={tableData} />
+    </>
+  )
+}
 
+export const UpdateForm = (props: FormProps) => { // Update form
+  const { formUUID } = useContext(SitesCtx)
+  
   if(!formUUID) return null
 
   return (
-    <div ref={formRef}>
-      <FormContainer key={`violation-${ formUUID }`}>
-        <UpdateInspectorForm 
-          inspector={inspector}
-          handleCloseForm={() => setState(prevState => ({ ...prevState, formUUID: undefined }))} />
-        <div className="mx-auto">
-          <DeleteBtn
-            label={!deleteBtnActive ? 'Delete Inspector' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(inspector.inspectorId, deleteBtnActive, deleteInspector, { setState, handleCloseForm: () => setState({ deleteBtnActive: false, formUUID: undefined }), invalidateQuery: () => queryClient.invalidateQueries('getInspectors') })} />
-        </div>
+    <div ref={props.formRef}>
+      <FormContainer>
+        {props.children}
       </FormContainer>
     </div>
   )
 }
 
 export const UpdateInspectorBtn = ({ inspector }: { inspector: AppTypes.InspectorInterface }) => {
-  const { dispatch } = useContext(InspectorsCtx)
+  const { dispatch } = useContext(SitesCtx)
 
   const roles = useReturnUserRoles()
 
@@ -64,5 +73,35 @@ export const UpdateInspectorBtn = ({ inspector }: { inspector: AppTypes.Inspecto
         label={'Update Inspector'}
         handleClick={() => dispatch({ type: 'SET_FORM_UUID', payload: inspector.uuid })} />
     </div>
+  )
+}
+
+const SwitchViewBtn = ({ onClick, children }: { onClick: React.MouseEventHandler<HTMLButtonElement>, children: React.ReactNode }) => {
+
+  return (
+    <button 
+      type="button"
+      onClick={onClick}
+      className="text-neutral-content font-sans text-lg uppercase hover:text-warning">
+        {children}
+    </button>
+  )
+}
+
+const Calendar = ({ visible, tableData }: { visible: boolean, tableData: AppTypes.SiteInterface[] }) => {
+  if(!visible) return null
+
+  return (
+    <SitesActivityCalendar sites={tableData} />
+  )
+}
+
+const Table = ({ visible, tableData }: { visible: boolean, tableData: AppTypes.SiteInterface[] }) => {
+  if(!visible) return null
+
+  return (
+    <InspectorTableProvider>
+      <InspectorTable sites={tableData} />
+    </InspectorTableProvider>
   )
 }

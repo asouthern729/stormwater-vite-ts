@@ -4,10 +4,12 @@ import * as Components from './components'
 function Search() {
 
   return (
-    <div className="relative flex w-4/5 min-h-[50px] rounded-lg shadow-xl mr-auto">
+    <div className="flex items-center gap-2 rounded-lg mr-auto">
       <Components.Header />
-      <Components.SearchInput />
-      <Components.ClearBtn />
+      <div className="flex gap-2 h-[40px]">
+        <Components.SearchInput />
+        <Components.ClearBtn />
+      </div>
     </div>
   )
 }

@@ -7,3 +7,9 @@ export const handleContactsTableRowClick = (setState: HandleContactsTableRowClic
 
   setState(prevState => ({ ...prevState, formUUID: uuid }))
 }
+
+export const formatPhone = (phone: string) => {
+  if(!phone) return
+
+  return `${ phone.slice(0, 3) } ${ phone.slice(3, 6) } ${ phone.slice(6, 10) }`
+}

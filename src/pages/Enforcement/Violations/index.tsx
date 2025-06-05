@@ -2,8 +2,8 @@ import { EnforcementProvider } from '@/components/enforcement/context'
 import { useGetViolations } from './hooks'
 
 // Components
-import Layout from '../../../components/layout/Layout/Layout'
-import HandleLoading from '../../../utils/HandleLoading/HandleLoading'
+import Layout from '../../../components/layout/Layout'
+import HandleLoading from '../../../utils/HandleLoading'
 import ViolationsContainer from '../../../components/enforcement/containers/ViolationsContainer'
 import ErrorBoundary from '../../../components/layout/error/ErrorBoundary/ErrorBoundary'
 

@@ -2,50 +2,61 @@ import { useCallback } from "react"
 import { useNavigate } from "react-router"
 import { useForm, useFormContext } from "react-hook-form"
 import { useQueryClient } from "react-query"
-import { handleCreateSiteFormSubmit } from "./utils"
+import { useEnableQuery } from "@/helpers/hooks"
+import { handleCreateSite } from "./utils"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { UpdateSiteFormUseForm } from "../../update/UpdateSiteForm/types"
-import { CreateSiteFormUseForm } from "./types"
+import * as AppTypes from '@/context/App/types'
+import { errorPopup } from "@/utils/Toast/Toast"
 
-export const useCreateSiteForm = (): UseFormReturn<CreateSiteFormUseForm> => { // CreateSiteForm useForm state
-  return useForm<CreateSiteFormUseForm>({
+export const useCreateSiteForm = () => { // CreateSiteForm useForm state
+
+  return useForm<AppTypes.SiteCreateInterface>({
+    mode: 'onBlur',
     defaultValues: {
+      inspectorId: '',
       name: '',
+      preconDate: '',
       location: '',
       xCoordinate: undefined,
       yCoordinate: undefined,
-      inspectorId: null,
-      preconDate: '',
-      permit: null,
-      cof: null,
-      tnq: null,
+      permit: '',
+      cof: '',
+      tnq: '',
       greenInfrastructure: null,
-      inactive: null,
-      primaryContact: null,
-      contractors: [],
-      siteInspectors: [],
-      otherContacts: []
+      SiteContacts: [],
     }
   })
 }
 
-export const useCreateSiteFormContext = (): UseFormReturn<CreateSiteFormUseForm|UpdateSiteFormUseForm> => { // CreateSiteForm context
-  const methods = useFormContext<CreateSiteFormUseForm|UpdateSiteFormUseForm>()
+export const useCreateSiteFormContext = () => { // CreateSiteForm context
+  const methods = useFormContext<AppTypes.SiteCreateInterface>()
 
   return methods
 }
 
+export const useOnCancelBtnClick = () => {
+  const navigate = useNavigate()
+
+  return () => navigate('/sites')
+}
+
 export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
   const queryClient = useQueryClient()
 
   const navigate = useNavigate()
 
-  return useCallback((formData: CreateSiteFormUseForm) => 
-    handleCreateSiteFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries('getSites'),
-      navigate: () => navigate('/')
-    }), [queryClient, navigate]
-  )
+  const { enabled, token } = useEnableQuery()
+
+  return useCallback((formData: AppTypes.SiteCreateInterface) => {
+    if(!enabled || !token) return 
+
+    handleCreateSite(formData, token)
+      .then(uuid => {
+        queryClient.invalidateQueries('getSites')
+        navigate(`/sites/site/${ uuid }`)
+      })
+      .catch(err => errorPopup(err))
+  }, [queryClient, navigate, enabled, token])
 }

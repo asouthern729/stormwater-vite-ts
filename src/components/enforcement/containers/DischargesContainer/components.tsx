@@ -2,21 +2,23 @@ import { Link } from "react-router"
 import { useHandleTableRowClick } from "../ViolationsContainer/hooks"
 
 // Types
-import { IllicitDischargeInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import { ShowClosedCheckbox, PageNavBtns, CivilPenalty, Status } from "../ViolationsContainer/components"
 
-export type IllicitDischargesTableDataType = IllicitDischargeInterface & { siteUUID?: string, siteName?: string, primaryPermitee?: string }
+export type IllicitDischargesTableDataType = AppTypes.IllicitDischargeInterface & { siteUUID?: string, siteName?: string, primaryPermitee?: string }
 
 export const IllicitDischargesTable = ({ tableData }: { tableData: IllicitDischargesTableDataType[] }) => {
 
   return (
-    <div className="flex flex-col gap-6 items-center w-full">
+    <div className="flex flex-col font-[play] gap-6 items-center">
 
-      <div className="flex justify-between items-end w-full">
+      <div className="flex justify-between items-end mb-4 w-full">
         <ShowClosedCheckbox />
-        <PageNavBtns />
+        <div className="translate-y-7">
+          <PageNavBtns />
+        </div>
       </div>    
 
       <table className="table table-sm text-neutral-content">
@@ -32,12 +34,11 @@ const TableHeaders = () => {
 
   return (
     <thead>
-      <tr className="text-warning font-[play]">
+      <tr className="text-warning uppercase border-b-2 border-warning">
         <th>Date</th>
         <th>Site / Location</th>
-        <th>Primary Permitee / Responsible Party</th>
+        <th>Responsible Party / Primary Permitee</th>
         <th className="text-center">Civil Penalty</th>
-        <th className="text-center">SWO</th>
         <th className="text-center">Status</th>
       </tr>
     </thead>
@@ -61,24 +62,27 @@ const TableBody = ({ tableData }: { tableData: IllicitDischargesTableDataType[] 
 
 const TableRow = ({ illicit }: { illicit: IllicitDischargesTableDataType }) => {
   const handleTableRowClick = useHandleTableRowClick(illicit.uuid)
-  
+
   return (
-    <tr title={illicit.details} onClick={handleTableRowClick}>
-      <td>{illicit.date}</td>
-      <td className={"whitespace-nowrap hover:text-warning"}>
-        <LocationTableData illicit={illicit} />
-      </td>
-      <td>{illicit?.primaryPermitee}</td>
-      <CivilPenalty 
-        civilPenalty={{ date: illicit.penaltyDate, paymentReceived: illicit.paymentReceived }} />
-      <Status closed={illicit.closed} />
+    <tr 
+      title={illicit.details} 
+      onClick={handleTableRowClick}
+      className="border-b-1 border-neutral-content/50">
+        <td className="whitespace-nowrap">{illicit.date}</td>
+        <td className="whitespace-nowrap">
+          <LocationTableData illicit={illicit} />
+        </td>
+        <td>{illicit.primaryPermitee}</td>
+        <CivilPenalty 
+          civilPenalty={{ date: illicit.penaltyDate, paymentReceived: illicit.paymentReceived }} />
+        <Status closed={illicit.closed} />
     </tr>
   )
 }
 
 const LocationTableData = ({ illicit }: { illicit: IllicitDischargesTableDataType }) => {
   if(illicit.siteId) {
-    return <Link to={`/site/${ illicit?.siteUUID }`}>{illicit?.siteName}</Link>
+    return <Link to={`/site/${ illicit?.siteUUID }`} className="hover:text-warning">{illicit?.siteName}</Link>
   }
 
   return (

@@ -11,7 +11,7 @@
 }
 
 .label {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: "VT323", monospace;
   font-size: 1.35rem;
   text-align: center;
@@ -20,6 +20,6 @@
 }
 
 .option {
-  color: var(--neutralContent);
-  background-color: var(--neutral);
+  color: var(--color-neutral-content);
+  background-color: var(--color-neutral);
 }

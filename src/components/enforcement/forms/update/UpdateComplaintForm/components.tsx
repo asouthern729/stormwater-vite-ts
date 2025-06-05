@@ -1,5 +1,5 @@
 import { useCreateComplaintFormContext } from '../../create/CreateComplaintForm/hooks'
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 export const CheckboxInputs = () => {
 

@@ -1,31 +1,85 @@
-import { useContext } from "react"
+import { useContext, useCallback, useMemo, useEffect } from "react"
+import { useReturnUserRoles } from "@/helpers/hooks"
 import ContactsCtx from "../../context"
 
 // Types
-import { ContactInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
-export const useSetContactsTableData = (contacts: ContactInterface[]) => { // Set data for contacts table
-  const { searchValue } = useContext(ContactsCtx)
-  
+export const useHandleNavBtns = () => {
+  const { currentPage, totalPages, dispatch } = useContext(ContactsCtx)
+
+  const handlePrevBtn = useCallback(() => {
+    if(currentPage !== 1) {
+      dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage - 1 })
+    }
+  }, [currentPage])
+
+  const handleNextBtn = useCallback(() => {
+    if(currentPage !== totalPages) {
+      dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage + 1 })
+    }
+  }, [currentPage, totalPages])
+
+  const label = `Page ${ currentPage } / ${ totalPages }`
+
+  return { handlePrevBtn, handleNextBtn, label }
+}
+
+export const useHandleTableData = (contacts: AppTypes.ContactInterface[]) => {
+  const { currentPage, totalPages, searchValue } = useContext(ContactsCtx)
+
   useSetTotalPages(contacts.length)
 
-  let contactsArray: ContactInterface[] = []
+  let contactsArray: AppTypes.ContactInterface[]
 
-  if(searchValue) {
-    const regex = new RegExp(searchValue, 'i')
+  return useMemo(() => {
+    if(searchValue) {
+      const regex = new RegExp(searchValue, 'i')
 
-    contactsArray = contacts.filter(contact => 
-      Object.keys(contact).some(prop => 
-        ['name', 'company'].includes(prop) && regex.test(contact[prop] as string)
-      )
-    )
-  } else contactsArray = contacts
+      contactsArray = contacts.filter(contact => {
+        const searchableProps: (keyof AppTypes.ContactInterface)[] = ['name', 'company']
 
-  return contactsArray
+        return searchableProps.some(prop => {
+          const value = contact[prop]
+          return value && regex.test(value as string)
+        })
+      })
+    } else contactsArray = contacts
+
+    const startIndex = (currentPage - 1) * 50
+    const endIndex = currentPage * 50
+
+    return contactsArray.slice(startIndex, endIndex)
+  }, [contacts, currentPage, totalPages, searchValue])
+}
+
+export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
+  const { formUUID } = useContext(ContactsCtx)
+
+  useEffect(() => { // Scroll to form if active
+    if(formUUID && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [formUUID, formRef])
+}
+
+export const useOnTableRowClick = (uuid: string) => {
+  const { dispatch } = useContext(ContactsCtx)
+
+  const roles = useReturnUserRoles()
+
+  // TODO remove comment for prod
+  // if(!roles.includes('[task.write]')) {
+  //   return () => null
+  // }
+
+  return () => dispatch({ type: 'SET_FORM_UUID', payload: uuid })
 }
 
 const useSetTotalPages = (count: number) => { // Set total pages to ctx
   const { dispatch } = useContext(ContactsCtx)
 
-  dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 20) })
+  useEffect(() => {
+    dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 50) })
+  }, [])
 }

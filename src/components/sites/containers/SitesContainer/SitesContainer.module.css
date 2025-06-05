@@ -1,18 +1,5 @@
-@import '../../../animations.css';
-
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 100%;
-
-  @media (min-width: 1920px) { /* Desktop */ 
-    gap: 48px;
-  }
-}
-
 .header {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Shrikhand', serif;
   font-size: 2rem;
   padding: 24px 0;
@@ -22,15 +9,6 @@
     font-size: 2.5rem;
     padding: 32px 0;
   }
-}
-
-.topDiv {
-  position: relative;
-  display: flex;
-  justify-content: justify-around;
-  align-items: end;
-  width: 100%;
-  animation: fade-in-top 250ms linear;
 }
 
 .sitesTable {
@@ -45,7 +23,7 @@
   height: 80vh;
   overflow: hidden;
   border-radius: 12px;
-  background-color: var(--neutralContent);
+  background-color: transparent;
   box-shadow: 8px 8px 4px rgba(0, 0, 0, .1);
   touch-action: none;
   animation: fade-in-left 250ms linear;
@@ -53,14 +31,4 @@
   @media (min-width: 1920px) { /* Desktop */ 
     height: 70vh;
   }
-}
-
-.bottomDiv {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  width: 100%;
-  height: fit-content;
-  animation: fade-in-bottom 250ms linear;
 }

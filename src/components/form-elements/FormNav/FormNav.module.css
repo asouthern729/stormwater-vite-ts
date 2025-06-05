@@ -3,12 +3,12 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Play', sans-serif;
   font-weight: 500;
   font-size: 2rem;
   padding: 32px;
   padding-top: 12px;
   margin-top: 12px;
-  background-color: var(--neutral);
+  background-color: var(--color-neutral);
 }

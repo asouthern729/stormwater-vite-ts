@@ -14,7 +14,7 @@ export const DateRangeInputs = () => {
 export const ClearBtn = () => { // Clear date range filter button
   const { dateRangeFilter, dispatch } = useContext(EnforcementCtx)
 
-  if(!dateRangeFilter.start && !dateRangeFilter.end) return null
+  if(!dateRangeFilter.start || !dateRangeFilter.end) return null
 
   return (
     <ClearFilterBtn onClick={() => dispatch({ type: 'RESET_DATE_RANGE_FILTER' })}>
@@ -33,7 +33,7 @@ const StartInput = () => { // Date range filter start input
         id="start"
         type="date"
         value={start}
-        className="input input-warning"
+        className="input input-warning bg-neutral"
         onChange={(e) => dispatch({ type: 'SET_DATE_RANGE_FILTER_START', payload: e.currentTarget.value })} />
     </div>
   )
@@ -49,7 +49,7 @@ const EndInput = () => { // Date range filter start input
         id="end"
         type="date"
         value={end}
-        className="input input-warning"
+        className="input input-warning bg-neutral"
         onChange={(e) => dispatch({ type: 'SET_DATE_RANGE_FILTER_END', payload: e.currentTarget.value })} />
     </div>
   )
@@ -63,7 +63,7 @@ const ClearFilterBtn = (props: ClearFilterBtnProps) => {
     <button 
       type="button"
       onClick={props.onClick}
-      className="text-warning font-[play] uppercase p-3 py-2 w-fit hover:text-neutral hover:bg-warning">
+      className="btn btn-warning btn-outline font-[play] uppercase">
         {props.children}
     </button>
   )

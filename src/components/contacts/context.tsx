@@ -20,6 +20,7 @@ type ContactsAction =
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'SET_TOTAL_PAGES', payload: number }
   | { type: 'SET_CURRENT_PAGE', payload: number }
+  | { type: 'RESET_CTX' }
 
 const initialState: ContactsState = {
   currentPage: 1,
@@ -62,6 +63,8 @@ const contactsReducer = (state: ContactsState, action: ContactsAction) => {
         ...state,
         currentPage: action.payload
       }
+    case 'RESET_CTX':
+      return initialState 
     default:
       return state
   }

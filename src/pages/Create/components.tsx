@@ -1,19 +1,20 @@
-// Types
-import { CreateForm } from "./types"
+import { useSetFormType } from './hooks'
+
 
 // Components
-import GetSite from "../../components/site/forms/get/GetSite/GetSite"
+import GetSite from "../../components/enforcement/forms/get/GetSite"
 import FormContainer from "../../components/form-elements/FormContainer"
-import CreateInspectorForm from "../../components/inspectors/forms/create/CreateInspectorForm/CreateInspectorForm"
-import CreateContactForm from "../../components/contacts/forms/create/CreateContactForm/CreateContactForm"
-import CreateGreenViolationForm from "../../components/forms/create/CreateGreenViolationForm/CreateGreenViolationForm"
-import CreateSiteForm from "../../components/site/forms/create/CreateSiteForm/CreateSiteForm"
+import CreateInspectorForm from "../../components/inspectors/forms/create/CreateInspectorForm"
+import CreateContactForm from "../../components/contacts/forms/create/CreateContactForm"
+import CreateSiteForm from "../../components/site/forms/create/CreateSiteForm"
 
-export const Form = ({ form }: { form: CreateForm }) => { // Create form
+export const Form = () => { // Create form
+  const formType = useSetFormType()
+
   let element
 
-  if(['createViolation', 'createComplaint', 'createDischarge'].includes(form)) {
-    element = <GetSite form={form} />
+  if(['createViolation', 'createComplaint', 'createDischarge'].includes(formType)) {
+    element = <GetSite form={formType} />
     return element
   }
 
@@ -29,13 +30,6 @@ export const Form = ({ form }: { form: CreateForm }) => { // Create form
       element = (
         <FormContainer>
           <CreateContactForm />
-        </FormContainer>
-      )
-      break
-    case 'createGreen': // Create green infrastructure violation
-      element = (
-        <FormContainer>
-          <CreateGreenViolationForm />
         </FormContainer>
       )
       break

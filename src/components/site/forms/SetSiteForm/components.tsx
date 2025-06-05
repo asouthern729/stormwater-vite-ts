@@ -1,135 +1,97 @@
-import { useNavigate } from "react-router"
-import { useQueryClient } from "react-query"
-import { handleDeleteSiteBtnClick } from './utils'
+import { useContext } from "react"
+import SiteCtx from "../../context"
+import { useOnDeleteBtnClick } from './hooks'
 
 // Types
-import { MouseEvent, Dispatch, SetStateAction } from "react"
-import { Site } from "../../../../context/App/types"
-import { SiteForm, SiteContainerState } from "../../containers/SiteContainer/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import FormContainer from "../../../form-elements/FormContainer"
-import FormNav from "../../../form-elements/FormNav/FormNav"
-import UpdateSiteForm from "../update/UpdateSiteForm/UpdateSiteForm"
-import CreateSiteLogForm from "../create/CreateSiteLogForm/CreateSiteLogForm"
+import FormNav from "../../../form-elements/FormNav"
+import UpdateSiteForm from "../update/UpdateSiteForm"
+import CreateSiteLogForm from "../create/CreateSiteLogForm"
 import CreateViolationForm from "../../../enforcement/forms/create/CreateViolationForm"
-import CreateSiteComplaintForm from "../../../enforcement/forms/create/CreateComplaintForm"
-import CreateSiteIllicitDischargeForm from "../../../enforcement/forms/create/CreateIllicitDischargeForm"
-import GetSiteLog from "../get/GetSiteLog/GetSiteLog"
+import CreateComplaintForm from "../../../enforcement/forms/create/CreateComplaintForm"
+import CreateIllicitDischargeForm from "../../../enforcement/forms/create/CreateIllicitDischargeForm"
+import GetSiteLog from "../get/GetSiteLog"
 import GetViolation from "../../../enforcement/forms/get/GetViolation"
 import GetComplaint from "../../../enforcement/forms/get/GetComplaint"
 import GetIllicitDischarge from "../../../enforcement/forms/get/GetIllicitDischarge"
 import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
 
-export const Form = ({ state, setState, site }: { state: SiteContainerState, setState: Dispatch<SetStateAction<SiteContainerState>>, site: Site }) => { // Set form opened on site page
-  const { activeForm } = state
-  
-  const queryClient = useQueryClient()
+export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Set form opened on site page
+  const { activeForm } = useContext(SiteCtx)
 
-  const navigate = useNavigate()
 
   if(activeForm) {
     if(activeForm !== 'updateSite') { // Create site log, violation, complaint, and illicit discharge
       return (
         <FormContainer>
-          {activeForm.search('create') !== -1 && ( // Hide if ofrm is of update type
-            <FormNav 
-              activeForm={activeForm}
-              handleBtnClick={(e: MouseEvent<HTMLButtonElement>) => setState(prevState => ({ ...prevState, activeForm: e.currentTarget.value as SiteForm }))} />
-          )}
-          <SetForm
-            state={state}
-            setState={setState}
-            site={site} />
+          <FormNav />
+          <SetForm site={site} />
         </FormContainer>
       )
     }
 
-    return ( // Update site
-      <div className="flex flex-col items-center gap-8 w-full">
-        <FormContainer>
-          <UpdateSiteForm 
-            site={site} 
-            handleCancelBtnClick={() => setState(prevState => ({ ...prevState, activeForm: null }))} />
-        </FormContainer>
-        <DeleteBtn
-          label={!state.deleteBtnActive ? 'Delete Site' : 'Confirm Delete Site'}
-          handleClick={() => handleDeleteSiteBtnClick(site.uuid, state.deleteBtnActive, { setState, navigate, queryClient })} />
-      </div>
-    )
+    return <UpdateSite site={site} /> // Update site form
   }
 }
 
-const SetForm = ({ state, setState, site }: { state: SiteContainerState, setState: Dispatch<SetStateAction<SiteContainerState>>, site: Site }) => {
-  const handleCloseForm = () => {
-    setState(({ activeForm: null, formDate: undefined, deleteBtnActive: false, formUUID: undefined }))
-  }
+const UpdateSite = ({ site }: { site: AppTypes.SiteInterface }) => {
+  const { onClick, active } = useOnDeleteBtnClick()
 
-  let component
+  const label = !active ? 'Delete Site' : 'Confirm Delete Site'
+
+  return ( // Update site
+    <div className="flex flex-col items-center gap-8 w-full">
+      <FormContainer>
+        <UpdateSiteForm site={site} />
+      </FormContainer>
+      <DeleteBtn onClick={onClick}>
+        {label}
+      </DeleteBtn>
+    </div>
+  )
+}
+
+const SetForm = ({ site }: { site: AppTypes.SiteInterface }) => {
+  const { activeForm, formDate } = useContext(SiteCtx)
+
+  let component = null
   
-  switch(state.activeForm) {
+  switch(activeForm) {
     case 'createSiteLog':
-      component = (
-        <CreateSiteLogForm 
-          siteId={site.siteId}
-          date={state.formDate || ''}
-          handleCloseForm={handleCloseForm} />
-      )
+      component = <CreateSiteLogForm siteId={site.siteId} />
       break
-    case 'createSiteConstructionViolation':
-      component = (
-        <CreateViolationForm
-          site={site}
-          date={state.formDate || ''}
-          handleCloseForm={handleCloseForm} />
-      )
+    case 'createViolation':
+      component = <CreateViolationForm site={site} />
       break
-    case 'createSiteComplaint':
+    case 'createComplaint':
       component = (
-        <CreateSiteComplaintForm
+        <CreateComplaintForm
           site={site}
-          date={state.formDate || ''}
-          handleCloseForm={handleCloseForm} />
+          date={formDate} />
       )
       break
     case 'createIllicitDischarge':
       component = (
-        <CreateSiteIllicitDischargeForm
+        <CreateIllicitDischargeForm
           site={site}
-          date={state.formDate || ''}
-          handleCloseForm={handleCloseForm} />
+          date={formDate} />
       )
       break
     case 'updateSiteLog':
-      component = (
-        <GetSiteLog 
-          uuid={state.formUUID}
-          handleCloseForm={handleCloseForm} />
-      )
+      component = <GetSiteLog />
       break
-    case 'updateSiteConstructionViolation':
-      component = (
-        <GetViolation
-          uuid={state.formUUID}
-          handleCloseForm={handleCloseForm} />
-      )
+    case 'updateViolation':
+      component = <GetViolation />
       break
-    case 'updateSiteComplaint':
-      component = (
-        <GetComplaint
-          uuid={state.formUUID}
-          handleCloseForm={handleCloseForm} />
-      )
+    case 'updateComplaint':
+      component = <GetComplaint />
       break
     case 'updateIllicitDischarge':
-      component = (
-        <GetIllicitDischarge
-          uuid={state.formUUID}
-          handleCloseForm={handleCloseForm} />
-      )
+      component = <GetIllicitDischarge />
       break
-    default:
-      component = null
   }
 
   return component

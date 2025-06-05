@@ -1,12 +1,19 @@
+import { useContext, useCallback } from "react"
+import { useParams } from "react-router"
 import { useForm } from "react-hook-form"
+import { useQueryClient } from "react-query"
+import { useEnableQuery } from "@/helpers/hooks"
+import SitesCtx from "@/components/sites/context"
+import { errorPopup } from "@/utils/Toast/Toast"
+import { handleUpdateInspector } from './utils'
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { UpdateInspectorFormUseForm, UseUpdateInspectorFormUseFormProps } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const useUpdateInspectorForm = (inspector: UseUpdateInspectorFormUseFormProps['inspector']): UseFormReturn<UpdateInspectorFormUseForm> => { // UpdateInspectorForm useForm
+export const useUpdateInspectorForm = (inspector: AppTypes.InspectorInterface) => { 
   
-  return useForm<UpdateInspectorFormUseForm>({
+  return useForm<AppTypes.InspectorInterface>({
+    mode: 'onBlur',
     defaultValues: {
       name: inspector.name,
       email: inspector.email,
@@ -14,4 +21,28 @@ export const useUpdateInspectorForm = (inspector: UseUpdateInspectorFormUseFormP
       uuid: inspector.uuid
     }
   })
+}
+
+export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
+  const { dispatch } = useContext(SitesCtx)
+
+  const { slug } = useParams<{ slug: string}>()
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  return useCallback((formData: AppTypes.InspectorCreateInterface) => {
+    if(!enabled || !token) {
+      return
+    }
+
+    handleUpdateInspector(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries(['getInspector', slug])
+        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
 }

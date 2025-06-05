@@ -3,9 +3,10 @@ import * as AppActions from '@/context/App/AppActions'
 import { errorPopup, savedPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { IllicitDischargeCreateInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
-export const handleUpdateIllicitDischarge = async (formData: IllicitDischargeCreateInterface, token: string) => {
+export const handleUpdateIllicitDischarge = async (formData: AppTypes.IllicitDischargeCreateInterface, token: string) => {
+  // TODO verify fn
   const result = await AppActions.updateIllicitDischarge(formData, authHeaders(token))
 
   if(result.success) {

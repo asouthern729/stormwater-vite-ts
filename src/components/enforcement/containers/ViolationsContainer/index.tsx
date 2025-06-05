@@ -1,13 +1,11 @@
 import { useRef, memo } from 'react'
-import { useScrollToFormRef } from '@/helpers/hooks'
-import { useHandleViolationsTableData, useResetCtx } from './hooks'
-import styles from './ViolationsContainer.module.css'
+import { useHandleTableData, useResetCtx, useScrollToFormRef } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import SiteViolationsIndicator from '../../indicators/SiteViolationsIndicator'
+import SiteViolationsIndicator from '../../indicators/ViolationsIndicator'
 import DateRangeFilter from '../../filters/DateRangeFilter'
 import GetViolation from '@/components/enforcement/forms/get/GetViolation'
 import * as Components from './components'
@@ -16,17 +14,17 @@ function ViolationsContainer({ violations }: { violations: AppTypes.Construction
   const formRef = useRef<HTMLDivElement>(null)
 
   useScrollToFormRef(formRef)
-  const tableData = useHandleViolationsTableData(violations)
+  
+  const tableData = useHandleTableData(violations)
 
   useResetCtx()
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className={styles.container}>
+    <div className="flex flex-col my-10 gap-10 m-auto w-4/5 xl:w-3/4 2xl:w-2/3">
+      <div className="relative flex flex-col gap-11 p-20 pt-30 bg-neutral/10 shadow-xl">
         <Components.CreateBtn href={'/create?formType=createViolation'}>
           Create New Violation
         </Components.CreateBtn>
-        <h2 className={styles.header}>Construction Violations</h2>
 
         <div className="m-auto">
           <SiteViolationsIndicator violations={violations} />

@@ -1,24 +1,67 @@
-import { useContext } from "react"
 import { Link } from "react-router"
-import UserContext from "../../../context/User/UserContext"
+import { useReturnUserRoles } from "@/helpers/hooks"
+import { useHandleInspectorSiteSelection, useHandleCreateLogBtn } from './hooks'
 
 // Types
-import { Dispatch, RefObject, SetStateAction } from "react"
-import { InspectorTableState } from "./types"
-import { InspectorTableData } from "./types"
+import { InspectorTableData } from "./hooks"
 
 // Components
-import CreateSiteLogBtn from "../../../form-elements/buttons/CreateSiteLogBtn/CreateSiteLogBtn"
 import FormContainer from "../../../form-elements/FormContainer"
-import CreateMultipleSiteLogsForm from "../../../site/forms/create/CreateMultipleSiteLogsForm/CreateMultipleSiteLogsForm"
+import CreateMultipleSiteLogsForm from "../../../site/forms/create/CreateMultipleSiteLogsForm"
+import { useContext } from "react"
+import InspectorTableCtx from "./context"
 
-export const TableHeaders = () => {
-  const { user } = useContext(UserContext)
+export const Table = ({ tableData }: { tableData: InspectorTableData[] }) => {
+
+  return (
+    <table className="table table-sm text-neutral-content">
+      <TableHeaders />
+      <TableBody tableData={tableData} />
+    </table>
+  )
+}
+
+export const CreateLogBtn = () => { // Create site log button
+  const { label, onClick } = useHandleCreateLogBtn()
+
+  if(!label) return null
+
+  return (
+    <div className="mx-auto mt-2">
+      <button 
+        type="button"
+        className="btn btn-primary uppercase"
+        onClick={onClick}>
+          {label}
+    </button>
+  )
+    </div>
+  )
+}
+
+export const Form = ({ formRef }: { formRef: React.RefObject<HTMLDivElement> }) => { // Site log form
+  const { formOpen } = useContext(InspectorTableCtx)
+
+  if(!formOpen) return null
+
+  return (
+    <div ref={formRef} className="w-full">
+      <FormContainer>
+        <CreateMultipleSiteLogsForm  />
+      </FormContainer>
+    </div>
+  )
+}
+
+const TableHeaders = () => {
+  const roles = useReturnUserRoles()
+
+  const showBtn = !roles.includes('[task.write]')
 
   return (
     <thead>
       <tr>
-        <th className={`${ user?.role === 'Viewer' ? 'hidden' : undefined }`}>Create Site Log</th>
+        <th className={`${ !showBtn ? 'hidden' : undefined }`}>Create Site Log</th>
         <th>Site</th>
         <th>Jan</th>
         <th>Feb</th>
@@ -37,19 +80,7 @@ export const TableHeaders = () => {
   )
 }
 
-export const CreateLogBtn = ({ selected, handleClick }: { selected: number, handleClick: () => void }) => { // Create site log button
-  if(selected === 0) return null
-
-  return (
-    <div className="mx-auto mt-2">
-      <CreateSiteLogBtn 
-        selected={selected}
-        handleClick={handleClick} />
-    </div>
-  )
-}
-
-export const TableBody = ({ tableData, selection, setState }: { tableData: InspectorTableData[], selection: string[], setState: Dispatch<SetStateAction<InspectorTableState>> }) => { // Inspector table body
+const TableBody = ({ tableData }: { tableData: InspectorTableData[] }) => { // Inspector table body
 
   return (
     <>
@@ -57,40 +88,37 @@ export const TableBody = ({ tableData, selection, setState }: { tableData: Inspe
         return (
           <TableRow
             key={`inspector-table-row-${ row.siteId }`}
-            row={row}
-            selected={selection.includes(row.siteId)}
-            selection={selection}
-            setState={setState} />
+            row={row} />
         )
       })}
     </>
   )
 }
 
-export const Form = ({ visible, formRef, selection, handleCloseForm }: { visible: boolean, formRef: RefObject<HTMLDivElement>, selection: string[], handleCloseForm: () => void }) => { // Site log form
-  if(!visible) return null
-
-  return (
-    <div ref={formRef} className="w-full">
-      <FormContainer>
-        <CreateMultipleSiteLogsForm 
-          siteIds={selection}
-          handleCloseForm={handleCloseForm} />
-      </FormContainer>
-    </div>
-  )
-}
-
-const TableRow = ({ row, selected, selection, setState }: { row: InspectorTableData, selected: boolean, selection: string[], setState: Dispatch<SetStateAction<InspectorTableState>> }) => {
+const TableRow = ({ row }: { row: InspectorTableData }) => {
 
   return (
     <tr>
+      <CreateSiteLogColumn uuid={row.uuid} />
+      <SiteNameColumn row={row} />
+      <InspectionDatesColumn row={row} />
+    </tr>
+  )
+}
 
-      <CreateSiteLogColumn
-        selected={selected}
-        onChange={() => setState(prevState => selected ? { ...prevState, selection: selection.filter(siteId => siteId !== row.siteId) } : { ...prevState, selection: [ ...prevState.selection, row.siteId] })} />
+const SiteNameColumn = ({ row }: { row: InspectorTableData }) => {
 
-      <td className="w-fit hover:text-warning"><Link to={`/site/${ row.uuid }`}>{row.site}</Link></td>
+  return (
+    <td className="w-fit hover:text-warning">
+      <Link to={`/sites/site/${ row.uuid }`}>{row.site}</Link>
+    </td>
+  )
+}
+
+const InspectionDatesColumn = ({ row }: { row: InspectorTableData }) => {
+
+  return (
+    <>
       {Array.from({ length: 12 }).map((_, index) => {
         return (
           <td>
@@ -108,23 +136,22 @@ const TableRow = ({ row, selected, selection, setState }: { row: InspectorTableD
                 }
 
                 return 0
-              }).map(x => {
-                return (
-                  <small>{x}</small>
-                )
-              })}
+              }).map(x => <small>{x}</small>)
+              }
             </div>
           </td>
         )
       })}
-    </tr>
+    </>
   )
 }
 
-const CreateSiteLogColumn = ({ selected, onChange }: { selected: boolean, onChange: () => void }) => {
-  const { user } = useContext(UserContext)
+const CreateSiteLogColumn = ({ uuid }: { uuid: string }) => {
+  const { handleOnChange, selected } = useHandleInspectorSiteSelection(uuid)
 
-  if(user?.role === 'Viewer') return null
+  const roles = useReturnUserRoles()
+
+  if(!roles.includes('[task.write]')) return null
 
   return (
     <td className="flex flex-col items-center">
@@ -132,7 +159,7 @@ const CreateSiteLogColumn = ({ selected, onChange }: { selected: boolean, onChan
         type="checkbox" 
         className="checkbox checkbox-secondary"
         checked={selected}
-        onChange={onChange} />
+        onChange={handleOnChange} />
     </td>
   )
 }

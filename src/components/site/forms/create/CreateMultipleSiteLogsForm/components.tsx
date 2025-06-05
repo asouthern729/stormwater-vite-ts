@@ -1,44 +1,29 @@
 import { useCreateMultipleSiteLogsFormContext } from "./hooks"
-import styles from '../../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Components
-import FormLabel from "../../../../form-elements/FormLabel/FormLabel"
-import FormError from "../../../../form-elements/FormError"
-import SaveBtn from "../../../../form-elements/buttons/SaveBtn/SaveBtn"
-import CancelBtn from "../../../../form-elements/buttons/CancelBtn/CancelBtn"
+import FormLabel from "@/components/form-elements/FormLabel"
+import FormError from "@/components/form-elements/FormError"
 
 export const DateInput = () => { // Inspection date input
-  const methods = useCreateMultipleSiteLogsFormContext()
+  const { register, formState: { errors } } = useCreateMultipleSiteLogsFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Inspection Date:'}
           name={'inspectionDate'}
-          required={true} />
+          required={true}>
+            Inspection Date:
+        </FormLabel>
         <input 
           type="date"
           className={styles.input}
-          { ...methods.register('inspectionDate', {
-            required: 'Inspection date is required',
-            onBlur: () => methods.trigger('inspectionDate')
+          { ...register('inspectionDate', {
+            required: 'Inspection date is required'
           }) } />
       </div>
-      <FormError field={'inspectionDate'} />
-    </div>
-  )
-}
-
-export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
-  const methods = useCreateMultipleSiteLogsFormContext()
-
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
-
-  return (
-    <div className={styles.buttonsContainer}>
-      <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={handleCloseForm} />
+      <FormError error={errors.inspectionDate?.message} />
     </div>
   )
 }

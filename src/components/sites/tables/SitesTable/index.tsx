@@ -7,12 +7,12 @@ import * as AppTypes from '@/context/App/types'
 // Components
 import { TableBody } from './components'
 
-function SitesTable({ sites }: { sites: AppTypes.SiteInterface[] }) {
+function SitesTable({ tableData }: { tableData: AppTypes.SiteInterface[] }) {
 
   return (
-    <div data-testid="sites-table" className={styles.container}>
+    <div className={styles.container}>
       <table className="bg-neutral-content">
-        <TableBody sites={sites} />
+        <TableBody sites={tableData} />
       </table>
     </div>
   )

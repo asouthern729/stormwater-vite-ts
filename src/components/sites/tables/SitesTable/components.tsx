@@ -1,16 +1,15 @@
-import { useContext } from "react"
-import SitesCtx from "@/components/sites/context"
+import { useState } from "react"
 import { setTableDataStyle } from "./utils"
 import { useOnTableRowClick } from './hooks'
 import styles from './SitesTable.module.css'
 
 // Types
-import { SiteInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
-import SiteDetails from "../../../site/SiteDetails/SiteDetails"
+import SiteDetails from "@/components/site/details/SiteDetails"
 
-export const TableBody = ({ sites }: { sites: SiteInterface[] }) => { // Sites table body
+export const TableBody = ({ sites }: { sites: AppTypes.SiteInterface[] }) => { // Sites table body
 
   return (
     <tbody>
@@ -26,7 +25,7 @@ export const TableBody = ({ sites }: { sites: SiteInterface[] }) => { // Sites t
   )
 }
 
-const TableRow = ({ site, index }: { site: SiteInterface, index: number }) => {
+const TableRow = ({ site, index }: { site: AppTypes.SiteInterface, index: number }) => {
   const onTableRowClick = useOnTableRowClick(site.uuid)
 
   return (
@@ -36,17 +35,18 @@ const TableRow = ({ site, index }: { site: SiteInterface, index: number }) => {
   )
 }
 
-const TableData = ({ site }: { site: SiteInterface }) => {
-  const { dispatch } = useContext(SitesCtx)
+const TableData = ({ site }: { site: AppTypes.SiteInterface }) => {
+  const [state, setState] = useState<{ hovered: boolean }>({ hovered: false })
 
   return (
-    <td className="p-2">
-      <div className="flex flex-col gap-6 p-4 w-full">
-        <div 
-          className={styles.name}
-          onMouseEnter={() => dispatch({ type: 'SET_HOVERED_SITE', payload: site.uuid })}
-          onMouseLeave={() => dispatch({ type: 'SET_HOVERED_SITE', payload: '' })}>{site.name}</div>
-        <SiteDetails site={site} />
+    <td 
+      onMouseEnter={() => setState({ hovered: true })}
+      onMouseLeave={() => setState({ hovered: false })}>
+      <div className="flex flex-col gap-3 p-4 w-full">
+        <span className={styles.name}>{site.name}</span>
+        <SiteDetails 
+          site={site}
+          hovered={state.hovered} />
       </div>
     </td>
   )

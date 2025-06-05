@@ -25,10 +25,10 @@ export interface SiteInterface extends BaseInterface {
   IllicitDischarges?: IllicitDischargeInterface[]
   SiteContacts?: SiteContactInterface[]
   Inspector?: InspectorInterface
-  [key: string]: any
 }
 
 export interface SiteCreateInterface extends Omit<SiteInterface, 'siteId' | 'inactive' | 'hasOpenViolation' | 'hasOpenComplaint' | 'hasOpenIllicitDischarge' | 'Logs' | 'ConstructionViolations' | 'Complaints' | 'IllicitDischarges' | 'SiteContacts' | 'Inspector' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  inactive?: boolean
   Logs?: SiteLogCreateInterface[]
   ConstructionViolations?: ConstructionViolationCreateInterface[]
   Complaints?: ComplaintCreateInterface[]
@@ -62,7 +62,7 @@ export interface SiteContactInterface extends BaseInterface {
   Contact?: ContactInterface
 }
 
-export interface SiteContactCreateInterface extends Omit<SiteContactInterface, 'Site' | 'Contact' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{}
+export interface SiteContactCreateInterface extends Omit<SiteContactInterface, 'isPrimary' | 'isContractor' | 'isInspector' | 'Site' | 'Contact' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{}
 
 export interface SiteLogInterface extends BaseInterface {
   logId: string
@@ -142,7 +142,7 @@ export interface IllicitDischargeInterface extends BaseInterface {
   details: string
   responsibleParty: string | null
   volumeLost: string | null
-  streamWatershed: StreamWatershedEnum
+  streamWatershed: StreamWatershedEnum | string
   otherStreamWatershed: string
   enforcementAction: string | null
   penaltyDate: string | null
@@ -184,10 +184,11 @@ export interface ContactInterface extends BaseInterface {
   email: string | null
   inactive: boolean
   SiteContacts?: SiteContactInterface[]
-  [key: string]: any
 }
 
 export interface ContactCreateInterface extends Omit<ContactInterface, 'contactId' | 'inactive' | 'SiteContacts' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  readonly contactid: string
+  inactive?: boolean
   uuid?: string
 }
 

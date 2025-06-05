@@ -1,6 +1,6 @@
 .btn {
   flex: 1;
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Play', sans-serif;
   font-weight: 600;
   font-size: 1rem;
@@ -8,18 +8,18 @@
   text-align: center;
   padding: 8px 12px;
   white-space: nowrap;
-  border: 2px solid var(--neutralContent);
-  box-shadow: 4px 4px 0 var(--neutralContent);
+  border: 2px solid var(--color-neutral-content);
+  box-shadow: 4px 4px 0 var(--color-neutral-content);
 }
 
 .btn:hover {
-  border-color: var(--warning);
-  box-shadow: 4px 4px 0 var(--warning);
+  border-color: var(--color-warning);
+  box-shadow: 4px 4px 0 var(--color-warning);
 }
 
 .activeBtn {
   flex: 1;
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   font-family: 'Play', sans-serif;
   font-weight: 600;
   font-size: 1rem;
@@ -27,6 +27,6 @@
   text-align: center;
   padding: 8px 12px;
   white-space: nowrap;
-  border: 2px solid var(--warning);
-  box-shadow: 4px 4px 0 var(--warning);
+  border: 2px solid var(--color-warning);
+  box-shadow: 4px 4px 0 var(--color-warning);
 }

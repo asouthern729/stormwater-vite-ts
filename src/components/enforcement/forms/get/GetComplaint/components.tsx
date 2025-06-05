@@ -1,13 +1,13 @@
 import { useHandleDeleteBtnClick } from './hooks'
 
 // Types
-import { ComplaintInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import UpdateSiteComplaintForm from "../../update/UpdateComplaintForm"
 import DeleteBtn from "@/components/form-elements/buttons/DeleteBtn"
 
-export const Form = ({ complaint }: { complaint: ComplaintInterface | undefined }) => { // Update site complaint form
+export const Form = ({ complaint }: { complaint: AppTypes.ComplaintInterface | undefined }) => { // Update site complaint form
   const { handleClick, active } = useHandleDeleteBtnClick()
 
   if(!complaint) return null

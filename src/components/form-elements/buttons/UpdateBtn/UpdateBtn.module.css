@@ -1,17 +1,17 @@
 .btn {
-  color: var(--info);
+  color: var(--color-info);
   font-family: 'Play', sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   padding: 6px 12px;
   white-space: nowrap;
-  border: 2px solid var(--info);
+  border: 2px solid var(--color-info);
   border-radius: 4px;
 }
 
 .btn:hover {
-  background-color: var(--neutral);
-  border-color: var(--neutral);
+  background-color: var(--color-neutral);
+  border-color: var(--color-neutral);
 }
 
 .btn:disabled {

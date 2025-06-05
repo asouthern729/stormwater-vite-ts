@@ -15,7 +15,7 @@ import Violations from "./pages/Enforcement/Violations"
 import Complaints from "./pages/Enforcement/Complaints"
 import Discharges from "./pages/Enforcement/Discharges"
 import Contacts from "./pages/Contacts"
-import NotFound from "./pages/NotFound"
+import Redirect from "./pages/Redirect"
 
 const queryClient = new QueryClient()
 
@@ -24,16 +24,16 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router basename={APP_BASE}>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Sites />} />
-          <Route path="/site/:uuid" element={<Site />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/sites" element={<Sites />} />
+          {/* <Route path="/site/:uuid" element={<Site />} /> */}
           <Route path="/create" element={<Create />} />
           <Route path="/inspectors/:slug" element={<Inspector />} />
           <Route path="/enforcement/violations" element={<Violations />} />
           <Route path="/enforcement/complaints" element={<Complaints />} />
           <Route path="/enforcement/discharges" element={<Discharges />} />
           <Route path="/contacts" element={<Contacts />} />
-          <Route path="/*" element={<NotFound />} />
+          <Route path="/*" element={<Redirect />} />
         </Routes>
       </Router>
       <ToastContainer />

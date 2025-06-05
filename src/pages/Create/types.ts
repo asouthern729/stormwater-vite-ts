@@ -1,8 +1,7 @@
-export type CreateForm =
+export type CreateFormType =
   | "createSite"
   | "createViolation"
   | "createComplaint"
-  | "createDischarge"
+  | "createIllicitDischarge"
   | "createInspector"
   | "createContact"
-  | "createGreen"

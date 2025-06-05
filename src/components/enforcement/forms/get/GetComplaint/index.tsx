@@ -1,7 +1,7 @@
 import { useGetComplaint } from "./hooks"
 
 // Components
-import HandleLoading from "@/utils/HandleLoading/HandleLoading"
+import HandleLoading from "@/utils/HandleLoading"
 import * as Components from './components'
 
 function GetComplaint() {

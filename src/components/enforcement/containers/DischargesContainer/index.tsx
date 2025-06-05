@@ -1,8 +1,6 @@
 import { useRef, memo } from 'react'
-import { useScrollToFormRef } from '@/helpers/hooks'
-import { useResetCtx } from '../ViolationsContainer/hooks'
-import { useHandleDischargesTableData } from './hooks'
-import styles from './DischargesContainer.module.css'
+import { useResetCtx, useScrollToFormRef } from '../ViolationsContainer/hooks'
+import { useHandleTableData } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -19,17 +17,16 @@ function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDisch
 
   useScrollToFormRef(formRef)
 
-  const tableData = useHandleDischargesTableData(discharges)
+  const tableData = useHandleTableData(discharges)
 
   useResetCtx()
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className={styles.container}>
+    <div className="flex flex-col my-10 gap-10 m-auto w-4/5 xl:w-3/4 2xl:w-2/3">
+      <div className="relative flex flex-col gap-11 p-20 pt-30 bg-neutral/10 shadow-xl">
         <CreateBtn href={'/create?formType=createIllicitDischarge'}>
           Create New Illicit Discharge
         </CreateBtn>
-        <h2 className={styles.header}>Illicit Discharges</h2>
 
         <div className="m-auto">
           <IllicitDischargesIndicator discharges={discharges} />

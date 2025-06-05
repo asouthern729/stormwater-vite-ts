@@ -1,25 +1,17 @@
-import { useLocation } from 'react-router'
-import { useHandlePageLoad } from '../../helpers/hooks'
-
-// Types
-import { CreateForm } from './types'
+import { useSetFormType } from './hooks'
 
 // Components
-import Layout from "../../components/layout/Layout/Layout"
+import Layout from "../../components/layout/Layout"
 import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
 import { Form } from './components'
 
 function Create() {
-  const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
-  const formType = queryParams.get('formType')
-
-  useHandlePageLoad()
+  const formType = useSetFormType()
 
   return (
     <Layout>
-      <ErrorBoundary>
-        <Form form={formType as CreateForm} />
+      <ErrorBoundary href={'/sites'}>
+        <Form form={formType} />
       </ErrorBoundary>
     </Layout>
   )

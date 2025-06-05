@@ -1,25 +1,16 @@
-import { handleSuccessfulFormSubmit } from "../../../../../helpers/hooks"
-import { createSiteLog } from "../../../../../context/App/AppActions"
+import { authHeaders } from '@/helpers/utils'
+import * as AppActions from '@/context/App/AppActions'
+import { savedPopup } from '@/utils/Toast/Toast'
 
-// Types
-import { SiteLogObj } from "../../../../../context/App/types"
-import { HandleCreateMultipleSiteLogsFormSubmitProps } from "./types"
-
-export const handleCreateMultipleSiteLogsFormSubmit = async (formData: HandleCreateMultipleSiteLogsFormSubmitProps['formData'], options: HandleCreateMultipleSiteLogsFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { invalidateQuery, handleCloseForm } = options
-
+export const handleCreateMultipleSiteLogs = async (formData: { siteIds: string[], inspectionDate: string }, token: string) => { // Handle form submit
+  // TODO verify fn
   const { siteIds, inspectionDate } = formData
 
   await Promise.all(
-    siteIds.map(async siteId => {
-      const siteLogObj: SiteLogObj = {
-        inspectionDate,
-        siteId
-      }
-
-      createSiteLog(siteLogObj)
-    })
+    siteIds.map(async siteId => await AppActions.createSiteLog({ siteId, inspectionDate }, authHeaders(token)))
   )
 
-  handleSuccessfulFormSubmit('Saved', { invalidateQuery, handleCloseForm })
+  const savedMsg = siteIds.length === 1 ? 'Site Log Created' : 'Site Logs Created'
+
+  savedPopup(savedMsg)
 }

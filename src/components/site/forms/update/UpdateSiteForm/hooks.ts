@@ -2,39 +2,35 @@ import { useCallback } from "react"
 import { useNavigate } from "react-router"
 import { useForm, useFormContext } from "react-hook-form"
 import { useQueryClient } from "react-query"
-import { setDateForForm } from "../../../../../helpers/hooks"
-import { setContacts, handleUpdateSiteFormSubmit } from "./utils"
+import { handleUpdateSiteFormSubmit } from "./utils"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { Site } from "../../../../../context/App/types"
-import { UpdateSiteFormUseForm } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const useUpdateSiteForm = (site: Site): UseFormReturn<UpdateSiteFormUseForm> => { // UpdateSiteForm useForm state
-  return useForm<UpdateSiteFormUseForm>({
+export const useUpdateSiteForm = (site: AppTypes.SiteInterface) => { // UpdateSiteForm useForm state
+
+  return useForm<AppTypes.SiteCreateInterface>({
+    mode: 'onBlur',
     defaultValues: {
       name: site.name,
       location: site.location,
       xCoordinate: site.xCoordinate,
       yCoordinate: site.yCoordinate,
       inspectorId: site.inspectorId,
-      preconDate: setDateForForm(site.preconDate),
+      preconDate: site.preconDate,
       permit: site.permit,
       cof: site.cof,
       tnq: site.tnq,
       greenInfrastructure: site.greenInfrastructure,
       inactive: site.inactive,
-      primaryContact: setContacts(site.SiteContacts).primary,
-      contractors: setContacts(site.SiteContacts).contractors,
-      siteInspectors: setContacts(site.SiteContacts).siteInspectors,
-      otherContacts: setContacts(site.SiteContacts).otherContacts,
+      SiteContacts: site.SiteContacts,
       uuid: site.uuid
     }
   })
 }
 
-export const useUpdateSiteFormContext = (): UseFormReturn<UpdateSiteFormUseForm> => { // UpdateSiteForm context
-  const methods = useFormContext<UpdateSiteFormUseForm>()
+export const useUpdateSiteFormContext = () => { // UpdateSiteForm context
+  const methods = useFormContext<AppTypes.SiteCreateInterface>()
 
   return methods
 }
@@ -44,7 +40,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const navigate = useNavigate()
 
-  return useCallback((formData: UpdateSiteFormUseForm) => 
+  return useCallback((formData: AppTypes.SiteCreateInterface) => 
     handleUpdateSiteFormSubmit(formData, {
       invalidateQuery: () => queryClient.invalidateQueries('getSites'),
       navigate: () => navigate('/')

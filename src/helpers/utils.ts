@@ -23,3 +23,9 @@ export const mapHitTest = (results: __esri.ViewHit[]) => { // Checks if a featur
     return hit.graphic?.attributes?.uuid
   })
 }
+
+export const formatDate = (date: string | null) => { // Format dates for react hook form
+  if(!date) return ''
+  
+  return new Date(date).toISOString().split('T')[0]
+}

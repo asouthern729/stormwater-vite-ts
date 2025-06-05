@@ -3,9 +3,23 @@ import { createContext, useReducer } from "react"
 // Types
 import { ReactNode, Reducer, Dispatch } from "react"
 
+export const BasemapMap = new Map<BasemapType, string>([
+  ['dark-gray-vector', 'Dark Gray'],
+  ['streets-vector', 'Streets'],
+  ['streets-night-vector', 'Streets Night'],
+  ['satellite', 'Satellite']
+])
+
+export type BasemapType =
+  | 'dark-gray-vector'
+  | 'streets-vector'
+  | 'streets-night-vector'
+  | 'satellite'
+
 type SitesCtx = {
   dispatch: Dispatch<SitesAction>
-  hoveredSite: string
+  basemap: BasemapType
+  formUUID: string
   searchValue: string
   showActiveSitesOnly: boolean
   showOpenIssuesOnly: boolean
@@ -17,13 +31,15 @@ type SitesAction =
   | { type: 'SET_SEARCH_VALUE', payload: string }
   | { type: 'TOGGLE_SHOW_ACTIVE_SITES_ONLY' }
   | { type: 'TOGGLE_OPEN_ISSUES_ONLY' }
-  | { type: 'SET_HOVERED_SITE', payload: string }
+  | { type: 'SET_FORM_UUID', payload: string }
+  | { type: 'SET_BASEMAP', payload: BasemapType }
 
 const initialState: SitesState = {
+  basemap: 'dark-gray-vector',
+  formUUID: '',
   searchValue: '',
-  hoveredSite: '',
   showActiveSitesOnly: true,
-  showOpenIssuesOnly: true,
+  showOpenIssuesOnly: false
 }
 
 const SitesCtx = createContext<SitesCtx>({
@@ -49,10 +65,15 @@ const sitesReducer = (state: SitesState, action: SitesAction) => {
         ...state,
         showOpenIssuesOnly: !state.showOpenIssuesOnly
       }
-    case 'SET_HOVERED_SITE':
+    case 'SET_FORM_UUID':
       return {
         ...state,
-        hoveredSite: action.payload
+        formUUID: action.payload
+      }
+    case 'SET_BASEMAP':
+      return {
+        ...state,
+        basemap: action.payload
       }
     default:
       return state

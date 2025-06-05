@@ -9,11 +9,11 @@
 }
 
 .container th {
-  color: var(--warning);
+  color: var(--color-warning);
   font-family: 'Play', sans-serif;
 }
 
 .container th:first-of-type {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   text-align: center;
 }

@@ -1,22 +1,23 @@
-import { useState, memo, useContext } from "react"
-import UserContext from "../../../context/User/UserContext"
+import { useState, memo } from "react"
+import { useReturnUserRoles } from "@/helpers/hooks"
 import { useSetSiteIssuesTableData } from "./hooks"
 import styles from './SiteIssuesTable.module.css'
 
 // Types
+import * as AppTypes from '@/context/App/types'
 import { SiteIssuesTableProps, SiteIssuesTableState } from "./types"
 
 // Components
 import { TableBody, ShowAllIssuesBtn } from './components'
 
-function SiteIssuesTable({ site, handleRowClick }: SiteIssuesTableProps) {
-  const { user } = useContext(UserContext)
-
+function SiteIssuesTable({ site }: { site: AppTypes.SiteInterface }) {
   const [state, setState] = useState<SiteIssuesTableState>({ showAll: false })
+
+  const roles = useReturnUserRoles()
 
   const tableData = useSetSiteIssuesTableData(site, state.showAll)
 
-  const onClick = user?.role === 'Viewer' ? () => null : handleRowClick
+  const onClick =  roles.includes('[task.write]') ? handleRowClick : () => null
 
   return (
     <div className={styles.container}>

@@ -1,31 +1,15 @@
-import { handleSuccessfulFormSubmit } from "../../../../../helpers/hooks"
-import { updateInspector } from "../../../../../context/App/AppActions"
-import { errorPopup } from "../../../../../utils/Toast/Toast"
+import { authHeaders } from "@/helpers/utils"
+import * as AppActions from '@/context/App/AppActions'
+import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { InspectorObj } from "../../../../../context/App/types"
-import { HandleUpdateInspectorFormSubmitProps, HandleRequiredFieldValidationProps } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const handleUpdateInspectorFormSubmit = async (formData: HandleUpdateInspectorFormSubmitProps['formData'], options: HandleUpdateInspectorFormSubmitProps['options']): Promise<void> => { // Handle form submit
-  const { navigate, invalidateQuery } = options
-
-  const inspectorObj: InspectorObj = {
-    name: formData.name,
-    email: formData.email,
-    inspectorId: formData.inspectorId
-  }
-
-  const result = await updateInspector(inspectorObj)
+export const handleUpdateInspector = async (formData: AppTypes.InspectorCreateInterface, token: string) => {
+  // TODO verify fn
+  const result = await AppActions.updateInspector(formData, authHeaders(token))
 
   if(result.success) {
-    handleSuccessfulFormSubmit(result.msg || '', { invalidateQuery, navigate })
+    savedPopup(result.msg)
   } else errorPopup(result.msg)
-}
-
-export const handleRequiredFieldValidation = (field: HandleRequiredFieldValidationProps['field'], options: HandleRequiredFieldValidationProps['options']): void => { // Handle form field validation onBlur
-  const { watch, trigger } = options
-
-  if(!watch(field)) {
-    trigger(field)
-  }
 }

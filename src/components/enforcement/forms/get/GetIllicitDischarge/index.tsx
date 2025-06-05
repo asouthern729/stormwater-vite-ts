@@ -1,15 +1,15 @@
 import { useGetIllicitDischarge } from './hooks'
 
 // Components
-import HandleLoading from '@/utils/HandleLoading/HandleLoading'
-import { Form } from './components'
+import HandleLoading from '@/utils/HandleLoading'
+import * as Components from './components'
 
 function GetIllicitDischarge() {
   const { data, isSuccess } = useGetIllicitDischarge()
 
   return (
     <HandleLoading isSuccess={isSuccess}>
-      <Form illicitDischarge={data?.data} />
+      <Components.Form illicitDischarge={data?.data} />
     </HandleLoading>
   )
 }

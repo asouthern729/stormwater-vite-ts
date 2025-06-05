@@ -14,7 +14,7 @@ function SitesActivityCalendar({ sites }: { sites: AppTypes.SiteInterface[] }) {
   const calendarProps = useCalendarProps(type, calendarData)
 
   return (
-    <div className="flex flex-col gap-3 items-end w-full">
+    <div className="flex flex-col gap-4 items-end w-full">
       <Components.CalendarTypeBtn onClick={onClick}>
         Show {type === 'week' ? 'Month' : 'Week'} View
       </Components.CalendarTypeBtn>

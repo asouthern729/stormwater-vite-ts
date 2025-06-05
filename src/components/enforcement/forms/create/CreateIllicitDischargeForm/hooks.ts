@@ -17,12 +17,12 @@ import { authHeaders } from "@/helpers/utils"
 import { handleCreateIllicitDischarge } from "./utils"
 
 // Types
-import { SiteInterface, IllicitDischargeCreateInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
-export const useCreateSiteIllicitDischargeForm = (site: SiteInterface, date: string) => { // CreateSiteIllicitDischargeForm useForm
+export const useCreateSiteIllicitDischargeForm = (site: AppTypes.SiteInterface | undefined, date: string) => { // CreateSiteIllicitDischargeForm useForm
   const illicitDate = new Date(date || '').toISOString().split('T')[0]
 
-  return useForm<IllicitDischargeCreateInterface>({
+  return useForm<AppTypes.IllicitDischargeCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId || null,
@@ -49,7 +49,7 @@ export const useCreateSiteIllicitDischargeForm = (site: SiteInterface, date: str
 }
 
 export const useCreateIllicitDischargeFormContext = () => { // CreateSiteIllicitDischargeForm context
-  const methods = useFormContext<IllicitDischargeCreateInterface>()
+  const methods = useFormContext<AppTypes.IllicitDischargeCreateInterface>()
 
   return methods
 }
@@ -78,13 +78,14 @@ export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivEle
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
   const { dispatch } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
 
   const queryClient = useQueryClient()
 
-  return useCallback((formData: IllicitDischargeCreateInterface) => {
+  return useCallback((formData: AppTypes.IllicitDischargeCreateInterface) => {
     if(!enabled || !token) {
       return
     }
@@ -99,12 +100,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null }>>) => {
-  const { setValue } = useFormContext<IllicitDischargeCreateInterface>()
+  const { setValue } = useFormContext<AppTypes.IllicitDischargeCreateInterface>()
 
   useEffect(() => {
     if(!mapRef?.current) return
 
-    const map = new Map({ basemap: 'dark-grey-vector' })
+    const map = new Map({ basemap: 'dark-gray-vector' })
     const mapView = new MapView({
       container: mapRef.current,
       map,
@@ -131,7 +132,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
 }
 
 const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
-  const { watch } = useFormContext<IllicitDischargeCreateInterface>()
+  const { watch } = useFormContext<AppTypes.IllicitDischargeCreateInterface>()
 
   const xCoordinate = watch('xCoordinate')
   const yCoordinate = watch('yCoordinate')

@@ -1,10 +1,9 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { useCreateViolationFormContext } from './hooks'
-import styles from '../../Forms.module.css'
-
+import styles from '@/components/form-elements/Forms.module.css'
 
 // Components
-import FormLabel from '@/components/form-elements/FormLabel/FormLabel'
+import FormLabel from '@/components/form-elements/FormLabel'
 import FormError from '@/components/form-elements/FormError'
 import CreateFollowUpForm from '../CreateFollowUpForm'
 import * as AppTypes from '@/context/App/types'

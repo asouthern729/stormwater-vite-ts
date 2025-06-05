@@ -1,35 +1,23 @@
-import { useState } from "react"
-import { useQueryClient } from "react-query"
-import { handleDeleteBtnClick, useGetSiteUUID } from "../../../../../helpers/hooks"
-import { deleteSiteLog } from "../../../../../context/App/AppActions"
+import { useOnDeleteBtnClick } from './hooks'
 
 // Types
-import { SiteLog } from "../../../../../context/App/types"
-import { GetSiteLogState } from "./types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
-import UpdateSiteLogForm from "../../update/UpdateSiteLogForm/UpdateSiteLogForm"
+import UpdateSiteLogForm from "../../update/UpdateSiteLogForm"
 import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
 
-export const Form = ({ siteLog, handleCloseForm, uuid }: { siteLog: SiteLog | undefined, handleCloseForm: () => void, uuid: string }) => {
-  const [state, setState] = useState<GetSiteLogState>({ deleteBtnActive: false })
+export const Form = ({ siteLog }: { siteLog: AppTypes.SiteLogInterface }) => {
+  const { active, onClick } = useOnDeleteBtnClick()
 
-  const queryClient = useQueryClient()
-
-  const siteUUID = useGetSiteUUID()
+  const label = !active ? 'Delete Site Log' : 'Confirm Delete Site Log'
 
   return (
-    <>
-      {siteLog && (
-        <div className="flex flex-col items-center">
-          <UpdateSiteLogForm
-            siteLog={siteLog}
-            handleCloseForm={handleCloseForm} />
-          <DeleteBtn
-            label={!state.deleteBtnActive ? 'Delete Site Log' : 'Confirm Delete'}
-            handleClick={() => handleDeleteBtnClick(uuid, state.deleteBtnActive, deleteSiteLog, { setState, handleCloseForm, invalidateQuery: () => queryClient.invalidateQueries(['getSite', siteUUID]) })} />
-        </div>
-      )}
-    </>
+    <div className="flex flex-col items-center">
+      <UpdateSiteLogForm siteLog={siteLog} />
+      <DeleteBtn onClick={onClick}>
+        {label}
+      </DeleteBtn>
+    </div>
   )
 }

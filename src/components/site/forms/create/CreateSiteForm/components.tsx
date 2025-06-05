@@ -1,103 +1,93 @@
-import { useContext } from 'react'
-import AppContext from '../../../../../context/App/AppContext'
+import { useSetInspectorOptions } from '@/components/enforcement/forms/create/CreateIllicitDischargeForm/hooks'
+import styles from '@/components/form-elements/Forms.module.css'
 import { useCreateSiteFormContext } from './hooks'
-import { handleRequiredFieldValidation } from './utils'
-import styles from '../../Forms.module.css'
 
 // Components
-import MapContainer from "../../../../map/MapContainer"
-import FormLabel from "../../../../form-elements/FormLabel/FormLabel"
-import FormError from "../../../../form-elements/FormError"
-import SaveBtn from "../../../../form-elements/buttons/SaveBtn/SaveBtn"
-import CancelBtn from "../../../../form-elements/buttons/CancelBtn/CancelBtn"
+import FormLabel from "@/components/form-elements/FormLabel"
+import FormError from "@/components/form-elements/FormError"
 
 export const Map = () => { // Map input
 
   return (
     <div className={styles.mapDiv}>
-      <MapContainer
-        sites={[]}
-        type={'create'}
-        zoom={16} />
+      {/* TODO create Site map */}
     </div>
   )
 }
 
 export const NameInput = () => { // Site name input
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Site Name:'}
           name={'name'}
-          required={true} />
+          required={true}>
+            Site Name:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('name', {
+          { ...register('name', {
             required: 'Site name is required',
             maxLength: {
               value: 100,
               message: 'Site name must be 100 characters or less'
             },
-            onBlur: () => handleRequiredFieldValidation('name', { watch: methods.watch, trigger: methods.trigger }),
-            onChange: () => methods.trigger('name')
           }) } />
       </div>
-      <FormError field={'name'} />
+      <FormError error={errors.name?.message} />
     </div>
   )
 }
 
 export const LocationInput = () => { // Site location description
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Location:'}
           name={'location'}
-          required={true} />
+          required={true}>
+            Location:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('location', {
+          { ...register('location', {
             required: 'Site location is required',
             maxLength: {
               value: 100,
               message: 'Site location must be 100 characters or less'
             },
-            onBlur: () => handleRequiredFieldValidation('location', { watch: methods.watch, trigger: methods.trigger }),
-            onChange: () => methods.trigger('location')
           }) } />
       </div>
-      <FormError field={'location'} />
+      <FormError error={errors.location?.message} />
     </div>
   )
 }
 
 export const PreconDateInput = () => { // Site precon date input
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
   
   return (
     <div className={styles.inputSection}>
       <div className="flex">
         <FormLabel
-          label={'Precon Date:'}
           name={'preconDate'}
-          required={true} />
+          required={true}>
+            Precon Date:
+        </FormLabel>
         <input 
           type="date"
           className={styles.input}
-          { ...methods.register('preconDate', {
+          { ...register('preconDate', {
             required: 'Precon date is required',
-            onBlur: () => handleRequiredFieldValidation('preconDate', { watch: methods.watch, trigger: methods.trigger }),
           }) } />
       </div>
-      <FormError field={'preconDate'} />
+      <FormError error={errors.preconDate?.message} />
     </div>
   )
 }
@@ -108,9 +98,9 @@ export const GreenInfrastructureSelect = () => { // Green infrastructure select
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Green Infrastructure:'}
-          name={'greenInfrastructure'} />
+        <FormLabel name={'greenInfrastructure'}>
+          Green Infrastructure:
+        </FormLabel>
         <select 
           className={styles.input}
           { ...methods.register('greenInfrastructure') }>
@@ -124,114 +114,99 @@ export const GreenInfrastructureSelect = () => { // Green infrastructure select
 }
 
 export const PermitInput = () => { // Permit input
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Permit #:'}
-          name={'permit'} />
+        <FormLabel name={'permit'}>
+          Permit #:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('permit', {
+          { ...register('permit', {
             maxLength: {
               value: 20,
               message: 'Permit must be 20 characters or less'
             }
           }) } />
       </div>
-      <FormError field={'permit'} />
+      <FormError error={errors.permit?.message} />
     </div>
   )
 }
 
 export const COFInput = () => { // COF number input
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'COF #:'}
-          name={'cof'} />
+        <FormLabel name={'cof'}>
+          COF #:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('cof', {
+          { ...register('cof', {
             maxLength: {
               value: 10,
               message: 'COF # must be 10 characters or less'
-            },
-            onChange: () => methods.trigger('cof')
+            }
           }) } />
       </div>
-      <FormError field={'cof'} />
+      <FormError error={errors.cof?.message} />
     </div>
   )
 }
 
 export const TNQInput = () => { // TNQ input
-  const methods = useCreateSiteFormContext()
+  const { register, formState: { errors } } = useCreateSiteFormContext()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'TNQ #:'}
-          name={'tnq'} />
+        <FormLabel name={'tnq'}>
+          TNQ #:
+        </FormLabel>
         <input 
           type="text"
           className={styles.input}
-          { ...methods.register('tnq', {
+          { ...register('tnq', {
             maxLength: {
               value: 20,
               message: 'TNQ # must be 20 characters or less'
             },
-            onChange: () => methods.trigger('tnq')
           }) } />
       </div>
-      <FormError field={'tnq'} />
+      <FormError error={errors.tnq?.message} />
     </div>
   )
 }
 
 export const InspectorSelect = () => { // Inspector select
-  const { inspectorOptions } = useContext(AppContext)
-
   const methods = useCreateSiteFormContext()
+
+  const inspectors = useSetInspectorOptions()
 
   return (
     <div className={styles.inputSection}>
       <div className="flex">
-        <FormLabel
-          label={'Inspector:'}
-          name={'inspectorId'} />
+        <FormLabel name={'inspectorId'}>
+          Inspector:
+        </FormLabel>
         <select 
           className={styles.input}
           { ...methods.register('inspectorId') }>
           <option value=""></option>
-          {inspectorOptions.map(inspector => {
+          {inspectors.map(inspector => {
             return (
               <option key={`inspector-option-${ inspector.value }`} value={inspector.value}>{inspector.text}</option>
             )
           })}
         </select>
       </div>
-    </div>
-  )
-}
-
-export const Buttons = ({ handleCloseForm }: { handleCloseForm: () => void }) => { // Form buttons
-  const methods = useCreateSiteFormContext()
-
-  const disabled = !methods.formState.isValid || methods.formState.isSubmitting && true
-
-  return (
-    <div className={styles.buttonsContainer}>
-      <SaveBtn disabled={disabled} />
-      <CancelBtn handleClick={handleCloseForm} />
     </div>
   )
 }

@@ -1,10 +1,10 @@
-import styles from '../Forms.module.css'
+import styles from '@/components/form-elements/Forms.module.css'
 
 function FormError({ error }: { error: string | undefined }) {
   if(!error) return null
 
   return (
-      <div data-testid="form-error" className={styles.error}>{error}</div>
+      <div className={styles.error}>{error}</div>
   )
 }
 

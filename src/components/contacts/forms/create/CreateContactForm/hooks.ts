@@ -1,42 +1,49 @@
-import { useCallback } from "react"
+import { useCallback, useContext } from "react"
 import { useQueryClient } from "react-query"
-import { useNavigate } from "react-router"
 import { useForm, useFormContext } from "react-hook-form"
-import { handleCreateContactFormSubmit } from './utils'
+import { useEnableQuery } from "@/helpers/hooks"
+import ContactsCtx from "@/components/contacts/context"
+import { handleCreateContact } from './utils'
+import { errorPopup } from "@/utils/Toast/Toast"
 
 // Types
-import { UseFormReturn } from "react-hook-form"
-import { UpdateContactFormUseForm } from "../../update/UpdateContactForm/types"
-import { CreateContactFormUseForm } from "./types"
+import * as AppTypes from '@/context/App/types'
 
-export const useCreateContactForm = (): UseFormReturn<CreateContactFormUseForm> => { // CreateContactForm useform
-  return useForm<CreateContactFormUseForm>({
+export const useCreateContactForm = () => { // CreateContactForm useform
+
+  return useForm<AppTypes.ContactCreateInterface>({
+    mode: 'onBlur',
     defaultValues: {
-      name: null,
-      company: null,
-      phone: null,
-      email: null,
-      inactive: false
+      name: '',
+      company: '',
+      phone: '',
+      email: ''
     }
   })
 }
 
-export const useCreateContactFormContext = (): UseFormReturn<CreateContactFormUseForm|UpdateContactFormUseForm> => { // CreateContactForm context
-  const methods = useFormContext<CreateContactFormUseForm|UpdateContactFormUseForm>()
+export const useCreateContactFormContext = () => { // CreateContactForm context
+  const methods = useFormContext<AppTypes.ContactCreateInterface>()
 
   return methods
 }
 
-export const useHandleFormSubmit = (): (formData: CreateContactFormUseForm) => Promise<void> => { // Handle form submit
+export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
+  const { dispatch } = useContext(ContactsCtx)
+
+  const { enabled, token } = useEnableQuery()
+
   const queryClient = useQueryClient()
 
-  const navigate = useNavigate()
+  return useCallback((formData: AppTypes.ContactCreateInterface) => {
+    if(!enabled || !token) return
 
-  return useCallback((formData: CreateContactFormUseForm) => 
-    handleCreateContactFormSubmit(formData, {
-        invalidateQuery: () => queryClient.invalidateQueries('getContacts'),
-        navigate: () => navigate('/contacts')
-      }),
-    [queryClient, navigate]
-  )
+    handleCreateContact(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries('getContacts')
+        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token, queryClient])
 }

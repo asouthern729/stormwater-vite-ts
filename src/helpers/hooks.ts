@@ -1,13 +1,7 @@
-import { useState, useEffect, useContext, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router"
 import { useMsal } from "@azure/msal-react"
 import { NODE_ENV } from '@config/index'
-import EnforcementCtx from "@/components/enforcement/context"
-
-// Types
-import * as Types from '@/context/App/types'
-import { Issue } from "../components/site/tables/SiteIssuesTable/types"
-import { UseHandlePageData } from "./types"
 
 export const useGetToken = () => {
   const [state, setState] = useState<{ token: string | undefined }>({ token: undefined })
@@ -58,7 +52,7 @@ export const useGetToken = () => {
     }
 
     if(!activeAccount) { // !Active account - redirect to login
-      navigate('/projects')
+      navigate('/sites')
     }
   }
 
@@ -128,22 +122,4 @@ export const useReturnUserRoles = () => { // Return active user roles
   const roles = activeAccount?.idTokenClaims?.roles
 
   return roles || []
-}
-
-export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>): void => {
-  const { formUUID } = useContext(EnforcementCtx)
-
-  useEffect(() => { // Scroll to form if active
-    if(formUUID && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [formUUID, formRef])
-}
-
-export const useHandlePageData = (tableData: UseHandlePageData['tableData'], currentPage: UseHandlePageData['currentPage']): Issue[] | Types.ContactInterface[] => {
-  const pageData = useMemo(() => {
-    return tableData.slice((currentPage * 20) - 20, currentPage * 20)
-  }, [tableData, currentPage])
-
-  return pageData
 }

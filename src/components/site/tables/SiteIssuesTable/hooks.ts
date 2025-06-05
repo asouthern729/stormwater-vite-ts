@@ -1,13 +1,10 @@
 import { useContext } from 'react'
-import AppContext from '../../../../context/App/AppContext'
 import { setFormType } from '../../../enforcement/tables/SitesIssuesTable/utils'
 
 // Types
 import { UseSetSiteIssuesTableDataProps, Issue, Combined } from "./types"
 
 export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['site'], showAll: UseSetSiteIssuesTableDataProps['showAll']): Issue[] => {
-  const { dateRangeFilter, showSiteComplaints, showSiteViolations, showSiteIllicitDischarges, showClosedSiteIssues } = useContext(AppContext)
-
   const { ConstructionViolations, Complaints, IllicitDischarges } = site
 
   let combined: Combined[] = []

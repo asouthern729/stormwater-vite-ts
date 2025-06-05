@@ -1,5 +1,5 @@
 // Components
-import Layout from "../../components/layout/Layout/Layout"
+import Layout from "../../components/layout/Layout"
 import Error from "../../components/layout/error/Error/Error"
 
 // Types

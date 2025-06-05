@@ -15,12 +15,12 @@ import { errorPopup } from "@/utils/Toast/Toast"
 import { handleCreateComplaint } from './utils'
 
 // Types
-import { SiteInterface, ComplaintCreateInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
-export const useCreateComplaintForm = (site: SiteInterface, date: string) => { 
+export const useCreateComplaintForm = (site: AppTypes.SiteInterface | undefined, date: string) => { 
   const complaintDate = new Date(date || '').toISOString().split('T')[0]
 
-  return useForm<ComplaintCreateInterface>({
+  return useForm<AppTypes.ComplaintCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId || null,
@@ -46,7 +46,7 @@ export const useCreateComplaintForm = (site: SiteInterface, date: string) => {
 }
 
 export const useCreateComplaintFormContext = () => { 
-  const methods = useFormContext<ComplaintCreateInterface>()
+  const methods = useFormContext<AppTypes.ComplaintCreateInterface>()
 
   return methods
 }
@@ -61,13 +61,14 @@ export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>)
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
   const { dispatch } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
 
   const queryClient = useQueryClient()
 
-  return useCallback((formData: ComplaintCreateInterface) => {
+  return useCallback((formData: AppTypes.ComplaintCreateInterface) => {
     if(!enabled || !token) {
       return
     }
@@ -82,12 +83,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null }>>) => {
-  const { setValue } = useFormContext<ComplaintCreateInterface>()
+  const { setValue } = useFormContext<AppTypes.ComplaintCreateInterface>()
 
   useEffect(() => {
     if(!mapRef?.current) return
 
-    const map = new Map({ basemap: 'dark-grey-vector' })
+    const map = new Map({ basemap: 'dark-gray-vector' })
     const mapView = new MapView({
       container: mapRef.current,
       map,
@@ -114,7 +115,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
 }
 
 const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
-  const { watch } = useFormContext<ComplaintCreateInterface>()
+  const { watch } = useFormContext<AppTypes.ComplaintCreateInterface>()
 
   const xCoordinate = watch('xCoordinate')
   const yCoordinate = watch('yCoordinate')

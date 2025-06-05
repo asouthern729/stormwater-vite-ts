@@ -2,21 +2,23 @@ import { Link } from "react-router"
 import { useHandleTableRowClick } from "../ViolationsContainer/hooks"
 
 // Types
-import { ComplaintInterface } from "@/context/App/types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
-import { ShowClosedCheckbox, PageNavBtns, CivilPenalty, Status } from "../ViolationsContainer/components"
+import { ShowClosedCheckbox, PageNavBtns, Status } from "../ViolationsContainer/components"
 
-export type ComplaintsTableDataType = ComplaintInterface & { siteUUID?: string, siteName?: string, primaryPermitee?: string }
+export type ComplaintsTableDataType = AppTypes.ComplaintInterface & { siteUUID?: string, siteName?: string, primaryPermitee?: string }
 
 export const ComplaintsTable = ({ tableData }: { tableData: ComplaintsTableDataType[] }) => {
 
   return (
-      <div className="flex flex-col gap-6 items-center w-full">
+      <div className="flex flex-col font-[play] gap-6 items-center">
   
-        <div className="flex justify-between items-end w-full">
+        <div className="flex justify-between items-end mb-4 w-full">
           <ShowClosedCheckbox />
-          <PageNavBtns />
+          <div className="translate-y-7">
+            <PageNavBtns />
+          </div>
         </div>    
   
         <table className="table table-sm text-neutral-content">
@@ -32,10 +34,10 @@ const TableHeaders = () => {
 
   return (
     <thead>
-      <tr className="text-warning font-[play]">
+      <tr className="text-warning uppercase border-b-2 border-warning">
         <th>Date</th>
         <th>Site / Location</th>
-        <th>Primary Permitee / Responsible Party</th>
+        <th>Responsible Party / Primary Permitee</th>
         <th className="text-center">Concern</th>
         <th className="text-center">Status</th>
       </tr>
@@ -62,20 +64,24 @@ const TableRow = ({ complaint }: { complaint: ComplaintsTableDataType }) => {
   const handleTableRowClick = useHandleTableRowClick(complaint.uuid)
   
   return (
-    <tr title={complaint.details} onClick={handleTableRowClick}>
-      <td>{complaint.date}</td>
-      <td className={"whitespace-nowrap hover:text-warning"}>
-        <LocationTableData complaint={complaint} />
-      </td>
-      <td>{complaint?.primaryPermitee || complaint.responsibleParty}</td>
-      <Status closed={complaint.closed} />
+    <tr 
+      title={complaint.details} 
+      onClick={handleTableRowClick}
+      className="border-b-1 border-neutral-content/50">
+        <td className="whitespace-nowrap">{complaint.date}</td>
+        <td className="whitespace-nowrap">
+          <LocationTableData complaint={complaint} />
+        </td>
+        <td>{complaint?.primaryPermitee}</td>
+        <td>{complaint.concern}</td>
+        <Status closed={complaint.closed} />
     </tr>
   )
 }
 
 const LocationTableData = ({ complaint }: { complaint: ComplaintsTableDataType }) => {
   if(complaint.siteId) {
-    return <Link to={`/site/${ complaint?.siteUUID }`}>{complaint?.siteName}</Link>
+    return <Link to={`/site/${ complaint?.siteUUID }`} className="hover:text-warning">{complaint?.siteName}</Link>
   }
 
   return (

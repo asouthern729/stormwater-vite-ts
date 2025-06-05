@@ -1,18 +1,13 @@
 // Types
-import { SetSiteFormProps } from "./types"
+import * as AppTypes from '@/context/App/types'
 
 // Components
 import { Form } from './components'
 
-function SetSiteForm({ state, site, setState }: SetSiteFormProps) {
+function SetSiteForm({ site }: { site: AppTypes.SiteInterface }) {
 
   return (
-    <div data-testid="set-site-form">
-      <Form
-        state={state}
-        setState={setState}
-        site={site} />
-    </div>
+    <Form site={site} />
   )
 }
 

@@ -8,9 +8,12 @@ import { handleCreateViolation } from './utils'
 // Types
 import * as AppTypes from '@/context/App/types'
 import EnforcementCtx from '@/components/enforcement/context'
+import SiteCtx from '@/components/site/context'
 
-export const useCreateViolationForm = (site: AppTypes.SiteInterface, date: string) => { // CreateViolationForm useForm
-  const violationDate = date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+export const useCreateViolationForm = (site: AppTypes.SiteInterface) => { // CreateViolationForm useForm
+  const { formDate } = useContext(SiteCtx)
+
+  const violationDate = formDate ? new Date(formDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 
   return useForm<AppTypes.ConstructionViolationCreateInterface>({
     mode: 'onBlur',
@@ -45,6 +48,7 @@ export const useOnCancelBtnClick = () => { // Handle cancel btn click
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  // TODO verify hook
   const { dispatch } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
@@ -52,9 +56,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
   const queryClient = useQueryClient()
 
   return useCallback((formData: AppTypes.ConstructionViolationCreateInterface) => {
-    if(!enabled || !token) {
-      return
-    }
+    if(!enabled || !token) return
 
     handleCreateViolation(formData, token)
       .then(_ => {

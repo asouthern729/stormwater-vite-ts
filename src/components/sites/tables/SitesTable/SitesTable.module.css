@@ -3,14 +3,16 @@
   flex-direction: column;
   font-family: 'Play', sans-serif;
   width: 100%;
-  overflow-y: scroll;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .header {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
   text-transform: uppercase;
-  background-color: var(--primary);
-  text-shadow: 3px 3px 0 var(--neutral);
+  background-color: var(--color-primary);
+  text-shadow: 3px 3px 0 var(--color-neutral);
 
   @media (min-width: 1920px) { /* Desktop */ 
     font-size: 1.5rem;
@@ -18,7 +20,7 @@
 }
 
 .table {
-  background-color: var(--neutralContent);
+  background-color: var(--color-neutral-content);
 }
 
 .evenRow {
@@ -31,12 +33,12 @@
 
 tbody tr:hover {
   cursor: pointer;
-  color: var(--neutralContent);
-  background-color: var(--neutral);
+  color: var(--color-neutral-content);
+  background-color: var(--color-neutral);
 }
 
 .name {
-  color: var(--primary);
+  color: var(--color-primary);
   font-weight: 600;
   text-transform: uppercase;
   text-align: center;
@@ -45,11 +47,10 @@ tbody tr:hover {
   width: fit-content;
 
   @media (min-width: 1920px) { /* Desktop */ 
-    font-size: 1.25rem;
     white-space: nowrap;
   }
 }
 
 tbody tr:hover .name {
-  color: var(--neutralContent);
+  color: var(--color-neutral-content);
 }
