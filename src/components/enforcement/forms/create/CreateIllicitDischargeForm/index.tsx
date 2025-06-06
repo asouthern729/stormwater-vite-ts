@@ -25,7 +25,9 @@ function CreateIllicitDischargeForm({ site, date }: { site: AppTypes.SiteInterfa
       <FormProvider { ...methods }>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-          <Components.Map visible={!site} />
+          <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
+            <Components.Map visible={!site} />
+          </div>
           <Components.DateAndInspectorInputs site={site} />
           <Components.LocationAndResponsiblePartyInputs />
           <Components.DetailsInput />

@@ -11,5 +11,6 @@ export const handleCreateInspectorFormSubmit = async (formData: AppTypes.Inspect
 
   if(result.success) {
     savedPopup(result.msg)
+    return result.data.slug
   } else errorPopup(result.msg)
 }

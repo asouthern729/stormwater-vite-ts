@@ -1,6 +1,6 @@
 // Types
 import { Dispatch, ChangeEvent, SetStateAction } from "react"
-import { CreateForm } from "../../../../../pages/Create/types"
+import { CreateForm } from "../../../../../pages/CreateRouting/types"
 
 export interface GetSiteProps { // GetSite props
   form: CreateForm

@@ -14,7 +14,7 @@ export const NameInput = () => { // Inspector name input
         <FormLabel
           name={'name'}
           required={true}>
-            Inspector Name:
+            Name:
         </FormLabel>
         <input 
           type="text"
@@ -41,7 +41,7 @@ export const EmailInput = () => { // Inspector email input
         <FormLabel
           name={'email'}
           required={true}>
-            Inspector Email:
+            Email:
         </FormLabel>
         <input 
           type="email"

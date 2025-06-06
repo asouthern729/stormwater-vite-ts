@@ -24,12 +24,12 @@ export const Map = ({ sites }: { sites: AppTypes.SiteInterface[] }) => {
     <div className="flex-1 h-full">
       <div ref={mapRef} className="relative w-full h-full">
         <MapLoading isLoaded={isLoaded} />
-      </div>
-      <div className="absolute top-4 left-4 z-10">
-        <BasemapSelector />
-      </div>
-      <div className="absolute bottom-4 left-4 z-10">
-        <MapLegend sites={sites} />
+        <div className="absolute top-2 right-4 z-10">
+          <BasemapSelector />
+        </div>
+        <div className="absolute bottom-4 left-4 z-10">
+          <MapLegend sites={sites} />
+        </div>
       </div>
     </div>
   )
@@ -63,7 +63,7 @@ export const OpenIssuesBtn = () => {
   )
 }
 
-const MapLoading = ({ isLoaded }: { isLoaded: boolean }) => {
+export const MapLoading = ({ isLoaded }: { isLoaded: boolean }) => {
   if(isLoaded) return null
 
   return (

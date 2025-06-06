@@ -1,13 +1,14 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
+import { useLocation } from "react-router"
 import { useQuery } from "react-query"
-import { useFormContext } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
 import * as AppActions from '@/context/App/AppActions'
 import { authHeaders } from "@/helpers/utils"
 import { useEnableQuery } from "@/helpers/hooks"
+import { createFormMap } from './utils'
 
 // Types
-import * as AppTypes from '@/context/App/types'
+import { CreateFormType } from "./utils"
 
 export const useGetActiveSiteNames = () => { // Get active site names
   const { enabled, token } = useEnableQuery()
@@ -26,7 +27,7 @@ export const useGetSelectedSite = () => {
 
   const { enabled, token } = useEnableQuery()
 
-  const results = useQuery(['getSite', selectedSite], () => AppActions.getSite(selectedSite, authHeaders(token)), { enabled: enabled && !!selectedSite })
+  const results = useQuery(['getSite', selectedSite], () => AppActions.getSite(selectedSite, authHeaders(token)), { enabled: enabled && !!selectedSite && selectedSite !== 'No Site' })
 
   if(results.isSuccess) {
     return results.data.data
@@ -34,9 +35,27 @@ export const useGetSelectedSite = () => {
 }
 
 export const useHandleNoSiteBtn = () => {
-  const { setValue } = useFormContext<AppTypes.IllicitDischargeCreateInterface|AppTypes.ComplaintCreateInterface>()
+  const { dispatch } = useContext(EnforcementCtx)
 
-  // TODO adjust this form state setting function
+  const location = useLocation().pathname.split('/')[3]
 
-  return () => setValue('siteId', null, { shouldValidate: true, shouldDirty: true })
+  const visible = location !== 'violation'
+
+  return { onClick: () => dispatch({ type: 'SET_SELECTED_SITE', payload: 'No Site' }), visible }
+}
+
+export const useSetFormType = () => {
+  const location = useLocation().pathname.split('/')[3]
+
+  const Component = createFormMap.get(location as CreateFormType)
+
+  return Component
+}
+
+export const useResetCtx = () => {
+  const { dispatch } = useContext(EnforcementCtx)
+
+  useEffect(() => {
+    return () => dispatch({ type: 'RESET_CTX' })
+  }, [])
 }

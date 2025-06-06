@@ -40,9 +40,9 @@ export const useHandleFormSubmit = () => { // Handle form submit
     }
 
     handleCreateInspectorFormSubmit(formData, token)
-      .then(_ => {
+      .then(slug => {
         queryClient.invalidateQueries('getInspectors')
-        navigate('/sites')
+        navigate(`/inspectors/${ slug }`)
       })
       .catch(err => errorPopup(err))
   }, [enabled, token, queryClient])

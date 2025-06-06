@@ -7,6 +7,7 @@ import * as AppTypes from '@/context/App/types'
 import { StreamWatershedEnum } from "./types"
 
 // Components
+import { MapLoading } from "@/components/sites/containers/SitesContainer/components"
 import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
@@ -15,11 +16,11 @@ export const Map = ({ visible }: { visible: boolean }) => {
 
   const mapRef = useRef<HTMLDivElement>(null)
 
-  useSetIllicitDischargeMapView(mapRef)
+  const isLoaded = useSetIllicitDischargeMapView(mapRef)
 
   return (
-    <div className="w-full h-full">
-      <div ref={mapRef} className="w-full"></div>
+    <div ref={mapRef} className="relative w-full h-full">
+      <MapLoading isLoaded={isLoaded} />
     </div>
   )
 }

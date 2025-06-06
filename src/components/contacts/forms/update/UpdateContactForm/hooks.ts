@@ -31,7 +31,8 @@ export const useOnCancelBtnClick = () => {
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
-  // TODO verify hook
+  const { dispatch } = useContext(ContactsCtx)
+
   const queryClient = useQueryClient()
 
   const { enabled, token } = useEnableQuery()
@@ -40,7 +41,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleUpdateContact(formData, token)
-      .then(_ => queryClient.invalidateQueries(['getContact', formData.uuid]))
+      .then(_ => {
+        queryClient.invalidateQueries('getContacts')
+        dispatch({ type: 'RESET_CTX' })
+      })
       .catch(err => errorPopup(err))
   }, [enabled, token])
 }

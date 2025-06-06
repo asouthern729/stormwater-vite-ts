@@ -48,7 +48,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleUpdateIllicitDischarge(formData, token)
       .then(_ => {
         queryClient.invalidateQueries('getIllicitDischarges')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
   }, [enabled, token, queryClient])

@@ -132,12 +132,12 @@ const CreateMenu = () => {
   return (
     <NavDropdown label={'Create'}>
       <>
-        <CreateMenuItem href={'/create?formType=createSite'}>Site</CreateMenuItem>
-        <CreateMenuItem href={'/create?formType=createViolation'}>Construction Violation</CreateMenuItem>
-        <CreateMenuItem href={'/create?formType=createComplaint'}>Complaint</CreateMenuItem>
-        <CreateMenuItem href={'/create?formType=createDischarge'}>Illicit Discharge</CreateMenuItem>
-        <CreateMenuItem href={'/create?formType=createContact'}>Contact</CreateMenuItem>
-        <CreateMenuItem href={'/create?formType=createInspector'}>Inspector</CreateMenuItem>
+        <CreateMenuItem href={'/create/site'}>Site</CreateMenuItem>
+        <CreateMenuItem href={'/create/enforcement/violation'}>Construction Violation</CreateMenuItem>
+        <CreateMenuItem href={'/create/enforcement/complaint'}>Complaint</CreateMenuItem>
+        <CreateMenuItem href={'/create/enforcement/discharge'}>Illicit Discharge</CreateMenuItem>
+        <CreateMenuItem href={'/create/contact'}>Contact</CreateMenuItem>
+        <CreateMenuItem href={'/create/inspector'}>Inspector</CreateMenuItem>
       </>
     </NavDropdown>
   )

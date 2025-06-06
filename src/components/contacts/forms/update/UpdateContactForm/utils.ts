@@ -6,7 +6,6 @@ import { errorPopup, savedPopup } from "@/utils/Toast/Toast"
 import * as AppTypes from '@/context/App/types'
 
 export const handleUpdateContact = async (formData: AppTypes.ContactCreateInterface, token: string) => {
-  // TODO verify fn
   const result = await AppActions.updateContact(formData, authHeaders(token))
 
   if(result.success) {

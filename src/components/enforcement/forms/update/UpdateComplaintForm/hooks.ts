@@ -40,7 +40,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleUpdateComplaint(formData, token)
       .then(_ => {
         queryClient.invalidateQueries('getComplaints')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
   }, [enabled, token, queryClient])

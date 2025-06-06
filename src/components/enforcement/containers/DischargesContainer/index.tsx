@@ -22,9 +22,9 @@ function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDisch
   useResetCtx()
 
   return (
-    <div className="flex flex-col my-10 gap-10 m-auto w-4/5 xl:w-3/4 2xl:w-2/3">
+    <div className="flex flex-col my-10 gap-10 m-auto w-fit">
       <div className="relative flex flex-col gap-11 p-20 pt-30 bg-neutral/10 shadow-xl">
-        <CreateBtn href={'/create?formType=createIllicitDischarge'}>
+        <CreateBtn href={'/create/enforcement/discharge'}>
           Create New Illicit Discharge
         </CreateBtn>
 

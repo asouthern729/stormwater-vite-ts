@@ -33,6 +33,7 @@ type SitesAction =
   | { type: 'TOGGLE_OPEN_ISSUES_ONLY' }
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'SET_BASEMAP', payload: BasemapType }
+  | { type: 'RESET_CTX' }
 
 const initialState: SitesState = {
   basemap: 'dark-gray-vector',
@@ -75,6 +76,8 @@ const sitesReducer = (state: SitesState, action: SitesAction) => {
         ...state,
         basemap: action.payload
       }
+    case 'RESET_CTX':
+      return initialState
     default:
       return state
   }

@@ -1,16 +1,21 @@
+import { useRef } from 'react'
 import { useSetInspectorOptions } from '@/components/enforcement/forms/create/CreateIllicitDischargeForm/hooks'
 import styles from '@/components/form-elements/Forms.module.css'
-import { useCreateSiteFormContext } from './hooks'
+import { useCreateSiteFormContext, useSetCreateSiteMapView } from './hooks'
 
 // Components
+import { MapLoading } from '@/components/sites/containers/SitesContainer/components'
 import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
 export const Map = () => { // Map input
+  const mapRef = useRef<HTMLDivElement>(null)
+
+  const isLoaded = useSetCreateSiteMapView(mapRef)
 
   return (
-    <div className={styles.mapDiv}>
-      {/* TODO create Site map */}
+    <div ref={mapRef} className="relative w-full h-full">
+      <MapLoading isLoaded={isLoaded} />
     </div>
   )
 }

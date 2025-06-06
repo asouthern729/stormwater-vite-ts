@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
+import { useNavigate } from "react-router"
 import { useEnableQuery } from "@/helpers/hooks"
 import ContactsCtx from "@/components/contacts/context"
 import { handleCreateContact } from './utils'
@@ -36,14 +37,17 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const navigate = useNavigate()
+
   return useCallback((formData: AppTypes.ContactCreateInterface) => {
     if(!enabled || !token) return
 
     handleCreateContact(formData, token)
       .then(_ => {
         queryClient.invalidateQueries('getContacts')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        dispatch({ type: 'RESET_CTX' })
+        navigate('/contacts')
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, navigate])
 }

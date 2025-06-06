@@ -1,24 +1,12 @@
-import styles from './GetSite.module.css'
-
-// Types
-import { CreateFormType } from "@/pages/Create/types"
-
 // Components
-import { SiteSelect, NoSiteBtn, Form } from "./components"
+import * as Components from './components'
 
-function GetSite({ form }: { form: CreateFormType }) {
+function GetSite() {
 
   return (
-    <div className={styles.container}>
-      <div className="flex flex-col gap-1 items-center">
-        <h2 className="text-xl">Select Site</h2>
-
-        <SiteSelect />
-        <NoSiteBtn />
-
-      </div>
-
-      <Form form={form} />
+    <div className="flex flex-col gap-6 text-neutral-content font-[play] mt-10">
+      <Components.SiteSelect />
+      <Components.Form />
     </div>
   )
 }

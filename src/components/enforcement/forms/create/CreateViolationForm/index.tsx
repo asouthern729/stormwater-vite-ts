@@ -9,7 +9,7 @@ import { SiteInterface } from "@/context/App/types"
 import FormBtns from "@/components/form-elements/buttons/FormBtns"
 import * as Components from './components'
 
-function CreateViolationForm({ site }: { site: SiteInterface }) {
+function CreateViolationForm({ site }: { site: SiteInterface | undefined }) {
   const methods = useCreateViolationForm(site)
 
   const handleFormSubmit = useHandleFormSubmit()

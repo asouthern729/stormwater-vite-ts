@@ -7,6 +7,7 @@ import Multipoint from '@arcgis/core/geometry/Multipoint'
 import Graphic from '@arcgis/core/Graphic'
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
+import Search from "@arcgis/core/widgets/Search"
 import { TextSymbol } from "@arcgis/core/symbols"
 import { mapHitTest } from "@/helpers/utils"
 import SitesCtx from "../../context"
@@ -90,7 +91,15 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTyp
       ui: { components: [] }
     })
 
-    setState(prevState => ({ ...prevState, view: mapView }))
+    mapView.when(() => {
+      const searchWidget = new Search({ view: mapView })
+      
+      mapView.ui.add(searchWidget, {
+        position: 'top-left'
+      })
+
+      setState(prevState => ({ ...prevState, view: mapView }))
+    })
 
     const pointGraphicsLayer = new GraphicsLayer({ id: 'pointGraphicsLayer' })
     const textGraphicsLayer = new GraphicsLayer({ id: 'textGraphicsLayer', minScale: 20000 })
@@ -124,6 +133,7 @@ const useSetMapGraphics = (sites: AppTypes.SiteInterface[], state: { view: __esr
     const pointGraphicsLayer = state.view.map?.findLayerById('pointGraphicsLayer') as GraphicsLayer
     const textGraphicsLayer = state.view.map?.findLayerById('textGraphicsLayer') as GraphicsLayer
     pointGraphicsLayer.removeAll()
+    textGraphicsLayer.removeAll()
 
     sites.forEach(site => {
       const point = new Point({

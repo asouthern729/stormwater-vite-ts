@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react'
+import { useNavigate } from 'react-router'
 import { useQueryClient } from 'react-query'
 import { useForm, useFormContext } from 'react-hook-form'
 import { useEnableQuery } from '@/helpers/hooks'
@@ -10,7 +11,7 @@ import * as AppTypes from '@/context/App/types'
 import EnforcementCtx from '@/components/enforcement/context'
 import SiteCtx from '@/components/site/context'
 
-export const useCreateViolationForm = (site: AppTypes.SiteInterface) => { // CreateViolationForm useForm
+export const useCreateViolationForm = (site: AppTypes.SiteInterface | undefined) => { // CreateViolationForm useForm
   const { formDate } = useContext(SiteCtx)
 
   const violationDate = formDate ? new Date(formDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
@@ -42,9 +43,9 @@ export const useCreateViolationFormContext = () => { // CreateViolationForm cont
 }
 
 export const useOnCancelBtnClick = () => { // Handle cancel btn click
-  const { dispatch } = useContext(EnforcementCtx)
+  const navigate = useNavigate()
 
-  return () => dispatch({ type: 'SET_FORM_UUID', payload: '' })
+  return () => navigate('/sites')
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit

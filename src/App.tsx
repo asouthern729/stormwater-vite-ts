@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Login from "./pages/Login"
 import Sites from "./pages/Sites"
 import Site from "./pages/Site"
-import Create from "./pages/Create"
+import CreateRouting from "./pages/CreateRouting"
 import Inspector from "./pages/Inspector"
 import Violations from "./pages/Enforcement/Violations"
 import Complaints from "./pages/Enforcement/Complaints"
@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/sites" element={<Sites />} />
           {/* <Route path="/site/:uuid" element={<Site />} /> */}
-          <Route path="/create" element={<Create />} />
+          <Route path="/create/*" element={<CreateRouting />} />
           <Route path="/inspectors/:slug" element={<Inspector />} />
           <Route path="/enforcement/violations" element={<Violations />} />
           <Route path="/enforcement/complaints" element={<Complaints />} />

@@ -21,7 +21,9 @@ function CreateSiteForm() {
         <FormProvider { ...methods }>
           <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
           
-          <Components.Map />
+          <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
+            <Components.Map />
+          </div>
 
           <Components.NameInput />
           <Components.LocationInput />
