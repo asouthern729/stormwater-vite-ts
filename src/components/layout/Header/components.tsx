@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router"
 import { APP_TITLE } from '../../../config'
 import HeaderCtx from "./context"
 import { useReturnUserRoles } from '@/helpers/hooks'
-import { useGetInspectors } from './hooks'
+import { useGetInspectors, useIsEnforcmentPageActive } from './hooks'
 
 // Icons
 import icon from '@/assets/icons/menu/menu.svg'
@@ -72,16 +72,21 @@ const HeaderLink = (props: HeaderLinkProps) => {
   const active = pathname === props.href
 
   return (
-    <Link to={props.href} className={`btn btn-ghost text-neutral-content rounded-none uppercase hover:bg-primary hover:shadow-none ${ active ? 'text-warning' : null }`}>{props.children}</Link>
+    <Link to={props.href} className={`btn btn-ghost rounded-none uppercase hover:bg-primary hover:shadow-none ${ active ? 'text-warning' : 'text-neutral-content' }`}>{props.children}</Link>
   )
 }
 
 const InspectorsMenu = () => {
+  const pathname = useLocation().pathname
+
+  const active = pathname.includes('inspector')
+
   const { data } = useGetInspectors()
 
   return (
-    <NavDropdown label={'Inspectors'}>
-      <>
+    <NavDropdown 
+      label={'Inspectors'}
+      active={active}>
         {data?.data.map(inspector => {
           return (
             <InspectorMenuItem 
@@ -89,7 +94,6 @@ const InspectorsMenu = () => {
               inspector={inspector} />
           )
         })}
-      </>
     </NavDropdown>
   )
 }
@@ -102,14 +106,15 @@ const InspectorMenuItem = ({ inspector }: { inspector: AppTypes.InspectorInterfa
 }
 
 const EnforcementMenu = () => {
+  const active = useIsEnforcmentPageActive()
 
   return (
-    <NavDropdown label={'Enforcement'}>
-      <>
+    <NavDropdown 
+      label={'Enforcement'}
+      active={active}>
         <EnforcementMenuItem href={'/enforcement/violations'}>Construction Violations</EnforcementMenuItem>
         <EnforcementMenuItem href={'/enforcement/complaints'}>Complaints</EnforcementMenuItem>
         <EnforcementMenuItem href={'/enforcement/discharges'}>Illicit Discharges</EnforcementMenuItem>
-      </>
     </NavDropdown>
   )
 }
@@ -117,28 +122,35 @@ const EnforcementMenu = () => {
 type EnforcementMenuItemProps = { href: string, children: React.ReactNode }
 
 const EnforcementMenuItem = (props: EnforcementMenuItemProps) => {
+  const pathname = useLocation().pathname
+
+  const active = pathname.includes(props.href)
 
   return (
-    <li><Link to={props.href} className="hover:cursor-pointer hover:bg-neutral">{props.children}</Link></li>
+    <li><Link to={props.href} className={`hover:cursor-pointer hover:bg-neutral ${ active ? 'text-warning' : null }`}>{props.children}</Link></li>
   )
 }
 
 const CreateMenu = () => {
+  const pathname = useLocation().pathname
+
+  const active = pathname.includes('create')
+
   const roles = useReturnUserRoles()
 
   // TODO uncomment for prod
   // if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
-    <NavDropdown label={'Create'}>
-      <>
+    <NavDropdown
+      label={'Create'}
+      active={active}>
         <CreateMenuItem href={'/create/site'}>Site</CreateMenuItem>
         <CreateMenuItem href={'/create/enforcement/violation'}>Construction Violation</CreateMenuItem>
         <CreateMenuItem href={'/create/enforcement/complaint'}>Complaint</CreateMenuItem>
         <CreateMenuItem href={'/create/enforcement/discharge'}>Illicit Discharge</CreateMenuItem>
         <CreateMenuItem href={'/create/contact'}>Contact</CreateMenuItem>
         <CreateMenuItem href={'/create/inspector'}>Inspector</CreateMenuItem>
-      </>
     </NavDropdown>
   )
 }
