@@ -1,51 +1,61 @@
-import violationIcon from '../../../assets/icons/violation/violation.svg'
-import complaintIcon from '../../../assets/icons/complaint/complaint.svg'
-import dischargeIcon from '../../../assets/icons/discharge/discharge.svg'
+import { useOnRowClick } from './hooks'
+import { typeIconMap } from './utils'
 
 // Types
-import { MouseEvent, Dispatch, SetStateAction } from "react"
-import { SiteForm } from "../../containers/SiteContainer/types"
-import { Issue, SiteIssuesTableState } from "./types"
+import { FormType } from '../../context'
+import { IssueTableDataType } from './types'
 
-// Components
-import ShowAllBtn from '../../../enforcement/filters/buttons/ShowAllBtn/ShowAllBtn'
+export const Table = ({ tableData }: { tableData: IssueTableDataType[] }) => {
 
-export const TableBody = ({ issues, handleRowClick }: { issues: Issue[], handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void }) => { // Site issues table body
+  return (
+    <table className="table table-xs text-neutral-content p-10 w-full">
+      <TableHeaders />
+      <TableBody tableData={tableData} />
+    </table>
+  )
+}
+
+const TableHeaders = () => {
+
+  return (
+    <thead>
+      <tr className="text-warning uppercase border-b-2 border-warning">
+        <th>Date</th>
+        <th>Type</th>
+        <th className="text-center">Civil Penalty</th>
+        <th className="text-center">SWO</th>
+        <th className="text-center">Status</th>
+      </tr>
+    </thead>
+  )
+}
+
+const TableBody = ({ tableData }: { tableData: IssueTableDataType[] }) => { // Site issues table body
 
   return (
     <>
-      {issues.map(issue => {
+      {tableData.map(issue => {
         return (
-          <TableRow 
-            issue={issue}
-            handleRowClick={handleRowClick} />
+          <TableRow
+            key={`site-issue-table-row-${ issue.uuid }`} 
+            issue={issue} />
         ) 
       })}
     </>
   )
 }
 
-export const ShowAllIssuesBtn = ({ visible, showAll, setState }: { visible: boolean, showAll: boolean, setState: Dispatch<SetStateAction<SiteIssuesTableState>> }) => { // Show all issues button
-  if(!visible) return null
 
-  return (
-    <div className="w-full">
-      <ShowAllBtn 
-        label={!showAll ? 'Show All' : 'Show Less'}
-        handleClick={() => setState(prevState => ({ showAll: !prevState.showAll }))} />
-    </div>
-  )
-}
-
-const TableRow = ({ issue, handleRowClick }: { issue: Issue, handleRowClick: (event: MouseEvent<HTMLTableRowElement>) => void }) => {
+const TableRow = ({ issue }: { issue: IssueTableDataType }) => {
+  const onRowClick = useOnRowClick()
 
   return (
     <tr 
-      key={`site-issues-table-row-${ issue.uuid }`} 
       data-form={issue.form} 
       data-uuid={issue.uuid} 
       title={issue.details} 
-      onClick={(event) => handleRowClick(event)}>
+      onClick={(e) => onRowClick(e)}
+      className="border-b-1 border-neutral-content/50">
         <td>{issue.date}</td>
         <TypeIcon type={issue.form} />
         <CivilPenalty civilPenalty={issue.civilPenalty} />
@@ -55,60 +65,44 @@ const TableRow = ({ issue, handleRowClick }: { issue: Issue, handleRowClick: (ev
   )
 }
 
-const TypeIcon = ({ type }: { type: SiteForm }) => { // Type icon
-  let component
+const TypeIcon = ({ type }: { type: FormType }) => { // Type icon
+  const icon = typeIconMap.get(type)
 
-  switch(type) {
-    case 'updateSiteComplaint':
-      component = (
-        <td title={'Site Complaint'}><img src={complaintIcon} className="p-1 w-8"></img></td>
-      )
-      break
-    case 'updateIllicitDischarge':
-      component = (
-        <td title={'Illicit Discharge'}><img src={dischargeIcon} className="p-1 w-8"></img></td>
-      )
-      break
-    default:
-      component = (
-        <td title={'Construction Violation'}><img src={violationIcon} className="p-1 w-8"></img></td>
-      )
-  }
-
-  return component
+  return (
+    <td title={icon?.title}><img src={icon?.src} className="p-1 w-8"></img></td>
+  )
 }
 
 const CivilPenalty = ({ civilPenalty }: { civilPenalty: { issued: boolean | null, received: boolean | null } | undefined }) => { // Civil penalty td
   if(!civilPenalty?.issued) return <td></td>
 
+  if(civilPenalty.received) return (
+    <td className="text-success font-bold uppercase text-center">Paid</td>
+  )
+
   return (
-    <>
-      {civilPenalty.received ? (
-        <td className="text-neutral-content font-bold uppercase text-center">Paid</td>
-      ):  <td className="text-error font-bold uppercase text-center">Issued</td>}
-    </>
+    <td className="text-error font-bold uppercase text-center">Issued</td>
   )
 }
 
 const SWO = ({ swo }: { swo: { issued: boolean | null, lifted: boolean | null } }) => { // SWO 
   if(!swo.issued) return <td></td>
 
+  if(swo.lifted) return (
+    <td className="text-success font-bold uppercase text-center">Lifted</td>
+  )
+
   return (
-    <>
-      {swo.lifted ? (
-        <td className="text-neutral-content font-bold uppercase text-center">Lifted</td>
-      ) : <td className="text-error font-bold uppercase text-center">Issued</td>}
-    </>
+    <td className="text-error font-bold uppercase text-center">Issued</td>
   )
 }
 
-const Status = ({ closed }: { closed: boolean | undefined }) => { // Issue status
+const Status = ({ closed }: { closed: boolean | null }) => { // Issue status
+  if(closed) return (
+    <td className="text-success font-bold uppercase text-center">Closed</td>
+  )
 
   return (
-    <>
-      {closed ? (
-        <td className="text-success font-bold uppercase text-center">Closed</td>
-      ) : <td className="text-errorD font-bold uppercase text-center">Open</td>}
-    </>
+    <td className="text-error font-bold uppercase text-center">Open</td>
   )
 }

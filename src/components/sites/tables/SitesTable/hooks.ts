@@ -6,9 +6,11 @@ export const useOnTableRowClick = (uuid: string) => {
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) {
-    return () => null
-  }
+  // TODO remove comment for prod
 
-  return () => navigate(`/sites/site/${ uuid }`)
+  // if(!roles.includes('[task.write]')) {
+  //   return () => null
+  // }
+
+  return () => navigate(`/site/${ uuid }`)
 }

@@ -79,7 +79,7 @@ const HeaderLink = (props: HeaderLinkProps) => {
 const InspectorsMenu = () => {
   const pathname = useLocation().pathname
 
-  const active = pathname.includes('inspector')
+  const active = pathname.includes('/inspectors')
 
   const { data } = useGetInspectors()
 
@@ -158,9 +158,12 @@ const CreateMenu = () => {
 type CreateMenuItemProps = { href: string, children: React.ReactNode }
 
 const CreateMenuItem = (props: CreateMenuItemProps) => {
+  const pathname = useLocation().pathname
+
+  const active = pathname.includes(props.href)
 
   return (
-    <li><Link to={props.href} className="hover:cursor-pointer hover:bg-neutral">{props.children}</Link></li>
+    <li><Link to={props.href} className={`hover:cursor-pointer hover:bg-neutral ${ active ? 'text-warning' : null }`}>{props.children}</Link></li>
   )
 }
 

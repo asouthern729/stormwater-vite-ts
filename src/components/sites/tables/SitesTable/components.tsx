@@ -29,7 +29,7 @@ const TableRow = ({ site, index }: { site: AppTypes.SiteInterface, index: number
   const onTableRowClick = useOnTableRowClick(site.uuid)
 
   return (
-    <tr key={`table-row-${ site.uuid }`} className={setTableDataStyle(index, site)} onClick={onTableRowClick}>
+    <tr className={setTableDataStyle(index, site)} onClick={onTableRowClick}>
       <TableData site={site} />
     </tr>
   )

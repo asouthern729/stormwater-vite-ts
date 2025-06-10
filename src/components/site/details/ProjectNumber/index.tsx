@@ -9,7 +9,7 @@ function ProjectNumber({ site }: { site: AppTypes.SiteInterface }) {
   return (
     <div className="flex flex-col gap-1 items-center" title={`COF #${ site.cof || '' }`}>
       <img src={icon} alt="cof number icon" className={`w-8 ${ !hastProjectNumber ? 'opacity-40' : null }`} />
-      <small className={!site.cof ? 'hidden' : 'block'}>COF #{site.cof}</small>
+      <small className={!site.cof ? 'hidden' : 'whitespace-nowrap'}>COF #{site.cof}</small>
     </div>
   )
 }

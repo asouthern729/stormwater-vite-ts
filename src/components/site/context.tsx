@@ -19,6 +19,10 @@ type SiteCtx = {
   dispatch: Dispatch<SiteAction>
   activeForm: FormType | undefined
   basemap: BasemapType
+  dateRangeFilter: {
+    start: string
+    end: string
+  }
   formDate: string
   formUUID: string
   showClosedSiteIssues: boolean
@@ -32,11 +36,18 @@ type SiteAction =
   | { type: 'SET_ACTIVE_FORM', payload: FormType | undefined }
   | { type: 'SET_FORM_DATE', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
+  | { type: 'SET_DATE_RANGE_FILTER_START', payload: string }
+  | { type: 'SET_DATE_RANGE_FILTER_END', payload: string }
+  | { type: 'RESET_DATE_RANGE_FILTER' }
   | { type: 'RESET_CTX' }
 
 const initialState: SiteState = {
   basemap: 'dark-gray-vector',
   activeForm: undefined,
+  dateRangeFilter: {
+    start: '',
+    end: ''
+  },
   formDate: '',
   formUUID: '',
   showClosedSiteIssues: false
@@ -74,6 +85,30 @@ const siteReducer = (state: SiteState, action: SiteAction) => {
       return {
         ...state,
         showClosedSiteIssues: !state.showClosedSiteIssues
+      }
+    case 'SET_DATE_RANGE_FILTER_START':
+      return {
+        ...state,
+        dateRangeFilter: {
+          start: action.payload,
+          end: state.dateRangeFilter.end
+        }
+      }
+    case 'SET_DATE_RANGE_FILTER_END':
+      return {
+        ...state,
+        dateRangeFilter: {
+          start: state.dateRangeFilter.start,
+          end: action.payload
+        }
+      }
+    case 'RESET_DATE_RANGE_FILTER':
+      return {
+        ...state,
+        dateRangeFilter: {
+          start: '',
+          end: ''
+        }
       }
     case 'RESET_CTX':
       return initialState

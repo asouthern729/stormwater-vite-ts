@@ -135,10 +135,10 @@ export const createSiteContact = async (formData: AppTypes.SiteContactCreateInte
   return await res.json()
 }
 
-// Delete site contacts by siteId
-// DELETE /api/v2/stormwater/sitecontact/site/:siteid
-export const deleteSiteContacts = async (siteId: string, headers: Headers): Promise<AppTypes.ServerResponse> => {
-  const res = await fetch(`${ baseUrl }/sitecontact/site/${ siteId }`, {
+// Delete site contact by uuid
+// DELETE /api/v2/stormwater/sitecontact/:uuid
+export const deleteSiteContact = async (uuid: string, headers: Headers): Promise<AppTypes.ServerResponse> => {
+  const res = await fetch(`${ baseUrl }/sitecontact/${ uuid }`, {
     method: 'DELETE',
     headers
   })

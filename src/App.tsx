@@ -26,7 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/sites" element={<Sites />} />
-          {/* <Route path="/site/:uuid" element={<Site />} /> */}
+          <Route path="/site/:uuid" element={<Site />} />
           <Route path="/create/*" element={<CreateRouting />} />
           <Route path="/inspectors/:slug" element={<Inspector />} />
           <Route path="/enforcement/violations" element={<Violations />} />

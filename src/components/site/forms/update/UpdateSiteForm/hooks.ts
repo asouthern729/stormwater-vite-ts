@@ -1,8 +1,10 @@
-import { useCallback } from "react"
-import { useNavigate } from "react-router"
+import { useCallback, useContext } from "react"
 import { useForm, useFormContext } from "react-hook-form"
 import { useQueryClient } from "react-query"
-import { handleUpdateSiteFormSubmit } from "./utils"
+import SiteCtx from "@/components/site/context"
+import { useEnableQuery } from "@/helpers/hooks"
+import { handleUpdateSite } from "./utils"
+import { errorPopup } from "@/utils/Toast/Toast"
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -36,14 +38,20 @@ export const useUpdateSiteFormContext = () => { // UpdateSiteForm context
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(SiteCtx)
+
   const queryClient = useQueryClient()
 
-  const navigate = useNavigate()
+  const { enabled, token } = useEnableQuery()
 
-  return useCallback((formData: AppTypes.SiteCreateInterface) => 
-    handleUpdateSiteFormSubmit(formData, {
-      invalidateQuery: () => queryClient.invalidateQueries('getSites'),
-      navigate: () => navigate('/')
-    }),[queryClient, navigate]
-  )
+  return useCallback((formData: AppTypes.SiteCreateInterface) => {
+    if(!enabled || !token) return
+
+    handleUpdateSite(formData, token)
+      .then(_ => {
+        queryClient.invalidateQueries(['getSite', formData.uuid])
+        dispatch({ type: 'RESET_CTX' })
+      })
+      .catch(err => errorPopup(err))
+  }, [enabled, token])
 }

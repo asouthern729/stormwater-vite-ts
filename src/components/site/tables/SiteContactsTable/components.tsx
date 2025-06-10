@@ -16,7 +16,7 @@ export const Table = ({ siteContacts }: { siteContacts: AppTypes.SiteContactInte
   const tableData = setSiteContactsTableData(siteContacts)
 
   return (
-    <table className="table table-xs text-neutral-content mr-auto">
+    <table className="table table-sm font-[play] text-neutral-content mr-auto">
       <TableHeaders />
       <TableBody tableData={tableData} />
     </table>
@@ -27,7 +27,7 @@ export const EmailContacts = ({ siteContacts }: { siteContacts: AppTypes.SiteCon
   const allContacts = setAllSiteContacts(siteContacts)
 
   return (
-    <a href={`mailto:${ allContacts.join(';') }`} className="text-warning font-[play] uppercase hover:text-neutral-content">Email All Site Contacts</a>
+    <a href={`mailto:${ allContacts.join(';') }`} className="text-neutral-content font-[play] uppercase hover:text-warning">Email All Site Contacts</a>
   )
 }
 
@@ -35,9 +35,9 @@ const TableHeaders = () => {
 
   return (
     <thead>
-      <tr>
-        <th className="text-warning font-[play]">Contact</th>
-        <th className="text-warning font-[play]">Role</th>
+      <tr className="text-warning uppercase border-b-2 border-warning">
+        <th>Contact</th>
+        <th>Role</th>
       </tr>
     </thead>
   )
@@ -61,7 +61,7 @@ const TableBody = ({ tableData }: { tableData: SiteContactType[] }) => { // Site
 const TableRow = ({ siteContact }: { siteContact: SiteContactType }) => {
   
   return (
-    <tr>
+    <tr className="border-b-1 border-neutral-content/50">
       <ContactTableData siteContact={siteContact} />
       <td>{siteContact.role}</td>
     </tr>
@@ -69,14 +69,31 @@ const TableRow = ({ siteContact }: { siteContact: SiteContactType }) => {
 }
 
 const ContactTableData = ({ siteContact }: { siteContact: SiteContactType }) => { // Contact table data
-  const phone = siteContact.phone ? formatPhone(siteContact.phone) : undefined
 
   return (
     <td className="flex flex-col whitespace-nowrap">
-      <div className="font-extrabold">{siteContact.name}</div>
+      <div className="font-extrabold whitespace-nowrap">{siteContact.name}</div>
       <div>{siteContact.company}</div>
-      <a href={`tel:${ phone }`} className="hover:text-info">{phone}</a>
-      <a href={`mail:${ siteContact.email }`} className="hover:text-info">{siteContact.email}</a>
+      <Phone phone={siteContact.phone} />
+      <Email email={siteContact.email} />
     </td>
+  )
+}
+
+const Phone = ({ phone }: { phone: string | null }) => {
+  if(!phone) return null
+
+  const formatted = formatPhone(phone)
+
+  return (
+    <a href={`tel:${ formatted }`} className="hover:text-warning">tel: {formatted}</a>
+  )
+}
+
+const Email = ({ email }: { email: string | null }) => {
+  if(!email) return null
+
+  return (
+    <a href={`mail:${ email }`} className="hover:text-warning">email: {email}</a>
   )
 }

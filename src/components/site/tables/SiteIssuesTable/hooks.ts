@@ -1,65 +1,69 @@
-import { useContext } from 'react'
-import { setFormType } from '../../../enforcement/tables/SitesIssuesTable/utils'
+import React, { useContext, useMemo } from 'react'
+import SiteCtx from '../../context'
+import { setFormType } from './utils'
 
 // Types
-import { UseSetSiteIssuesTableDataProps, Issue, Combined } from "./types"
+import * as AppTypes from '@/context/App/types'
+import { FormType } from '../../context'
+import { IssueTableDataType, CombinedType } from './types'
 
-export const useSetSiteIssuesTableData = (site: UseSetSiteIssuesTableDataProps['site'], showAll: UseSetSiteIssuesTableDataProps['showAll']): Issue[] => {
-  const { ConstructionViolations, Complaints, IllicitDischarges } = site
+export const useSetTableData = (site: AppTypes.SiteInterface) => {
+  const { showClosedSiteIssues, dateRangeFilter } = useContext(SiteCtx)
 
-  let combined: Combined[] = []
+  return useMemo(() => {
+    if(site.Complaints && site.ConstructionViolations && site.IllicitDischarges) {
+      let combined: CombinedType[] = [ ...site.Complaints, ...site.ConstructionViolations, ... site.IllicitDischarges ]
 
-  if(showSiteComplaints) { // Handle complaints
-    combined.push(...Complaints.filter(complaint => !showClosedSiteIssues ? !complaint.closed : complaint ))
-  }
-
-  if(showSiteViolations) { // Handle construction violations
-    combined.push(...ConstructionViolations.filter(violation => !showClosedSiteIssues ? !violation.closed : violation))
-  }
-
-  if(showSiteIllicitDischarges) { // Handle illicit discharges
-    combined.push(...IllicitDischarges.filter(illicit => !showClosedSiteIssues ? !illicit.closed : illicit))
-  }
-
-  if(dateRangeFilter.start && dateRangeFilter.end) { // Handle date range filter
-    combined = combined.filter(issue => {
-      const filterStart = new Date(dateRangeFilter.start as string)
-      const filterEnd = new Date(dateRangeFilter.end as string)
-      const date = new Date(issue.date)
-
-      if(date >= filterStart && date <= filterEnd) {
-        return issue
+      if(!showClosedSiteIssues) { // Closed issue filter
+        combined = combined.filter(issue => !issue.closed)
       }
-    })
+
+      if(dateRangeFilter.start && dateRangeFilter.end) { // Date range filter
+        combined = combined.filter(issue => {
+          const date = new Date(issue.date)
+          const startDate = new Date(dateRangeFilter.start)
+          const endDate = new Date(dateRangeFilter.end)
+
+          return date >= startDate && date <= endDate
+        })
+      }
+
+      const combinedArray: IssueTableDataType[] = []
+
+      combined.forEach(item => {
+        const issue: IssueTableDataType = {
+          date: item.date,
+          civilPenalty: {
+            issued: !!item?.penaltyDate,
+            received: !!item?.paymentReceived
+          },
+          swo: {
+            issued: !!item?.swoDate,
+            lifted: !!item?.swoLiftedDate
+          },
+          closed: item.closed,
+          concern: item?.concern,
+          otherConcern: item?.otherConcern,
+          form: setFormType(item as { complaintId?: string, violationId?: string, illicitId?: string }),
+          details: item?.details,
+          uuid: item?.uuid
+        }
+
+        combinedArray.push(issue)
+      })
+
+      const sorted = combinedArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+      return sorted
+    } else return []
+  }, [showClosedSiteIssues, dateRangeFilter])
+}
+
+export const useOnRowClick = () => {
+  const { dispatch } = useContext(SiteCtx)
+
+  return (e: React.MouseEvent<HTMLTableRowElement>) => {
+    dispatch({ type: 'SET_FORM_UUID', payload: e.currentTarget.dataset.uuid as string })
+    dispatch({ type: 'SET_ACTIVE_FORM', payload: e.currentTarget.dataset.form as FormType })
   }
-
-  const combinedArray: Issue[] = []
-
-  combined.forEach(issue => {
-    const obj: Issue = {
-      date: issue.date,
-      civilPenalty: {
-        issued: !!issue?.penaltyDate,
-        received: !!issue?.paymentReceived
-      },
-      swo: {
-        issued: !!issue?.swoDate,
-        lifted: !!issue?.swoLiftedDate
-      },
-      closed: issue.closed,
-      concern: issue?.concern,
-      otherConcern: issue?.otherConcern,
-      form: setFormType(issue as { complaintId?: string, violationId?: string, illicitId?: string }),
-      details: issue.details,
-      uuid: issue.uuid
-    }
-
-    combinedArray.push(obj)
-  })
-
-  const sorted = combinedArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-  if(showAll) {
-    return sorted
-  } else return sorted.slice(0, 5)
 }

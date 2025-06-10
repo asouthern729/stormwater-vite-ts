@@ -134,7 +134,7 @@ const ContactEmail = ({ email }: { email: string | null }) => {
   if(!email) return null
 
   return (
-    <a href={`mailto:${ email }`} className="hover:text-warning" title={`Email ${ email }`}>mail: {email}</a>
+    <a href={`mailto:${ email }`} className="hover:text-warning" title={`Email ${ email }`}>email: {email}</a>
   )
 }
 

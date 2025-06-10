@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import tsconfigPaths from "vite-tsconfig-paths"
 import tailwindcss from '@tailwindcss/vite'
+import autoprefixer from 'autoprefixer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -11,6 +12,13 @@ const __dirname = path.dirname(__filename)
 export default defineConfig({
   plugins: [tailwindcss(), react(), tsconfigPaths()],
   base: '/stormwater',
+  css: {
+    postcss: {
+      plugins: [
+        autoprefixer,
+      ],
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

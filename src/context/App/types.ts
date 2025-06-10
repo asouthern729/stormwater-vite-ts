@@ -28,6 +28,7 @@ export interface SiteInterface extends BaseInterface {
 }
 
 export interface SiteCreateInterface extends Omit<SiteInterface, 'siteId' | 'inactive' | 'hasOpenViolation' | 'hasOpenComplaint' | 'hasOpenIllicitDischarge' | 'Logs' | 'ConstructionViolations' | 'Complaints' | 'IllicitDischarges' | 'SiteContacts' | 'Inspector' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  siteId?: string
   inactive?: boolean
   Logs?: SiteLogCreateInterface[]
   ConstructionViolations?: ConstructionViolationCreateInterface[]
@@ -62,7 +63,9 @@ export interface SiteContactInterface extends BaseInterface {
   Contact?: ContactInterface
 }
 
-export interface SiteContactCreateInterface extends Omit<SiteContactInterface, 'isPrimary' | 'isContractor' | 'isInspector' | 'Site' | 'Contact' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{}
+export interface SiteContactCreateInterface extends Omit<SiteContactInterface, 'isPrimary' | 'isContractor' | 'isInspector' | 'Site' | 'Contact' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  uuid?: string
+}
 
 export interface SiteLogInterface extends BaseInterface {
   logId: string
