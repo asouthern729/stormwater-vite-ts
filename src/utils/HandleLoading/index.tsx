@@ -5,10 +5,8 @@ type HandleLoadingProps = { isSuccess: boolean, children: React.ReactNode }
 
 function HandleLoading(props: HandleLoadingProps) {
   if(!props.isSuccess) return <Loading />
-
-  return (
-    <>{props.children}</>
-  )
+  
+  return <>{props.children}</>
 }
 
 export default HandleLoading

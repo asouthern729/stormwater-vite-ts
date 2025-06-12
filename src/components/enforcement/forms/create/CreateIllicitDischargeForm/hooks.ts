@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState, useEffect } from "react"
 import { useQueryClient, useQuery } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
+import SiteCtx from "@/components/site/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -9,8 +10,9 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
 import Search from "@arcgis/core/widgets/Search"
 import { TextSymbol } from "@arcgis/core/symbols"
-import pinIcon from '@assets/icons/pin/warning-pin.svg'
+import pinErrorIcon from '@/assets/icons/pin/error-pin.png'
 import { useEnableQuery } from "@/helpers/hooks"
+import { formatDate } from "@/helpers/utils"
 import EnforcementCtx from "@/components/enforcement/context"
 import { errorPopup } from "@/utils/Toast/Toast"
 import * as AppActions from '@/context/App/AppActions'
@@ -20,14 +22,14 @@ import { handleCreateIllicitDischarge } from "./utils"
 // Types
 import * as AppTypes from '@/context/App/types'
 
-export const useCreateSiteIllicitDischargeForm = (site: AppTypes.SiteInterface | undefined, date: string) => { // CreateSiteIllicitDischargeForm useForm
-  const illicitDate = new Date(date || '').toISOString().split('T')[0]
+export const useCreateIllicitDischargeForm = (site: AppTypes.SiteInterface | undefined) => { // CreateSiteIllicitDischargeForm useForm
+  const { formDate } = useContext(SiteCtx)
 
   return useForm<AppTypes.IllicitDischargeCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId || null,
-      date: illicitDate,
+      date: formatDate(formDate),
       xCoordinate: site?.xCoordinate || null,
       yCoordinate: site?.yCoordinate || null,
       locationDescription: '',
@@ -81,9 +83,9 @@ export const useSetIllicitDischargeMapView = (mapRef: React.RefObject<HTMLDivEle
         setState(prevState => ({ ...prevState, isLoaded: true }))
       })
     }
-  }, [state.view])
 
-  return state.isLoaded
+    return () => state.view?.destroy()
+  }, [state.view])
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
@@ -178,7 +180,7 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
       })
 
       const pictureMarker = new PictureMarkerSymbol({
-        url: pinIcon, 
+        url: pinErrorIcon, 
         width: "32px",
         height: "32px",
         yoffset: "14px"
@@ -190,7 +192,7 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
       })
 
       const labelText = new TextSymbol({
-        text: 'New Illicit Discharge Location',
+        text: 'Illicit Discharge Location',
         color: "#FFFFFF",
         yoffset: -14,
         font: { size: 10 }

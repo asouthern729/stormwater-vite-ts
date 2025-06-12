@@ -28,7 +28,7 @@ function UpdateComplaintForm({ complaint }: { complaint: AppTypes.ComplaintInter
           <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
             <Map visible={!complaint.siteId} />
-            <DateAndInspectorInputs site={complaint.siteId} />
+            <DateAndInspectorInputs siteId={complaint.siteId} />
             <LocationAndResponsiblePartyInputs />
             <DetailsInput />
             <ConcernInputs />

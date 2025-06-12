@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import SiteCtx from '@/components/site/context'
+import EnforcementCtx from '@/components/enforcement/context'
 import { useHandleFormNav } from './hooks'
 import styles from './FormNav.module.css'
 
@@ -7,7 +7,7 @@ import styles from './FormNav.module.css'
 import FormNavBtn from "../buttons/FormNavBtn"
 
 function FormNav() {
-  const { activeForm } = useContext(SiteCtx)
+  const { activeForm } = useContext(EnforcementCtx)
 
   const { showNav, onClick } = useHandleFormNav()
 
@@ -25,12 +25,12 @@ function FormNav() {
         <FormNavBtn 
           isActive={activeForm === 'createViolation'}
           onClick={() => onClick('createViolation')}>
-            Construction Violation
+            Violation
         </FormNavBtn>
         <FormNavBtn 
           isActive={activeForm === 'createComplaint'}
           onClick={() => onClick('createComplaint')}>
-            Site Complaint
+            Complaint
         </FormNavBtn>
         <FormNavBtn 
           isActive={activeForm === 'createIllicitDischarge'}

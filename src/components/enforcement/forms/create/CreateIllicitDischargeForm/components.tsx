@@ -3,11 +3,9 @@ import { useCreateIllicitDischargeFormContext, useSetInspectorOptions, useSetIll
 import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
-import * as AppTypes from '@/context/App/types'
 import { StreamWatershedEnum } from "./types"
 
 // Components
-import { MapLoading } from "@/components/sites/containers/SitesContainer/components"
 import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
@@ -16,21 +14,21 @@ export const Map = ({ visible }: { visible: boolean }) => {
 
   const mapRef = useRef<HTMLDivElement>(null)
 
-  const isLoaded = useSetIllicitDischargeMapView(mapRef)
+  useSetIllicitDischargeMapView(mapRef)
 
   return (
-    <div ref={mapRef} className="relative w-full h-full">
-      <MapLoading isLoaded={isLoaded} />
+    <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
+      <div ref={mapRef} className="relative w-full h-full"></div>
     </div>
   )
 }
 
-export const DateAndInspectorInputs = ({ site }: { site: AppTypes.SiteInterface | undefined }) => {
+export const DateAndInspectorInputs = ({ siteId }: { siteId: string | null | undefined }) => {
 
   return (
     <div className="flex gap-3 w-full">
       <DateInput />
-      <InspectorSelect visible={!site} />
+      <InspectorSelect visible={!siteId} />
     </div>
   )
 }

@@ -7,7 +7,7 @@ import * as AppActions from '@/context/App/AppActions'
 export const useGetInspectors = () => {
   const { enabled, token } = useEnableQuery()
 
-  return useQuery('getInspectors', () => AppActions.getInspectors(authHeaders(token)), { enabled })
+  return useQuery('getInspectors', () => AppActions.getInspectors(authHeaders(token)), { enabled, staleTime: Infinity })
 }
 
 export const useIsEnforcmentPageActive = () => {

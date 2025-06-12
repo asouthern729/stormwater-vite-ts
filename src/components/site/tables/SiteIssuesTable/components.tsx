@@ -55,7 +55,7 @@ const TableRow = ({ issue }: { issue: IssueTableDataType }) => {
       data-uuid={issue.uuid} 
       title={issue.details} 
       onClick={(e) => onRowClick(e)}
-      className="border-b-1 border-neutral-content/50">
+      className="border-b-1 border-neutral-content/50 hover:bg-neutral hover:cursor-pointer">
         <td>{issue.date}</td>
         <TypeIcon type={issue.form} />
         <CivilPenalty civilPenalty={issue.civilPenalty} />

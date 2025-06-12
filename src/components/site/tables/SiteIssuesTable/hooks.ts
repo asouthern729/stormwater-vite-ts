@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import SiteCtx from '../../context'
+import EnforcementCtx from '@/components/enforcement/context'
 import { setFormType } from './utils'
 
 // Types
@@ -60,7 +61,7 @@ export const useSetTableData = (site: AppTypes.SiteInterface) => {
 }
 
 export const useOnRowClick = () => {
-  const { dispatch } = useContext(SiteCtx)
+  const { dispatch } = useContext(EnforcementCtx)
 
   return (e: React.MouseEvent<HTMLTableRowElement>) => {
     dispatch({ type: 'SET_FORM_UUID', payload: e.currentTarget.dataset.uuid as string })

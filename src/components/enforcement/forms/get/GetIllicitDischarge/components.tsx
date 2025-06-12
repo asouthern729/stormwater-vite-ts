@@ -1,5 +1,3 @@
-import { useHandleDeleteBtnClick } from "./hooks"
-
 // Types
 import * as AppTypes from '@/context/App/types'
 
@@ -7,17 +5,15 @@ import * as AppTypes from '@/context/App/types'
 import UpdateSiteIllicitDischargeForm from "../../update/UpdateIllicitDischargeForm"
 import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
 
-export const Form = ({ illicitDischarge }: { illicitDischarge: AppTypes.IllicitDischargeInterface | undefined }) => { // Update site illicit discharge form
-  const { handleClick, active } = useHandleDeleteBtnClick()
+export const Form = ({ illicitDischarge, handleDeleteBtn }: { illicitDischarge: AppTypes.IllicitDischargeInterface | undefined, handleDeleteBtn: { onClick: React.MouseEventHandler<HTMLButtonElement>, label: string } }) => { // Update site illicit discharge form
+  const { onClick, label } = handleDeleteBtn
 
   if(!illicitDischarge) return null
 
-  const label = !active ? 'Delete Violation' : 'Confirm Delete'
-
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col gap-6 items-center">
       <UpdateSiteIllicitDischargeForm illicitDischarge={illicitDischarge} />
-      <DeleteBtn onClick={handleClick}>
+      <DeleteBtn onClick={onClick}>
         {label}
       </DeleteBtn>
     </div>

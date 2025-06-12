@@ -2,8 +2,9 @@ import { useCallback, useContext } from "react"
 import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm } from "react-hook-form"
-import SiteCtx from "@/components/site/context"
 import { useEnableQuery } from "@/helpers/hooks"
+import EnforcementCtx from "@/components/enforcement/context"
+import { formatDate } from "@/helpers/utils"
 import { handleUpdateSiteLog } from './utils'
 
 // Types
@@ -14,20 +15,20 @@ export const useUpdateSiteLogForm = (siteLog: AppTypes.SiteLogInterface) => { //
   return useForm<AppTypes.SiteLogCreateInterface>({
     defaultValues: {
       siteId: siteLog.siteId,
-      inspectionDate: siteLog.inspectionDate,
+      inspectionDate: formatDate(siteLog.inspectionDate),
       uuid: siteLog.uuid
     }
   })
 }
 
 export const useOnCancelBtnClick = () => {
-  const { dispatch } = useContext(SiteCtx)
+  const { dispatch } = useContext(EnforcementCtx)
 
   return () => dispatch({ type: 'RESET_CTX' })
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
-  const { dispatch } = useContext(SiteCtx)
+  const { dispatch } = useContext(EnforcementCtx)
 
   const queryClient = useQueryClient()
 

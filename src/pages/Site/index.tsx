@@ -1,5 +1,6 @@
 import { useGetSite } from "./hooks"
 import { SiteProvider } from "@/components/site/context"
+import { EnforcementProvider } from "@/components/enforcement/context"
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -18,7 +19,9 @@ function Site() {
       <HandleLoading isSuccess={isSuccess}>
         <ErrorBoundary href={'/sites'}>
           <SiteProvider>
-            <SiteContainer site={data?.data as AppTypes.SiteInterface} />
+            <EnforcementProvider>
+              <SiteContainer site={data?.data as AppTypes.SiteInterface} />
+            </EnforcementProvider>
           </SiteProvider>
         </ErrorBoundary>
       </HandleLoading>

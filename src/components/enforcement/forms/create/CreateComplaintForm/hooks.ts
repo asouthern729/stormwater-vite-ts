@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useContext, useState } from "react"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
+import SiteCtx from "@/components/site/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -9,8 +10,9 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
 import Search from "@arcgis/core/widgets/Search"
 import { TextSymbol } from "@arcgis/core/symbols"
-import pinIcon from '@assets/icons/pin/warning-pin.svg'
+import pinErrorIcon from '@/assets/icons/pin/error-pin.png'
 import { useEnableQuery } from "@/helpers/hooks"
+import { formatDate } from "@/helpers/utils"
 import EnforcementCtx from "@/components/enforcement/context"
 import { errorPopup } from "@/utils/Toast/Toast"
 import { handleCreateComplaint } from './utils'
@@ -18,14 +20,14 @@ import { handleCreateComplaint } from './utils'
 // Types
 import * as AppTypes from '@/context/App/types'
 
-export const useCreateComplaintForm = (site: AppTypes.SiteInterface | undefined, date: string) => { 
-  const complaintDate = new Date(date || '').toISOString().split('T')[0]
+export const useCreateComplaintForm = (site: AppTypes.SiteInterface | undefined) => { 
+  const { formDate } = useContext(SiteCtx)
 
   return useForm<AppTypes.ComplaintCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId || null,
-      date: complaintDate,
+      date: formatDate(formDate),
       details: '',
       inspectorId: site?.inspectorId || null,
       name: '',
@@ -65,8 +67,6 @@ export const useSetComplaintsMapView = (mapRef: React.RefObject<HTMLDivElement>)
       })
     }
   }, [state.view])
-
-  return state.isLoaded
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
@@ -95,11 +95,13 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
   const { setValue } = useFormContext<AppTypes.ComplaintCreateInterface>()
 
   useEffect(() => {
-    if(!mapRef?.current) return
+    if(!mapRef?.current || !mapRef.current.isConnected) return
+
+    console.log(mapRef.current.children)
 
     const map = new Map({ basemap: 'dark-gray-vector' })
 
-    const mapView = new MapView({
+    let mapView = new MapView({
       container: mapRef.current,
       map,
       center: [-86.86897349, 35.92531721],
@@ -130,11 +132,9 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
     })
 
     return () => {
-      setTimeout(() => {
-        onMapClick?.remove()
-        searchWidget?.destroy()
-        mapView?.destroy()
-      }, 50)
+      onMapClick?.remove()
+      searchWidget?.destroy()
+      mapView.destroy()
     }
   }, [mapRef, setValue])
 }
@@ -160,7 +160,7 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
       })
 
       const pictureMarker = new PictureMarkerSymbol({
-        url: pinIcon, 
+        url: pinErrorIcon, 
         width: "32px",
         height: "32px",
         yoffset: "14px"
@@ -172,7 +172,7 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
       })
 
       const labelText = new TextSymbol({
-        text: 'New Complaint',
+        text: 'Complaint Location',
         color: "#FFFFFF",
         yoffset: -14,
         font: { size: 10 }

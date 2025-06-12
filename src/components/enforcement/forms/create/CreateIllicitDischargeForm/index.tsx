@@ -1,6 +1,6 @@
 import { FormProvider } from "react-hook-form"
 import { useOnCancelBtnClick } from "../CreateViolationForm/hooks"
-import { useCreateSiteIllicitDischargeForm, useHandleFormSubmit } from './hooks'
+import { useCreateIllicitDischargeForm, useHandleFormSubmit } from './hooks'
 import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
@@ -11,8 +11,8 @@ import FormBtns from "@/components/form-elements/buttons/FormBtns"
 import { FollowUpInputs } from "../CreateViolationForm/components"
 import * as Components from './components'
 
-function CreateIllicitDischargeForm({ site, date }: { site: AppTypes.SiteInterface | undefined, date: string }) {
-  const methods = useCreateSiteIllicitDischargeForm(site, date)
+function CreateIllicitDischargeForm({ site }: { site: AppTypes.SiteInterface | undefined }) {
+  const methods = useCreateIllicitDischargeForm(site)
 
   const handleFormSubmit = useHandleFormSubmit()
 
@@ -25,10 +25,8 @@ function CreateIllicitDischargeForm({ site, date }: { site: AppTypes.SiteInterfa
       <FormProvider { ...methods }>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-          <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
-            <Components.Map visible={!site} />
-          </div>
-          <Components.DateAndInspectorInputs site={site} />
+          <Components.Map visible={!site} />
+          <Components.DateAndInspectorInputs siteId={site?.siteId} />
           <Components.LocationAndResponsiblePartyInputs />
           <Components.DetailsInput />
           <Components.StreamWatershedSelect />

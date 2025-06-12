@@ -8,8 +8,8 @@ function ProjectNumber({ site }: { site: AppTypes.SiteInterface }) {
   
   return (
     <div className="flex flex-col gap-1 items-center" title={`COF #${ site.cof || '' }`}>
-      <img src={icon} alt="cof number icon" className={`w-8 ${ !hastProjectNumber ? 'opacity-40' : null }`} />
-      <small className={!site.cof ? 'hidden' : 'whitespace-nowrap'}>COF #{site.cof}</small>
+      <img src={icon} alt="cof number icon" className={`w-10 ${ !hastProjectNumber ? 'opacity-40' : null }`} />
+      <span className={!site.cof ? 'hidden' : 'font-[play] whitespace-nowrap'}>COF #{site.cof}</span>
     </div>
   )
 }

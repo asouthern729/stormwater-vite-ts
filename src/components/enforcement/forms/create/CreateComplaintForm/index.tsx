@@ -11,8 +11,8 @@ import FormBtns from "@/components/form-elements/buttons/FormBtns"
 import { FollowUpInputs } from "../CreateViolationForm/components"
 import * as Components from './components'
 
-function CreateComplaintForm({ site, date }: { site: AppTypes.SiteInterface | undefined, date: string }) {
-  const methods = useCreateComplaintForm(site, date)
+function CreateComplaintForm({ site }: { site: AppTypes.SiteInterface | undefined }) {
+  const methods = useCreateComplaintForm(site)
 
   const handleFormSubmit = useHandleFormSubmit()
 
@@ -25,11 +25,8 @@ function CreateComplaintForm({ site, date }: { site: AppTypes.SiteInterface | un
       <FormProvider { ...methods }>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-          <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
-            <Components.Map visible={!site} />
-          </div>
-          
-          <Components.DateAndInspectorInputs site={site} />
+          <Components.Map visible={!site} />
+          <Components.DateAndInspectorInputs siteId={site?.siteId} />
           <Components.LocationAndResponsiblePartyInputs />
           <Components.DetailsInput />
           <Components.ConcernInputs />

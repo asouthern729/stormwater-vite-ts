@@ -17,7 +17,6 @@ export type FormType =
 
 type SiteCtx = {
   dispatch: Dispatch<SiteAction>
-  activeForm: FormType | undefined
   basemap: BasemapType
   dateRangeFilter: {
     start: string
@@ -33,7 +32,6 @@ type SiteState = Omit<SiteCtx, 'dispatch'>
 type SiteAction =
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'SET_BASEMAP', payload: BasemapType }
-  | { type: 'SET_ACTIVE_FORM', payload: FormType | undefined }
   | { type: 'SET_FORM_DATE', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
   | { type: 'SET_DATE_RANGE_FILTER_START', payload: string }
@@ -43,12 +41,11 @@ type SiteAction =
 
 const initialState: SiteState = {
   basemap: 'dark-gray-vector',
-  activeForm: undefined,
   dateRangeFilter: {
     start: '',
     end: ''
   },
-  formDate: '',
+  formDate: new Date().toISOString().split('T')[0],
   formUUID: '',
   showClosedSiteIssues: false
 }
@@ -70,11 +67,6 @@ const siteReducer = (state: SiteState, action: SiteAction) => {
       return {
         ...state,
         basemap: action.payload
-      }
-    case 'SET_ACTIVE_FORM':
-      return {
-        ...state,
-        activeForm: action.payload
       }
     case 'SET_FORM_DATE':
       return {

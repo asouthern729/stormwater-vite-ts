@@ -1,6 +1,6 @@
 import { useRef, memo } from 'react'
 import { useResetCtx, useScrollToFormRef } from '../ViolationsContainer/hooks'
-import { useHandleTableData } from './hooks'
+import { useHandleTableData, useHandleDeleteBtn } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -18,6 +18,8 @@ function ComplaintsContainer({ complaints }: { complaints: AppTypes.ComplaintInt
   useScrollToFormRef(formRef)
   
   const tableData = useHandleTableData(complaints)
+
+  const handleDeleteBtn = useHandleDeleteBtn()
 
   useResetCtx()
 
@@ -39,7 +41,7 @@ function ComplaintsContainer({ complaints }: { complaints: AppTypes.ComplaintInt
       </div>
 
       <UpdateForm formRef={formRef}>
-        <GetComplaint />
+        <GetComplaint handleDeleteBtn={handleDeleteBtn} />
       </UpdateForm>
 
     </div>

@@ -13,7 +13,7 @@ export const Form = ({ siteLog }: { siteLog: AppTypes.SiteLogInterface }) => {
   const label = !active ? 'Delete Site Log' : 'Confirm Delete Site Log'
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col gap-10 items-center">
       <UpdateSiteLogForm siteLog={siteLog} />
       <DeleteBtn onClick={onClick}>
         {label}

@@ -27,7 +27,7 @@ function UpdateIllicitDischargeForm({ illicitDischarge }: { illicitDischarge: Ap
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
           <Map visible={!illicitDischarge.siteId} />
-          <DateAndInspectorInputs site={illicitDischarge.siteId} />
+          <DateAndInspectorInputs siteId={illicitDischarge.siteId} />
           <LocationAndResponsiblePartyInputs />
           <DetailsInput />
           <StreamWatershedSelect />

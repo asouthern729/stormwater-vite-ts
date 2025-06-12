@@ -12,6 +12,7 @@ function SiteContainer({ site }: { site: AppTypes.SiteInterface }) {
   return (
     <div className="flex flex-col my-10 gap-10">
       <Components.Header site={site} />
+      
       <div className="flex gap-6">
         <div className="flex flex-col gap-10 w-full">
           <div className="flex gap-10 h-fit">
@@ -25,7 +26,7 @@ function SiteContainer({ site }: { site: AppTypes.SiteInterface }) {
         </div>
       </div>
 
-      {/* <Components.Form site={site} /> */}
+      <Components.Form site={site} />
     </div>
   )
 }

@@ -1,6 +1,10 @@
 import { useContext } from "react"
-import SiteCtx from "../../context"
+import EnforcementCtx from "@/components/enforcement/context"
 import { useOnDeleteBtnClick } from './hooks'
+import { useHandleDeleteBtn as useHandleDeleteViolationBtn } from "@/components/enforcement/containers/ViolationsContainer/hooks"
+import { useHandleDeleteBtn as useHandleDeleteComplaintBtn } from "@/components/enforcement/containers/ComplaintsContainer/hooks"
+import { useHandleDeleteBtn as useHandleDeleteIllicitDischargeBtn } from "@/components/enforcement/containers/DischargesContainer/hooks"
+import { createFormMap } from './utils'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -9,10 +13,7 @@ import * as AppTypes from '@/context/App/types'
 import FormContainer from "../../../form-elements/FormContainer"
 import FormNav from "../../../form-elements/FormNav"
 import UpdateSiteForm from "../update/UpdateSiteForm"
-import CreateSiteLogForm from "../create/CreateSiteLogForm"
-import CreateViolationForm from "../../../enforcement/forms/create/CreateViolationForm"
 import CreateComplaintForm from "../../../enforcement/forms/create/CreateComplaintForm"
-import CreateIllicitDischargeForm from "../../../enforcement/forms/create/CreateIllicitDischargeForm"
 import GetSiteLog from "../get/GetSiteLog"
 import GetViolation from "../../../enforcement/forms/get/GetViolation"
 import GetComplaint from "../../../enforcement/forms/get/GetComplaint"
@@ -20,20 +21,25 @@ import GetIllicitDischarge from "../../../enforcement/forms/get/GetIllicitDischa
 import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
 
 export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Set form opened on site page
-  const { activeForm } = useContext(SiteCtx)
-
+  const { activeForm } = useContext(EnforcementCtx)
 
   if(activeForm) {
-    if(activeForm !== 'updateSite') { // Create site log, violation, complaint, and illicit discharge
+    if(!activeForm.includes('update')) { // Create site log, violation, complaint, and illicit discharge
       return (
-        <FormContainer>
+        <div className="flex flex-col gap-10 items-center m-auto p-20 w-3/4">
           <FormNav />
-          <SetForm site={site} />
-        </FormContainer>
+          <FormContainer>
+            <SetCreateForm site={site} />
+          </FormContainer>
+        </div>
       )
     }
 
-    return <UpdateSite site={site} /> // Update site form
+    return (
+      <div className="m-auto bg-neutral/20 p-20 w-2/3">
+        <SetUpdateForm site={site} />
+      </div>
+    )
   }
 }
 
@@ -54,44 +60,40 @@ const UpdateSite = ({ site }: { site: AppTypes.SiteInterface }) => {
   )
 }
 
-const SetForm = ({ site }: { site: AppTypes.SiteInterface }) => {
-  const { activeForm, formDate } = useContext(SiteCtx)
+const SetCreateForm = ({ site }: { site: AppTypes.SiteInterface }) => {
+  const { activeForm } = useContext(EnforcementCtx)
+
+  if(!activeForm) return null
+
+  const CreateFormComponent = createFormMap.get(activeForm)
+
+  if(CreateFormComponent) { // Create forms
+    return <CreateFormComponent site={site} />
+  }
+}
+
+const SetUpdateForm = ({ site }: { site: AppTypes.SiteInterface }) => {
+  const { activeForm } = useContext(EnforcementCtx)
+
+  if(!activeForm) return null
 
   let component = null
+
+  const handleDeleteViolationBtn = useHandleDeleteViolationBtn()
+  const handleDeleteComplaintBtn = useHandleDeleteComplaintBtn()
+  const handleDeleteIllicitDischargeBtn = useHandleDeleteIllicitDischargeBtn()
   
-  switch(activeForm) {
-    case 'createSiteLog':
-      component = <CreateSiteLogForm siteId={site.siteId} />
-      break
-    case 'createViolation':
-      component = <CreateViolationForm site={site} />
-      break
-    case 'createComplaint':
-      component = (
-        <CreateComplaintForm
-          site={site}
-          date={formDate} />
-      )
-      break
-    case 'createIllicitDischarge':
-      component = (
-        <CreateIllicitDischargeForm
-          site={site}
-          date={formDate} />
-      )
-      break
+  switch(activeForm) { // Update forms
+    case 'updateSite':
+      return <UpdateSite site={site} />
     case 'updateSiteLog':
-      component = <GetSiteLog />
-      break
+      return <GetSiteLog />
     case 'updateViolation':
-      component = <GetViolation />
-      break
+      return <GetViolation handleDeleteBtn={handleDeleteViolationBtn} />
     case 'updateComplaint':
-      component = <GetComplaint />
-      break
+      return <GetComplaint handleDeleteBtn={handleDeleteComplaintBtn} />
     case 'updateIllicitDischarge':
-      component = <GetIllicitDischarge />
-      break
+      return <GetIllicitDischarge handleDeleteBtn={handleDeleteIllicitDischargeBtn} />
   }
 
   return component

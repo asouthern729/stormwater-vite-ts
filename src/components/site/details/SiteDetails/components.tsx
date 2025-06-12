@@ -1,5 +1,5 @@
 // Components
-import GreenInfrastructure from "../GreenInfrastructure/GreenInfrastructure"
+import GreenInfrastructure from "../GreenInfrastructure"
 
 export const GreenInfrastructureIcon = ({ visible }: { visible: boolean }) => { // Site green infrastructure icon
   if(!visible) return null

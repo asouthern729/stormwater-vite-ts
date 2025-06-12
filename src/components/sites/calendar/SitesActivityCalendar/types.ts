@@ -1,4 +1,5 @@
 // Types
+import { MbscCalendarEvent } from "@mobiscroll/react"
 import { FormType } from "@/components/site/context"
 
 export interface CalendarDatesInterface {
@@ -20,13 +21,10 @@ export type CalendarColors =
   | "#FFFFFF" // swo
   | "#C4EB3B" // illicit discharge
 
-export interface CalendarDataInterface {
-  start: Date
-  end: Date
+export interface CalendarDataInterface extends MbscCalendarEvent {
   allDay: true
-  title: string
   color: CalendarColors
   uuid: string
-  formUUID?: string
+  formUUID: string
   form?: FormType
 }

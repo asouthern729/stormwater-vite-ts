@@ -1,6 +1,7 @@
 import { useRef, useContext } from 'react'
 import { Link } from 'react-router'
 import SiteCtx from '../../context'
+import EnforcementCtx from '@/components/enforcement/context'
 import inspectorIcon from '@/assets/icons/inspector/inspector.svg'
 import { useReturnUserRoles } from '@/helpers/hooks'
 import { useOnUpdateBtnClick, useScrollToFormRef, useSetSiteMapView } from './hooks'
@@ -9,7 +10,7 @@ import { useOnUpdateBtnClick, useScrollToFormRef, useSetSiteMapView } from './ho
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import SetSiteForm from "../../forms/SetSiteForm/SetSiteForm"
+import SetSiteForm from "../../forms/SetSiteForm"
 import BackToHomeBtn from "@/components/layout/nav/buttons/BackToHomeBtn/BackToHomeBtn"
 import UpdateBtn from "@/components/form-elements/buttons/UpdateBtn"
 import ViolationsIndicator from '@/components/enforcement/indicators/ViolationsIndicator'
@@ -74,7 +75,7 @@ export const Enforcement = ({ site }: { site: AppTypes.SiteInterface }) => {
 }
 
 export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Update site form
-  const { activeForm }  = useContext(SiteCtx)
+  const { activeForm }  = useContext(EnforcementCtx)
 
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -89,10 +90,10 @@ export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Update 
   )
 }
 
-export const Buttons = () => {
+export const Buttons = ({ site }: { site: AppTypes.SiteInterface }) => {
   const roles = useReturnUserRoles()
 
-  const onUpdateBtnClick = useOnUpdateBtnClick()
+  const onUpdateBtnClick = useOnUpdateBtnClick(site.uuid)
 
   if(!roles.includes('[task.write]')) return null // Viewers
 

@@ -2,14 +2,18 @@ import { useGetViolation } from './hooks'
 
 // Components
 import HandleLoading from '@/utils/HandleLoading'
-import { Form } from './components'
+import * as Components from './components'
 
-function GetViolation() {
+type GetViolationProps = { handleDeleteBtn: { onClick: React.MouseEventHandler<HTMLButtonElement>, label: string } }
+
+function GetViolation(props: GetViolationProps) {
   const { data, isSuccess } = useGetViolation()
 
   return (
     <HandleLoading isSuccess={isSuccess}>
-      <Form violation={data?.data} />
+      <Components.Form 
+        violation={data?.data}
+        handleDeleteBtn={props.handleDeleteBtn} />
     </HandleLoading>
   )
 }

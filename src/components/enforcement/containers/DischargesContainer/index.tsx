@@ -1,6 +1,6 @@
 import { useRef, memo } from 'react'
 import { useResetCtx, useScrollToFormRef } from '../ViolationsContainer/hooks'
-import { useHandleTableData } from './hooks'
+import { useHandleTableData, useHandleDeleteBtn } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -18,6 +18,8 @@ function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDisch
   useScrollToFormRef(formRef)
 
   const tableData = useHandleTableData(discharges)
+
+  const handleDeleteBtn = useHandleDeleteBtn()
 
   useResetCtx()
 
@@ -39,7 +41,7 @@ function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDisch
       </div>
 
       <UpdateForm formRef={formRef}>
-        <GetIllicitDischarge />
+        <GetIllicitDischarge handleDeleteBtn={handleDeleteBtn} />
       </UpdateForm>
 
     </div>

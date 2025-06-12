@@ -10,8 +10,6 @@ import ErrorBoundary from "../../../components/layout/error/ErrorBoundary/ErrorB
 function Complaints() {
   const { data, isSuccess } = useGetComplaints() 
 
-  console.log(isSuccess)
-
   return (
     <Layout>
       <HandleLoading isSuccess={isSuccess}>

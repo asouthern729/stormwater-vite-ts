@@ -1,12 +1,15 @@
 // Components
 import Layout from "@/components/layout/Layout"
+import ErrorBoundary from "@/components/layout/error/ErrorBoundary/ErrorBoundary"
 import GetSite from "@/components/enforcement/forms/get/GetSite"
 
 function CreateComplaint() {
 
   return (
     <Layout>
-      <GetSite />
+      <ErrorBoundary href={'/enforcement/complaints'}>
+        <GetSite />
+      </ErrorBoundary>
     </Layout>
   )
 }

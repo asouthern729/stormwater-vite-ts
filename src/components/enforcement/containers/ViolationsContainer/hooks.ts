@@ -1,5 +1,10 @@
-import { useContext, useCallback, useMemo, useEffect } from "react"
+import { useContext, useCallback, useMemo, useEffect, useState } from "react"
+import { useQueryClient } from "react-query"
 import EnforcementCtx from "../../context"
+import * as AppActions from '@/context/App/AppActions'
+import { useEnableQuery } from "@/helpers/hooks"
+import { authHeaders } from "@/helpers/utils"
+import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -95,4 +100,34 @@ export const useSetTotalPages = (count: number) => { // Set total pages to ctx
   useEffect(() => {
     dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 20) })
   }, [showClosedSiteIssues, count])
+}
+
+export const useHandleDeleteBtn = () => {
+  const [state, setState] = useState<{ active: boolean }>({ active: false })
+  const { formUUID } = useContext(EnforcementCtx)
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  const onClick = useCallback(async () => {
+    if(!state.active) {
+      setState({ active: true })
+      return
+    } 
+
+    if(enabled) {
+      const result = await AppActions.deleteViolation(formUUID, authHeaders(token))
+
+      if(result.success) {
+        savedPopup(result.msg)
+      } else errorPopup(result.msg)
+
+      queryClient.invalidateQueries('getViolations')
+    }
+  }, [state.active, enabled, token, formUUID, queryClient])
+
+  const label = !state.active ? 'Delete Violation' : 'Confirm Delete'
+
+  return { onClick, label}
 }

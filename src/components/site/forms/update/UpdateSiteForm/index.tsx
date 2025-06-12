@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
+import EnforcementCtx from "@/components/enforcement/context"
 import { useUpdateSiteForm, useHandleFormSubmit } from "./hooks"
 import styles from '@/components/form-elements/Forms.module.css'
 
@@ -12,6 +14,8 @@ import { NameInput, LocationInput, PreconDateInput, GreenInfrastructureSelect, P
 import * as Components from './components'
 
 function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
+  const { dispatch } = useContext(EnforcementCtx)
+
   const methods = useUpdateSiteForm(site)
 
   const handleFormSubmit = useHandleFormSubmit()
@@ -45,8 +49,7 @@ function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
             <UpdateSiteContactsForm />
           </div>
 
-          {/* TODO create on cancel btn click */}
-          <FormBtns onCancelBtnClick={() => null} />
+          <FormBtns onCancelBtnClick={() => dispatch({ type: 'RESET_CTX' })} />
 
         </form>
       </FormProvider>

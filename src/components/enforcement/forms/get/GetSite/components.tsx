@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import EnforcementCtx from '@/components/enforcement/context'
 import { useGetActiveSiteNames, useOnSiteSelect, useGetSelectedSite, useHandleNoSiteBtn } from './hooks'
 import { useSetFormType, useResetCtx } from './hooks'

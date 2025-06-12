@@ -11,7 +11,7 @@ function DeleteBtn(props: DeleteBtnProps) {
       type="button"
       className={styles.btn}
       onClick={props.onClick}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 hover:cursor-pointer">
           {props.children}
           <img src={icon} alt="recycle icon" className="w-4" />
         </div>

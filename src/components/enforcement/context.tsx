@@ -2,14 +2,17 @@ import { createContext, useReducer } from "react"
 
 // Types
 import { ReactNode, Reducer, Dispatch } from "react"
+import { FormType } from "../site/context"
 
 type EnforcementCtx = {
   dispatch: Dispatch<EnforcementAction>
+  activeForm: FormType | undefined
   currentPage: number
   dateRangeFilter: {
     start: string
     end: string
   }
+  formDate: string
   formUUID: string
   selectedSite: string
   showClosedSiteIssues: boolean
@@ -27,14 +30,18 @@ type EnforcementAction =
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
   | { type: 'SET_SELECTED_SITE', payload: string }
+  | { type: 'SET_ACTIVE_FORM', payload: FormType | undefined }
+  | { type: 'SET_FORM_DATE', payload: string }
   | { type: 'RESET_CTX' }
 
 const initialState: EnforcementState = {
   currentPage: 1,
+  activeForm: undefined,
   dateRangeFilter: {
     start: '',
     end: ''
   },
+  formDate: new Date().toISOString().split('T')[0],
   formUUID: '',
   selectedSite: '',
   showClosedSiteIssues: true,
@@ -97,6 +104,16 @@ const enforcementReducer = (state: EnforcementState, action: EnforcementAction) 
       return {
         ...state,
         selectedSite: action.payload
+      }
+    case 'SET_ACTIVE_FORM':
+      return {
+        ...state,
+        activeForm: action.payload
+      }
+    case 'SET_FORM_DATE':
+      return {
+        ...state,
+        formDate: action.payload
       }
     case 'RESET_CTX':
       return initialState

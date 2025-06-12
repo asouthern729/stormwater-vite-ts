@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import SiteCtx from "../../context"
+import EnforcementCtx from "@/components/enforcement/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -31,21 +32,24 @@ export const useSetSiteMapView = (mapRef: React.RefObject<HTMLDivElement>, site:
 }
 
 export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
-  const { activeForm } = useContext(SiteCtx)
+  const { activeForm } = useContext(EnforcementCtx)
+  const { formUUID } = useContext(SiteCtx)
+
+  const isActive = activeForm || formUUID
 
   useEffect(() => { // Scroll to form if active
-    if(activeForm && formRef.current) {
+    if(isActive && formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [activeForm, formRef])
+  }, [isActive, formRef])
 }
 
-export const useOnUpdateBtnClick = () => {
-  const { activeForm, dispatch } = useContext(SiteCtx)
+export const useOnUpdateBtnClick = (uuid: string) => {
+  const { formUUID, dispatch } = useContext(SiteCtx)
 
-  const payload = !activeForm ? 'updateSite' : undefined
+  const payload = !formUUID ? uuid : ''
 
-  return () => dispatch({ type: 'SET_ACTIVE_FORM', payload })
+  return () => dispatch({ type: 'SET_FORM_UUID', payload })
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, site: AppTypes.SiteInterface, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {

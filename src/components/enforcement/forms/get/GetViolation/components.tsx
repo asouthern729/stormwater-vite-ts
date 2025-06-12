@@ -1,5 +1,3 @@
-import { useHandleDeleteBtnClick } from './hooks'
-
 // Types
 import * as AppTypes from '@/context/App/types'
 
@@ -7,17 +5,15 @@ import * as AppTypes from '@/context/App/types'
 import UpdateViolationForm from "../../update/UpdateViolationForm"
 import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
 
-export const Form = ({ violation }: { violation: AppTypes.ConstructionViolationInterface | undefined }) => { // Update violation form
-  const { active, handleClick } = useHandleDeleteBtnClick()
+export const Form = ({ violation, handleDeleteBtn }: { violation: AppTypes.ConstructionViolationInterface | undefined, handleDeleteBtn: { onClick: React.MouseEventHandler<HTMLButtonElement>, label: string } }) => { // Update violation form
+  const { onClick, label } = handleDeleteBtn
 
   if(!violation) return null
 
-  const label = !active ? 'Delete Violation' : 'Confirm Delete'
-
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col gap-6 items-center">
       <UpdateViolationForm violation={violation} />
-      <DeleteBtn onClick={handleClick}>
+      <DeleteBtn onClick={onClick}>
         {label}
       </DeleteBtn>
     </div>

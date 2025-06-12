@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router'
+import { useSetStyle } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -10,12 +10,10 @@ import LastInspected from '../LastInspected'
 import { GreenInfrastructureIcon } from './components'
 
 function SiteDetails({ site, hovered }: { site: AppTypes.SiteInterface, hovered?: boolean }) {
-  const pathname = useLocation().pathname
-
-  const textColor = pathname === '/sites' ? 'text-neutral' : 'text-neutral-content'
+  const style = useSetStyle(hovered)
 
   return (
-    <div className={`flex gap-8 justify-around m-auto w-fit ${ hovered ? 'text-neutral-content' : textColor }`}>
+    <div className={`flex gap-4 justify-around font-[play] uppercase m-auto w-fit ${ style }`}>
       <PermitNumber site={site} />
       <ProjectNumber site={site} />
       <LastInspected site={site} />

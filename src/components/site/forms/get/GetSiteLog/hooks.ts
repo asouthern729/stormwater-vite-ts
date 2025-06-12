@@ -2,6 +2,7 @@ import { useState, useContext, useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import { useParams } from "react-router"
 import SiteCtx from "@/components/site/context"
+import EnforcementCtx from "@/components/enforcement/context"
 import * as AppActions from '@/context/App/AppActions'
 import { useEnableQuery } from "@/helpers/hooks"
 import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
@@ -10,7 +11,7 @@ import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 import { authHeaders } from "@/helpers/utils"
 
 export const useGetSiteLog = () => { // Get site log
-  const { formUUID } = useContext(SiteCtx)
+  const { formUUID } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
 

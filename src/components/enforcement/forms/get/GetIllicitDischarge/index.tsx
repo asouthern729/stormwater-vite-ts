@@ -4,12 +4,16 @@ import { useGetIllicitDischarge } from './hooks'
 import HandleLoading from '@/utils/HandleLoading'
 import * as Components from './components'
 
-function GetIllicitDischarge() {
+type GetIllicitDischargeProps = { handleDeleteBtn: { onClick: React.MouseEventHandler<HTMLButtonElement>, label: string } }
+
+function GetIllicitDischarge(props: GetIllicitDischargeProps) {
   const { data, isSuccess } = useGetIllicitDischarge()
 
   return (
     <HandleLoading isSuccess={isSuccess}>
-      <Components.Form illicitDischarge={data?.data} />
+      <Components.Form 
+        illicitDischarge={data?.data}
+        handleDeleteBtn={props.handleDeleteBtn} />
     </HandleLoading>
   )
 }

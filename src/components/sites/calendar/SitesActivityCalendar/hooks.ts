@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useContext } from 'react'
+import { useLocation } from 'react-router'
+import EnforcementCtx from '@/components/enforcement/context'
 import { useMsal } from "@azure/msal-react"
 import { useNavigate } from "react-router"
 
 // Types
 import { useMemo } from "react"
-import { MbscEventcalendarOptions, MbscCalendarEvent } from "@mobiscroll/react"
+import { MbscEventcalendarOptions, MbscCalendarEvent, MbscEventClickEvent } from "@mobiscroll/react"
 import * as AppTypes from '@/context/App/types'
 import { CalendarDatesInterface, CalendarDataInterface } from "./types"
 
@@ -26,11 +28,11 @@ export const useFormatCalendarData = (sites: AppTypes.SiteInterface[]) => {
 
     sites.map(site => {
       site.Logs?.forEach(log => { // Site logs
-        addCalendarObj({ start: new Date(log.inspectionDate), end: new Date(log.inspectionDate), allDay: true, title: `Inspection - ${ site.name }`, color: '#157EE8', uuid: site.uuid, formUUID: log.uuid, form: "updateSiteLog" }, dates.logsArray)
+        addCalendarObj({ start: new Date(log.inspectionDate), end: new Date(log.inspectionDate), allDay: true, title: `Inspection - ${ site.name }`, color: '#157EE8', uuid: site.uuid, formUUID: log.uuid, form: 'updateSiteLog' }, dates.logsArray)
       })
   
       site.ConstructionViolations?.forEach(violation => { // Construction violations
-        addCalendarObj({ start: new Date(violation.date), end: new Date(violation.date), allDay: true, title: `Construction Violation - ${ site.name }`, color: '#F55D34', uuid: site.uuid, formUUID: violation.uuid, form: "updateViolation" }, dates.violationsArray)
+        addCalendarObj({ start: new Date(violation.date), end: new Date(violation.date), allDay: true, title: `Construction Violation - ${ site.name }`, color: '#F55D34', uuid: site.uuid, formUUID: violation.uuid, form: 'updateViolation' }, dates.violationsArray)
   
         violation.FollowUpDates?.forEach(followUp => { // Construction violation follow ups
           addCalendarObj({ start: new Date(followUp.followUpDate), end: new Date(followUp.followUpDate), allDay: true, title: `Follow Up - ${ site.name }`, color: '#FFFF00', uuid: site.uuid, formUUID: violation.uuid, form: "updateViolation" }, dates.followUpsArray)
@@ -89,6 +91,8 @@ export const useFormatCalendarData = (sites: AppTypes.SiteInterface[]) => {
 }
 
 export const useCalendarProps = (type: 'week' | 'month', calendarData: CalendarDataInterface[]) => { // Set calendar props
+  const { dispatch } = useContext(EnforcementCtx)
+
   const onEventClick = useHandleEventClick()
 
   const calendarProps = useMemo(() => {
@@ -107,6 +111,11 @@ export const useCalendarProps = (type: 'week' | 'month', calendarData: CalendarD
     }
 
     props.onEventClick = (event) => onEventClick(event)
+    props.onCellClick = (event) => {
+      console.log(event.date.toISOString().split('T')[0])
+      dispatch({ type: 'SET_ACTIVE_FORM', payload: 'createSiteLog' })
+      dispatch({ type: 'SET_FORM_DATE', payload: event.date.toISOString().split('T')[0] }) 
+    }
 
     return props
   }, [calendarData, type])
@@ -114,7 +123,7 @@ export const useCalendarProps = (type: 'week' | 'month', calendarData: CalendarD
   return calendarProps
 }
 
-export const useHandleCalendarTypeBtnClick = (): { type: 'week' | 'month', onClick: React.MouseEventHandler<HTMLButtonElement> } => {
+export const useHandleCalendarTypeBtnClick = (): { type: 'week' | 'month', onClick: React.MouseEventHandler<HTMLButtonElement>, label: 'Show Month' | 'Show Week' } => {
   const [state, setState] = useState<{ type: 'week' | 'month' }>({ type: 'week' })
 
   const cb = useCallback(() => {
@@ -123,10 +132,16 @@ export const useHandleCalendarTypeBtnClick = (): { type: 'week' | 'month', onCli
     setState({ type: newType })
   }, [state.type])
 
-  return { type: state.type, onClick: cb }
+  const label = state.type === 'week' ? 'Show Month' : 'Show Week'
+
+  return { type: state.type, onClick: cb, label }
 }
 
 const useHandleEventClick = () => {
+  const { dispatch } = useContext(EnforcementCtx)
+
+  const pathname = useLocation().pathname
+
   const { instance } = useMsal()
 
   const activeAccount = instance.getActiveAccount()
@@ -140,5 +155,14 @@ const useHandleEventClick = () => {
   //   return () => null
   // }
 
-  return (e: MbscCalendarEvent) => navigate(`/sites/site/${ e.event.uuid }`)
+  if(pathname === '/sites') { // From Sites page
+    return (e: MbscCalendarEvent) => navigate(`/site/${ e.event.uuid }`)
+  }
+
+  return (e: MbscEventClickEvent) => { // From Site page
+    const event = e.event as CalendarDataInterface
+
+    dispatch({ type: 'SET_FORM_UUID', payload: event.formUUID })
+    dispatch({ type: 'SET_ACTIVE_FORM', payload: event.form })
+  } 
 }
