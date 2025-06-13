@@ -34,9 +34,7 @@ type CreateBtnProps = { href: string, children: React.ReactNode }
 export const CreateBtn = (props: CreateBtnProps) => {
   const roles = useReturnUserRoles()
 
-  // TODO remove comment for prod
-
-  // if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2">

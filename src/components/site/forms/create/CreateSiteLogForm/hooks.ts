@@ -31,7 +31,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleCreateSiteLog(formData, token)
-      .then(_ => queryClient.invalidateQueries(['getSite', formData.uuid]))
+      .then(() => queryClient.invalidateQueries(['getSite', formData.uuid]))
       .catch(err => errorPopup(err))
   }, [enabled, token, queryClient])
 }

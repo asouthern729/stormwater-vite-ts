@@ -1,7 +1,5 @@
-import { useContext } from "react"
 import { FormProvider } from "react-hook-form"
-import EnforcementCtx from "@/components/enforcement/context"
-import { useUpdateSiteForm, useHandleFormSubmit } from "./hooks"
+import { useUpdateSiteForm, useOnCancelBtnClick, useHandleFormSubmit } from "./hooks"
 import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
@@ -14,9 +12,9 @@ import { NameInput, LocationInput, PreconDateInput, GreenInfrastructureSelect, P
 import * as Components from './components'
 
 function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
-  const { dispatch } = useContext(EnforcementCtx)
-
   const methods = useUpdateSiteForm(site)
+
+  const onCancelBtnClick = useOnCancelBtnClick()
 
   const handleFormSubmit = useHandleFormSubmit()
 
@@ -27,7 +25,8 @@ function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
       <FormProvider { ...methods }>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)} className={styles.body}>
 
-          <Components.Map site={site} />
+          <Components.Map />
+
           <Components.InactiveCheckbox />
           <NameInput />
           <LocationInput />
@@ -49,7 +48,7 @@ function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
             <UpdateSiteContactsForm />
           </div>
 
-          <FormBtns onCancelBtnClick={() => dispatch({ type: 'RESET_CTX' })} />
+          <FormBtns onCancelBtnClick={onCancelBtnClick} />
 
         </form>
       </FormProvider>

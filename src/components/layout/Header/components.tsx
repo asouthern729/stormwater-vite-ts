@@ -138,8 +138,7 @@ const CreateMenu = () => {
 
   const roles = useReturnUserRoles()
 
-  // TODO uncomment for prod
-  // if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
     <NavDropdown

@@ -11,23 +11,23 @@ import * as AppTypes from '@/context/App/types'
 import { ViolationTableDataType } from "./components"
 
 export const useHandleNavBtns = () => {
-  const { currentPage, totalPages, dateRangeFilter, dispatch } = useContext(EnforcementCtx)
+  const { currentPage, totalPages, dispatch } = useContext(EnforcementCtx)
 
   const handlePrevBtn = useCallback(() => {
     if(currentPage !== 1) {
       dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage - 1 })
     }
-  }, [currentPage])
+  }, [currentPage, dispatch])
 
   const handleNextBtn = useCallback(() => {
     if(currentPage !== totalPages) {
       dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage + 1 })
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, dispatch])
 
   const label = useMemo(() => {
     return `Page ${ currentPage } / ${ totalPages }`
-  }, [currentPage, totalPages, dateRangeFilter])
+  }, [currentPage, totalPages])
 
   return { handlePrevBtn, handleNextBtn, label }
 }
@@ -39,7 +39,7 @@ export const useHandleTableRowClick = (uuid: string) => {
 }
 
 export const useHandleTableData = (violations: AppTypes.ConstructionViolationInterface[]) => { // Construction violations table data
-  const { currentPage, totalPages, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
+  const { currentPage, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
 
   const tableData = useMemo(() => {
     let allViolations: ViolationTableDataType[] = violations.map(violation => ({
@@ -69,7 +69,7 @@ export const useHandleTableData = (violations: AppTypes.ConstructionViolationInt
     const endIndex = currentPage * 20
     
     return { data: allViolations.slice(startIndex, endIndex), count: allViolations.length }
-  }, [violations, currentPage, totalPages, showClosedSiteIssues, dateRangeFilter])
+  }, [violations, currentPage, showClosedSiteIssues, dateRangeFilter])
 
   useSetTotalPages(tableData.count)
 
@@ -91,7 +91,7 @@ export const useResetCtx = () => { // Reset EnforcementCtx on enforcement page c
 
   useEffect(() => {
     return () => dispatch({ type: 'RESET_CTX' })
-  }, [])
+  }, [dispatch])
 }
 
 export const useSetTotalPages = (count: number) => { // Set total pages to ctx
@@ -99,7 +99,7 @@ export const useSetTotalPages = (count: number) => { // Set total pages to ctx
 
   useEffect(() => {
     dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 20) })
-  }, [showClosedSiteIssues, count])
+  }, [showClosedSiteIssues, count, dispatch])
 }
 
 export const useHandleDeleteBtn = () => {

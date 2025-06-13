@@ -1,5 +1,5 @@
 import { useGetInspector } from './hooks'
-import { SitesProvider } from '@/components/sites/context'
+import { InspectorProvider } from '@/components/inspectors/context'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -17,11 +17,11 @@ function Inspector() {
     <Layout>
       <HandleLoading isSuccess={isSuccess}>
         <ErrorBoundary href={'/sites'}>
-          <SitesProvider>
+          <InspectorProvider>
             <InspectorContainer 
               sites={data?.data.sites || []}
               inspector={data?.data.inspector as AppTypes.InspectorInterface} />
-          </SitesProvider>
+          </InspectorProvider>
         </ErrorBoundary>
       </HandleLoading>
     </Layout>

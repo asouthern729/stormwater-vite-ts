@@ -4,19 +4,16 @@ import styles from '@/components/form-elements/Forms.module.css'
 import { useCreateSiteFormContext, useSetCreateSiteMapView } from './hooks'
 
 // Components
-import { MapLoading } from '@/components/sites/containers/SitesContainer/components'
 import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
 export const Map = () => { // Map input
   const mapRef = useRef<HTMLDivElement>(null)
 
-  const isLoaded = useSetCreateSiteMapView(mapRef)
+  useSetCreateSiteMapView(mapRef)
 
   return (
-    <div ref={mapRef} className="relative w-full h-full">
-      <MapLoading isLoaded={isLoaded} />
-    </div>
+    <div ref={mapRef} className="relative w-full h-full"></div>
   )
 }
 

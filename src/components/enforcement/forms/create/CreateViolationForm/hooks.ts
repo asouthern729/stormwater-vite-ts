@@ -58,10 +58,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleCreateViolation(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getViolations')
         dispatch({ type: 'SET_FORM_UUID', payload: '' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, dispatch])
 }

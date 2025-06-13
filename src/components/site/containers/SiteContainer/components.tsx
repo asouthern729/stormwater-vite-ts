@@ -11,7 +11,7 @@ import * as AppTypes from '@/context/App/types'
 
 // Components
 import SetSiteForm from "../../forms/SetSiteForm"
-import BackToHomeBtn from "@/components/layout/nav/buttons/BackToHomeBtn/BackToHomeBtn"
+import BackToHomeBtn from "@/components/layout/nav/buttons/BackToHomeBtn"
 import UpdateBtn from "@/components/form-elements/buttons/UpdateBtn"
 import ViolationsIndicator from '@/components/enforcement/indicators/ViolationsIndicator'
 import ComplaintsIndicator from '@/components/enforcement/indicators/ComplaintsIndicator'
@@ -37,13 +37,18 @@ export const Header = ({ site }: { site: AppTypes.SiteInterface }) => {
   const label = !site.inactive ? 'Active Site' : 'Inactive Site'
 
   return (
-    <div className="flex flex-col gap-2 items-end text-neutral-content text-end ml-auto max-w-[70%]">
-      <div className="flex flex-col">
-        <h2 className="font-[shrikhand] text-4xl">{site.name}</h2>
-
-        <span className={`text-xl font-[play] font-bold italic ${ !site.inactive ? 'text-success animate-pulse' : 'text-error font-normal' }`}>{label}</span>
+    <div className="flex gap-20 justify-between items-end">
+      <div className="flex-1">
+        <Buttons site={site} />
       </div>
-      <InspectorBtn inspector={site.Inspector} />
+      <div className="flex-2 flex flex-col gap-2 items-end text-neutral-content text-end">
+        <div className="flex flex-col">
+          <h2 className="font-[shrikhand] text-4xl">{site.name}</h2>
+
+          <span className={`text-xl font-[play] font-bold italic ${ !site.inactive ? 'text-success animate-pulse' : 'text-error font-normal' }`}>{label}</span>
+        </div>
+        <InspectorBtn inspector={site.Inspector} />
+      </div>
     </div>
   )
 }
@@ -75,13 +80,14 @@ export const Enforcement = ({ site }: { site: AppTypes.SiteInterface }) => {
 }
 
 export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Update site form
-  const { activeForm }  = useContext(EnforcementCtx)
+  const { activeForm } = useContext(EnforcementCtx)
+  const { siteUUID } = useContext(SiteCtx)
 
   const formRef = useRef<HTMLDivElement>(null)
 
   useScrollToFormRef(formRef)
 
-  if(!activeForm) return null
+  if(!activeForm && !siteUUID) return null
 
   return (
     <div ref={formRef}>
@@ -98,7 +104,7 @@ export const Buttons = ({ site }: { site: AppTypes.SiteInterface }) => {
   if(!roles.includes('[task.write]')) return null // Viewers
 
   return (
-    <div className="flex gap-2 w-fit 2xl:flex-col 2xl:w-full 2xl:gap-4">
+    <div className="flex flex-col gap-4">
       <BackToHomeBtn />
       <UpdateBtn onClick={onUpdateBtnClick}>
         Update Site

@@ -22,7 +22,7 @@ export const useOnDeleteBtnClick = () => {
   const { dispatch } = useContext(SiteCtx)
 
   const [state, setState] = useState<{ active: boolean }>({ active: false })
-  const { formUUID } = useContext(SiteCtx)
+  const { siteUUID } = useContext(SiteCtx)
 
   const { enabled, token } = useEnableQuery()
 
@@ -37,7 +37,7 @@ export const useOnDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await AppActions.deleteSiteLog(formUUID, authHeaders(token))
+      const result = await AppActions.deleteSiteLog(siteUUID, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)
@@ -45,7 +45,7 @@ export const useOnDeleteBtnClick = () => {
         dispatch({ type: 'RESET_CTX' })
       } else errorPopup(result.msg)
     }
-  }, [state.active, enabled, token, formUUID, queryClient, uuid, dispatch])
+  }, [state.active, enabled, token, siteUUID, queryClient, uuid, dispatch])
 
   return { onClick, active: state.active }
 }

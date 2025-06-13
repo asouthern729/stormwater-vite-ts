@@ -43,11 +43,11 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleCreateContact(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getContacts')
         dispatch({ type: 'RESET_CTX' })
         navigate('/contacts')
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, navigate])
+  }, [enabled, token, queryClient, navigate, dispatch])
 }

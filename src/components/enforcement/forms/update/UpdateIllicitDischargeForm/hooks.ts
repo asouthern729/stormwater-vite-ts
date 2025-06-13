@@ -46,12 +46,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
     }
 
     handleUpdateIllicitDischarge(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getIllicitDischarges')
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, dispatch])
 }
 
 const useSetStreamWatershed = (streamWatershed: StreamWatershedEnum | string) => {

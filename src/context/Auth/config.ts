@@ -2,7 +2,7 @@ import { LogLevel } from '@azure/msal-browser';
 
 export const msalConfig = {
     auth: {
-        clientId: '',
+        clientId: '10dff41b-bba0-4fcb-83a6-147c19927e6b',
         authority: 'https://login.microsoftonline.com/f6644f52-f834-4a2f-a433-e6bc40d7c17f/',
         redirectUri: 'https://istest.franklintn.gov/stormwater',
         postLogoutRedirectUri: '/',

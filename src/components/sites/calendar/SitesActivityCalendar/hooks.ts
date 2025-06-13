@@ -1,8 +1,7 @@
 import { useState, useCallback, useContext } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import EnforcementCtx from '@/components/enforcement/context'
 import { useMsal } from "@azure/msal-react"
-import { useNavigate } from "react-router"
 
 // Types
 import { useMemo } from "react"
@@ -112,13 +111,12 @@ export const useCalendarProps = (type: 'week' | 'month', calendarData: CalendarD
 
     props.onEventClick = (event) => onEventClick(event)
     props.onCellClick = (event) => {
-      console.log(event.date.toISOString().split('T')[0])
       dispatch({ type: 'SET_ACTIVE_FORM', payload: 'createSiteLog' })
       dispatch({ type: 'SET_FORM_DATE', payload: event.date.toISOString().split('T')[0] }) 
     }
 
     return props
-  }, [calendarData, type])
+  }, [calendarData, type, dispatch, onEventClick])
 
   return calendarProps
 }
@@ -150,12 +148,11 @@ const useHandleEventClick = () => {
 
   const navigate = useNavigate()
 
-  // TODO remove this comment for prod
-  // if(!roles?.includes('[task.write]')) {
-  //   return () => null
-  // }
+  if(!roles?.includes('[task.write]')) {
+    return () => null
+  }
 
-  if(pathname === '/sites') { // From Sites page
+  if(pathname === '/sites' || pathname.includes('inspectors')) { // From Sites page
     return (e: MbscCalendarEvent) => navigate(`/site/${ e.event.uuid }`)
   }
 

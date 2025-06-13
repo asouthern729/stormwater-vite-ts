@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useSetTableData } from './hooks'
+import { useSetTableData, useHandleSearch } from './hooks'
 import styles from './SitesContainer.module.css'
 
 // Types
@@ -14,11 +14,15 @@ import * as Components from './components'
 function SitesContainer({ sites }: { sites: AppTypes.SiteInterface[] }) {
   const tableData = useSetTableData(sites) 
 
+  const { onSearchChange, searchValue } = useHandleSearch()
+
   return (
     <div className="flex flex-col my-10">
 
       <div className="flex justify-between w-full">
-        <Search />
+        <Search
+          onSearchChange={onSearchChange}
+          searchValue={searchValue} />
         <div className="flex gap-4 mb-6 ml-auto">
           <Components.ActiveSitesBtn />
           <Components.OpenIssuesBtn />
@@ -34,7 +38,7 @@ function SitesContainer({ sites }: { sites: AppTypes.SiteInterface[] }) {
         </div>
 
         <div className="flex flex-col p-10 pt-0 border-4 border-secondary/30 border-double rounded shadow-xl">
-          <h3 className={styles.header}>Sites Activity</h3>
+          <h3 className={styles.header}>Activity</h3>
 
           <SitesActivityCalendar sites={tableData} />
         </div>

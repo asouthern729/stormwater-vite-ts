@@ -57,7 +57,7 @@ export const useSetTableData = (site: AppTypes.SiteInterface) => {
 
       return sorted
     } else return []
-  }, [showClosedSiteIssues, dateRangeFilter])
+  }, [showClosedSiteIssues, dateRangeFilter, site.Complaints, site.ConstructionViolations, site.IllicitDischarges])
 }
 
 export const useOnRowClick = () => {

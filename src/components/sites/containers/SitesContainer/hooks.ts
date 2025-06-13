@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useCallback, useRef } from "react"
 import { useNavigate } from "react-router"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
-import Multipoint from '@arcgis/core/geometry/Multipoint'
 import Graphic from '@arcgis/core/Graphic'
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
@@ -15,6 +14,7 @@ import { setSiteMarker } from './utils'
 
 // Types
 import * as AppTypes from '@/context/App/types'
+import Multipoint from '@arcgis/core/geometry/Multipoint'
 import { MapHitInterface } from './types'
 
 export const useSetTableData = (sites: AppTypes.SiteInterface[]) => {
@@ -68,28 +68,77 @@ export const useSetSitesMapView = (mapRef: React.RefObject<HTMLDivElement>, site
   return state.isLoaded
 }
 
+export const useHandleSearch = () => {
+  const { searchValue, dispatch } = useContext(SitesCtx)
+
+  const [state, setState] = useState<{ localSearchValue: string }>({ localSearchValue: searchValue })
+  
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const cb = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchValue = e.currentTarget.value
+
+    setState({ localSearchValue: newSearchValue })
+
+    if(timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue })
+    }, 300)
+  }, [searchValue, dispatch])
+
+  return { onSearchChange: cb, searchValue: state.localSearchValue } // searchValue returned for UI update only
+}
+
+export const useSetMapViewProperties = (sites: AppTypes.SiteInterface[], mapRef: React.RefObject<HTMLDivElement>) => {
+
+  return useCallback((map: __esri.Map) => {
+    if(sites.length) {
+      const multipoint = new Multipoint({
+        points: sites.map(site => [site.xCoordinate, site.yCoordinate])
+      })
+
+      const viewExtent = multipoint.extent
+
+      const properties: __esri.MapViewProperties = {
+        container: mapRef.current as HTMLDivElement,
+        map,
+        extent: viewExtent?.expand(1.1),
+        ui: { components: [] }
+      }
+
+      return properties
+    }
+
+    const properties: __esri.MapViewProperties = {
+      container: mapRef.current as HTMLDivElement,
+      map,
+      center: [-86.86897349, 35.92531721],
+      zoom: 12,
+      ui: { components: [] }
+    }
+
+    return properties
+  }, [sites, mapRef])
+}
+
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTypes.SiteInterface[], setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
   const { basemap } = useContext(SitesCtx)
   
   const navigate = useNavigate()
+
+  const mapViewPropertes = useSetMapViewProperties(sites, mapRef)
 
   useEffect(() => {
     if(!mapRef?.current) return
 
     const map = new Map({ basemap })
 
-    const multipoint = new Multipoint({
-      points: sites.map(site => [site.xCoordinate, site.yCoordinate])
-    })
+    const properties = mapViewPropertes(map)
 
-    let viewExtent = multipoint.extent
-
-    const mapView = new MapView({
-      container: mapRef.current as HTMLDivElement,
-      map,
-      extent: viewExtent?.expand(1.1),
-      ui: { components: [] }
-    })
+    const mapView = new MapView({ ...properties })
 
     mapView.when(() => {
       const searchWidget = new Search({ view: mapView })
@@ -122,7 +171,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTyp
         mapView.destroy()
       }, 50)
     }
-  }, [mapRef, sites, basemap, navigate])
+  }, [mapRef, sites, basemap, navigate, mapViewPropertes, setState])
 }
 
 const useSetMapGraphics = (sites: AppTypes.SiteInterface[], state: { view: __esri.MapView | null }) => {

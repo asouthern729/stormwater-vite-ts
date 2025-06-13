@@ -17,6 +17,7 @@ type InspectorTableAction =
   | { type: 'REMOVE_FROM_SELECTION', payload: string }
   | { type: 'TOGGLE_FORM_OPEN' }
   | { type: 'SET_YEAR', payload: number }
+  | { type: 'RESET_CTX' }
 
 const initialState: InspectorTableState = {
   selection: [],
@@ -52,6 +53,8 @@ const inspectorTableReducer = (state: InspectorTableState, action: InspectorTabl
         ...state,
         year: action.payload
       }
+    case 'RESET_CTX':
+      return initialState
     default:
       return state
   }

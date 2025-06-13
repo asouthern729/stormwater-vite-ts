@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import EnforcementCtx from "@/components/enforcement/context"
+import SiteCtx from "../../context"
 import { useOnDeleteBtnClick } from './hooks'
 import { useHandleDeleteBtn as useHandleDeleteViolationBtn } from "@/components/enforcement/containers/ViolationsContainer/hooks"
 import { useHandleDeleteBtn as useHandleDeleteComplaintBtn } from "@/components/enforcement/containers/ComplaintsContainer/hooks"
@@ -13,7 +14,6 @@ import * as AppTypes from '@/context/App/types'
 import FormContainer from "../../../form-elements/FormContainer"
 import FormNav from "../../../form-elements/FormNav"
 import UpdateSiteForm from "../update/UpdateSiteForm"
-import CreateComplaintForm from "../../../enforcement/forms/create/CreateComplaintForm"
 import GetSiteLog from "../get/GetSiteLog"
 import GetViolation from "../../../enforcement/forms/get/GetViolation"
 import GetComplaint from "../../../enforcement/forms/get/GetComplaint"
@@ -22,9 +22,10 @@ import DeleteBtn from "../../../form-elements/buttons/DeleteBtn"
 
 export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Set form opened on site page
   const { activeForm } = useContext(EnforcementCtx)
+  const { siteUUID } = useContext(SiteCtx)
 
-  if(activeForm) {
-    if(!activeForm.includes('update')) { // Create site log, violation, complaint, and illicit discharge
+  if(activeForm || siteUUID) {
+    if(activeForm && !activeForm?.includes('update')) { // Create site log, violation, complaint, and illicit discharge
       return (
         <div className="flex flex-col gap-10 items-center m-auto p-20 w-3/4">
           <FormNav />
@@ -74,18 +75,19 @@ const SetCreateForm = ({ site }: { site: AppTypes.SiteInterface }) => {
 
 const SetUpdateForm = ({ site }: { site: AppTypes.SiteInterface }) => {
   const { activeForm } = useContext(EnforcementCtx)
-
-  if(!activeForm) return null
-
-  let component = null
+  const { siteUUID } = useContext(SiteCtx)
 
   const handleDeleteViolationBtn = useHandleDeleteViolationBtn()
   const handleDeleteComplaintBtn = useHandleDeleteComplaintBtn()
   const handleDeleteIllicitDischargeBtn = useHandleDeleteIllicitDischargeBtn()
-  
+
+  if(!activeForm && !siteUUID) return null
+
+  if(siteUUID) {
+    return <UpdateSite site={site} />
+  }
+
   switch(activeForm) { // Update forms
-    case 'updateSite':
-      return <UpdateSite site={site} />
     case 'updateSiteLog':
       return <GetSiteLog />
     case 'updateViolation':
@@ -95,6 +97,4 @@ const SetUpdateForm = ({ site }: { site: AppTypes.SiteInterface }) => {
     case 'updateIllicitDischarge':
       return <GetIllicitDischarge handleDeleteBtn={handleDeleteIllicitDischargeBtn} />
   }
-
-  return component
 }

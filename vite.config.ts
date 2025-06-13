@@ -39,6 +39,7 @@ export default defineConfig({
     }
   },
   server: {
+    host: true,
     allowedHosts: ['cofasv38', 'istest.franklintn.gov', 'dev.franklintn.gov']
   }
 })

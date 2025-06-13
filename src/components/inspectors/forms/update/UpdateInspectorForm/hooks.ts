@@ -39,10 +39,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     }
 
     handleUpdateInspector(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries([['getInspector', slug], 'getInspectors'])
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, slug, dispatch])
 }

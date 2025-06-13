@@ -21,7 +21,7 @@ export const Map = ({ sites }: { sites: AppTypes.SiteInterface[] }) => {
   const isLoaded = useSetSitesMapView(mapRef, sites)
 
   return (
-    <div className="flex-1 h-full">
+    <div className="flex-1 bg-neutral h-full">
       <div ref={mapRef} className="relative w-full h-full">
         <MapLoading isLoaded={isLoaded} />
         <div className="absolute top-2 right-4 z-10">

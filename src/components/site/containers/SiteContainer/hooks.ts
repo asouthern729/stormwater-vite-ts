@@ -33,9 +33,9 @@ export const useSetSiteMapView = (mapRef: React.RefObject<HTMLDivElement>, site:
 
 export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
   const { activeForm } = useContext(EnforcementCtx)
-  const { formUUID } = useContext(SiteCtx)
+  const { siteUUID } = useContext(SiteCtx)
 
-  const isActive = activeForm || formUUID
+  const isActive = activeForm || siteUUID
 
   useEffect(() => { // Scroll to form if active
     if(isActive && formRef.current) {
@@ -45,11 +45,11 @@ export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => 
 }
 
 export const useOnUpdateBtnClick = (uuid: string) => {
-  const { formUUID, dispatch } = useContext(SiteCtx)
+  const { siteUUID, dispatch } = useContext(SiteCtx)
 
-  const payload = !formUUID ? uuid : ''
+  const payload = !siteUUID ? uuid : ''
 
-  return () => dispatch({ type: 'SET_FORM_UUID', payload })
+  return () => dispatch({ type: 'SET_SITE_UUID', payload })
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, site: AppTypes.SiteInterface, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
@@ -79,7 +79,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, site: AppType
         mapView.destroy()
       }, 50)
     }
-  }, [mapRef, site, basemap])
+  }, [mapRef, site, basemap, setState])
 }
 
 const useSetMapGraphics = (site: AppTypes.SiteInterface, state: { view: __esri.MapView | null }) => {

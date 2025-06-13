@@ -83,12 +83,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
     }
 
     handleCreateComplaint(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getComplaints')
         dispatch({ type: 'SET_FORM_UUID', payload: '' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, dispatch])
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
@@ -101,7 +101,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
 
     const map = new Map({ basemap: 'dark-gray-vector' })
 
-    let mapView = new MapView({
+    const mapView = new MapView({
       container: mapRef.current,
       map,
       center: [-86.86897349, 35.92531721],
@@ -136,7 +136,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
       searchWidget?.destroy()
       mapView.destroy()
     }
-  }, [mapRef, setValue])
+  }, [mapRef, setValue, setState])
 }
 
 const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
@@ -145,13 +145,14 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
   const xCoordinate = watch('xCoordinate')
   const yCoordinate = watch('yCoordinate')
 
-  const coordinates = { xCoordinate, yCoordinate }
 
   useEffect(() => {
     if(!state.view) return
 
     const pointGraphicsLayer = state.view.map.findLayerById('pointGraphicsLayer') as GraphicsLayer
     pointGraphicsLayer.removeAll()
+
+    const coordinates = { xCoordinate, yCoordinate }
 
     if(coordinates.xCoordinate && coordinates.yCoordinate) {
       const point = new Point({
@@ -185,5 +186,5 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
 
       pointGraphicsLayer.addMany([graphic, label])
     }
-  }, [state.view, coordinates])
+  }, [state.view, xCoordinate, yCoordinate])
 }

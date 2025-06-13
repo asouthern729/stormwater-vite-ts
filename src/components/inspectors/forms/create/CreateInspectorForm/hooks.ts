@@ -45,5 +45,5 @@ export const useHandleFormSubmit = () => { // Handle form submit
         navigate(`/inspectors/${ slug }`)
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, navigate])
 }

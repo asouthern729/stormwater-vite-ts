@@ -9,7 +9,7 @@ import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 export const useOnDeleteBtnClick = () => {
   const [state, setState] = useState<{ active: boolean }>({ active: false })
-  const { formUUID } = useContext(SiteCtx)
+  const { siteUUID } = useContext(SiteCtx)
 
   const { enabled, token } = useEnableQuery()
 
@@ -24,7 +24,7 @@ export const useOnDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await AppActions.deleteSite(formUUID, authHeaders(token))
+      const result = await AppActions.deleteSite(siteUUID, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)
@@ -33,7 +33,7 @@ export const useOnDeleteBtnClick = () => {
       queryClient.invalidateQueries('getSites')
       navigate('/sites')
     }
-  }, [state.active, enabled, token, formUUID, queryClient, navigate])
+  }, [state.active, enabled, token, siteUUID, queryClient, navigate])
 
   return { onClick, active: state.active }
 }

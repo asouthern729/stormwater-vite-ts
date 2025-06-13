@@ -1,14 +1,16 @@
+import { useRef } from 'react'
 import { useUpdateSiteFormContext } from './hooks'
 import styles from '@/components/form-elements/Forms.module.css'
+import { useSetCreateSiteMapView } from './hooks'
 
-// Types
-import * as AppTypes from '@/context/App/types'
-
-export const Map = ({ site }: { site: AppTypes.SiteInterface }) => { // Map input
+export const Map = () => { // Map input
+  const mapRef = useRef<HTMLDivElement>(null)
+  
+  useSetCreateSiteMapView(mapRef)
 
   return (
-    <div className={styles.mapDiv}>
-      {/* TODO create Site map */}
+    <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">
+      <div ref={mapRef} className="w-full h-full"></div>
     </div>
   )
 }

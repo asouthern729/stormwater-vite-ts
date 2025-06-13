@@ -12,13 +12,13 @@ export const useHandleNavBtns = () => {
     if(currentPage !== 1) {
       dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage - 1 })
     }
-  }, [currentPage])
+  }, [currentPage, dispatch])
 
   const handleNextBtn = useCallback(() => {
     if(currentPage !== totalPages) {
       dispatch({ type: 'SET_CURRENT_PAGE', payload: currentPage + 1 })
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, dispatch])
 
   const label = `Page ${ currentPage } / ${ totalPages }`
 
@@ -26,13 +26,13 @@ export const useHandleNavBtns = () => {
 }
 
 export const useHandleTableData = (contacts: AppTypes.ContactInterface[]) => {
-  const { currentPage, totalPages, searchValue } = useContext(ContactsCtx)
+  const { currentPage, searchValue } = useContext(ContactsCtx)
 
   useSetTotalPages(contacts.length)
 
-  let contactsArray: AppTypes.ContactInterface[]
-
   return useMemo(() => {
+    let contactsArray: AppTypes.ContactInterface[]
+
     if(searchValue) {
       const regex = new RegExp(searchValue, 'i')
 
@@ -50,7 +50,7 @@ export const useHandleTableData = (contacts: AppTypes.ContactInterface[]) => {
     const endIndex = currentPage * 50
 
     return contactsArray.slice(startIndex, endIndex)
-  }, [contacts, currentPage, totalPages, searchValue])
+  }, [contacts, currentPage, searchValue])
 }
 
 export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
@@ -68,10 +68,9 @@ export const useOnTableRowClick = (uuid: string) => {
 
   const roles = useReturnUserRoles()
 
-  // TODO remove comment for prod
-  // if(!roles.includes('[task.write]')) {
-  //   return () => null
-  // }
+  if(!roles.includes('[task.write]')) {
+    return () => null
+  }
 
   return () => dispatch({ type: 'SET_FORM_UUID', payload: uuid })
 }
@@ -81,5 +80,5 @@ const useSetTotalPages = (count: number) => { // Set total pages to ctx
 
   useEffect(() => {
     dispatch({ type: 'SET_TOTAL_PAGES', payload: Math.ceil(count / 50) })
-  }, [])
+  }, [count, dispatch])
 }

@@ -11,11 +11,11 @@ import FormLabel from "@/components/form-elements/FormLabel"
 import FormError from "@/components/form-elements/FormError"
 
 export const Map = ({ visible }: { visible: boolean }) => {
-  if(!visible) return
-
   const mapRef = useRef<HTMLDivElement>(null)
 
   useSetComplaintsMapView(mapRef)
+
+  if(!visible) return
 
   return (
     <div className="w-full h-[50vh] overflow-hidden bg-transparent shadow-xl rounded-xl touch-none">

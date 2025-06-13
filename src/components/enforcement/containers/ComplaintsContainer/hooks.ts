@@ -12,7 +12,7 @@ import * as AppTypes from '@/context/App/types'
 import { ComplaintsTableDataType } from './components'
 
 export const useHandleTableData = (complaints: AppTypes.ComplaintInterface[]) => { // Complaints table data
-  const { currentPage, totalPages, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
+  const { currentPage, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
 
   const tableData = useMemo(() => {
       let allComplaints: ComplaintsTableDataType[] = complaints.map(complaint => ({
@@ -42,7 +42,7 @@ export const useHandleTableData = (complaints: AppTypes.ComplaintInterface[]) =>
       const endIndex = currentPage * 20
       
       return { data: allComplaints.slice(startIndex, endIndex), count: allComplaints.length }
-    }, [complaints, currentPage, totalPages, showClosedSiteIssues, dateRangeFilter])
+    }, [complaints, currentPage, showClosedSiteIssues, dateRangeFilter])
 
   useSetTotalPages(tableData.count)
 

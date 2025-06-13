@@ -23,14 +23,14 @@ type SiteCtx = {
     end: string
   }
   formDate: string
-  formUUID: string
+  siteUUID: string
   showClosedSiteIssues: boolean
 }
 
 type SiteState = Omit<SiteCtx, 'dispatch'>
 
 type SiteAction =
-  | { type: 'SET_FORM_UUID', payload: string }
+  | { type: 'SET_SITE_UUID', payload: string }
   | { type: 'SET_BASEMAP', payload: BasemapType }
   | { type: 'SET_FORM_DATE', payload: string }
   | { type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' }
@@ -46,7 +46,7 @@ const initialState: SiteState = {
     end: ''
   },
   formDate: new Date().toISOString().split('T')[0],
-  formUUID: '',
+  siteUUID: '',
   showClosedSiteIssues: false
 }
 
@@ -58,10 +58,10 @@ const SiteCtx = createContext<SiteCtx>({
 const siteReducer = (state: SiteState, action: SiteAction) => {
 
   switch(action.type) {
-    case 'SET_FORM_UUID':
+    case 'SET_SITE_UUID':
       return {
         ...state,
-        formUUID: action.payload
+        siteUUID: action.payload
       }
     case 'SET_BASEMAP':
       return {

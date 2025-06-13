@@ -8,6 +8,7 @@ import Footer from '../Footer'
 import { ReactNode } from 'react'
 
 function Layout({ children }: { children: ReactNode }) {
+
   return (
     <div className="flex flex-col w-full h-[100%] min-h-screen">
       <HeaderProvider>

@@ -14,7 +14,7 @@ import InspectorTableCtx from "./context"
 export const Table = ({ tableData }: { tableData: InspectorTableData[] }) => {
 
   return (
-    <table className="table table-sm text-neutral-content">
+    <table className="table table-sm text-neutral-content font-[play]">
       <TableHeaders />
       <TableBody tableData={tableData} />
     </table>
@@ -56,11 +56,11 @@ export const Form = ({ formRef }: { formRef: React.RefObject<HTMLDivElement> }) 
 const TableHeaders = () => {
   const roles = useReturnUserRoles()
 
-  const showBtn = !roles.includes('[task.write]')
+  const showBtn = roles.includes('[task.write]')
 
   return (
     <thead>
-      <tr>
+      <tr className="text-warning uppercase border-b-2 border-warning">
         <th className={`${ !showBtn ? 'hidden' : undefined }`}>Create Site Log</th>
         <th>Site</th>
         <th>Jan</th>
@@ -98,7 +98,7 @@ const TableBody = ({ tableData }: { tableData: InspectorTableData[] }) => { // I
 const TableRow = ({ row }: { row: InspectorTableData }) => {
 
   return (
-    <tr>
+    <tr className="border-b-1 border-neutral-content/50">
       <CreateSiteLogColumn uuid={row.uuid} />
       <SiteNameColumn row={row} />
       <InspectionDatesColumn row={row} />
@@ -110,7 +110,7 @@ const SiteNameColumn = ({ row }: { row: InspectorTableData }) => {
 
   return (
     <td className="w-fit hover:text-warning">
-      <Link to={`/sites/site/${ row.uuid }`}>{row.site}</Link>
+      <Link to={`/site/${ row.uuid }`}>{row.site}</Link>
     </td>
   )
 }

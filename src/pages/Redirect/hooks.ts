@@ -17,5 +17,5 @@ export const useRedirect = (href: string) => {
       } else navigate('/')
     }
 
-  }, [isReady, activeAccount, navigate])
+  }, [isReady, activeAccount, navigate, href])
 }

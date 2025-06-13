@@ -12,7 +12,7 @@ import * as AppTypes from '@/context/App/types'
 import { IllicitDischargesTableDataType } from "./components"
 
 export const useHandleTableData = (discharges: AppTypes.IllicitDischargeInterface[]) => { // Illciit discharges table data
-  const { currentPage, totalPages, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
+  const { currentPage, showClosedSiteIssues, dateRangeFilter } = useContext(EnforcementCtx)
 
   const tableData = useMemo(() => {
       let allDischarges: IllicitDischargesTableDataType[] = discharges.map(discharge => ({
@@ -42,7 +42,7 @@ export const useHandleTableData = (discharges: AppTypes.IllicitDischargeInterfac
       const endIndex = currentPage * 20
       
       return { data: allDischarges.slice(startIndex, endIndex), count: allDischarges.length }
-    }, [discharges, currentPage, totalPages, showClosedSiteIssues, dateRangeFilter])
+    }, [discharges, currentPage, showClosedSiteIssues, dateRangeFilter])
 
     useSetTotalPages(tableData.count)
 

@@ -102,12 +102,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
     }
 
     handleCreateIllicitDischarge(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getIllicitDischarges')
         dispatch({ type: 'SET_FORM_UUID', payload: '' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, dispatch])
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
@@ -155,7 +155,7 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
         mapView?.destroy()
       }, 50)
     }
-  }, [mapRef, setValue])
+  }, [mapRef, setValue, setState])
 }
 
 const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
@@ -164,10 +164,11 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
   const xCoordinate = watch('xCoordinate')
   const yCoordinate = watch('yCoordinate')
 
-  const coordinates = { xCoordinate, yCoordinate }
 
   useEffect(() => {
     if(!state.view) return
+
+    const coordinates = { xCoordinate, yCoordinate }
 
     const pointGraphicsLayer = state.view.map.findLayerById('pointGraphicsLayer') as GraphicsLayer
 
@@ -205,5 +206,5 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
 
       pointGraphicsLayer.addMany([graphic, label])
     }
-  }, [state.view, coordinates])
+  }, [state.view, xCoordinate, yCoordinate])
 }

@@ -1,6 +1,5 @@
 import { useContext } from "react"
 import SitesCtx from "@/components/sites/context"
-import { useHandleSearch } from "./hooks"
 
 export const Header = () => {
 
@@ -9,17 +8,14 @@ export const Header = () => {
   )
 }
 
-export const SearchInput = () => {
-  const { searchValue } = useContext(SitesCtx)
-
-  const handleSearch = useHandleSearch()
+export const SearchInput = ({ onChange, searchValue }: { onChange: React.ChangeEventHandler<HTMLInputElement>, searchValue: string }) => {
 
   return (
     <input 
       type="text" 
       value={searchValue} 
       placeholder="by project name, COF #, or permit #.." 
-      onChange={(e) => handleSearch(e)} 
+      onChange={(e) => onChange(e)} 
       className="input input-lg w-full" />
   )
 }

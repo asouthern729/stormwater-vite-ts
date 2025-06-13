@@ -57,5 +57,5 @@ export const useResetCtx = () => {
 
   useEffect(() => {
     return () => dispatch({ type: 'RESET_CTX' })
-  }, [])
+  }, [dispatch])
 }

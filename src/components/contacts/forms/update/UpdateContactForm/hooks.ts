@@ -41,10 +41,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleUpdateContact(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries('getContacts')
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token])
+  }, [enabled, token, dispatch, queryClient])
 }

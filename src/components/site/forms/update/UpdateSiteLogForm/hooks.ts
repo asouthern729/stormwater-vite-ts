@@ -40,9 +40,9 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleUpdateSiteLog(formData, token)
-      .then(_ => {
+      .then(() => {
         queryClient.invalidateQueries(['getSite', uuid])
         dispatch({ type: 'RESET_CTX' })
       })
-  }, [enabled, token, dispatch])
+  }, [enabled, token, dispatch, queryClient, uuid])
 }

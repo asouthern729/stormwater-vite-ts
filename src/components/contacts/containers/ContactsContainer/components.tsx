@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router'
 import ContactsCtx from '../../context'
 import { useHandleNavBtns, useOnTableRowClick } from './hooks'
-import { formatPhone } from './utils'
+import { formatPhone } from '@/helpers/utils'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -160,7 +160,7 @@ const ContactSitesTableData = ({ sites }: { sites: (AppTypes.SiteInterface|undef
 const ContactSite = ({ site }: { site: AppTypes.SiteInterface }) => {
 
   return (
-    <Link to={`/sites/site/${ site.uuid }`} className="hover:text-warning">{site.name}</Link>
+    <Link to={`/site/${ site.uuid }`} className="hover:text-warning">{site.name}</Link>
   )
 }
 

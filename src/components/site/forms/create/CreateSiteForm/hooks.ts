@@ -64,8 +64,6 @@ export const useSetCreateSiteMapView = (mapRef: React.RefObject<HTMLDivElement>)
       })
     }
   }, [state.view])
-
-  return state.isLoaded
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
@@ -128,11 +126,11 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
     return () => {
       setTimeout(() => {
         onMapClick?.remove()
-        mapView?.destroy(),
+        mapView?.destroy()
         searchWidget?.destroy()
       }, 50)
     }
-  }, [mapRef])
+  }, [mapRef, setState, setValue])
 }
 
 const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
@@ -141,10 +139,10 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
   const xCoordinate = watch('xCoordinate')
   const yCoordinate = watch('yCoordinate')
 
-  const coordinates = { xCoordinate, yCoordinate }
-
   useEffect(() => {
     if(!state.view) return
+
+    const coordinates = { xCoordinate, yCoordinate }
 
     const pointGraphicsLayer = state.view.map?.findLayerById('pointGraphicsLayer') as GraphicsLayer
     const textGraphicsLayer = state.view.map?.findLayerById('textGraphicsLayer') as GraphicsLayer
@@ -184,5 +182,5 @@ const useSetMapGraphics = (state: { view: __esri.MapView | null }) => {
       pointGraphicsLayer.add(graphic)
       textGraphicsLayer.add(label)
     }
-  }, [state, coordinates])
+  }, [state, xCoordinate, yCoordinate])
 }

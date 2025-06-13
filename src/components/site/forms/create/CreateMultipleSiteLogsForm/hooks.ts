@@ -31,6 +31,8 @@ export const useOnCancelBtnClick = () => {
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(InspectorTableCtx)
+
   // TODO verify hook
   const { slug } = useParams<{ slug: string }>()
 
@@ -42,7 +44,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     if(!enabled || !token) return
 
     handleCreateMultipleSiteLogs(formData, token)
-      .then(_ => queryClient.invalidateQueries(['getInspector', slug]))
+      .then(() => {
+        queryClient.invalidateQueries(['getInspector', slug])
+        dispatch({ type: 'RESET_CTX' })
+      })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, slug, dispatch])
 }
