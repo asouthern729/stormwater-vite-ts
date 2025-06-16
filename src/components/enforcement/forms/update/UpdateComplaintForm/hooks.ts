@@ -1,4 +1,5 @@
 import { useCallback, useContext } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
@@ -32,6 +33,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.ComplaintCreateInterface) => {
     if(!enabled || !token) {
       return
@@ -40,8 +43,10 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleUpdateComplaint(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getComplaints')
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        queryClient.invalidateQueries(['getComplaint', formData.uuid])
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, dispatch])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }

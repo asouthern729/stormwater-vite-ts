@@ -1,4 +1,5 @@
 import { useCallback, useContext } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
@@ -21,9 +22,9 @@ export const useUpdateIllicitDischargeForm = (illicitDischarge: AppTypes.Illicit
       date: formatDate(illicitDischarge.date),
       streamWatershed: setStreamWatershed,
       otherStreamWatershed: setStreamWatershed === 'Other' ? illicitDischarge.streamWatershed : '',
-      penaltyDate: formatDate(illicitDischarge.penaltyDate),
-      penaltyDueDate: formatDate(illicitDischarge.penaltyDueDate),
-      paymentReceived: formatDate(illicitDischarge.paymentReceived),
+      penaltyDate: illicitDischarge.penaltyDate ? formatDate(illicitDischarge.penaltyDate) : null,
+      penaltyDueDate: illicitDischarge.penaltyDueDate ? formatDate(illicitDischarge.penaltyDueDate) : null,
+      paymentReceived: illicitDischarge.paymentReceived ? formatDate(illicitDischarge.paymentReceived) : null,
       FollowUpDates: illicitDischarge.FollowUpDates?.map(followup => ({
         ...followup,
         followUpDate: formatDate(followup.followUpDate)
@@ -40,6 +41,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.IllicitDischargeCreateInterface) => {
     if(!enabled || !token) {
       return
@@ -48,10 +51,12 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleUpdateIllicitDischarge(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getIllicitDischarges')
+        queryClient.invalidateQueries(['getIllicitDischarge', formData.uuid])
+        queryClient.invalidateQueries(['getSite', siteUUID])
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, dispatch])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }
 
 const useSetStreamWatershed = (streamWatershed: StreamWatershedEnum | string) => {

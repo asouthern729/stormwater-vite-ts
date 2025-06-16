@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
 import SiteCtx from "../../context"
-import EnforcementCtx from "@/components/enforcement/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -27,21 +26,6 @@ export const useSetSiteMapView = (mapRef: React.RefObject<HTMLDivElement>, site:
       })
     }
   }, [state.view])
-
-  return state.isLoaded
-}
-
-export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
-  const { activeForm } = useContext(EnforcementCtx)
-  const { siteUUID } = useContext(SiteCtx)
-
-  const isActive = activeForm || siteUUID
-
-  useEffect(() => { // Scroll to form if active
-    if(isActive && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [isActive, formRef])
 }
 
 export const useOnUpdateBtnClick = (uuid: string) => {

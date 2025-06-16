@@ -15,7 +15,7 @@ export const Form = ({ contact }: { contact: ContactInterface | undefined }) => 
   const label = !active ? 'Delete Contact' : 'Confirm Delete'
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col gap-10 items-center">
       <UpdateContactForm contact={contact} />
       <DeleteBtn onClick={handleClick}>
         {label}

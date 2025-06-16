@@ -26,14 +26,12 @@ export const useHandleNavBtns = () => {
 }
 
 export const useHandleTableData = (contacts: AppTypes.ContactInterface[]) => {
-  const { currentPage, searchValue } = useContext(ContactsCtx)
+  const { currentPage, searchValue, showInactiveContacts } = useContext(ContactsCtx)
 
-  useSetTotalPages(contacts.length)
-
-  return useMemo(() => {
+  const data = useMemo(() => {
     let contactsArray: AppTypes.ContactInterface[]
 
-    if(searchValue) {
+    if(searchValue) { // Search value
       const regex = new RegExp(searchValue, 'i')
 
       contactsArray = contacts.filter(contact => {
@@ -46,21 +44,19 @@ export const useHandleTableData = (contacts: AppTypes.ContactInterface[]) => {
       })
     } else contactsArray = contacts
 
+    if(!showInactiveContacts) { // Inactive contacts filter
+      contactsArray = contactsArray.filter(contact => !contact.inactive)
+    }
+
     const startIndex = (currentPage - 1) * 50
     const endIndex = currentPage * 50
 
-    return contactsArray.slice(startIndex, endIndex)
-  }, [contacts, currentPage, searchValue])
-}
+    return { tableData: contactsArray.slice(startIndex, endIndex), count: contactsArray.length }
+  }, [contacts, currentPage, searchValue, showInactiveContacts])
 
-export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
-  const { formUUID } = useContext(ContactsCtx)
+  useSetTotalPages(data.count)
 
-  useEffect(() => { // Scroll to form if active
-    if(formUUID && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [formUUID, formRef])
+  return data.tableData
 }
 
 export const useOnTableRowClick = (uuid: string) => {
@@ -68,14 +64,14 @@ export const useOnTableRowClick = (uuid: string) => {
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) {
+  if(!roles.includes('task.write')) {
     return () => null
   }
 
   return () => dispatch({ type: 'SET_FORM_UUID', payload: uuid })
 }
 
-const useSetTotalPages = (count: number) => { // Set total pages to ctx
+export const useSetTotalPages = (count: number) => { // Set total pages to ctx
   const { dispatch } = useContext(ContactsCtx)
 
   useEffect(() => {

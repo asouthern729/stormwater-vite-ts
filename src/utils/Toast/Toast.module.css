@@ -17,7 +17,7 @@
 }
 
 .errorPopup {
-  background-color: var(--color-base-300);
+  background-color: var(--color-error);
 }
 
 .authPopup {

@@ -5,15 +5,14 @@ import styles from './SitesTable.module.css'
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import { TableBody } from './components'
+import * as Components from './components'
 
 function SitesTable({ tableData }: { tableData: AppTypes.SiteInterface[] }) {
 
   return (
     <div className={styles.container}>
-      <table className="bg-neutral-content">
-        <TableBody sites={tableData} />
-      </table>
+      <Components.Table tableData={tableData} />
+      <Components.NoSites tableData={tableData} />
     </div>
   )
 }

@@ -18,6 +18,8 @@ function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
 
   const handleFormSubmit = useHandleFormSubmit()
 
+  console.log(methods.watch())
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Update Site</h2>
@@ -49,7 +51,6 @@ function UpdateSiteForm({ site }: { site: AppTypes.SiteInterface }) {
           </div>
 
           <FormBtns onCancelBtnClick={onCancelBtnClick} />
-
         </form>
       </FormProvider>
 

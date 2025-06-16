@@ -12,49 +12,53 @@ export const useGetToken = () => {
 
   const navigate = useNavigate()
 
+  if(NODE_ENV === 'development') {
+    return 'dev-token'
+  }
+
+  const checkToken = async () => {
+    let token: string | undefined = undefined
+
+    if(activeAccount?.idTokenClaims && activeAccount.idTokenClaims.exp) { // Check if token is expired or about to expire
+      const expiresOn = activeAccount.idTokenClaims.exp * 1000
+      const now = Date.now()
+  
+      if(expiresOn > now + 3000000) { // Still valid
+        token = activeAccount.idToken
+        setState({ token })
+        return
+      }
+  
+      const request = {
+        scopes: ["openid", "profile", "email"],
+        account: activeAccount,
+        forceRefresh: true
+      }
+  
+      const response = await instance.acquireTokenSilent(request) // Refresh token
+
+      setState({ token: response.idToken })
+    }
+
+    if(activeAccount && !activeAccount.idTokenClaims) { // Active account but !idTokenClaims
+      const request = {
+        scopes: ["openid", "profile", "email"],
+        account: activeAccount
+      }
+
+      const response = await instance.acquireTokenSilent(request) // Refresh token
+
+      setState({ token: response.idToken })
+    }
+
+    if(!activeAccount) { // !Active account - redirect to login
+      navigate('/')
+    }
+  }
+
   useEffect(() => {
     if(inProgress !== 'none') { // Wait for instance to fully initialize
       return
-    }
-
-    const checkToken = async () => {
-      let token: string | undefined = undefined
-
-      if(activeAccount?.idTokenClaims && activeAccount.idTokenClaims.exp) { // Check if token is expired or about to expire
-        const expiresOn = activeAccount.idTokenClaims.exp * 1000
-        const now = Date.now()
-    
-        if(expiresOn > now + 3000000) { // Still valid
-          token = activeAccount.idToken
-          setState({ token })
-          return
-        }
-    
-        const request = {
-          scopes: ["openid", "profile", "email"],
-          account: activeAccount,
-          forceRefresh: true
-        }
-    
-        const response = await instance.acquireTokenSilent(request) // Refresh token
-
-        setState({ token: response.idToken })
-      }
-
-      if(activeAccount && !activeAccount.idTokenClaims) { // Active account but !idTokenClaims
-        const request = {
-          scopes: ["openid", "profile", "email"],
-          account: activeAccount
-        }
-
-        const response = await instance.acquireTokenSilent(request) // Refresh token
-
-        setState({ token: response.idToken })
-      }
-
-      if(!activeAccount) { // !Active account - redirect to login
-        navigate('/sites')
-      }
     }
 
     checkToken()
@@ -62,11 +66,7 @@ export const useGetToken = () => {
     const intervalId = setInterval(checkToken, 4 * 60 * 1000) // Check every 4 minutes
     
     return () => clearInterval(intervalId)
-  }, [inProgress, activeAccount, instance, navigate])
-
-  if(NODE_ENV === 'development') {
-    return 'dev-token'
-  }
+  }, [inProgress])
 
   return state.token
 }
@@ -122,4 +122,20 @@ export const useReturnUserRoles = () => { // Return active user roles
   const roles = activeAccount?.idTokenClaims?.roles
 
   return roles || []
+}
+
+export const useDebounce = <T>(value: T, delay: number): T => { // Debouncer
+  const [state, setState] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setState(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return state
 }

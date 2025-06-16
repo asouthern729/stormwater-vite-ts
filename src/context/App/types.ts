@@ -64,6 +64,9 @@ export interface SiteContactInterface extends BaseInterface {
 }
 
 export interface SiteContactCreateInterface extends Omit<SiteContactInterface, 'isPrimary' | 'isContractor' | 'isInspector' | 'Site' | 'Contact' | 'uuid' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt'>{
+  isPrimary?: boolean | null
+  isContractor?: boolean | null
+  isInspector?: boolean | null
   uuid?: string
 }
 

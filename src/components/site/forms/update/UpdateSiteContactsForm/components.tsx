@@ -1,13 +1,15 @@
-import { Controller } from "react-hook-form"
 import { Select } from "@mobiscroll/react"
-import { useUpdateSiteContactsFormContext, useSetSiteContactOptions } from './hooks'
+import { useSetSiteContactOptions, useHandlePrimaryContactSelect, useHandleContractorSelect, useHandleInspectorSelect, useHandleOtherContactSelect } from './hooks'
 import styles from '@/components/form-elements/Forms.module.css'
 
 // Types
 import { ContactOptionsType } from "./hooks"
+import { useCreateSiteFormContext } from "../../create/CreateSiteForm/hooks"
 
 export const SiteContactsInputs = () => { // Site contacts inputs
   const contactOptions = useSetSiteContactOptions()
+
+  if(!contactOptions.length) return null
 
   return (
     <div className="flex w-full flex-wrap">
@@ -20,84 +22,84 @@ export const SiteContactsInputs = () => { // Site contacts inputs
 }
 
 const PrimaryContactSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Primary contact select
-  const { control } = useUpdateSiteContactsFormContext()
+  const { watch } = useCreateSiteFormContext()
+  const { onChange } = useHandlePrimaryContactSelect()
+
+  const contacts = watch('SiteContacts') || []
+
+  const primaryContact = contacts.find(contact => contact.isPrimary)
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="primaryContact" className={styles.checkboxLabel}>Primary Contact:</label>
-      <Controller
-        name={'primaryContact'}
-        control={control}
-        render={({ field }) => (
-          <Select
-            { ...field }
-            data={contactOptions}
-            onChange={(event) => field.onChange(event.value)}
-            filter={true} />
-        )} />
+      <Select
+        data={contactOptions}
+        value={primaryContact?.contactId}
+        onChange={(e) => onChange(e)}
+        filter={true} />
     </div>
   )
 }
 
 const ContractorsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Contractors select
-  const { control } = useUpdateSiteContactsFormContext()
+  const { watch } = useCreateSiteFormContext()
+  const { onChange } = useHandleContractorSelect()
+
+  const contacts = watch('SiteContacts') || []
+
+  const contractors = contacts.filter(contact => contact.isContractor).map(contact => contact.contactId)
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="contractors" className={styles.checkboxLabel}>Contractors:</label>
-      <Controller
-        name={'contractors'}
-        control={control}
-        render={({ field }) => (
-          <Select
-            { ...field }
-            data={contactOptions}
-            selectMultiple={true}
-            onChange={(event) => field.onChange(event.value)}
-            filter={true} />
-        )} />
+      <Select
+        data={contactOptions}
+        value={contractors}
+        selectMultiple={true}
+        onChange={(e) => onChange(e)}
+        filter={true} />
     </div>
   )
 }
 
 const InspectorsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Site inspectors select
-  const { control } = useUpdateSiteContactsFormContext()
+  const { watch } = useCreateSiteFormContext()
+  const { onChange } = useHandleInspectorSelect()
+
+  const contacts = watch('SiteContacts') || []
+
+  const inspectors = contacts.filter(contact => contact.isInspector).map(contact => contact.contactId)
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="inspectors" className={styles.checkboxLabel}>Inspectors:</label>
-      <Controller
-        name={'inspectors'}
-        control={control}
-        render={({ field }) => (
-          <Select
-            { ...field }
-            data={contactOptions}
-            selectMultiple={true}
-            onChange={(event) => field.onChange(event.value)}
-            filter={true} />
-        )} />
+      <Select
+        data={contactOptions}
+        value={inspectors}
+        selectMultiple={true}
+        onChange={(e) => onChange(e)}
+        filter={true} />
     </div>
   )
 }
 
 const OtherContactsSelect = ({ contactOptions }: { contactOptions: ContactOptionsType[] }) => { // Other site contacts select
-  const { control } = useUpdateSiteContactsFormContext()
+  const { watch } = useCreateSiteFormContext()
+  const { onChange } = useHandleOtherContactSelect()
+
+  const contacts = watch('SiteContacts') || []
+
+  const otherContacts = contacts.filter(contact => !contact.isPrimary && !contact.isContractor && !contact.isInspector).map(contact => contact.contactId)
 
   return (
     <div className="flex-1 flex flex-col text-center">
       <label htmlFor="otherContacts" className={styles.checkboxLabel}>Other:</label>
-      <Controller
-        name={'otherContacts'}
-        control={control}
-        render={({ field }) => (
-          <Select
-            { ...field }
-            data={contactOptions}
-            selectMultiple={true}
-            onChange={(event) => field.onChange(event.value)}
-            filter={true} />
-        )} />
+      <Select
+        data={contactOptions}
+        value={otherContacts}
+        selectMultiple={true}
+        onChange={(e) => onChange(e)}
+        filter={true} />
     </div>
   )
 }

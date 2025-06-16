@@ -7,7 +7,7 @@ import { InspectorTableData } from "./hooks"
 
 // Components
 import FormContainer from "../../../form-elements/FormContainer"
-import CreateMultipleSiteLogsForm from "../../../site/forms/create/CreateMultipleSiteLogsForm"
+import CreateMultipleSiteLogsForm from "../../../enforcement/forms/create/CreateMultipleSiteLogsForm"
 import { useContext } from "react"
 import InspectorTableCtx from "./context"
 
@@ -56,7 +56,7 @@ export const Form = ({ formRef }: { formRef: React.RefObject<HTMLDivElement> }) 
 const TableHeaders = () => {
   const roles = useReturnUserRoles()
 
-  const showBtn = roles.includes('[task.write]')
+  const showBtn = roles.includes('task.write')
 
   return (
     <thead>
@@ -151,7 +151,7 @@ const CreateSiteLogColumn = ({ uuid }: { uuid: string }) => {
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) return null
+  if(!roles.includes('task.write')) return null
 
   return (
     <td className="flex flex-col items-center">

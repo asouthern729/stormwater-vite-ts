@@ -1,4 +1,5 @@
 import { useContext, useMemo, useState, useCallback } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import EnforcementCtx from "../../context"
 import * as AppActions from '@/context/App/AppActions'
@@ -51,11 +52,13 @@ export const useHandleTableData = (complaints: AppTypes.ComplaintInterface[]) =>
 
 export const useHandleDeleteBtn = () => {
   const [state, setState] = useState<{ active: boolean }>({ active: false })
-  const { formUUID } = useContext(EnforcementCtx)
+  const { formUUID, dispatch } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
 
   const queryClient = useQueryClient()
+
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
 
   const onClick = useCallback(async () => {
     if(!state.active) {
@@ -67,12 +70,13 @@ export const useHandleDeleteBtn = () => {
       const result = await AppActions.deleteComplaint(formUUID, authHeaders(token))
 
       if(result.success) {
+        queryClient.invalidateQueries('getComplaints')
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
         savedPopup(result.msg)
       } else errorPopup(result.msg)
-
-      queryClient.invalidateQueries('getComplaints')
     }
-  }, [state.active, enabled, token, formUUID, queryClient])
+  }, [state.active, enabled, token, formUUID, queryClient, siteUUID])
 
   const label = !state.active ? 'Delete Violation' : 'Confirm Delete'
 

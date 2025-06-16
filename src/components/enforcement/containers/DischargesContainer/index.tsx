@@ -1,5 +1,5 @@
-import { useRef, memo } from 'react'
-import { useResetCtx, useScrollToFormRef } from '../ViolationsContainer/hooks'
+import { memo } from 'react'
+import { useResetCtx } from '../ViolationsContainer/hooks'
 import { useHandleTableData, useHandleDeleteBtn } from './hooks'
 
 // Types
@@ -13,10 +13,6 @@ import GetIllicitDischarge from '@/components/enforcement/forms/get/GetIllicitDi
 import * as Components from './components'
 
 function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDischargeInterface[] }) {
-  const formRef = useRef<HTMLDivElement>(null)
-
-  useScrollToFormRef(formRef)
-
   const tableData = useHandleTableData(discharges)
 
   const handleDeleteBtn = useHandleDeleteBtn()
@@ -40,7 +36,7 @@ function DischargesContainer({ discharges }: { discharges: AppTypes.IllicitDisch
         </div>
       </div>
 
-      <UpdateForm formRef={formRef}>
+      <UpdateForm>
         <GetIllicitDischarge handleDeleteBtn={handleDeleteBtn} />
       </UpdateForm>
 

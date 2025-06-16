@@ -43,6 +43,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleUpdateContact(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getContacts')
+        queryClient.invalidateQueries(['getContact', formData.uuid])
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))

@@ -1,6 +1,5 @@
 import { FormProvider } from 'react-hook-form'
-import { useCreateInspectorForm, useHandleFormSubmit } from './hooks'
-import { useOnCancelBtnClick } from '@/components/enforcement/forms/create/CreateViolationForm/hooks'
+import { useCreateInspectorForm, useOnCancelBtnClick, useHandleFormSubmit } from './hooks'
 import styles from '@/components/form-elements/Forms.module.css'
 
 // Components

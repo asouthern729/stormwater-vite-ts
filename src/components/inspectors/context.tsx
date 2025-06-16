@@ -7,7 +7,7 @@ import { BasemapType } from "../sites/context"
 type InspectorCtx = {
   dispatch: Dispatch<InspectorAction>
   basemap: BasemapType
-  inspectorUUID: string
+  inspectorId: string
   searchValue: string
   showActiveSitesOnly: boolean
   showOpenIssuesOnly: boolean
@@ -19,13 +19,13 @@ type InspectorAction =
   | { type: 'SET_SEARCH_VALUE', payload: string }
   | { type: 'TOGGLE_SHOW_ACTIVE_SITES_ONLY' }
   | { type: 'TOGGLE_OPEN_ISSUES_ONLY' }
-  | { type: 'SET_INSPECTOR_UUID', payload: string }
+  | { type: 'SET_INSPECTOR_ID', payload: string }
   | { type: 'SET_BASEMAP', payload: BasemapType }
   | { type: 'RESET_CTX' }
 
 const initialState: InspectorState = {
   basemap: 'dark-gray-vector',
-  inspectorUUID: '',
+  inspectorId: '',
   searchValue: '',
   showActiveSitesOnly: true,
   showOpenIssuesOnly: false
@@ -54,10 +54,10 @@ const inspectoReducer = (state: InspectorState, action: InspectorAction) => {
         ...state,
         showOpenIssuesOnly: !state.showOpenIssuesOnly
       }
-    case 'SET_INSPECTOR_UUID':
+    case 'SET_INSPECTOR_ID':
       return {
         ...state,
-        inspectorUUID: action.payload
+        inspectorId: action.payload
       }
     case 'SET_BASEMAP':
       return {

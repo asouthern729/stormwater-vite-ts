@@ -1,4 +1,4 @@
-import { useContext, useCallback, useMemo, useEffect, useState } from "react"
+import React, { useContext, useCallback, useMemo, useEffect, useState } from "react"
 import { useQueryClient } from "react-query"
 import EnforcementCtx from "../../context"
 import * as AppActions from '@/context/App/AppActions'
@@ -9,6 +9,7 @@ import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 // Types
 import * as AppTypes from '@/context/App/types'
 import { ViolationTableDataType } from "./components"
+import { useParams } from "react-router"
 
 export const useHandleNavBtns = () => {
   const { currentPage, totalPages, dispatch } = useContext(EnforcementCtx)
@@ -76,14 +77,15 @@ export const useHandleTableData = (violations: AppTypes.ConstructionViolationInt
   return tableData.data
 }
 
-export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
-  const { formUUID } = useContext(EnforcementCtx)
+type UseScrollToFormRefProps = { formRef: React.RefObject<HTMLDivElement>, activeForm: boolean }
+
+export const useScrollToFormRef = (props: UseScrollToFormRefProps) => {
 
   useEffect(() => { // Scroll to form if active
-    if(formUUID && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if(props.activeForm && props.formRef.current) {
+      props.formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [formUUID, formRef])
+  }, [props.activeForm, props.formRef])
 }
 
 export const useResetCtx = () => { // Reset EnforcementCtx on enforcement page change
@@ -104,11 +106,13 @@ export const useSetTotalPages = (count: number) => { // Set total pages to ctx
 
 export const useHandleDeleteBtn = () => {
   const [state, setState] = useState<{ active: boolean }>({ active: false })
-  const { formUUID } = useContext(EnforcementCtx)
+  const { formUUID, dispatch } = useContext(EnforcementCtx)
 
   const { enabled, token } = useEnableQuery()
 
   const queryClient = useQueryClient()
+
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
 
   const onClick = useCallback(async () => {
     if(!state.active) {
@@ -120,12 +124,13 @@ export const useHandleDeleteBtn = () => {
       const result = await AppActions.deleteViolation(formUUID, authHeaders(token))
 
       if(result.success) {
+        queryClient.invalidateQueries('getViolations')
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
         savedPopup(result.msg)
       } else errorPopup(result.msg)
-
-      queryClient.invalidateQueries('getViolations')
     }
-  }, [state.active, enabled, token, formUUID, queryClient])
+  }, [state.active, enabled, token, formUUID, queryClient, siteUUID])
 
   const label = !state.active ? 'Delete Violation' : 'Confirm Delete'
 

@@ -14,7 +14,7 @@ import * as AppTypes from '@/context/App/types'
 import FormContainer from "../../../form-elements/FormContainer"
 import FormNav from "../../../form-elements/FormNav"
 import UpdateSiteForm from "../update/UpdateSiteForm"
-import GetSiteLog from "../get/GetSiteLog"
+import GetSiteLog from "../../../enforcement/forms/get/GetSiteLog"
 import GetViolation from "../../../enforcement/forms/get/GetViolation"
 import GetComplaint from "../../../enforcement/forms/get/GetComplaint"
 import GetIllicitDischarge from "../../../enforcement/forms/get/GetIllicitDischarge"
@@ -27,7 +27,7 @@ export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Set for
   if(activeForm || siteUUID) {
     if(activeForm && !activeForm?.includes('update')) { // Create site log, violation, complaint, and illicit discharge
       return (
-        <div className="flex flex-col gap-10 items-center m-auto p-20 w-3/4">
+        <div className="flex flex-col gap-10 items-center m-auto w-3/4 min-w-fit">
           <FormNav />
           <FormContainer>
             <SetCreateForm site={site} />
@@ -37,8 +37,10 @@ export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Set for
     }
 
     return (
-      <div className="m-auto bg-neutral/20 p-20 w-2/3">
-        <SetUpdateForm site={site} />
+      <div className="m-auto w-3/4 min-w-fit">
+        <FormContainer>
+          <SetUpdateForm site={site} />
+        </FormContainer>
       </div>
     )
   }
@@ -51,9 +53,7 @@ const UpdateSite = ({ site }: { site: AppTypes.SiteInterface }) => {
 
   return ( // Update site
     <div className="flex flex-col items-center gap-8 w-full">
-      <FormContainer>
-        <UpdateSiteForm site={site} />
-      </FormContainer>
+      <UpdateSiteForm site={site} />
       <DeleteBtn onClick={onClick}>
         {label}
       </DeleteBtn>

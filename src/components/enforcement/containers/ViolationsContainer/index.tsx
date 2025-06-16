@@ -1,5 +1,5 @@
-import { useRef, memo } from 'react'
-import { useHandleTableData, useResetCtx, useScrollToFormRef, useHandleDeleteBtn } from './hooks'
+import { memo } from 'react'
+import { useHandleTableData, useResetCtx, useHandleDeleteBtn } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -11,10 +11,6 @@ import GetViolation from '@/components/enforcement/forms/get/GetViolation'
 import * as Components from './components'
 
 function ViolationsContainer({ violations }: { violations: AppTypes.ConstructionViolationInterface[] }) {
-  const formRef = useRef<HTMLDivElement>(null)
-
-  useScrollToFormRef(formRef)
-  
   const tableData = useHandleTableData(violations)
 
   const handleDeleteBtn = useHandleDeleteBtn()
@@ -38,7 +34,7 @@ function ViolationsContainer({ violations }: { violations: AppTypes.Construction
         </div>
       </div>
 
-      <Components.UpdateForm formRef={formRef}>
+      <Components.UpdateForm>
         <GetViolation handleDeleteBtn={handleDeleteBtn} />
       </Components.UpdateForm>
       

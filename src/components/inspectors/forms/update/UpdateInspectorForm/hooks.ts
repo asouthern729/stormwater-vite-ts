@@ -3,7 +3,7 @@ import { useParams } from "react-router"
 import { useForm } from "react-hook-form"
 import { useQueryClient } from "react-query"
 import { useEnableQuery } from "@/helpers/hooks"
-import SitesCtx from "@/components/sites/context"
+import InspectorCtx from "@/components/inspectors/context"
 import { errorPopup } from "@/utils/Toast/Toast"
 import { handleUpdateInspector } from './utils'
 
@@ -25,7 +25,7 @@ export const useUpdateInspectorForm = (inspector: AppTypes.InspectorInterface) =
 
 export const useHandleFormSubmit = () => { // Handle form submit
   // TODO verify hook
-  const { dispatch } = useContext(SitesCtx)
+  const { dispatch } = useContext(InspectorCtx)
 
   const { slug } = useParams<{ slug: string}>()
 
@@ -40,7 +40,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
     handleUpdateInspector(formData, token)
       .then(() => {
-        queryClient.invalidateQueries([['getInspector', slug], 'getInspectors'])
+        queryClient.invalidateQueries('getInspectors')
+        queryClient.invalidateQueries(['getInspector', slug])
         dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))

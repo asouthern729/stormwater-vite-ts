@@ -1,6 +1,6 @@
-import { useRef, memo } from "react"
+import { memo } from "react"
 import { useSetTableData } from "@/components/sites/containers/SitesContainer/hooks"
-import { useScrollToFormRef, useHandleSearch } from './hooks'
+import { useSetTableDataProps, useHandleSearch, useHandleBtns } from './hooks'
 import styles from './InspectorContainer.module.css'
 
 // Types
@@ -8,19 +8,19 @@ import * as AppTypes from '@/context/App/types'
 
 // Components
 import Search from "@/components/sites/search/Search"
-import { ActiveSitesBtn, OpenIssuesBtn } from "@/components/sites/containers/SitesContainer/components"
-
+import UpdateInspectorForm from "../../forms/update/UpdateInspectorForm"
 import SitesTable from "@/components/sites/tables/SitesTable"
+import { ActiveSitesBtn, OpenIssuesBtn } from "@/components/sites/containers/SitesContainer/components"
 import * as Components from './components'
 
 function InspectorContainer({ sites, inspector }: { sites: AppTypes.SiteInterface[], inspector: AppTypes.InspectorInterface }) {
-  const formRef = useRef<HTMLDivElement>(null)
+  const tableDataProps = useSetTableDataProps()
 
-  useScrollToFormRef(formRef) 
-
-  const tableData = useSetTableData(sites)
+  const tableData = useSetTableData({ sites, ...tableDataProps })
 
   const { onSearchChange, searchValue } = useHandleSearch()
+
+  const { onActiveSitesBtnClick, onOpenIssuesBtnClick, showActiveSitesOnly } = useHandleBtns()
 
   return (
     <div className="flex flex-col my-10">
@@ -32,8 +32,10 @@ function InspectorContainer({ sites, inspector }: { sites: AppTypes.SiteInterfac
           searchValue={searchValue} />
         <div className="flex gap-4 mb-6 ml-auto">
           <Components.UpdateInspectorBtn inspector={inspector} />
-          <ActiveSitesBtn />
-          <OpenIssuesBtn />
+          <ActiveSitesBtn
+            showActiveSitesOnly={showActiveSitesOnly}
+            onClick={onActiveSitesBtnClick} />
+          <OpenIssuesBtn onClick={onOpenIssuesBtnClick} />
         </div>
       </div>
 
@@ -52,6 +54,9 @@ function InspectorContainer({ sites, inspector }: { sites: AppTypes.SiteInterfac
         </div>
       </div>
 
+      <Components.UpdateForm>
+        <UpdateInspectorForm inspector={inspector} />
+      </Components.UpdateForm>
     </div>
   )
 }

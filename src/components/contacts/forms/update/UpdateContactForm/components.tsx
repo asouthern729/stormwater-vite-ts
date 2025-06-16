@@ -2,7 +2,9 @@ import { useCreateContactFormContext } from '../../create/CreateContactForm/hook
 import styles from '@/components/form-elements/Forms.module.css'
 
 export const InactiveCheckbox = () => { // Inactive site checkbox
-  const { register } = useCreateContactFormContext()
+  const { register, watch } = useCreateContactFormContext()
+
+  const checked = !!watch('inactive')
 
   return (
     <div className="flex items-center gap-2 mx-auto my-10 w-fit">
@@ -10,6 +12,7 @@ export const InactiveCheckbox = () => { // Inactive site checkbox
       <input 
         type="checkbox"
         className="checkbox checkbox-secondary"
+        checked={checked}
         { ...register('inactive') } />
     </div>
   )

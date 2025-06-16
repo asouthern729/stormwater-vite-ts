@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useContext, useState } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
-import SiteCtx from "@/components/site/context"
+import EnforcementCtx from "@/components/enforcement/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -13,7 +14,6 @@ import { TextSymbol } from "@arcgis/core/symbols"
 import pinErrorIcon from '@/assets/icons/pin/error-pin.png'
 import { useEnableQuery } from "@/helpers/hooks"
 import { formatDate } from "@/helpers/utils"
-import EnforcementCtx from "@/components/enforcement/context"
 import { errorPopup } from "@/utils/Toast/Toast"
 import { handleCreateComplaint } from './utils'
 
@@ -21,7 +21,7 @@ import { handleCreateComplaint } from './utils'
 import * as AppTypes from '@/context/App/types'
 
 export const useCreateComplaintForm = (site: AppTypes.SiteInterface | undefined) => { 
-  const { formDate } = useContext(SiteCtx)
+  const { formDate } = useContext(EnforcementCtx)
 
   return useForm<AppTypes.ComplaintCreateInterface>({
     mode: 'onBlur',
@@ -77,6 +77,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.ComplaintCreateInterface) => {
     if(!enabled || !token) {
       return
@@ -85,10 +87,11 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleCreateComplaint(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getComplaints')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, dispatch])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
@@ -96,8 +99,6 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: Rea
 
   useEffect(() => {
     if(!mapRef?.current || !mapRef.current.isConnected) return
-
-    console.log(mapRef.current.children)
 
     const map = new Map({ basemap: 'dark-gray-vector' })
 

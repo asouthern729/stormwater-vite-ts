@@ -1,8 +1,9 @@
 import { useContext, useState, useRef } from "react"
 import InspectorCtx from "../../context"
 import { InspectorTableProvider } from "../../tables/InspectorTable/context"
-import { useReturnUserRoles } from '@/helpers/hooks'
-import { useSetInspectorMapView } from './hooks'
+import { useReturnUserRoles, useDebounce } from '@/helpers/hooks'
+import { useScrollToFormRef } from "@/components/enforcement/containers/ViolationsContainer/hooks"
+import { useSetInspectorMapView, useHandleBasemapSelect, useHandleDeleteBtn } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -13,24 +14,27 @@ import SitesActivityCalendar from "../../../sites/calendar/SitesActivityCalendar
 import InspectorTable from "../../tables/InspectorTable"
 import FormContainer from "../../../form-elements/FormContainer"
 import UpdateBtn from "../../../form-elements/buttons/UpdateBtn"
-import { MapLoading } from "@/components/sites/containers/SitesContainer/components"
 import BasemapSelector from "@/components/map/BasemapSelector"
 import MapLegend from "@/components/map/MapLegend"
+import DeleteBtn from "@/components/form-elements/buttons/DeleteBtn"
 
 export const Map = ({ sites }: { sites: AppTypes.SiteInterface[] }) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
-  const isLoaded = useSetInspectorMapView(mapRef, sites)
+  const debounced = useDebounce(sites, 100)
+
+  useSetInspectorMapView(mapRef, debounced)
+
+  const basemapSelectProps = useHandleBasemapSelect()
 
   return (
     <div className="flex-1 h-full bg-neutral">
       <div ref={mapRef} className="relative w-full h-full">
-        <MapLoading isLoaded={isLoaded} />
         <div className="absolute top-2 right-4 z-10">
-          <BasemapSelector />
+          <BasemapSelector { ...basemapSelectProps } />
         </div>
         <div className="absolute bottom-4 left-4 z-10">
-          <MapLegend sites={sites} />
+          <MapLegend sites={debounced} />
         </div>
       </div>
     </div>
@@ -68,15 +72,24 @@ export const CalendarAndTable = ({ tableData }: { tableData: AppTypes.SiteInterf
 }
 
 export const UpdateForm = (props: FormProps) => { // Update form
-  const { inspectorUUID } = useContext(InspectorCtx)
+  const { inspectorId } = useContext(InspectorCtx)
+
+  const formRef = useRef<HTMLDivElement>(null)
+
+  useScrollToFormRef({ formRef, activeForm: !!inspectorId })
+
+  const { label, onClick } = useHandleDeleteBtn()
   
-  if(!inspectorUUID) return null
+  if(!inspectorId) return null
 
   return (
-    <div ref={props.formRef}>
+    <div ref={formRef} className="flex flex-col gap-10 items-center mt-10 m-auto w-3/4">
       <FormContainer>
         {props.children}
       </FormContainer>
+      <DeleteBtn onClick={onClick}>
+        {label}
+      </DeleteBtn>
     </div>
   )
 }
@@ -86,10 +99,10 @@ export const UpdateInspectorBtn = ({ inspector }: { inspector: AppTypes.Inspecto
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('task.write')) return null // Viewers
 
   return (
-    <UpdateBtn onClick={() => dispatch({ type: 'SET_INSPECTOR_UUID', payload: inspector.uuid })}>
+    <UpdateBtn onClick={() => dispatch({ type: 'SET_INSPECTOR_ID', payload: inspector.inspectorId })}>
       Update Inspector
     </UpdateBtn>
   )

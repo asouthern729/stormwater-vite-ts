@@ -146,6 +146,17 @@ export const deleteSiteContact = async (uuid: string, headers: Headers): Promise
   return await res.json()
 }
 
+// Delete site contacts by siteId
+// DELETE /api/v2/stormwater/sitecontact/site/:siteid
+export const deleteSiteContacts = async (siteId: string, headers: Headers): Promise<AppTypes.ServerResponse> => {
+  const res = await fetch(`${ baseUrl }/sitecontact/site/${ siteId }`, {
+    method: 'DELETE',
+    headers
+  })
+
+  return await res.json()
+}
+
 // Create follow up date
 // POST /api/v2/stormwater/followup
 export const createFollowUp = async (formData: AppTypes.FollowUpCreateInterface, headers: Headers): Promise<AppTypes.ServerResponse & { data: AppTypes.FollowUpInterface }> => {
@@ -273,11 +284,8 @@ export const updateSiteLog = async (formData: AppTypes.SiteLogCreateInterface, h
 
   const res = await fetch(`${ baseUrl }/log/${ formData.uuid }`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({ ...formData }),
-    credentials: 'include'
   })
 
   return await res.json()
@@ -313,9 +321,7 @@ export const createViolation = async (formData: AppTypes.ConstructionViolationCr
 export const getViolation = async (uuid: string, headers: Headers): Promise<AppTypes.ServerResponse & { data: AppTypes.ConstructionViolationInterface }> => {
   headers.append('Content-Type', 'application/json')
 
-  const res = await fetch(`${ baseUrl }/violation/${ uuid }`, {
-    credentials: 'include'
-  })
+  const res = await fetch(`${ baseUrl }/violation/${ uuid }`, { headers })
 
   return await res.json()
 }
@@ -331,7 +337,7 @@ export const getViolations = async (headers: Headers): Promise<AppTypes.ServerRe
 // Update construction violation
 // PUT /api/v2/eng/stormwater/violation/:uuid
 export const updateViolation = async (formData: AppTypes.ConstructionViolationCreateInterface, headers: Headers): Promise<AppTypes.ServerResponse & { data: AppTypes.ConstructionViolationInterface }> => {
-  headers.append('Conten-Type', 'application/json')
+  headers.append('Content-Type', 'application/json')
 
   const res = await fetch(`${ baseUrl }/violation/${ formData.uuid }`, {
     method: 'PUT',

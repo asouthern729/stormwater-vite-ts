@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useCallback, useRef } from "react"
+import React, { useContext, useState, useEffect, useCallback } from "react"
 import { useNavigate } from "react-router"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
@@ -9,7 +9,7 @@ import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
 import Search from "@arcgis/core/widgets/Search"
 import { TextSymbol } from "@arcgis/core/symbols"
 import { mapHitTest } from "@/helpers/utils"
-import SitesCtx from "../../context"
+import SitesCtx, { BasemapType } from "../../context"
 import { setSiteMarker } from './utils'
 
 // Types
@@ -17,13 +17,19 @@ import * as AppTypes from '@/context/App/types'
 import Multipoint from '@arcgis/core/geometry/Multipoint'
 import { MapHitInterface } from './types'
 
-export const useSetTableData = (sites: AppTypes.SiteInterface[]) => {
+export const useSetTableDataProps = () => {
   const { searchValue, showActiveSitesOnly, showOpenIssuesOnly } = useContext(SitesCtx)
 
-  let array = sites || []
+  return { searchValue, showActiveSitesOnly, showOpenIssuesOnly }
+}
 
-  if(searchValue) {
-    const regex = new RegExp(searchValue, 'i')
+type UseSetTableDataProps = { sites: AppTypes.SiteInterface[], searchValue: string, showActiveSitesOnly: boolean, showOpenIssuesOnly: boolean }
+
+export const useSetTableData = (props: UseSetTableDataProps) => {
+  let array = props.sites || []
+
+  if(props.searchValue) {
+    const regex = new RegExp(props.searchValue, 'i')
 
     array = array.filter(site => {
       const searchableProps: (keyof AppTypes.SiteInterface)[] = ['name', 'cof', 'permit']
@@ -35,11 +41,11 @@ export const useSetTableData = (sites: AppTypes.SiteInterface[]) => {
     })
   }
 
-  if(showActiveSitesOnly) { // Show active sites only filter
+  if(props.showActiveSitesOnly) { // Show active sites only filter
     array = array.filter(site => !site.inactive)
   }
 
-  if(showOpenIssuesOnly) { // Show open issues only filter
+  if(props.showOpenIssuesOnly) { // Show open issues only filter
     array = array.filter(site => {
       if(site.hasOpenComplaint || site.hasOpenIllicitDischarge || site.hasOpenViolation) {
         return site
@@ -64,32 +70,36 @@ export const useSetSitesMapView = (mapRef: React.RefObject<HTMLDivElement>, site
       })
     }
   }, [state.view])
-
-  return state.isLoaded
 }
 
 export const useHandleSearch = () => {
   const { searchValue, dispatch } = useContext(SitesCtx)
 
-  const [state, setState] = useState<{ localSearchValue: string }>({ localSearchValue: searchValue })
-  
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
   const cb = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchValue = e.currentTarget.value
+    dispatch({ type: 'SET_SEARCH_VALUE', payload: e.currentTarget.value })
+  }, [dispatch])
 
-    setState({ localSearchValue: newSearchValue })
+  return { onSearchChange: cb, searchValue }
+}
 
-    if(timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
+export const useHandleBtns = () => {
+  const { showActiveSitesOnly, dispatch } = useContext(SitesCtx)
 
-    timeoutRef.current = setTimeout(() => {
-      dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue })
-    }, 300)
-  }, [searchValue, dispatch])
+  const onActiveSitesBtnClick = () => dispatch({ type: 'TOGGLE_SHOW_ACTIVE_SITES_ONLY' })
 
-  return { onSearchChange: cb, searchValue: state.localSearchValue } // searchValue returned for UI update only
+  const onOpenIssuesBtnClick = () => dispatch({ type: 'TOGGLE_OPEN_ISSUES_ONLY' })
+
+  return { onActiveSitesBtnClick, onOpenIssuesBtnClick, showActiveSitesOnly }
+}
+
+export const useHandleBasemapSelect = () => {
+  const { basemap, dispatch } = useContext(SitesCtx)
+
+  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch({ type: 'SET_BASEMAP', payload: e.currentTarget.value as BasemapType})
+  }
+
+  return { onChange, basemap }
 }
 
 export const useSetMapViewProperties = (sites: AppTypes.SiteInterface[], mapRef: React.RefObject<HTMLDivElement>) => {
@@ -171,13 +181,13 @@ const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTyp
         mapView.destroy()
       }, 50)
     }
-  }, [mapRef, sites, basemap, navigate, mapViewPropertes, setState])
+  }, [mapRef, basemap, navigate, mapViewPropertes, setState])
 }
 
 const useSetMapGraphics = (sites: AppTypes.SiteInterface[], state: { view: __esri.MapView | null }) => {
 
   useEffect(() => {
-    if(!state.view || !sites.length) return
+    if(!state.view) return
 
     const pointGraphicsLayer = state.view.map?.findLayerById('pointGraphicsLayer') as GraphicsLayer
     const textGraphicsLayer = state.view.map?.findLayerById('textGraphicsLayer') as GraphicsLayer

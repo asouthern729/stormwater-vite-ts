@@ -3,7 +3,7 @@ import * as AppTypes from '@/context/App/types'
 import { FormType } from "../../context"
 
 // Components
-import CreateSiteLogForm from "../create/CreateSiteLogForm"
+import CreateSiteLogForm from "../../../enforcement/forms/create/CreateSiteLogForm"
 import CreateComplaintForm from '@/components/enforcement/forms/create/CreateComplaintForm'
 import CreateIllicitDischargeForm from '@/components/enforcement/forms/create/CreateIllicitDischargeForm'
 import CreateViolationForm from '@/components/enforcement/forms/create/CreateViolationForm'

@@ -9,11 +9,28 @@ import * as AppTypes from '@/context/App/types'
 // Components
 import SiteDetails from "@/components/site/details/SiteDetails"
 
-export const TableBody = ({ sites }: { sites: AppTypes.SiteInterface[] }) => { // Sites table body
+export const Table = ({ tableData }: { tableData: AppTypes.SiteInterface[] }) => {
+
+  return (
+    <table>
+      <TableBody tableData={tableData} />
+    </table>
+  )
+}
+
+export const NoSites = ({ tableData }: { tableData: AppTypes.SiteInterface[] }) => {
+  if(tableData.length) return null
+
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl font-[shrikhand] bold">No Sites</div>
+  )
+}
+
+const TableBody = ({ tableData }: { tableData: AppTypes.SiteInterface[] }) => { // Sites table body
 
   return (
     <tbody>
-      {sites.map((site, index) => {
+      {tableData.map((site, index) => {
         return (
           <TableRow
             key={`sites-table-row-${ site.uuid }`}

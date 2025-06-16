@@ -1,4 +1,5 @@
 import { useCallback, useContext } from "react"
+import { useParams } from "react-router"
 import { useQueryClient } from "react-query"
 import { useForm } from "react-hook-form"
 import EnforcementCtx from "@/components/enforcement/context"
@@ -22,18 +23,24 @@ export const useCreateSiteLogForm = (siteId: string) => { // CreateSiteLogForm u
 }
 
 export const useHandleFormSubmit = () => { // Handle form submit
+  const { dispatch } = useContext(EnforcementCtx)
   // TODO verify hook
   const queryClient = useQueryClient()
 
   const { enabled, token } = useEnableQuery()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.SiteLogCreateInterface) => {
     if(!enabled || !token) return
 
     handleCreateSiteLog(formData, token)
-      .then(() => queryClient.invalidateQueries(['getSite', formData.uuid]))
+      .then(() => {
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
+      })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }
 
 export const useOnCancelBtnClick = () => {

@@ -1,18 +1,16 @@
-import { useContext } from 'react'
-import SitesCtx from '@/components/sites/context'
 import { basemapSelectOptions } from './utils'
 
 // Types
 import { BasemapType } from '@/components/sites/context'
+import { BasemapSelectProps } from './types'
 
-export const BasemapSelect = () => {
-  const { basemap, dispatch } = useContext(SitesCtx)
+export const BasemapSelect = (props: BasemapSelectProps) => {
 
   return (
     <select 
-      value={basemap}
-      onChange={(e) => dispatch({ type: 'SET_BASEMAP', payload: e.currentTarget.value as BasemapType })}
-      className="select select-sm select-bordered text-neutral-content w-full">
+      value={props.basemap}
+      onChange={props.onChange}
+      className="select select-sm select-bordered text-neutral-content bg-neutral w-full">
         {basemapSelectOptions.map(option => (
           <BasemapSelectOption 
             key={`basemap-option-${ option.value }`}

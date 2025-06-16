@@ -1,5 +1,5 @@
-import { useRef, memo } from 'react'
-import { useHandleTableData, useScrollToFormRef } from './hooks'
+import { memo } from 'react'
+import { useHandleTableData } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -10,10 +10,6 @@ import GetContact from '../../forms/get/GetContact'
 import * as Components from './components'
 
 function ContactsContainer({ contacts }: { contacts: AppTypes.ContactInterface[] }) {
-  const formRef = useRef<HTMLDivElement>(null)
-
-  useScrollToFormRef(formRef)
-
   const tableData = useHandleTableData(contacts)
 
   return (
@@ -25,7 +21,7 @@ function ContactsContainer({ contacts }: { contacts: AppTypes.ContactInterface[]
         <Components.ContactsTable contacts={tableData} />
       </div>
 
-      <Components.UpdateForm formRef={formRef}>
+      <Components.UpdateForm>
         <GetContact />
       </Components.UpdateForm>
     </div>

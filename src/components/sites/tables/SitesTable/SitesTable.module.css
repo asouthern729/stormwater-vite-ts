@@ -1,7 +1,9 @@
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   font-family: 'Play', sans-serif;
+  background-color: var(--color-neutral-content);
   width: 100%;
   height: 100%;
   overflow-y: auto;

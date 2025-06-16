@@ -32,7 +32,7 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
-  const { uuid } = useParams<{ uuid: string }>()
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
 
   const { enabled, token } = useEnableQuery()
 
@@ -41,8 +41,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
     handleUpdateSiteLog(formData, token)
       .then(() => {
-        queryClient.invalidateQueries(['getSite', uuid])
+        queryClient.invalidateQueries(['getSite', siteUUID])
         dispatch({ type: 'RESET_CTX' })
       })
-  }, [enabled, token, dispatch, queryClient, uuid])
+  }, [enabled, token, dispatch, queryClient, siteUUID])
 }

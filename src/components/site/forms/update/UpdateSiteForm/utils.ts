@@ -9,20 +9,12 @@ export const handleUpdateSite = async (formData: AppTypes.SiteCreateInterface, t
   const result = await AppActions.updateSite(formData, authHeaders(token))
 
   if(result.success) {
-    if(formData.SiteContacts) {
-      const contacts = formData.SiteContacts
+    await AppActions.deleteSiteContacts(result.data.siteId, authHeaders(token))
 
-      await Promise.all(
-        contacts.map(contact => {
-          if(contact.uuid) { // Existing contacts
-            if(!contact.contactId) { // Delete
-              AppActions.deleteSiteContact(contact.uuid, authHeaders(token))
-            }
-          } else AppActions.createSiteContact({ ...contact, siteId: formData.siteId as string }, authHeaders(token))
-        })
-      )
+    const contacts = formData.SiteContacts || []
 
-      savedPopup(result.msg)
-    }
+    await Promise.all(contacts.map(contact => AppActions.createSiteContact({ ...contact, siteId: result.data.siteId }, authHeaders(token))))
+    
+    savedPopup(result.msg)
   } else errorPopup(result.msg)
 }

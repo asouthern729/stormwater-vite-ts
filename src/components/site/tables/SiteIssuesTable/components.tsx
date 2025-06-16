@@ -33,7 +33,7 @@ const TableHeaders = () => {
 const TableBody = ({ tableData }: { tableData: IssueTableDataType[] }) => { // Site issues table body
 
   return (
-    <>
+    <tbody>
       {tableData.map(issue => {
         return (
           <TableRow
@@ -41,7 +41,7 @@ const TableBody = ({ tableData }: { tableData: IssueTableDataType[] }) => { // S
             issue={issue} />
         ) 
       })}
-    </>
+    </tbody>
   )
 }
 

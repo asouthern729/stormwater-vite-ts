@@ -6,7 +6,7 @@ export const useOnTableRowClick = (uuid: string) => {
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) {
+  if(!roles.includes('task.write')) {
     return () => null
   }
 

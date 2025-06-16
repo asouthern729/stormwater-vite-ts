@@ -7,7 +7,7 @@ import * as AppTypes from '@/context/App/types'
 
 // Components
 import FormBtns from "@/components/form-elements/buttons/FormBtns"
-import { DateInput } from '../../create/CreateSiteLogForm/components'
+import { DateInput } from '../../../../enforcement/forms/create/CreateSiteLogForm/components'
 
 function UpdateSiteLogForm({ siteLog }: { siteLog: AppTypes.SiteLogInterface }) {
   const methods = useUpdateSiteLogForm(siteLog)

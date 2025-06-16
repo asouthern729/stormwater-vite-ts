@@ -11,6 +11,7 @@ import { TextSymbol } from "@arcgis/core/symbols"
 import EnforcementCtx from "@/components/enforcement/context"
 import SiteCtx from "@/components/site/context"
 import { useEnableQuery } from "@/helpers/hooks"
+import { formatDate } from "@/helpers/utils"
 import pinWarningIcon from '@/assets/icons/pin/warning-pin.png'
 import { errorPopup } from "@/utils/Toast/Toast"
 import { handleUpdateSite } from "./utils"
@@ -23,12 +24,13 @@ export const useUpdateSiteForm = (site: AppTypes.SiteInterface) => { // UpdateSi
   return useForm<AppTypes.SiteCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
+      siteId: site.siteId,
       name: site.name,
       location: site.location,
       xCoordinate: site.xCoordinate,
       yCoordinate: site.yCoordinate,
       inspectorId: site.inspectorId,
-      preconDate: site.preconDate,
+      preconDate: formatDate(site.preconDate),
       permit: site.permit,
       cof: site.cof,
       tnq: site.tnq,

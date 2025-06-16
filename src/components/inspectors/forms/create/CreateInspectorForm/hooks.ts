@@ -26,8 +26,13 @@ export const useCreateInspectorFormContext = () => { // CreateInspectorForm cont
   return methods
 }
 
+export const useOnCancelBtnClick = () => { // Handle cancel btn click
+  const navigate = useNavigate()
+
+  return () => navigate('/sites')
+}
+
 export const useHandleFormSubmit = () => { // Handle form submit
-  // TODO verify hook
   const navigate = useNavigate()
 
   const { enabled, token } = useEnableQuery()

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useCallback, useState } from "react"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
+import { useQueryClient } from "react-query"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -9,23 +10,22 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer'
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol"
 import Search from "@arcgis/core/widgets/Search"
 import { TextSymbol } from "@arcgis/core/symbols"
-import { mapHitTest } from "@/helpers/utils"
-import InspectorTableCtx from "../../tables/InspectorTable/context"
+import * as AppActions from '@/context/App/AppActions'
+import { mapHitTest, authHeaders } from "@/helpers/utils"
 import InspectorCtx from "../../context"
+import { useEnableQuery } from "@/helpers/hooks"
 import { setSiteMarker } from "@/components/sites/containers/SitesContainer/utils"
+import { savedPopup, errorPopup } from "@/utils/Toast/Toast"
 
 // Types
 import * as AppTypes from '@/context/App/types'
 import { MapHitInterface } from "@/components/sites/containers/SitesContainer/types"
+import { BasemapType } from "@/components/sites/context"
 
-export const useScrollToFormRef = (formRef: React.RefObject<HTMLDivElement>) => {
-  const { formOpen } = useContext(InspectorTableCtx)
+export const useSetTableDataProps = () => {
+  const { searchValue, showActiveSitesOnly, showOpenIssuesOnly } = useContext(InspectorCtx)
 
-  useEffect(() => { // Scroll to form if active
-    if(formOpen && formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [formOpen, formRef])
+  return { searchValue, showActiveSitesOnly, showOpenIssuesOnly }
 }
 
 export const useHandleSearch = () => {
@@ -38,6 +38,26 @@ export const useHandleSearch = () => {
   }, [dispatch])
 
   return { onSearchChange: cb, searchValue }
+}
+
+export const useHandleBtns = () => {
+  const { showActiveSitesOnly, dispatch } = useContext(InspectorCtx)
+
+  const onActiveSitesBtnClick = () => dispatch({ type: 'TOGGLE_SHOW_ACTIVE_SITES_ONLY' })
+
+  const onOpenIssuesBtnClick = () => dispatch({ type: 'TOGGLE_OPEN_ISSUES_ONLY' })
+
+  return { onActiveSitesBtnClick, onOpenIssuesBtnClick, showActiveSitesOnly }
+}
+
+export const useHandleBasemapSelect = () => {
+  const { basemap, dispatch } = useContext(InspectorCtx)
+
+  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch({ type: 'SET_BASEMAP', payload: e.currentTarget.value as BasemapType })
+  }
+
+  return { onChange, basemap }
 }
 
 export const useSetInspectorMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTypes.SiteInterface[]) => {
@@ -54,8 +74,46 @@ export const useSetInspectorMapView = (mapRef: React.RefObject<HTMLDivElement>, 
       })
     }
   }, [state.view])
+}
 
-  return state.isLoaded
+export const useHandleDeleteBtn = () => {
+  const [state, setState] = useState<{ active: boolean }>({ active: false })
+  const { inspectorId } = useContext(InspectorCtx)
+
+  const navigate = useNavigate()
+
+  const { enabled, token } = useEnableQuery()
+
+  const queryClient = useQueryClient()
+
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
+  const onClick = useCallback(async () => {
+    if(!state.active) {
+      setState({ active: true })
+      return
+    } 
+
+    if(enabled) {
+      const result = await AppActions.deleteInspector(inspectorId, authHeaders(token))
+
+      if(result.success) {
+        queryClient.invalidateQueries('getInspectors')
+        navigate('/sites')
+        savedPopup(result.msg)
+      } else errorPopup(result.msg)
+    }
+  }, [state.active, enabled, token, inspectorId, queryClient, siteUUID, navigate])
+
+  const label = !state.active ? 'Delete Inspector' : 'Confirm Delete'
+
+  return { onClick, label}
+}
+
+export const useOnCancelBtnClick = () => { // Handle cancel btn click
+  const { dispatch } = useContext(InspectorCtx)
+
+  return () => dispatch({ type: 'RESET_CTX' })
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, sites: AppTypes.SiteInterface[], setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {

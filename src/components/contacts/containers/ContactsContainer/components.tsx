@@ -1,6 +1,7 @@
-import { useContext } from 'react'
+import { useContext, useRef } from 'react'
 import { Link } from 'react-router'
 import ContactsCtx from '../../context'
+import { useScrollToFormRef } from '@/components/enforcement/containers/ViolationsContainer/hooks'
 import { useHandleNavBtns, useOnTableRowClick } from './hooks'
 import { formatPhone } from '@/helpers/utils'
 
@@ -22,7 +23,7 @@ export const ContactsTable = ({ contacts }: { contacts: AppTypes.ContactInterfac
         <div className="flex justify-between items-end mt-10 mb-4 w-full">
           <Search />
           <div className="flex items-end gap-4">
-            <ShowActiveCheckbox>Show Inactive:</ShowActiveCheckbox>
+            <ShowInactiveCheckbox>Show Inactive:</ShowInactiveCheckbox>
             <div className="translate-y-7"><PageNavBtns /></div>
           </div>
         </div>    
@@ -41,11 +42,15 @@ export const ContactsTable = ({ contacts }: { contacts: AppTypes.ContactInterfac
 
 export const UpdateForm = (props: FormProps) => { // Update form
   const { formUUID } = useContext(ContactsCtx)
+
+  const formRef = useRef<HTMLDivElement>(null)
+
+  useScrollToFormRef({ formRef, activeForm: !!formUUID })
   
   if(!formUUID) return null
 
   return (
-    <div ref={props.formRef}>
+    <div ref={formRef}>
       <FormContainer>
         {props.children}
       </FormContainer>
@@ -101,7 +106,7 @@ const TableRow = ({ contact }: { contact: AppTypes.ContactInterface }) => {
   return (
     <tr 
       onClick={onTableRowClick}
-      className="border-b-1 border-neutral-content/50">
+      className={`border-b-1 border-neutral-content/50 ${ contact.inactive ? 'opacity-50' : null }`}>
         <ContactTableData contact={contact} />
         <ContactSitesTableData sites={contact.SiteContacts?.map(site => site.Site) || []} />
     </tr>
@@ -113,12 +118,24 @@ const ContactTableData = ({ contact }: { contact: AppTypes.ContactInterface }) =
   return (
     <td>
       <div className="flex flex-col font-[play] py-4">
-        <span className="text-2xl font-bold">{contact.name}</span>
+        <ContactName contact={contact} />
         <span className="italic">{contact.company}</span>
         <ContactPhone phone={contact.phone} />
         <ContactEmail email={contact.email} />
       </div>
     </td>
+  )
+}
+
+const ContactName = ({ contact }: { contact: AppTypes.ContactInterface }) => {
+  if(contact.inactive) { // Inactive contact
+    return (
+      <span className="text-2xl font-bold">{contact.name} - <small className="italic">Inactive</small></span>
+    )
+  }
+
+  return (
+    <span className="text-2xl font-bold">{contact.name}</span>
   )
 }
 
@@ -164,8 +181,8 @@ const ContactSite = ({ site }: { site: AppTypes.SiteInterface }) => {
   )
 }
 
-export const ShowActiveCheckbox = ({ children }: { children: React.ReactNode }) => { // Show active contacts only checkbox
-  const { showActiveContactsOnly, dispatch } = useContext(ContactsCtx)
+export const ShowInactiveCheckbox = ({ children }: { children: React.ReactNode }) => { // Show active contacts only checkbox
+  const { showInactiveContacts, dispatch } = useContext(ContactsCtx)
 
   return (
     <div className="flex gap-2 text-neutral-content w-fit">
@@ -173,8 +190,8 @@ export const ShowActiveCheckbox = ({ children }: { children: React.ReactNode }) 
       <input 
         type="checkbox"
         className="checkbox checkbox-secondary"
-        checked={showActiveContactsOnly}
-        onChange={() => dispatch({ type: 'TOGGLE_SHOW_ACTIVE_CONTACTS_ONLY' })} />
+        checked={showInactiveContacts}
+        onChange={() => dispatch({ type: 'TOGGLE_SHOW_INACTIVE_CONTACTS' })} />
     </div>
   )
 }

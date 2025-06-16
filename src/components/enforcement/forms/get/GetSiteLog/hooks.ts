@@ -1,7 +1,6 @@
 import { useState, useContext, useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import { useParams } from "react-router"
-import SiteCtx from "@/components/site/context"
 import EnforcementCtx from "@/components/enforcement/context"
 import * as AppActions from '@/context/App/AppActions'
 import { useEnableQuery } from "@/helpers/hooks"
@@ -18,17 +17,16 @@ export const useGetSiteLog = () => { // Get site log
   return useQuery(['getSiteLog', formUUID], () => AppActions.getSiteLog(formUUID as string, authHeaders(token)), { enabled: enabled && !!formUUID })
 }
 
-export const useOnDeleteBtnClick = () => {
-  const { dispatch } = useContext(SiteCtx)
+export const useOnDeleteBtnClick = (uuid: string) => {
+  const { dispatch } = useContext(EnforcementCtx)
 
   const [state, setState] = useState<{ active: boolean }>({ active: false })
-  const { siteUUID } = useContext(SiteCtx)
 
   const { enabled, token } = useEnableQuery()
 
   const queryClient = useQueryClient()
 
-  const { uuid } = useParams<{ uuid: string }>()
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
 
   const onClick = useCallback(async () => {
     if(!state.active) {
@@ -37,11 +35,11 @@ export const useOnDeleteBtnClick = () => {
     } 
 
     if(enabled) {
-      const result = await AppActions.deleteSiteLog(siteUUID, authHeaders(token))
+      const result = await AppActions.deleteSiteLog(uuid, authHeaders(token))
 
       if(result.success) {
         savedPopup(result.msg)
-        queryClient.invalidateQueries(['getSite', uuid])
+        queryClient.invalidateQueries(['getSite', siteUUID])
         dispatch({ type: 'RESET_CTX' })
       } else errorPopup(result.msg)
     }

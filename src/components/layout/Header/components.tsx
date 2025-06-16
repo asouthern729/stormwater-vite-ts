@@ -1,8 +1,10 @@
 import { useContext } from "react"
 import { useLocation, Link } from "react-router"
+import { useMsal } from "@azure/msal-react"
 import { APP_TITLE } from '../../../config'
 import HeaderCtx from "./context"
 import { useReturnUserRoles } from '@/helpers/hooks'
+import useHandleLogoutRedirect from "@/context/Auth/hooks/useHandleLogoutRedirect"
 import { useGetInspectors, useIsEnforcmentPageActive } from './hooks'
 
 // Icons
@@ -60,6 +62,7 @@ const ExpandedMenu = () => {
       <InspectorsMenu />
       <EnforcementMenu />
       <CreateMenu />
+      <LogoutBtn />
     </>
   )
 }
@@ -138,7 +141,7 @@ const CreateMenu = () => {
 
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('task.write')) return null // Viewers
 
   return (
     <NavDropdown
@@ -163,6 +166,24 @@ const CreateMenuItem = (props: CreateMenuItemProps) => {
 
   return (
     <li><Link to={props.href} className={`hover:cursor-pointer hover:bg-neutral ${ active ? 'text-warning' : null }`}>{props.children}</Link></li>
+  )
+}
+
+const LogoutBtn = () => { // Logout button
+  const { instance } = useMsal()
+  const activeAccount = instance.getActiveAccount()
+
+  const handleLogoutRedirect = useHandleLogoutRedirect()
+
+  if(!activeAccount) return null
+
+  return (
+    <button 
+      type="button"
+      onClick={handleLogoutRedirect}
+      className="btn btn-ghost text-neutral-content rounded-none uppercase hover:bg-primary hover:shadow-none">
+        Logout
+    </button>
   )
 }
 

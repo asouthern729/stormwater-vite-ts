@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useSetTableData, useHandleSearch } from './hooks'
+import { useSetTableDataProps, useSetTableData, useHandleSearch, useHandleBtns } from './hooks'
 import styles from './SitesContainer.module.css'
 
 // Types
@@ -12,9 +12,13 @@ import SitesActivityCalendar from '../../calendar/SitesActivityCalendar'
 import * as Components from './components'
 
 function SitesContainer({ sites }: { sites: AppTypes.SiteInterface[] }) {
-  const tableData = useSetTableData(sites) 
+  const tableDataProps = useSetTableDataProps()
+
+  const tableData = useSetTableData({ sites, ...tableDataProps }) 
 
   const { onSearchChange, searchValue } = useHandleSearch()
+
+  const { onActiveSitesBtnClick, onOpenIssuesBtnClick, showActiveSitesOnly } = useHandleBtns()
 
   return (
     <div className="flex flex-col my-10">
@@ -24,8 +28,10 @@ function SitesContainer({ sites }: { sites: AppTypes.SiteInterface[] }) {
           onSearchChange={onSearchChange}
           searchValue={searchValue} />
         <div className="flex gap-4 mb-6 ml-auto">
-          <Components.ActiveSitesBtn />
-          <Components.OpenIssuesBtn />
+          <Components.ActiveSitesBtn
+            showActiveSitesOnly={showActiveSitesOnly}
+            onClick={onActiveSitesBtnClick} />
+          <Components.OpenIssuesBtn onClick={onOpenIssuesBtnClick} />
         </div>
       </div>
 

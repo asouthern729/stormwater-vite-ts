@@ -1,5 +1,4 @@
 .btn {
-  flex: 1;
   color: var(--color-neutral-content);
   font-family: 'Play', sans-serif;
   font-weight: 600;
@@ -7,6 +6,7 @@
   text-transform: uppercase;
   text-align: center;
   padding: 8px 12px;
+  width: 200px;
   white-space: nowrap;
   border: 2px solid var(--color-neutral-content);
   box-shadow: 4px 4px 0 var(--color-neutral-content);
@@ -19,7 +19,6 @@
 }
 
 .activeBtn {
-  flex: 1;
   color: var(--color-neutral-content);
   font-family: 'Play', sans-serif;
   font-weight: 600;
@@ -27,6 +26,7 @@
   text-transform: uppercase;
   text-align: center;
   padding: 8px 12px;
+  width: 200px;
   white-space: nowrap;
   border: 2px solid var(--color-warning);
   box-shadow: 4px 4px 0 var(--color-warning);

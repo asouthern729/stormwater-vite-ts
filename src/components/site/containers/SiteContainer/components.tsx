@@ -4,7 +4,8 @@ import SiteCtx from '../../context'
 import EnforcementCtx from '@/components/enforcement/context'
 import inspectorIcon from '@/assets/icons/inspector/inspector.svg'
 import { useReturnUserRoles } from '@/helpers/hooks'
-import { useOnUpdateBtnClick, useScrollToFormRef, useSetSiteMapView } from './hooks'
+import { useScrollToFormRef } from '@/components/enforcement/containers/ViolationsContainer/hooks'
+import { useOnUpdateBtnClick, useSetSiteMapView } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -16,7 +17,6 @@ import UpdateBtn from "@/components/form-elements/buttons/UpdateBtn"
 import ViolationsIndicator from '@/components/enforcement/indicators/ViolationsIndicator'
 import ComplaintsIndicator from '@/components/enforcement/indicators/ComplaintsIndicator'
 import IllicitDischargesIndicator from '@/components/enforcement/indicators/llicitDischargesIndicator'
-import { MapLoading } from '@/components/sites/containers/SitesContainer/components'
 import SiteDetails from '../../details/SiteDetails'
 import SitesActivityCalendar from '@/components/sites/calendar/SitesActivityCalendar'
 import DateRangeFilter from '../../filters/DateRangeFilter'
@@ -85,7 +85,7 @@ export const Form = ({ site }: { site: AppTypes.SiteInterface }) => { // Update 
 
   const formRef = useRef<HTMLDivElement>(null)
 
-  useScrollToFormRef(formRef)
+  useScrollToFormRef({ formRef, activeForm: !!activeForm || !!siteUUID })
 
   if(!activeForm && !siteUUID) return null
 
@@ -101,7 +101,7 @@ export const Buttons = ({ site }: { site: AppTypes.SiteInterface }) => {
 
   const onUpdateBtnClick = useOnUpdateBtnClick(site.uuid)
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('task.write')) return null // Viewers
 
   return (
     <div className="flex flex-col gap-4">
@@ -116,7 +116,7 @@ export const Buttons = ({ site }: { site: AppTypes.SiteInterface }) => {
 export const Map = ({ site }: { site: AppTypes.SiteInterface }) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
-  const isLoaded = useSetSiteMapView(mapRef, site)
+  useSetSiteMapView(mapRef, site)
 
   return (
     <div className="flex-1 flex w-full h-full overflow-hidden rounded-xl shadow-xl touch-none">
@@ -124,7 +124,6 @@ export const Map = ({ site }: { site: AppTypes.SiteInterface }) => {
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
           <SiteDetails site={site} />
         </div>
-        <MapLoading isLoaded={isLoaded} />
       </div>
     </div>
   )

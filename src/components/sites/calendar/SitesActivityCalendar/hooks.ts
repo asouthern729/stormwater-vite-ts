@@ -110,7 +110,7 @@ export const useCalendarProps = (type: 'week' | 'month', calendarData: CalendarD
     }
 
     props.onEventClick = (event) => onEventClick(event)
-    props.onCellClick = (event) => {
+    props.onCellDoubleClick = (event) => {
       dispatch({ type: 'SET_ACTIVE_FORM', payload: 'createSiteLog' })
       dispatch({ type: 'SET_FORM_DATE', payload: event.date.toISOString().split('T')[0] }) 
     }
@@ -148,7 +148,7 @@ const useHandleEventClick = () => {
 
   const navigate = useNavigate()
 
-  if(!roles?.includes('[task.write]')) {
+  if(!roles?.includes('task.write')) {
     return () => null
   }
 

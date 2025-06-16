@@ -1,8 +1,8 @@
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import EnforcementCtx from "../../context"
 import { Link } from "react-router"
 import { useReturnUserRoles } from "@/helpers/hooks"
-import { useHandleNavBtns, useHandleTableRowClick } from './hooks'
+import { useHandleNavBtns, useHandleTableRowClick, useScrollToFormRef } from './hooks'
 
 // Types
 import * as AppTypes from '@/context/App/types'
@@ -13,15 +13,19 @@ import CreateLink from "../../../layout/nav/buttons/CreateLink"
 import PrevPageBtn from "@/components/layout/nav/buttons/PrevPageBtn"
 import NextPageBtn from "@/components/layout/nav/buttons/NextPageBtn"
 
-export type FormProps = { formRef: React.RefObject<HTMLDivElement>, children: React.ReactElement }
+export type FormProps = { children: React.ReactElement }
 
 export const UpdateForm = (props: FormProps) => { // Update form
   const { formUUID } = useContext(EnforcementCtx)
+
+  const formRef = useRef<HTMLDivElement>(null)
+
+  useScrollToFormRef({ formRef, activeForm: !!formUUID })
   
   if(!formUUID) return null
 
   return (
-    <div ref={props.formRef}>
+    <div ref={formRef}>
       <FormContainer>
         {props.children}
       </FormContainer>
@@ -34,7 +38,7 @@ type CreateBtnProps = { href: string, children: React.ReactNode }
 export const CreateBtn = (props: CreateBtnProps) => {
   const roles = useReturnUserRoles()
 
-  if(!roles.includes('[task.write]')) return null // Viewers
+  if(!roles.includes('task.write')) return null // Viewers
 
   return (
     <div className="absolute top-8 left-1/2 -translate-x-1/2">

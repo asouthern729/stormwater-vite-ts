@@ -9,14 +9,14 @@ type ContactsCtx = {
   formUUID: string
   searchValue: string
   totalPages: number
-  showActiveContactsOnly: boolean
+  showInactiveContacts: boolean
 }
 
 type ContactsState = Omit<ContactsCtx, 'dispatch'>
 
 type ContactsAction =
   | { type: 'SET_SEARCH_VALUE', payload: string }
-  | { type: 'TOGGLE_SHOW_ACTIVE_CONTACTS_ONLY' }
+  | { type: 'TOGGLE_SHOW_INACTIVE_CONTACTS' }
   | { type: 'SET_FORM_UUID', payload: string }
   | { type: 'SET_TOTAL_PAGES', payload: number }
   | { type: 'SET_CURRENT_PAGE', payload: number }
@@ -26,7 +26,7 @@ const initialState: ContactsState = {
   currentPage: 1,
   formUUID: '',
   searchValue: '',
-  showActiveContactsOnly: true,
+  showInactiveContacts: false,
   totalPages: 1
 }
 
@@ -43,10 +43,10 @@ const contactsReducer = (state: ContactsState, action: ContactsAction) => {
         ...state,
         searchValue: action.payload
       }
-    case 'TOGGLE_SHOW_ACTIVE_CONTACTS_ONLY':
+    case 'TOGGLE_SHOW_INACTIVE_CONTACTS':
       return {
         ...state,
-        showActiveContactsOnly: !state.showActiveContactsOnly
+        showInactiveContacts: !state.showInactiveContacts
       }
     case 'SET_FORM_UUID':
       return {

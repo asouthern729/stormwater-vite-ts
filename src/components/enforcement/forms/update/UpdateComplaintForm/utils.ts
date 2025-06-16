@@ -23,7 +23,6 @@ export const handleUpdateComplaint = async (formData: AppTypes.ComplaintCreateIn
           })
         )
       }
-      
   
       savedPopup(result.msg)
     } else errorPopup(result.msg)

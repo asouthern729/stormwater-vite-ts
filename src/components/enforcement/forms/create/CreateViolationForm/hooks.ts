@@ -1,8 +1,10 @@
 import { useCallback, useContext } from 'react'
+import { useParams } from 'react-router'
 import { useQueryClient } from 'react-query'
 import { useForm, useFormContext } from 'react-hook-form'
 import EnforcementCtx from '@/components/enforcement/context'
 import { useEnableQuery } from '@/helpers/hooks'
+import { formatDate } from '@/helpers/utils'
 import { errorPopup } from '@/utils/Toast/Toast'
 import { handleCreateViolation } from './utils'
 
@@ -12,21 +14,19 @@ import * as AppTypes from '@/context/App/types'
 export const useCreateViolationForm = (site: AppTypes.SiteInterface | undefined) => { // CreateViolationForm useForm
   const { formDate } = useContext(EnforcementCtx)
 
-  const violationDate = formDate ? new Date(formDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-
   return useForm<AppTypes.ConstructionViolationCreateInterface>({
     mode: 'onBlur',
     defaultValues: {
       siteId: site?.siteId,
-      date: violationDate,
+      date: formatDate(formDate),
       details: '',
       enforcementAction: null,
-      penaltyDate: '',
+      penaltyDate: null,
       penaltyAmount: null,
-      penaltyDueDate: '',
-      paymentReceived: '',
-      swoDate: '',
-      swoLiftedDate: '',
+      penaltyDueDate: null,
+      paymentReceived: null,
+      swoDate: null,
+      swoLiftedDate: null,
       compliance: null,
       closed: null,
       FollowUpDates: []
@@ -54,14 +54,17 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.ConstructionViolationCreateInterface) => {
     if(!enabled || !token) return
 
     handleCreateViolation(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getViolations')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, dispatch])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }

@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 24px;
   align-items: start;
+  background-color: var(--color-neutral-content);
   width: 100%;
   overflow-x: scroll;
   white-space: nowrap;

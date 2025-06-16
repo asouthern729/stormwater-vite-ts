@@ -4,16 +4,16 @@ import { useOnDeleteBtnClick } from './hooks'
 import * as AppTypes from '@/context/App/types'
 
 // Components
-import UpdateSiteLogForm from "../../update/UpdateSiteLogForm"
+import UpdateSiteLogForm from "../../../../site/forms/update/UpdateSiteLogForm"
 import DeleteBtn from "../../../../form-elements/buttons/DeleteBtn"
 
 export const Form = ({ siteLog }: { siteLog: AppTypes.SiteLogInterface }) => {
-  const { active, onClick } = useOnDeleteBtnClick()
+  const { active, onClick } = useOnDeleteBtnClick(siteLog.uuid)
 
   const label = !active ? 'Delete Site Log' : 'Confirm Delete Site Log'
 
   return (
-    <div className="flex flex-col gap-10 items-center">
+    <div className="flex flex-col gap-6 items-center">
       <UpdateSiteLogForm siteLog={siteLog} />
       <DeleteBtn onClick={onClick}>
         {label}

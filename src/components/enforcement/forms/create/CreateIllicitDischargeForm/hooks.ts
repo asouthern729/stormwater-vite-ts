@@ -1,7 +1,8 @@
 import React, { useCallback, useContext, useState, useEffect } from "react"
+import { useParams } from "react-router"
 import { useQueryClient, useQuery } from "react-query"
 import { useForm, useFormContext } from "react-hook-form"
-import SiteCtx from "@/components/site/context"
+import EnforcementCtx from "@/components/enforcement/context"
 import Map from '@arcgis/core/Map'
 import MapView from '@arcgis/core/views/MapView'
 import Point from '@arcgis/core/geometry/Point'
@@ -13,7 +14,6 @@ import { TextSymbol } from "@arcgis/core/symbols"
 import pinErrorIcon from '@/assets/icons/pin/error-pin.png'
 import { useEnableQuery } from "@/helpers/hooks"
 import { formatDate } from "@/helpers/utils"
-import EnforcementCtx from "@/components/enforcement/context"
 import { errorPopup } from "@/utils/Toast/Toast"
 import * as AppActions from '@/context/App/AppActions'
 import { authHeaders } from "@/helpers/utils"
@@ -23,7 +23,7 @@ import { handleCreateIllicitDischarge } from "./utils"
 import * as AppTypes from '@/context/App/types'
 
 export const useCreateIllicitDischargeForm = (site: AppTypes.SiteInterface | undefined) => { // CreateSiteIllicitDischargeForm useForm
-  const { formDate } = useContext(SiteCtx)
+  const { formDate } = useContext(EnforcementCtx)
 
   return useForm<AppTypes.IllicitDischargeCreateInterface>({
     mode: 'onBlur',
@@ -40,10 +40,10 @@ export const useCreateIllicitDischargeForm = (site: AppTypes.SiteInterface | und
       streamWatershed: undefined,
       otherStreamWatershed: '',
       enforcementAction: '',
-      penaltyDate: '',
+      penaltyDate: null,
       penaltyAmount: null,
-      penaltyDueDate: '',
-      paymentReceived: '',
+      penaltyDueDate: null,
+      paymentReceived: null,
       compliance: null,
       closed: null,
       FollowUpDates: []
@@ -96,6 +96,8 @@ export const useHandleFormSubmit = () => { // Handle form submit
 
   const queryClient = useQueryClient()
 
+  const { uuid: siteUUID } = useParams<{ uuid: string }>()
+
   return useCallback((formData: AppTypes.IllicitDischargeCreateInterface) => {
     if(!enabled || !token) {
       return
@@ -104,10 +106,11 @@ export const useHandleFormSubmit = () => { // Handle form submit
     handleCreateIllicitDischarge(formData, token)
       .then(() => {
         queryClient.invalidateQueries('getIllicitDischarges')
-        dispatch({ type: 'SET_FORM_UUID', payload: '' })
+        queryClient.invalidateQueries(['getSite', siteUUID])
+        dispatch({ type: 'RESET_CTX' })
       })
       .catch(err => errorPopup(err))
-  }, [enabled, token, queryClient, dispatch])
+  }, [enabled, token, queryClient, dispatch, siteUUID])
 }
 
 const useCreateMapView = (mapRef: React.RefObject<HTMLDivElement>, setState: React.Dispatch<React.SetStateAction<{ view: __esri.MapView | null, isLoaded: boolean }>>) => {
