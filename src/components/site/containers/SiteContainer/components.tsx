@@ -22,17 +22,6 @@ import SitesActivityCalendar from '@/components/sites/calendar/SitesActivityCale
 import DateRangeFilter from '../../filters/DateRangeFilter'
 import SiteIssuesTable from '../../tables/SiteIssuesTable'
 
-export const EnforcementIndicators = ({ site }: { site: AppTypes.SiteInterface }) => {
-
-  return (
-    <div className="flex gap-20 justify-around flex-wrap">
-      <ViolationsIndicator violations={site.ConstructionViolations || []} />
-      <ComplaintsIndicator complaints={site.Complaints || []} />
-      <IllicitDischargesIndicator discharges={site.IllicitDischarges || []} />
-    </div>
-  )
-}
-
 export const Header = ({ site }: { site: AppTypes.SiteInterface }) => {
   const label = !site.inactive ? 'Active Site' : 'Inactive Site'
 
@@ -151,6 +140,17 @@ export const SiteIssuesCheckbox = () => {
         className="checkbox checkbox-secondary"
         checked={showClosedSiteIssues}
         onChange={() => dispatch({ type: 'TOGGLE_SHOW_CLOSED_SITE_ISSUES' })} />
+    </div>
+  )
+}
+
+const EnforcementIndicators = ({ site }: { site: AppTypes.SiteInterface }) => {
+
+  return (
+    <div className="flex gap-20 justify-around flex-wrap">
+      <ViolationsIndicator violations={site.ConstructionViolations || []} />
+      <ComplaintsIndicator complaints={site.Complaints || []} />
+      <IllicitDischargesIndicator discharges={site.IllicitDischarges || []} />
     </div>
   )
 }

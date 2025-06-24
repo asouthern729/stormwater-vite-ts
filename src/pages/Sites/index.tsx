@@ -5,7 +5,7 @@ import { useGetSites } from "./hooks"
 import Layout from "@/components/layout/Layout"
 import HandleLoading from '../../utils/HandleLoading'
 import SitesContainer from "@/components/sites/containers/SitesContainer"
-import ErrorBoundary from "@/components/layout/error/ErrorBoundary/ErrorBoundary"
+import ErrorBoundary from "@/components/layout/error/ErrorBoundary"
 
 function Sites() {
   const { data, isSuccess } = useGetSites()

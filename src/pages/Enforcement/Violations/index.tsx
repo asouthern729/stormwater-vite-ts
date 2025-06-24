@@ -5,7 +5,7 @@ import { useGetViolations } from './hooks'
 import Layout from '../../../components/layout/Layout'
 import HandleLoading from '../../../utils/HandleLoading'
 import ViolationsContainer from '../../../components/enforcement/containers/ViolationsContainer'
-import ErrorBoundary from '../../../components/layout/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../../components/layout/error/ErrorBoundary'
 
 function Violations() {
   const { data, isSuccess } = useGetViolations()

@@ -5,7 +5,7 @@ import { useGetComplaints } from './hooks'
 import Layout from "../../../components/layout/Layout"
 import HandleLoading from "../../../utils/HandleLoading"
 import ComplaintsContainer from "../../../components/enforcement/containers/ComplaintsContainer"
-import ErrorBoundary from "../../../components/layout/error/ErrorBoundary/ErrorBoundary"
+import ErrorBoundary from "../../../components/layout/error/ErrorBoundary"
 
 function Complaints() {
   const { data, isSuccess } = useGetComplaints() 

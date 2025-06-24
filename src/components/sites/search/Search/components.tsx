@@ -20,8 +20,8 @@ export const SearchInput = ({ onChange, searchValue }: { onChange: React.ChangeE
   )
 }
 
-export const ClearBtn = () => { // Clear search button
-  const { searchValue, dispatch } = useContext(SitesCtx)
+export const ClearBtn = ({ searchValue }: { searchValue: string }) => { // Clear search button
+  const { dispatch } = useContext(SitesCtx)
 
   if(!searchValue) return null
 

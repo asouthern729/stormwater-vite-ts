@@ -8,7 +8,7 @@ import * as AppTypes from '@/context/App/types'
 import Layout from '../../components/layout/Layout'
 import HandleLoading from '../../utils/HandleLoading'
 import InspectorContainer from '../../components/inspectors/containers/InspectorContainer'
-import ErrorBoundary from '../../components/layout/error/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../components/layout/error/ErrorBoundary'
 
 function Inspector() {
   const { data, isSuccess } = useGetInspector()

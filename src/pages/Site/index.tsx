@@ -9,7 +9,7 @@ import * as AppTypes from '@/context/App/types'
 import Layout from "../../components/layout/Layout"
 import HandleLoading from "../../utils/HandleLoading"
 import SiteContainer from "../../components/site/containers/SiteContainer"
-import ErrorBoundary from "../../components/layout/error/ErrorBoundary/ErrorBoundary"
+import ErrorBoundary from "../../components/layout/error/ErrorBoundary"
 
 function Site() {
   const { data, isSuccess } = useGetSite()

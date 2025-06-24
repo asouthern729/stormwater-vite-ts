@@ -9,7 +9,7 @@ function Search({ onSearchChange, searchValue }: { onSearchChange: React.ChangeE
       <Components.SearchInput 
         onChange={onSearchChange}
         searchValue={searchValue} />
-      <Components.ClearBtn />
+      <Components.ClearBtn searchValue={searchValue} />
     </div>
   )
 }
