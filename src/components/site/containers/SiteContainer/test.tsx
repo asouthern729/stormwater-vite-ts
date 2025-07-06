@@ -4,7 +4,6 @@ import * as MockAPI from '@/test/mocks/api'
 
 // Types
 import * as AppTypes from '@/context/App/types'
-import { FormType } from "../../context"
 
 // Components
 import * as Components from './components'
