@@ -4,7 +4,7 @@ export const msalConfig = {
     auth: {
         clientId: '10dff41b-bba0-4fcb-83a6-147c19927e6b',
         authority: 'https://login.microsoftonline.com/f6644f52-f834-4a2f-a433-e6bc40d7c17f/',
-        redirectUri: 'https://istest.franklintn.gov/stormwater',
+        redirectUri: 'https://dev.franklintn.gov/stormwater',
         postLogoutRedirectUri: '/',
         navigateToLoginRequestUrl: false
     },
@@ -38,5 +38,5 @@ export const msalConfig = {
 
 export const loginRequest = {
     scopes: ["openid", "profile"],
-    redirectUri: "https://istest.franklintn.gov/stormwater"
+    redirectUri: "https://dev.franklintn.gov/stormwater"
 };
